@@ -18,8 +18,16 @@ test("patient and doctor pages use local prototype data", async () => {
   const doctorPage = await readFile(new URL("app/doctor/page.tsx", root), "utf8");
   assert.match(patientPage, /patientPortalData/);
   assert.match(patientPage, /PatientPortal/);
-  assert.match(doctorPage, /doctorPortalData/);
+  assert.match(doctorPage, /getDoctorAccess/);
+  assert.match(doctorPage, /loadDoctorDashboard/);
   assert.match(doctorPage, /DoctorPortal/);
+});
+
+test("doctor route redirects unauthenticated users and has no-store rendering", async () => {
+  const doctorPage = await readFile(new URL("app/doctor/page.tsx", root), "utf8");
+  assert.match(doctorPage, /state === "unauthenticated"\) redirect\("\/doctor\/login"\)/);
+  assert.match(doctorPage, /dynamic = "force-dynamic"/);
+  assert.match(doctorPage, /revalidate = 0/);
 });
 
 test("package uses only the standard Next.js runtime", async () => {

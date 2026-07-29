@@ -30,10 +30,12 @@ export type PatientPortalData = {
 };
 
 export type DoctorPatientSummary = {
-  id: string; initials: string; name: string; age: number; sexKey: SexKey;
+  id: string; databaseId?: string; initials: string; name: string; age: number; sexKey: SexKey;
   lastReview: string; statusKey: PatientStatusKey; conditionKeys: ConditionKey[];
   allergyKeys: AllergyKey[]; medications: { name: string; dose: string }[];
   access: { kind: "familyCareTeam" } | { kind: "temporary"; days: number };
+  canEdit?: boolean;
+  conditionRecords?: { id: string; key: ConditionKey; note: string }[];
 };
 
 export type DoctorAccessRequest = {

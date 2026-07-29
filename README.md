@@ -1,119 +1,153 @@
 # VitaPass
 
-VitaPass is a responsive, multilingual medical-profile prototype with separate patient and clinician experiences. It runs on standard Next.js 16 using the App Router and is ready for deployment to Vercel.
+VitaPass is a responsive, four-language medical-profile application built with
+Next.js 16 App Router. The public patient route remains a fictional browser-only
+prototype. Phase 2B.1 adds a secure, database-backed clinician vertical slice
+using Supabase Auth and hosted PostgreSQL.
 
-## Current product surface
+## Routes
 
-- `/` — patient medical profile, emergency view, profile sharing controls, multilingual copy, and access history.
-- `/doctor` — clinician overview, patient search, profile review drawer, access-request decisions, and activity history.
-- Responsive desktop and mobile layouts.
-- Open Graph and X sharing metadata.
+- `/` — public fictional patient prototype.
+- `/doctor/login` — clinician email/password authentication.
+- `/doctor` — server-protected clinician workspace for approved clinicians.
 
-The current data is deliberately local prototype data in `app/demo-data.ts`. There is no database, authentication, API, or durable server state yet. Interactive decisions and notifications reset when the page reloads.
+There is no public clinician signup. Patient authentication and durable patient
+editing are outside this phase.
 
 ## Architecture
 
 ```text
-Next.js 16 App Router
+Next.js 16 App Router on Vercel
   |
-  +-- app/layout.tsx                 metadata and global shell
-  +-- app/page.tsx                   patient route
-  +-- app/doctor/page.tsx            clinician route
-  +-- app/PatientPortalClient.tsx    patient interactions
-  +-- app/doctor/DoctorPortalClient.tsx
-  +-- app/i18n/                     typed EN/DE/RO/HU catalogs and formatters
-  +-- app/demo-data.ts               temporary prototype records
-  +-- app/globals.css                shared responsive styling
+  +-- Server Components / Server Actions
+  +-- lib/dal/                       authorization + medical data boundary
+  +-- lib/supabase/                  request-scoped SSR clients
+  +-- proxy.ts                       doctor-route session refresh
+  +-- app/i18n/                      typed EN/DE/RO/HU catalogs
+  |
+Supabase
+  +-- Auth                           password authentication and cookie sessions
+  +-- hosted PostgreSQL              application and medical records
+  +-- Row-Level Security             primary data authorization boundary
+  +-- restricted database functions profile audit + condition-note edit
 ```
 
-Pages remain Server Components and pass serializable demo data into interactive Client Components. There are no Cloudflare bindings, Workers, Vinext adapters, Vite plugins, Sites metadata, or database migrations.
+Server authorization validates signed identity with `auth.getClaims()`. It does
+not trust `getSession()` data. Every normal request uses the public publishable
+key and the authenticated user's JWT; no service-role key is used by the app.
+RLS and the Data Access Layer independently check clinician approval and active,
+unexpired grants.
 
-All interface copy is resolved through the centralized catalogs in `app/i18n`. The
-selected language is shared by both portals and persisted in local browser storage.
-Dates and times are stored as ISO values and rendered with locale-aware `Intl`
-formatters. Demo clinical concepts use stable keys; names, identifiers, phone
-numbers, medication names, and dosages remain unchanged.
+Authenticated pages are dynamic and use private, no-store responses. Medical
+information must never be placed in URLs, logs, analytics, exception messages,
+or audit metadata.
 
 ## Requirements
 
 - Node.js 20.9 or newer
 - npm
+- A Supabase project
+- Supabase CLI and a Docker-compatible container runtime for local database work
 
-## Local development
+## Application configuration
+
+Copy the template:
+
+```bash
+Copy-Item .env.example .env.local
+```
+
+On macOS or Linux:
+
+```bash
+cp .env.example .env.local
+```
+
+Set exactly these values from the Supabase project Connect dialog:
+
+```dotenv
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
+
+Both values are required locally and in Vercel for clinician authentication.
+They are public project configuration, not privileged credentials. Never add a
+service-role or secret key to browser code or this repository.
+
+Without these values, `/` remains operational and `/doctor/login` displays a
+localized setup notice.
+
+## Database setup
+
+The versioned schema is in
+`supabase/migrations/202607290001_phase_2b1_foundation.sql`. The optional
+`supabase/seed.sql` contains only clearly fictional records and never creates an
+Auth user or password.
+
+Local Supabase:
+
+```bash
+npx supabase init
+npx supabase start
+npx supabase db reset
+```
+
+For a hosted development project:
+
+```bash
+npx supabase login
+npx supabase link --project-ref YOUR_PROJECT_REF
+npx supabase db push --dry-run
+npx supabase db push --include-seed
+```
+
+Do not run the seed against an environment intended for real data.
+
+## Supabase Dashboard steps
+
+1. Create or choose the Supabase project.
+2. In Authentication settings, keep email/password enabled and disable public
+   user signup for this phase.
+3. Apply the migration, optionally including the fictional development seed.
+4. In Authentication > Users, administratively create or invite the clinician.
+   Choose the password outside the repository.
+5. Copy that Auth user's UUID and link it to the fictional seeded clinician:
+
+```sql
+update public.clinicians
+set auth_user_id = 'AUTH_USER_UUID'
+where professional_identifier = 'DEMO-CLINICIAN-0001';
+```
+
+6. Confirm the clinician remains `approved`. Use `pending`, `suspended`, or
+   `rejected` to verify the denial screens.
+7. In Project Settings > API/Connect, copy only the Project URL and publishable
+   key into local and Vercel environment variables.
+
+## Development and validation
 
 ```bash
 npm install
 npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) for the patient portal or [http://localhost:3000/doctor](http://localhost:3000/doctor) for the clinician portal.
-
-## Production validation
-
-```bash
-npm run build
-npm start
-```
-
-Additional checks:
-
-```bash
 npm run lint
 npm test
+npm run build
 ```
 
-The project uses the standard Next.js scripts:
+The automated suite checks authorization decisions, grant expiry and edit
+permissions, audit immutability, RLS policy presence, translation parity,
+committed-secret detection, UTF-8 integrity, and the production build.
 
-- `next dev`
-- `next build`
-- `next start`
+## Vercel deployment
 
-## Deploy to Vercel
-
-Vercel supports Next.js without a custom adapter or configuration file.
-
-### Git deployment
-
-1. Push the repository to GitHub, GitLab, or Bitbucket.
-2. In the Vercel dashboard, choose **Add New → Project** and import the repository.
-3. Confirm the detected framework is **Next.js**.
-4. Leave the build command and output settings at their defaults.
-5. Deploy.
-
-Vercel creates preview deployments for subsequent branches and pull requests and updates production from the configured production branch.
-
-### Vercel CLI
-
-Install or invoke the Vercel CLI, then run:
-
-```bash
-npx vercel
-```
-
-Follow the prompts to link or create a project. To publish the linked project to production:
-
-```bash
-npx vercel --prod
-```
-
-No environment variables are required. If a canonical production URL is needed for local metadata builds, set the non-secret value:
-
-```bash
-NEXT_PUBLIC_SITE_URL=https://your-domain.example
-```
-
-On Vercel, VitaPass automatically uses `VERCEL_PROJECT_PRODUCTION_URL` when available.
-
-See the official [Next.js installation documentation](https://nextjs.org/docs/app/getting-started/installation) and [Next.js on Vercel](https://vercel.com/frameworks/nextjs).
+1. Import the repository into Vercel as a Next.js project.
+2. Add `NEXT_PUBLIC_SUPABASE_URL` and
+   `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` to Preview and Production as
+   appropriate.
+3. Add the Vercel deployment origins to Supabase Auth URL configuration.
+4. Keep the default `next build` command and deploy.
 
 ## Security boundary
 
-This repository is a UI prototype, not a production medical-record system.
-
-- The displayed patient and clinician identities are sample data.
-- Buttons simulate workflows in browser memory.
-- No access decision, clinical update, share link, or audit event is durable.
-- There is no authentication or authorization boundary.
-- Do not enter real patient information or secrets.
-
-Before production use, add an approved identity provider, server-enforced roles, audited persistence, consent and access-grant workflows, encryption and key management, retention policies, backup and recovery, and the required legal and regulatory controls.
+Read [SECURITY.md](SECURITY.md) before using the project. This vertical slice is
+a security foundation, not a complete production medical-record system.
