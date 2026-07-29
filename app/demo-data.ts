@@ -1,267 +1,100 @@
+export type SexKey = "female" | "male";
+export type AllergyKey = "penicillin" | "latex" | "ibuprofen" | "noneKnown";
+export type ConditionKey =
+  | "type2Diabetes"
+  | "hypertension"
+  | "atrialFibrillation"
+  | "asthma"
+  | "hyperlipidemia"
+  | "hypothyroidism";
+export type ScheduleKey = "twiceDaily" | "everyMorning" | "asPrescribed";
+export type PatientStatusKey = "upToDate" | "reviewDue" | "newUpdate";
+
 export type PatientPortalData = {
   profile: {
-    name: string;
-    initials: string;
-    dob: string;
-    blood: string;
-    sex: string;
-    donor: string;
-    allergies: string[];
-    medications: { name: string; dose: string; timing: string }[];
-    chronic: string[];
-    surgeries: string[];
-    implants: string[];
-    emergency: string;
-    emergencyPhone: string;
-    doctor: string;
-    doctorPhone: string;
+    name: string; initials: string; dateOfBirth: string; blood: string;
+    sexKey: SexKey; organDonor: boolean; allergyKeys: AllergyKey[];
+    medications: { name: string; dose: string; scheduleKey: ScheduleKey }[];
+    conditionKeys: ConditionKey[];
+    procedures: { key: "appendectomy"; year: number }[];
+    implantKeys: "none"[];
+    emergencyContact: { name: string; relationshipKey: "husband"; phone: string };
+    doctor: { name: string; phone: string };
     lastUpdated: string;
   };
   accessHistory: {
-    id: string;
-    initials: string;
-    actor: string;
-    context: string;
-    occurredAt: string;
-    action: string;
+    id: string; initials: string; actor: string;
+    contextKey: "clinicQr" | "clinicianNfc" | "personalSession";
+    occurredAt: string; actionKey: "viewed" | "edited";
   }[];
 };
 
 export type DoctorPatientSummary = {
-  id: string;
-  initials: string;
-  name: string;
-  age: number;
-  gender: string;
-  lastReview: string;
-  status: "Up to date" | "Review due" | "New update";
-  conditions: string[];
-  allergies: string[];
-  medications: string[];
-  access: string;
+  id: string; initials: string; name: string; age: number; sexKey: SexKey;
+  lastReview: string; statusKey: PatientStatusKey; conditionKeys: ConditionKey[];
+  allergyKeys: AllergyKey[]; medications: { name: string; dose: string }[];
+  access: { kind: "familyCareTeam" } | { kind: "temporary"; days: number };
 };
 
 export type DoctorAccessRequest = {
-  id: string;
-  initials: string;
-  name: string;
-  reason: string;
-  received: string;
-  urgency: "Urgent" | "Routine";
+  id: string; initials: string; name: string;
+  reasonKey: "medicationReconciliation" | "newPatientConsultation" | "followUpCare";
+  receivedAt: string; urgencyKey: "urgent" | "routine";
 };
 
 export type DoctorPortalData = {
-  clinician: {
-    name: string;
-    initials: string;
-    specialty: string;
-    clinicName: string;
-    clinicCountry: string;
-  };
-  metrics: {
-    patientCount: number;
-    pendingRequestCount: number;
-    urgentRequestCount: number;
-    reviewedLastThirtyDays: number;
-  };
+  referenceTime: string;
+  clinician: { name: string; initials: string; specialtyKey: "familyMedicine"; clinicName: string; clinicCountry: string };
+  metrics: { patientCount: number; pendingRequestCount: number; urgentRequestCount: number; reviewedLastThirtyDays: number };
   patients: DoctorPatientSummary[];
   requests: DoctorAccessRequest[];
-  activity: {
-    id: string;
-    time: string;
-    name: string;
-    action: string;
-    type: string;
-  }[];
+  activity: { id: string; occurredAt: string; name: string; actionKey: "reviewedUpdate" | "requestReceived" | "openedProfile" | "signedMedicationUpdate"; typeKey: "clinicalReview" | "access" | "profileView" | "signedUpdate" }[];
 };
 
 export const patientPortalData: PatientPortalData = {
   profile: {
-    name: "Elena Varga",
-    initials: "EV",
-    dob: "14 February 1987",
-    blood: "A+",
-    sex: "Female",
-    donor: "Yes",
-    allergies: ["Penicillin", "Latex"],
+    name: "Elena Varga", initials: "EV", dateOfBirth: "1987-02-14", blood: "A+",
+    sexKey: "female", organDonor: true, allergyKeys: ["penicillin", "latex"],
     medications: [
-      { name: "Metformin", dose: "500 mg", timing: "Twice daily" },
-      { name: "Lisinopril", dose: "10 mg", timing: "Every morning" },
+      { name: "Metformin", dose: "500 mg", scheduleKey: "twiceDaily" },
+      { name: "Lisinopril", dose: "10 mg", scheduleKey: "everyMorning" },
     ],
-    chronic: ["Type 2 diabetes", "Hypertension"],
-    surgeries: ["Appendectomy · 2009"],
-    implants: ["No implants or medical devices"],
-    emergency: "Márton Varga · Husband",
-    emergencyPhone: "+40 721 555 014",
-    doctor: "Dr. Ana Popescu",
-    doctorPhone: "+40 21 555 0182",
-    lastUpdated: "24 July 2026",
+    conditionKeys: ["type2Diabetes", "hypertension"],
+    procedures: [{ key: "appendectomy", year: 2009 }],
+    implantKeys: ["none"],
+    emergencyContact: { name: "Márton Varga", relationshipKey: "husband", phone: "+40 721 555 014" },
+    doctor: { name: "Dr. Ana Popescu", phone: "+40 21 555 0182" },
+    lastUpdated: "2026-07-24T10:42:00+03:00",
   },
   accessHistory: [
-    {
-      id: "event-1",
-      initials: "AP",
-      actor: "Dr. Ana Popescu",
-      context: "Bucharest Family Clinic · QR access",
-      occurredAt: "24 July 2026 · 10:42",
-      action: "Edited",
-    },
-    {
-      id: "event-2",
-      initials: "SM",
-      actor: "St. Maria Emergency Department",
-      context: "Verified clinician · NFC access",
-      occurredAt: "11 June 2026 · 21:17",
-      action: "Viewed",
-    },
-    {
-      id: "event-3",
-      initials: "EV",
-      actor: "You",
-      context: "Personal device · Secure session",
-      occurredAt: "9 June 2026 · 08:03",
-      action: "Viewed",
-    },
+    { id: "event-1", initials: "AP", actor: "Dr. Ana Popescu", contextKey: "clinicQr", occurredAt: "2026-07-24T10:42:00+03:00", actionKey: "edited" },
+    { id: "event-2", initials: "SM", actor: "St. Maria Emergency Department", contextKey: "clinicianNfc", occurredAt: "2026-06-11T21:17:00+03:00", actionKey: "viewed" },
+    { id: "event-3", initials: "EV", actor: "Elena Varga", contextKey: "personalSession", occurredAt: "2026-06-09T08:03:00+03:00", actionKey: "viewed" },
   ],
 };
 
 const doctorPatients: DoctorPatientSummary[] = [
-  {
-    id: "VP-2048-1193",
-    initials: "EV",
-    name: "Elena Varga",
-    age: 39,
-    gender: "Female",
-    lastReview: "24 Jul 2026",
-    status: "New update",
-    conditions: ["Type 2 diabetes", "Hypertension"],
-    allergies: ["Penicillin", "Latex"],
-    medications: ["Metformin 500 mg", "Lisinopril 10 mg"],
-    access: "Family care team",
-  },
-  {
-    id: "VP-7812-4406",
-    initials: "AM",
-    name: "Andrei Munteanu",
-    age: 67,
-    gender: "Male",
-    lastReview: "22 Jul 2026",
-    status: "Review due",
-    conditions: ["Atrial fibrillation"],
-    allergies: ["No known allergies"],
-    medications: ["Apixaban 5 mg", "Bisoprolol 2.5 mg"],
-    access: "Temporary access · 11 days left",
-  },
-  {
-    id: "VP-3901-7724",
-    initials: "SC",
-    name: "Sofia Cristea",
-    age: 28,
-    gender: "Female",
-    lastReview: "18 Jul 2026",
-    status: "Up to date",
-    conditions: ["Asthma"],
-    allergies: ["Ibuprofen"],
-    medications: ["Budesonide inhaler"],
-    access: "Family care team",
-  },
-  {
-    id: "VP-6620-0915",
-    initials: "NP",
-    name: "Nicolae Pavel",
-    age: 54,
-    gender: "Male",
-    lastReview: "09 Jul 2026",
-    status: "Up to date",
-    conditions: ["Hyperlipidemia"],
-    allergies: ["No known allergies"],
-    medications: ["Atorvastatin 20 mg"],
-    access: "Family care team",
-  },
-  {
-    id: "VP-1139-8250",
-    initials: "DI",
-    name: "Daria Ionescu",
-    age: 42,
-    gender: "Female",
-    lastReview: "02 Jul 2026",
-    status: "Review due",
-    conditions: ["Hypothyroidism"],
-    allergies: ["No known allergies"],
-    medications: ["Levothyroxine 75 mcg"],
-    access: "Temporary access · 4 days left",
-  },
+  { id: "VP-2048-1193", initials: "EV", name: "Elena Varga", age: 39, sexKey: "female", lastReview: "2026-07-24", statusKey: "newUpdate", conditionKeys: ["type2Diabetes", "hypertension"], allergyKeys: ["penicillin", "latex"], medications: [{ name: "Metformin", dose: "500 mg" }, { name: "Lisinopril", dose: "10 mg" }], access: { kind: "familyCareTeam" } },
+  { id: "VP-7812-4406", initials: "AM", name: "Andrei Munteanu", age: 67, sexKey: "male", lastReview: "2026-07-22", statusKey: "reviewDue", conditionKeys: ["atrialFibrillation"], allergyKeys: ["noneKnown"], medications: [{ name: "Apixaban", dose: "5 mg" }, { name: "Bisoprolol", dose: "2.5 mg" }], access: { kind: "temporary", days: 11 } },
+  { id: "VP-3901-7724", initials: "SC", name: "Sofia Cristea", age: 28, sexKey: "female", lastReview: "2026-07-18", statusKey: "upToDate", conditionKeys: ["asthma"], allergyKeys: ["ibuprofen"], medications: [{ name: "Budesonide inhaler", dose: "" }], access: { kind: "familyCareTeam" } },
+  { id: "VP-6620-0915", initials: "NP", name: "Nicolae Pavel", age: 54, sexKey: "male", lastReview: "2026-07-09", statusKey: "upToDate", conditionKeys: ["hyperlipidemia"], allergyKeys: ["noneKnown"], medications: [{ name: "Atorvastatin", dose: "20 mg" }], access: { kind: "familyCareTeam" } },
+  { id: "VP-1139-8250", initials: "DI", name: "Daria Ionescu", age: 42, sexKey: "female", lastReview: "2026-07-02", statusKey: "reviewDue", conditionKeys: ["hypothyroidism"], allergyKeys: ["noneKnown"], medications: [{ name: "Levothyroxine", dose: "75 mcg" }], access: { kind: "temporary", days: 4 } },
 ];
 
 export const doctorPortalData: DoctorPortalData = {
-  clinician: {
-    name: "Dr. Ana Popescu",
-    initials: "AP",
-    specialty: "Family medicine",
-    clinicName: "Bucharest Family Clinic",
-    clinicCountry: "RO",
-  },
-  metrics: {
-    patientCount: doctorPatients.length,
-    pendingRequestCount: 3,
-    urgentRequestCount: 1,
-    reviewedLastThirtyDays: 24,
-  },
+  referenceTime: "2026-07-29T12:00:00+03:00",
+  clinician: { name: "Dr. Ana Popescu", initials: "AP", specialtyKey: "familyMedicine", clinicName: "Bucharest Family Clinic", clinicCountry: "RO" },
+  metrics: { patientCount: doctorPatients.length, pendingRequestCount: 3, urgentRequestCount: 1, reviewedLastThirtyDays: 24 },
   patients: doctorPatients,
   requests: [
-    {
-      id: "request-1",
-      initials: "MR",
-      name: "Mihai Radu",
-      reason: "Medication reconciliation",
-      received: "8 min ago",
-      urgency: "Urgent",
-    },
-    {
-      id: "request-2",
-      initials: "LB",
-      name: "Luca Barbu",
-      reason: "New patient consultation",
-      received: "36 min ago",
-      urgency: "Routine",
-    },
-    {
-      id: "request-3",
-      initials: "IM",
-      name: "Ioana Marin",
-      reason: "Follow-up care",
-      received: "1 hr ago",
-      urgency: "Routine",
-    },
+    { id: "request-1", initials: "MR", name: "Mihai Radu", reasonKey: "medicationReconciliation", receivedAt: "2026-07-29T11:52:00+03:00", urgencyKey: "urgent" },
+    { id: "request-2", initials: "LB", name: "Luca Barbu", reasonKey: "newPatientConsultation", receivedAt: "2026-07-29T11:24:00+03:00", urgencyKey: "routine" },
+    { id: "request-3", initials: "IM", name: "Ioana Marin", reasonKey: "followUpCare", receivedAt: "2026-07-29T11:00:00+03:00", urgencyKey: "routine" },
   ],
   activity: [
-    {
-      id: "activity-1",
-      time: "Today, 10:42",
-      name: "Elena Varga",
-      action: "Reviewed patient-submitted profile update",
-      type: "Clinical review",
-    },
-    {
-      id: "activity-2",
-      time: "Today, 09:18",
-      name: "Mihai Radu",
-      action: "Access request received",
-      type: "Access",
-    },
-    {
-      id: "activity-3",
-      time: "Yesterday, 16:05",
-      name: "Andrei Munteanu",
-      action: "Opened medical profile for consultation",
-      type: "Profile view",
-    },
-    {
-      id: "activity-4",
-      time: "27 Jul, 11:31",
-      name: "Sofia Cristea",
-      action: "Signed medication update",
-      type: "Signed update",
-    },
+    { id: "activity-1", occurredAt: "2026-07-29T10:42:00+03:00", name: "Elena Varga", actionKey: "reviewedUpdate", typeKey: "clinicalReview" },
+    { id: "activity-2", occurredAt: "2026-07-29T09:18:00+03:00", name: "Mihai Radu", actionKey: "requestReceived", typeKey: "access" },
+    { id: "activity-3", occurredAt: "2026-07-28T16:05:00+03:00", name: "Andrei Munteanu", actionKey: "openedProfile", typeKey: "profileView" },
+    { id: "activity-4", occurredAt: "2026-07-27T11:31:00+03:00", name: "Sofia Cristea", actionKey: "signedMedicationUpdate", typeKey: "signedUpdate" },
   ],
 };

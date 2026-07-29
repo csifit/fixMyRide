@@ -21,11 +21,18 @@ Next.js 16 App Router
   +-- app/doctor/page.tsx            clinician route
   +-- app/PatientPortalClient.tsx    patient interactions
   +-- app/doctor/DoctorPortalClient.tsx
+  +-- app/i18n/                     typed EN/DE/RO/HU catalogs and formatters
   +-- app/demo-data.ts               temporary prototype records
   +-- app/globals.css                shared responsive styling
 ```
 
 Pages remain Server Components and pass serializable demo data into interactive Client Components. There are no Cloudflare bindings, Workers, Vinext adapters, Vite plugins, Sites metadata, or database migrations.
+
+All interface copy is resolved through the centralized catalogs in `app/i18n`. The
+selected language is shared by both portals and persisted in local browser storage.
+Dates and times are stored as ISO values and rendered with locale-aware `Intl`
+formatters. Demo clinical concepts use stable keys; names, identifiers, phone
+numbers, medication names, and dosages remain unchanged.
 
 ## Requirements
 
