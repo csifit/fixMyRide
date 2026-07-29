@@ -173,6 +173,15 @@ test("client enrollment stops on lookup errors and existing verified TOTP", () =
   assert.match(enrollmentSource, /router\.replace\("\/admin\/mfa\/challenge"\)/);
 });
 
+test("MFA enrollment uses the VitaPass issuer and never localhost", () => {
+  const enrollmentCall = enrollmentSource.match(
+    /supabase\.auth\.mfa\.enroll\(\{[\s\S]+?\}\)/,
+  )?.[0] ?? "";
+  assert.match(enrollmentCall, /issuer:\s*"VitaPass"/);
+  assert.match(enrollmentCall, /friendlyName:\s*"VitaPass Superadmin"/);
+  assert.doesNotMatch(enrollmentCall, /localhost(?::\d+)?/i);
+});
+
 test("MFA submissions are single-flight, pending-disabled, and never auto-retry", () => {
   for (const source of [enrollmentSource, challengeClientSource]) {
     assert.match(source, /requestInFlight\.current/);

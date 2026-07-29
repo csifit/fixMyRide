@@ -62,6 +62,7 @@ export default function MfaEnrollmentClient() {
       const { data, error: enrollError } = await supabase.auth.mfa.enroll({
         factorType: "totp",
         friendlyName: "VitaPass Superadmin",
+        issuer: "VitaPass",
       });
       if (enrollError) {
         setError(classifyMfaError(enrollError));
