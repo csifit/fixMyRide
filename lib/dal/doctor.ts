@@ -10,7 +10,7 @@ import type {
 import { grantAllows } from "../authz";
 import { createClient } from "../supabase/server";
 import type { ClinicianContext } from "./auth";
-import { DataAccessError } from "./errors";
+import { classifyDatabaseError, DataAccessError } from "./errors";
 
 const conditionKeys = new Set<ConditionKey>([
   "type2Diabetes", "hypertension", "atrialFibrillation",
@@ -136,7 +136,7 @@ export async function loadDoctorDashboard(
     .select("patient_id, can_view, can_edit, status, expires_at, revoked_at, granted_at")
     .eq("clinician_id", clinician.id)
     .eq("status", "active");
-  if (grantError) throw new DataAccessError("unauthorized");
+  if (grantError) throw new DataAccessError(classifyDatabaseError(grantError));
 
   const grants = (grantData ?? []) as GrantRow[];
   const allowedGrants = grants.filter((grant) =>
@@ -160,7 +160,11 @@ export async function loadDoctorDashboard(
       }),
     ),
   );
-  if (profileResults.some(({ data, error }) => error || !data)) {
+  const profileError = profileResults.find(({ error }) => error)?.error;
+  if (profileError) {
+    throw new DataAccessError(classifyDatabaseError(profileError));
+  }
+  if (profileResults.some(({ data }) => !data)) {
     throw new DataAccessError("unauthorized");
   }
 
@@ -199,11 +203,12 @@ export async function loadDoctorDashboard(
 
 export async function auditAndLoadPatientProfile(patientId: string) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("get_patient_profile", {
+  const { data, error } = await supabase.rpc("get_patient_profile", {
     requested_patient_id: patientId,
     request_correlation_id: crypto.randomUUID(),
   });
-  if (error) throw new DataAccessError("unauthorized");
+  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (!data) throw new DataAccessError("unauthorized");
 }
 
 export async function updateConditionNote(
@@ -216,5 +221,5 @@ export async function updateConditionNote(
     new_clinical_note: clinicalNote,
     request_correlation_id: crypto.randomUUID(),
   });
-  if (error) throw new DataAccessError("unauthorized");
+  if (error) throw new DataAccessError(classifyDatabaseError(error));
 }

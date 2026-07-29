@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useMemo, useRef, useState } from "react";
 import type { DoctorAccessRequest, DoctorPatientSummary, DoctorPortalData, PatientStatusKey } from "../demo-data";
 import { formatDate, formatDateTime, formatRelativeTime, medicalKey, translate, type Language, type TranslationKey } from "../i18n";
 import { useLanguage } from "../i18n/useLanguage";
 import type { ConditionNoteState } from "./actions";
+import PendingSubmitButton from "@/app/PendingSubmitButton";
 
 type View = "overview" | "patients" | "requests" | "activity";
 type Patient = DoctorPatientSummary;
@@ -32,7 +33,11 @@ export default function DoctorPortal({
 }: {
   initialData: DoctorPortalData;
   logoutAction: () => Promise<void>;
-  viewPatientAction: (patientId: string) => Promise<{ ok: boolean }>;
+  viewPatientAction: (
+    patientId: string,
+  ) => Promise<
+    { ok: true } | { ok: false; error: "unauthorized" | "unavailable" }
+  >;
   updateConditionNoteAction: (
     state: ConditionNoteState,
     formData: FormData,
@@ -45,6 +50,8 @@ export default function DoctorPortal({
   const [requests, setRequests] = useState(initialData.requests);
   const [requestState, setRequestState] = useState<Record<string, "approved" | "declined">>({});
   const [notice, setNotice] = useState("");
+  const [openingPatientId, setOpeningPatientId] = useState<string | null>(null);
+  const profileRequestInFlight = useRef(false);
   const t: Translator = (key, params) => translate(language, key, params);
   const patients = initialData.patients;
   const navItems: { id: View; key: TranslationKey; mark: string }[] = [
@@ -68,13 +75,26 @@ export default function DoctorPortal({
     window.setTimeout(() => setNotice(""), 2600);
   };
   const openPatient = async (patient: Patient) => {
-    if (!patient.databaseId) return;
-    const result = await viewPatientAction(patient.databaseId);
-    if (!result.ok) {
-      flash("notice.accessDenied");
-      return;
+    if (!patient.databaseId || profileRequestInFlight.current) return;
+    profileRequestInFlight.current = true;
+    setOpeningPatientId(patient.id);
+    try {
+      const result = await viewPatientAction(patient.databaseId);
+      if (!result.ok) {
+        flash(
+          result.error === "unavailable"
+            ? "notice.serviceUnavailable"
+            : "notice.accessDenied",
+        );
+        return;
+      }
+      setSelected(patient);
+    } catch {
+      flash("notice.serviceUnavailable");
+    } finally {
+      profileRequestInFlight.current = false;
+      setOpeningPatientId(null);
     }
-    setSelected(patient);
   };
   const decideRequest = (request: DoctorAccessRequest, decision: "approved" | "declined") => {
     setRequestState((current) => ({ ...current, [request.id]: decision }));
@@ -89,7 +109,7 @@ export default function DoctorPortal({
         <div className="dp-workspace"><span>{t("doctor.workspace")}</span><strong>{initialData.clinician.clinicName}</strong><small>{t("doctor.primaryCare")} · {initialData.clinician.clinicCountry}</small></div>
         <nav aria-label={t("a11y.doctorNavigation")}>{navItems.map((item) => <button key={item.id} className={view === item.id ? "active" : ""} onClick={() => setView(item.id)}><i>{item.mark}</i><span>{t(item.key)}</span>{item.id === "requests" && requests.length > 0 && <b>{requests.length}</b>}</button>)}</nav>
         <div className="dp-security"><span className="dp-live-dot" /><div><strong>{t("doctor.secureSession")}</strong><small>{t("doctor.autoLock", { minutes: 26 })}</small></div></div>
-        <div className="dp-clinician"><span>{initialData.clinician.initials}</span><div><strong>{initialData.clinician.name}</strong><small>{t("medical.specialty.familyMedicine")}</small></div><form action={logoutAction}><button aria-label={t("auth.logout")} title={t("auth.logout")}>↗</button></form></div>
+        <div className="dp-clinician"><span>{initialData.clinician.initials}</span><div><strong>{initialData.clinician.name}</strong><small>{t("medical.specialty.familyMedicine")}</small></div><form action={logoutAction}><PendingSubmitButton aria-label={t("auth.logout")} title={t("auth.logout")}>↗</PendingSubmitButton></form></div>
       </aside>
 
       <section className="dp-main">
@@ -111,20 +131,20 @@ export default function DoctorPortal({
             </div>
             <div className="dp-overview-grid">
               <section className="dp-panel"><div className="dp-panel-head"><div><h2>{t("doctor.review.title")}</h2><p>{t("doctor.review.description")}</p></div><button onClick={() => setView("patients")}>{t("doctor.viewAll")}</button></div><div className="dp-review-list">
-                {patients.filter(({ statusKey }) => statusKey !== "upToDate").slice(0, 4).map((patient) => <button key={patient.id} onClick={() => openPatient(patient)}><span className="dp-patient-avatar">{patient.initials}</span><span><strong>{patient.name}</strong><small>{t("doctor.years", { count: patient.age })} · {patient.id}</small></span><span className={`dp-status ${patient.statusKey === "reviewDue" ? "due" : "new"}`}>{t(statusKeys[patient.statusKey])}</span><i>→</i></button>)}
+                {patients.filter(({ statusKey }) => statusKey !== "upToDate").slice(0, 4).map((patient) => <button key={patient.id} disabled={openingPatientId !== null} onClick={() => openPatient(patient)}><span className="dp-patient-avatar">{patient.initials}</span><span><strong>{patient.name}</strong><small>{t("doctor.years", { count: patient.age })} · {patient.id}</small></span><span className={`dp-status ${patient.statusKey === "reviewDue" ? "due" : "new"}`}>{t(statusKeys[patient.statusKey])}</span><i>→</i></button>)}
                 {!patients.some(({ statusKey }) => statusKey !== "upToDate") && <div className="dp-empty"><strong>{t("doctor.review.noneTitle")}</strong><span>{t("doctor.review.noneDescription")}</span></div>}
               </div></section>
               <section className="dp-panel"><div className="dp-panel-head"><div><h2>{t("doctor.nav.requests")}</h2><p>{t("doctor.requests.previewDescription")}</p></div><button onClick={() => setView("requests")}>{t("doctor.viewAll")}</button></div><div className="dp-request-preview">
                 {requests.slice(0, 2).map((request) => <div key={request.id}><span className="dp-patient-avatar alt">{request.initials}</span><span><strong>{request.name}</strong><small>{t(`doctor.reason.${request.reasonKey}` as TranslationKey)} · {formatRelativeTime(language, request.receivedAt, initialData.referenceTime)}</small></span><b className={request.urgencyKey === "urgent" ? "urgent" : ""}>{t(`common.${request.urgencyKey}` as TranslationKey)}</b></div>)}
               </div><button className="dp-review-requests" onClick={() => setView("requests")}>{t("doctor.requests.reviewCount", { count: requests.length })}</button></section>
             </div>
-            <section className="dp-panel dp-recent"><div className="dp-panel-head"><div><h2>{t("doctor.recent.title")}</h2><p>{t("doctor.recent.description")}</p></div><button onClick={() => setView("patients")}>{t("doctor.patientDirectory")}</button></div>{patients.length ? <PatientTable items={patients.slice(0, 4)} onOpen={openPatient} language={language} t={t} /> : <div className="dp-empty"><strong>{t("doctor.noGrants.title")}</strong><span>{t("doctor.noGrants.description")}</span></div>}</section>
+            <section className="dp-panel dp-recent"><div className="dp-panel-head"><div><h2>{t("doctor.recent.title")}</h2><p>{t("doctor.recent.description")}</p></div><button onClick={() => setView("patients")}>{t("doctor.patientDirectory")}</button></div>{patients.length ? <PatientTable items={patients.slice(0, 4)} onOpen={openPatient} openingPatientId={openingPatientId} language={language} t={t} /> : <div className="dp-empty"><strong>{t("doctor.noGrants.title")}</strong><span>{t("doctor.noGrants.description")}</span></div>}</section>
           </>}
 
           {view === "patients" && <section className="dp-directory">
             <div className="dp-page-title"><div><p>{t("doctor.directory.eyebrow")}</p><h1>{query ? t("doctor.directory.results", { query }) : t("doctor.directory.title")}</h1><span>{t("doctor.directory.description")}</span></div><button onClick={() => flash("notice.inviteCopied")}>{t("doctor.directory.invite")}</button></div>
             <div className="dp-panel"><div className="dp-directory-tools"><span>{t(filtered.length === 1 ? "doctor.directory.patientCountOne" : "doctor.directory.patientCount", { count: filtered.length })}</span><div><button className="active">{t("common.all")}</button><button>{t("doctor.directory.needsReview")}</button><button>{t("common.temporary")}</button></div></div>
-              {filtered.length ? <PatientTable items={filtered} onOpen={openPatient} language={language} t={t} /> : <div className="dp-empty"><strong>{t("doctor.directory.noMatchTitle")}</strong><span>{t("doctor.directory.noMatchDescription")}</span></div>}
+              {filtered.length ? <PatientTable items={filtered} onOpen={openPatient} openingPatientId={openingPatientId} language={language} t={t} /> : <div className="dp-empty"><strong>{t("doctor.directory.noMatchTitle")}</strong><span>{t("doctor.directory.noMatchDescription")}</span></div>}
             </div>
           </section>}
 
@@ -177,13 +197,13 @@ function ConditionNoteForm({
     <label htmlFor={`clinical-note-${record.id}`}>{t("doctor.conditionNote.label")}</label>
     <textarea id={`clinical-note-${record.id}`} name="clinicalNote" maxLength={2000} defaultValue={record.note} />
     <small>{t("doctor.conditionNote.help")}</small>
-    {state.status !== "idle" && <span className={state.status === "saved" ? "note-success" : "note-error"} role="status">{t(state.status === "saved" ? "doctor.conditionNote.saved" : "doctor.conditionNote.error")}</span>}
+    {state.status !== "idle" && <span className={state.status === "saved" ? "note-success" : "note-error"} role="status">{t(state.status === "saved" ? "doctor.conditionNote.saved" : state.status === "unavailable" ? "doctor.conditionNote.unavailable" : "doctor.conditionNote.unauthorized")}</span>}
     <button type="submit" disabled={pending}>{pending ? t("doctor.conditionNote.saving") : t("doctor.conditionNote.save")}</button>
   </form>;
 }
 
-function PatientTable({ items, onOpen, language, t }: { items: Patient[]; onOpen: (patient: Patient) => void; language: Language; t: Translator }) {
-  return <div className="dp-table-wrap"><table className="dp-table"><thead><tr><th>{t("doctor.table.patient")}</th><th>{t("doctor.table.conditions")}</th><th>{t("doctor.table.lastReviewed")}</th><th>{t("doctor.table.status")}</th><th><span className="sr-only">{t("common.open")}</span></th></tr></thead><tbody>{items.map((patient) => <tr key={patient.id} onClick={() => onOpen(patient)}>
-    <td><span className="dp-patient-avatar">{patient.initials}</span><span><strong>{patient.name}</strong><small>{patient.id}</small></span></td><td>{patient.conditionKeys.map((key) => t(medicalKey.condition(key))).join(", ")}</td><td>{formatDate(language, patient.lastReview, { day: "numeric", month: "short", year: "numeric" })}</td><td><span className={`dp-status ${patient.statusKey === "reviewDue" ? "due" : patient.statusKey === "newUpdate" ? "new" : "current"}`}>{t(statusKeys[patient.statusKey])}</span></td><td><button onClick={(event) => { event.stopPropagation(); onOpen(patient); }} aria-label={t("a11y.openPatientProfile", { name: patient.name })}>→</button></td>
+function PatientTable({ items, onOpen, openingPatientId, language, t }: { items: Patient[]; onOpen: (patient: Patient) => void; openingPatientId: string | null; language: Language; t: Translator }) {
+  return <div className="dp-table-wrap"><table className="dp-table"><thead><tr><th>{t("doctor.table.patient")}</th><th>{t("doctor.table.conditions")}</th><th>{t("doctor.table.lastReviewed")}</th><th>{t("doctor.table.status")}</th><th><span className="sr-only">{t("common.open")}</span></th></tr></thead><tbody>{items.map((patient) => <tr key={patient.id} onClick={() => openingPatientId === null && onOpen(patient)}>
+    <td><span className="dp-patient-avatar">{patient.initials}</span><span><strong>{patient.name}</strong><small>{patient.id}</small></span></td><td>{patient.conditionKeys.map((key) => t(medicalKey.condition(key))).join(", ")}</td><td>{formatDate(language, patient.lastReview, { day: "numeric", month: "short", year: "numeric" })}</td><td><span className={`dp-status ${patient.statusKey === "reviewDue" ? "due" : patient.statusKey === "newUpdate" ? "new" : "current"}`}>{t(statusKeys[patient.statusKey])}</span></td><td><button disabled={openingPatientId !== null} onClick={(event) => { event.stopPropagation(); onOpen(patient); }} aria-label={t("a11y.openPatientProfile", { name: patient.name })}>→</button></td>
   </tr>)}</tbody></table></div>;
 }

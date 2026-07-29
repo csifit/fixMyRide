@@ -2,6 +2,7 @@ import "server-only";
 
 import type { ClinicianStatus, DoctorRouteState } from "../authz";
 import { classifyDoctorAccess } from "../authz";
+import { isTemporarilyUnavailable } from "../auth-errors";
 import { readSupabaseEnvironment } from "../env";
 import { createClient } from "../supabase/server";
 
@@ -17,6 +18,7 @@ export type ClinicianContext = {
 
 export type DoctorAccessResult =
   | { state: "configuration" }
+  | { state: "unavailable" }
   | { state: Exclude<DoctorRouteState, "approved"> }
   | { state: "approved"; clinician: ClinicianContext };
 
@@ -25,16 +27,20 @@ export async function getDoctorAccess(): Promise<DoctorAccessResult> {
 
   const supabase = await createClient();
   const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
+  if (claimsError && isTemporarilyUnavailable(claimsError)) {
+    return { state: "unavailable" };
+  }
   const authenticatedUserId = claimsError ? undefined : claimsData?.claims?.sub;
   if (!authenticatedUserId) return { state: "unauthenticated" };
 
-  const { data: clinician } = await supabase
+  const { data: clinician, error } = await supabase
     .from("clinicians")
     .select(
       "id, auth_user_id, full_name, specialty, clinic_name, clinic_country, verification_status",
     )
     .eq("auth_user_id", authenticatedUserId)
     .maybeSingle();
+  if (error) return { state: "unavailable" };
 
   const state = classifyDoctorAccess({
     authenticatedUserId,

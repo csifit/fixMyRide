@@ -47,7 +47,7 @@ or audit metadata.
 - Node.js 20.9 or newer
 - npm
 - A Supabase project
-- Supabase CLI and a Docker-compatible container runtime for local database work
+- Supabase CLI
 
 ## Application configuration
 
@@ -84,24 +84,17 @@ The versioned schema is in
 `supabase/seed.sql` contains only clearly fictional records and never creates an
 Auth user or password.
 
-Local Supabase:
-
-```bash
-npx supabase init
-npx supabase start
-npx supabase db reset
-```
-
 For a hosted development project:
 
 ```bash
 npx supabase login
 npx supabase link --project-ref YOUR_PROJECT_REF
 npx supabase db push --dry-run
-npx supabase db push --include-seed
 ```
 
-Do not run the seed against an environment intended for real data.
+Review the dry-run output before applying anything. Apply a migration only
+after explicit approval. This workflow does not require Docker. Do not run
+`supabase start` or `supabase db reset`.
 
 ## Supabase Dashboard steps
 
@@ -137,6 +130,10 @@ npm run build
 The automated suite checks authorization decisions, grant expiry and edit
 permissions, audit immutability, RLS policy presence, translation parity,
 committed-secret detection, UTF-8 integrity, and the production build.
+
+Run the manual hosted workflows in
+[`docs/hosted-integration-testing.md`](docs/hosted-integration-testing.md)
+against an isolated development project.
 
 ## Vercel deployment
 

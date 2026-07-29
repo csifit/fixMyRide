@@ -3,15 +3,21 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { classifyLoginError, type LoginErrorKind } from "@/lib/auth-errors";
 import { getDoctorAccess } from "@/lib/dal/auth";
+import { DataAccessError } from "@/lib/dal/errors";
 import {
   auditAndLoadPatientProfile,
   updateConditionNote,
 } from "@/lib/dal/doctor";
 import { createClient } from "@/lib/supabase/server";
 
-export type LoginState = { error: "generic" | "configuration" | null };
-export type ConditionNoteState = { status: "idle" | "saved" | "error" };
+export type LoginState = {
+  error: LoginErrorKind | "configuration" | null;
+};
+export type ConditionNoteState = {
+  status: "idle" | "saved" | "unauthorized" | "unavailable";
+};
 
 const credentialsSchema = z.object({
   email: z.email().max(254),
@@ -31,7 +37,7 @@ export async function loginAction(
     email: formData.get("email"),
     password: formData.get("password"),
   });
-  if (!input.success) return { error: "generic" };
+  if (!input.success) return { error: "invalid_credentials" };
 
   let supabase;
   try {
@@ -41,7 +47,7 @@ export async function loginAction(
   }
 
   const { error } = await supabase.auth.signInWithPassword(input.data);
-  if (error) return { error: "generic" };
+  if (error) return { error: classifyLoginError(error) };
 
   await supabase.rpc("record_auth_audit", {
     auth_action: "sign_in",
@@ -62,14 +68,30 @@ export async function logoutAction() {
 
 export async function viewPatientProfileAction(patientId: string) {
   const input = patientViewSchema.safeParse({ patientId });
-  if (!input.success) return { ok: false as const };
+  if (!input.success) {
+    return { ok: false as const, error: "unauthorized" as const };
+  }
   const access = await getDoctorAccess();
-  if (access.state !== "approved") return { ok: false as const };
+  if (access.state !== "approved") {
+    return {
+      ok: false as const,
+      error:
+        access.state === "unavailable"
+          ? "unavailable" as const
+          : "unauthorized" as const,
+    };
+  }
   try {
     await auditAndLoadPatientProfile(input.data.patientId);
     return { ok: true as const };
-  } catch {
-    return { ok: false as const };
+  } catch (error) {
+    return {
+      ok: false as const,
+      error:
+        error instanceof DataAccessError && error.code === "unauthorized"
+          ? "unauthorized" as const
+          : "unavailable" as const,
+    };
   }
 }
 
@@ -81,15 +103,25 @@ export async function updateConditionNoteAction(
     conditionId: formData.get("conditionId"),
     clinicalNote: formData.get("clinicalNote"),
   });
-  if (!input.success) return { status: "error" };
+  if (!input.success) return { status: "unauthorized" };
   const access = await getDoctorAccess();
-  if (access.state !== "approved") return { status: "error" };
+  if (access.state !== "approved") {
+    return {
+      status:
+        access.state === "unavailable" ? "unavailable" : "unauthorized",
+    };
+  }
   try {
     await updateConditionNote(input.data.conditionId, input.data.clinicalNote);
     revalidatePath("/doctor");
     return { status: "saved" };
-  } catch {
+  } catch (error) {
     // The form intentionally exposes no database or medical error details.
-    return { status: "error" };
+    return {
+      status:
+        error instanceof DataAccessError && error.code === "unauthorized"
+          ? "unauthorized"
+          : "unavailable",
+    };
   }
 }

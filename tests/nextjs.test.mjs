@@ -11,6 +11,10 @@ test("standard Next.js production output exists", async () => {
   );
   assert.equal(typeof manifest["/page"], "string");
   assert.equal(typeof manifest["/doctor/page"], "string");
+  assert.equal(typeof manifest["/admin/page"], "string");
+  assert.equal(typeof manifest["/admin/login/page"], "string");
+  assert.equal(typeof manifest["/admin/mfa/enroll/page"], "string");
+  assert.equal(typeof manifest["/admin/mfa/challenge/page"], "string");
 });
 
 test("patient and doctor pages use local prototype data", async () => {
@@ -28,6 +32,18 @@ test("doctor route redirects unauthenticated users and has no-store rendering", 
   assert.match(doctorPage, /state === "unauthenticated"\) redirect\("\/doctor\/login"\)/);
   assert.match(doctorPage, /dynamic = "force-dynamic"/);
   assert.match(doctorPage, /revalidate = 0/);
+});
+
+test("admin route is protected, dynamic, and redirects aal1 superadmins to MFA", async () => {
+  const adminPage = await readFile(new URL("app/admin/page.tsx", root), "utf8");
+  const proxy = await readFile(new URL("proxy.ts", root), "utf8");
+  assert.match(adminPage, /getAdminAccess/);
+  assert.match(adminPage, /state === "unauthenticated"\) redirect\("\/admin\/login"\)/);
+  assert.match(adminPage, /state === "mfa_required"/);
+  assert.match(adminPage, /getAdminMfaDestination/);
+  assert.match(adminPage, /dynamic = "force-dynamic"/);
+  assert.match(adminPage, /revalidate = 0/);
+  assert.match(proxy, /"\/admin\/:path\*"/);
 });
 
 test("package uses only the standard Next.js runtime", async () => {

@@ -21,6 +21,20 @@ credentials, tokens, or regulated health data.
 - Authenticated routes are dynamic and marked private/no-store.
 - No service-role key is required or permitted in normal application requests.
 
+## Maintainable authorization
+
+- Each managed medical or identity table has one Superadmin RLS authorization
+  path. Audit history has one read-only Superadmin policy.
+- Administrator self-discovery before MFA uses a narrow caller-only function;
+  it does not grant direct table access.
+- Doctor profile opening and the supported note edit use small,
+  purpose-specific functions with explicit identity, grant, and dual-role MFA
+  checks.
+- Direct doctor medical-table update policies are removed by Phase 2B.2A.
+- Temporary service failures never change an application account status.
+- The UI retries only after an explicit user action. Pending submissions are
+  disabled and MFA requests also use an in-flight duplicate guard.
+
 ## Data-handling rules
 
 Never put medical information, VitaPass identifiers, notes, medication data, or
@@ -34,6 +48,17 @@ patient names in:
 
 Do not log request bodies, Server Action form data, Supabase error objects,
 tokens, cookies, passwords, or authentication headers.
+
+## Authentication audit authority
+
+Application `sign_in` and `sign_out` audit events are supplemental,
+caller-generated product events. They are restricted to identities linked to a
+clinician or application administrator and are duplicate- and rate-limited.
+Supabase Auth audit logs are the authoritative record for authentication
+activity and must be used for security investigations.
+
+Hosted workflow and rate-limit checks are documented in
+[`docs/hosted-integration-testing.md`](docs/hosted-integration-testing.md).
 
 ## Secret handling
 

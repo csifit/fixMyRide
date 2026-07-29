@@ -4,11 +4,17 @@ import { translate, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import Link from "next/link";
 import { logoutAction } from "./actions";
+import PendingSubmitButton from "@/app/PendingSubmitButton";
 
 export default function AccessStatusScreen({
   status,
 }: {
-  status: "pending" | "suspended" | "unauthorized" | "configuration";
+  status:
+    | "pending"
+    | "suspended"
+    | "unauthorized"
+    | "configuration"
+    | "unavailable";
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
@@ -29,7 +35,12 @@ export default function AccessStatusScreen({
         <span className="auth-status-icon">⚕</span>
         <h1>{t(`auth.${key}.title` as TranslationKey)}</h1>
         <p>{t(`auth.${key}.description` as TranslationKey)}</p>
-        {status !== "configuration" && <form action={logoutAction}><button type="submit">{t("auth.logout")}</button></form>}
+        {status === "unavailable" && (
+          <button type="button" onClick={() => window.location.reload()}>
+            {t("common.retry")}
+          </button>
+        )}
+        {status !== "configuration" && <form action={logoutAction}><PendingSubmitButton type="submit">{t("auth.logout")}</PendingSubmitButton></form>}
         <Link className="auth-return" href="/">{t("auth.returnPatient")}</Link>
       </section>
     </main>

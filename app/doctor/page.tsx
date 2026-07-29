@@ -15,11 +15,19 @@ export const revalidate = 0;
 export default async function DoctorPage() {
   const access = await getDoctorAccess();
   if (access.state === "unauthenticated") redirect("/doctor/login");
+  if (access.state === "unavailable") {
+    return <AccessStatusScreen status="unavailable" />;
+  }
   if (access.state !== "approved") {
     return <AccessStatusScreen status={access.state} />;
   }
 
-  const data = await loadDoctorDashboard(access.clinician);
+  let data;
+  try {
+    data = await loadDoctorDashboard(access.clinician);
+  } catch {
+    return <AccessStatusScreen status="unavailable" />;
+  }
   return (
     <DoctorPortal
       initialData={data}
