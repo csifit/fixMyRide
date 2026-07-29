@@ -1,0 +1,46 @@
+import assert from "node:assert/strict";
+import { access, readFile } from "node:fs/promises";
+import test from "node:test";
+
+const root = new URL("../", import.meta.url);
+
+test("standard Next.js production output exists", async () => {
+  await access(new URL(".next/BUILD_ID", root));
+  const manifest = JSON.parse(
+    await readFile(new URL(".next/server/app-paths-manifest.json", root), "utf8"),
+  );
+  assert.equal(typeof manifest["/page"], "string");
+  assert.equal(typeof manifest["/doctor/page"], "string");
+});
+
+test("patient and doctor pages use local prototype data", async () => {
+  const patientPage = await readFile(new URL("app/page.tsx", root), "utf8");
+  const doctorPage = await readFile(new URL("app/doctor/page.tsx", root), "utf8");
+  assert.match(patientPage, /patientPortalData/);
+  assert.match(patientPage, /PatientPortal/);
+  assert.match(doctorPage, /doctorPortalData/);
+  assert.match(doctorPage, /DoctorPortal/);
+});
+
+test("package uses only the standard Next.js runtime", async () => {
+  const packageJson = JSON.parse(
+    await readFile(new URL("package.json", root), "utf8"),
+  );
+  assert.equal(packageJson.scripts.dev, "next dev");
+  assert.equal(packageJson.scripts.build, "next build");
+  assert.equal(packageJson.scripts.start, "next start");
+
+  const serialized = JSON.stringify({
+    dependencies: packageJson.dependencies,
+    devDependencies: packageJson.devDependencies,
+  });
+  for (const integration of [
+    "vinext",
+    "vite",
+    "wrangler",
+    "drizzle",
+    "@cloudflare",
+  ]) {
+    assert.equal(serialized.includes(integration), false, integration);
+  }
+});

@@ -1,39 +1,40 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import "./globals.css";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const requestHeaders = await headers();
-  const host =
-    requestHeaders.get("x-forwarded-host") ??
-    requestHeaders.get("host") ??
-    "localhost:3000";
-  const protocol =
-    requestHeaders.get("x-forwarded-proto") ??
-    (host.startsWith("localhost") ? "http" : "https");
-  const imageUrl = `${protocol}://${host}/og-clinical.png`;
+const productionHost =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
 
-  return {
-    title: "VitaPass — Connected patient and clinical care",
-    description:
-      "A secure patient medical profile and clinical workspace for verified healthcare professionals.",
-    icons: {
-      icon: "/favicon.svg",
-      shortcut: "/favicon.svg",
-    },
-    openGraph: {
-      title: "VitaPass",
-      description: "Clinical care, connected.",
-      images: [{ url: imageUrl, width: 1734, height: 907, alt: "VitaPass clinical care portal" }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: "VitaPass",
-      description: "Clinical care, connected.",
-      images: [imageUrl],
-    },
-  };
-}
+export const metadata: Metadata = {
+  metadataBase: new URL(productionHost),
+  title: "VitaPass — Connected patient and clinical care",
+  description:
+    "A multilingual medical-profile prototype for patients and healthcare professionals.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
+  openGraph: {
+    title: "VitaPass",
+    description: "Clinical care, connected.",
+    images: [
+      {
+        url: "/og-clinical.png",
+        width: 1734,
+        height: 907,
+        alt: "VitaPass clinical care portal",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "VitaPass",
+    description: "Clinical care, connected.",
+    images: ["/og-clinical.png"],
+  },
+};
 
 export default function RootLayout({
   children,

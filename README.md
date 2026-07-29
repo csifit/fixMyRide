@@ -1,98 +1,112 @@
-# vinext-starter
+# VitaPass
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+VitaPass is a responsive, multilingual medical-profile prototype with separate patient and clinician experiences. It runs on standard Next.js 16 using the App Router and is ready for deployment to Vercel.
 
-## Prerequisites
+## Current product surface
 
-- Node.js `>=22.13.0`
+- `/` — patient medical profile, emergency view, profile sharing controls, multilingual copy, and access history.
+- `/doctor` — clinician overview, patient search, profile review drawer, access-request decisions, and activity history.
+- Responsive desktop and mobile layouts.
+- Open Graph and X sharing metadata.
 
-## Quick Start
+The current data is deliberately local prototype data in `app/demo-data.ts`. There is no database, authentication, API, or durable server state yet. Interactive decisions and notifications reset when the page reloads.
+
+## Architecture
+
+```text
+Next.js 16 App Router
+  |
+  +-- app/layout.tsx                 metadata and global shell
+  +-- app/page.tsx                   patient route
+  +-- app/doctor/page.tsx            clinician route
+  +-- app/PatientPortalClient.tsx    patient interactions
+  +-- app/doctor/DoctorPortalClient.tsx
+  +-- app/demo-data.ts               temporary prototype records
+  +-- app/globals.css                shared responsive styling
+```
+
+Pages remain Server Components and pass serializable demo data into interactive Client Components. There are no Cloudflare bindings, Workers, Vinext adapters, Vite plugins, Sites metadata, or database migrations.
+
+## Requirements
+
+- Node.js 20.9 or newer
+- npm
+
+## Local development
 
 ```bash
 npm install
 npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) for the patient portal or [http://localhost:3000/doctor](http://localhost:3000/doctor) for the clinician portal.
+
+## Production validation
+
+```bash
 npm run build
+npm start
 ```
 
-This starter does not use `wrangler.jsonc`.
+Additional checks:
 
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+npm run lint
+npm test
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+The project uses the standard Next.js scripts:
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+- `next dev`
+- `next build`
+- `next start`
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+## Deploy to Vercel
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+Vercel supports Next.js without a custom adapter or configuration file.
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+### Git deployment
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+1. Push the repository to GitHub, GitLab, or Bitbucket.
+2. In the Vercel dashboard, choose **Add New → Project** and import the repository.
+3. Confirm the detected framework is **Next.js**.
+4. Leave the build command and output settings at their defaults.
+5. Deploy.
 
-## Useful Commands
+Vercel creates preview deployments for subsequent branches and pull requests and updates production from the configured production branch.
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+### Vercel CLI
 
-## Learn More
+Install or invoke the Vercel CLI, then run:
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+```bash
+npx vercel
+```
+
+Follow the prompts to link or create a project. To publish the linked project to production:
+
+```bash
+npx vercel --prod
+```
+
+No environment variables are required. If a canonical production URL is needed for local metadata builds, set the non-secret value:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://your-domain.example
+```
+
+On Vercel, VitaPass automatically uses `VERCEL_PROJECT_PRODUCTION_URL` when available.
+
+See the official [Next.js installation documentation](https://nextjs.org/docs/app/getting-started/installation) and [Next.js on Vercel](https://vercel.com/frameworks/nextjs).
+
+## Security boundary
+
+This repository is a UI prototype, not a production medical-record system.
+
+- The displayed patient and clinician identities are sample data.
+- Buttons simulate workflows in browser memory.
+- No access decision, clinical update, share link, or audit event is durable.
+- There is no authentication or authorization boundary.
+- Do not enter real patient information or secrets.
+
+Before production use, add an approved identity provider, server-enforced roles, audited persistence, consent and access-grant workflows, encryption and key management, retention policies, backup and recovery, and the required legal and regulatory controls.
