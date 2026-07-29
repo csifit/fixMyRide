@@ -11,25 +11,25 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol =
     requestHeaders.get("x-forwarded-proto") ??
     (host.startsWith("localhost") ? "http" : "https");
-  const imageUrl = `${protocol}://${host}/og.png`;
+  const imageUrl = `${protocol}://${host}/og-clinical.png`;
 
   return {
-    title: "VitaPass — Medical profile, ready when it matters",
+    title: "VitaPass — Connected patient and clinical care",
     description:
-      "A secure, multilingual medical profile for patients and verified healthcare professionals.",
+      "A secure patient medical profile and clinical workspace for verified healthcare professionals.",
     icons: {
       icon: "/favicon.svg",
       shortcut: "/favicon.svg",
     },
     openGraph: {
       title: "VitaPass",
-      description: "Medical profile, ready when it matters.",
-      images: [{ url: imageUrl, width: 1734, height: 907, alt: "VitaPass secure medical profile" }],
+      description: "Clinical care, connected.",
+      images: [{ url: imageUrl, width: 1734, height: 907, alt: "VitaPass clinical care portal" }],
     },
     twitter: {
       card: "summary_large_image",
       title: "VitaPass",
-      description: "Medical profile, ready when it matters.",
+      description: "Clinical care, connected.",
       images: [imageUrl],
     },
   };

@@ -251,7 +251,7 @@ export default function Home() {
           <p>Open a shared profile, then verify your professional identity before making a signed update.</p>
           <label>Professional ID<input defaultValue="RO-MED-48291" /></label>
           <label>One-time verification code<input defaultValue="MED-2048" /></label>
-          <button className="verify-btn" onClick={() => { setDoctorMode(true); setDoctorModal(false); setSection("profile"); notify("Clinician identity verified"); }}>Verify & open edit mode</button>
+          <button className="verify-btn" onClick={() => { window.location.href = "/doctor"; }}>Verify & open clinical portal</button>
           <small>Demo flow · In production, connect to national medical identity systems.</small>
         </div>
       </div>}
