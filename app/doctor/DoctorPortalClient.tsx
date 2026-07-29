@@ -23,7 +23,7 @@ function accessLabel(patient: Patient, t: Translator) {
 }
 
 export default function DoctorPortal({ initialData }: { initialData: DoctorPortalData }) {
-  const [language, setLanguage] = useLanguage();
+  const [language, setLanguage, languageReady] = useLanguage();
   const [view, setView] = useState<View>("overview");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Patient | null>(null);
@@ -59,7 +59,7 @@ export default function DoctorPortal({ initialData }: { initialData: DoctorPorta
   };
 
   return (
-    <main className="dp-shell">
+    <main className={`dp-shell ${languageReady ? "" : "i18n-pending"}`}>
       <aside className="dp-sidebar">
         <Link className="dp-brand" href="/" aria-label={t("a11y.patientPortal")}><span className="dp-brand-mark">+</span><span>VitaPass<small>{t("doctor.brand.clinical")}</small></span></Link>
         <div className="dp-workspace"><span>{t("doctor.workspace")}</span><strong>{initialData.clinician.clinicName}</strong><small>{t("doctor.primaryCare")} · {initialData.clinician.clinicCountry}</small></div>

@@ -26,7 +26,7 @@ function QrCode({ label }: { label: string }) {
 }
 
 export default function PatientPortal({ data }: { data: PatientPortalData }) {
-  const [language, setLanguage] = useLanguage();
+  const [language, setLanguage, languageReady] = useLanguage();
   const [section, setSection] = useState<Section>("profile");
   const [emergency, setEmergency] = useState(false);
   const [doctorModal, setDoctorModal] = useState(false);
@@ -46,7 +46,7 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
   const emergencyContact = `${profile.emergencyContact.name} · ${t(medicalKey.relationship(profile.emergencyContact.relationshipKey))}`;
 
   return (
-    <main className={emergency ? "app emergency-theme" : "app"}>
+    <main className={`${emergency ? "app emergency-theme" : "app"} ${languageReady ? "" : "i18n-pending"}`}>
       <aside className="sidebar">
         <div className="brand"><span className="brand-mark">+</span><span>VitaPass</span></div>
         <nav aria-label={t("a11y.patientMainNavigation")}>

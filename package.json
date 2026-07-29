@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run build && node --test tests/encoding.test.mjs tests/i18n.test.mjs tests/nextjs.test.mjs",
+    "test": "npm run build && node --test tests/encoding.test.mjs tests/i18n.test.mjs tests/language-hydration.test.mjs tests/nextjs.test.mjs",
     "lint": "eslint ."
   },
   "dependencies": {
