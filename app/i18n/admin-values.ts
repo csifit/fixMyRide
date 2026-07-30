@@ -46,6 +46,10 @@ const auditActionKeys: Record<string, TranslationKey> = {
   patient_archived: "admin.audit.action.patientArchived",
   medical_record_created: "admin.audit.action.medicalRecordCreated",
   medical_record_updated: "admin.audit.action.medicalRecordUpdated",
+  sensitive_identifiers_viewed:
+    "admin.audit.action.sensitiveIdentifiersViewed",
+  sensitive_identifiers_updated:
+    "admin.audit.action.sensitiveIdentifiersUpdated",
 };
 
 const auditResourceKeys: Record<string, TranslationKey> = {
@@ -63,6 +67,11 @@ const auditResourceKeys: Record<string, TranslationKey> = {
   implants_and_devices: "admin.audit.resource.implants",
   emergency_contacts: "admin.audit.resource.emergencyContacts",
   patient_access_grants: "admin.audit.resource.accessGrants",
+  patient_sensitive_identifiers:
+    "admin.audit.resource.sensitiveIdentifiers",
+  life_threatening_diagnoses:
+    "admin.audit.resource.lifeThreateningDiagnoses",
+  health_card_profile: "admin.audit.resource.healthCardProfile",
 };
 
 const clinicianSpecialtyKeys: Record<string, TranslationKey> = {

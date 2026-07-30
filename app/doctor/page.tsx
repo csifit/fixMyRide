@@ -4,7 +4,14 @@ import { getDoctorAccess } from "@/lib/dal/auth";
 import { loadDoctorDashboard } from "@/lib/dal/doctor";
 import AccessStatusScreen from "./AccessStatusScreen";
 import {
+  createLifeThreateningDiagnosisAction,
+  deactivateLifeThreateningDiagnosisAction,
   logoutAction,
+  reactivateLifeThreateningDiagnosisAction,
+  readSensitiveIdentifiersAction,
+  updateHealthCardProfileAction,
+  updateLifeThreateningDiagnosisAction,
+  updateSensitiveIdentifiersAction,
   updateConditionNoteAction,
   viewPatientProfileAction,
 } from "./actions";
@@ -32,6 +39,23 @@ export default async function DoctorPage() {
     <DoctorPortal
       initialData={data}
       logoutAction={logoutAction}
+      createLifeThreateningDiagnosisAction={
+        createLifeThreateningDiagnosisAction
+      }
+      deactivateLifeThreateningDiagnosisAction={
+        deactivateLifeThreateningDiagnosisAction
+      }
+      reactivateLifeThreateningDiagnosisAction={
+        reactivateLifeThreateningDiagnosisAction
+      }
+      readSensitiveIdentifiersAction={readSensitiveIdentifiersAction}
+      updateHealthCardProfileAction={updateHealthCardProfileAction}
+      updateLifeThreateningDiagnosisAction={
+        updateLifeThreateningDiagnosisAction
+      }
+      updateSensitiveIdentifiersAction={
+        updateSensitiveIdentifiersAction
+      }
       viewPatientAction={viewPatientProfileAction}
       updateConditionNoteAction={updateConditionNoteAction}
     />

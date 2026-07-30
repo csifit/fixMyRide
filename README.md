@@ -5,6 +5,10 @@ Next.js 16 App Router. The public patient route remains a fictional browser-only
 prototype. Phase 2B.1 adds a secure, database-backed clinician vertical slice
 using Supabase Auth and hosted PostgreSQL.
 
+Phase 2C adds Romanian health-card-compatible non-sensitive patient information
+and isolates CNP, insurance number, and national health-card details behind
+separate audited authorization functions.
+
 ## Routes
 
 - `/` — public fictional patient prototype.
@@ -79,10 +83,10 @@ localized setup notice.
 
 ## Database setup
 
-The versioned schema is in
-`supabase/migrations/202607290001_phase_2b1_foundation.sql`. The optional
-`supabase/seed.sql` contains only clearly fictional records and never creates an
-Auth user or password.
+The versioned schema is in `supabase/migrations/`. Apply reviewed migrations in
+filename order. The optional `supabase/seed.sql` contains only clearly
+fictional records, never creates an Auth user or password, and contains no CNP,
+insurance number, or national health-card number.
 
 For a hosted development project:
 
@@ -134,6 +138,12 @@ committed-secret detection, UTF-8 integrity, and the production build.
 Run the manual hosted workflows in
 [`docs/hosted-integration-testing.md`](docs/hosted-integration-testing.md)
 against an isolated development project.
+
+Future clinic management and billing work is described in
+[`docs/roadmap.md`](docs/roadmap.md).
+
+Account registration, role separation, and planned invoicing responsibilities
+are defined in [`docs/project-details.md`](docs/project-details.md).
 
 ## Vercel deployment
 

@@ -1,17 +1,35 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  useActionState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { DoctorAccessRequest, DoctorPatientSummary, DoctorPortalData, PatientStatusKey } from "../demo-data";
 import { formatDate, formatDateTime, formatRelativeTime, medicalKey, translate, type Language, type TranslationKey } from "../i18n";
 import { useLanguage } from "../i18n/useLanguage";
-import type { ConditionNoteState } from "./actions";
+import type {
+  ConditionNoteState,
+  HealthDataMutationState,
+  SensitiveIdentifierReadResult,
+} from "./actions";
 import PendingSubmitButton from "@/app/PendingSubmitButton";
 
 type View = "overview" | "patients" | "requests" | "activity";
 type Patient = DoctorPatientSummary;
 type Translator = (key: TranslationKey, params?: Record<string, string | number>) => string;
 const initialConditionNoteState: ConditionNoteState = { status: "idle" };
+const initialHealthMutationState: HealthDataMutationState = {
+  status: "idle",
+};
+type HealthMutationAction = (
+  state: HealthDataMutationState,
+  formData: FormData,
+) => Promise<HealthDataMutationState>;
 
 const statusKeys: Record<PatientStatusKey, TranslationKey> = {
   upToDate: "doctor.status.upToDate",
@@ -29,6 +47,13 @@ export default function DoctorPortal({
   initialData,
   logoutAction,
   viewPatientAction,
+  readSensitiveIdentifiersAction,
+  updateHealthCardProfileAction,
+  updateSensitiveIdentifiersAction,
+  createLifeThreateningDiagnosisAction,
+  updateLifeThreateningDiagnosisAction,
+  deactivateLifeThreateningDiagnosisAction,
+  reactivateLifeThreateningDiagnosisAction,
   updateConditionNoteAction,
 }: {
   initialData: DoctorPortalData;
@@ -38,22 +63,38 @@ export default function DoctorPortal({
   ) => Promise<
     { ok: true } | { ok: false; error: "unauthorized" | "unavailable" }
   >;
+  readSensitiveIdentifiersAction: (
+    patientId: string,
+  ) => Promise<SensitiveIdentifierReadResult>;
+  updateHealthCardProfileAction: HealthMutationAction;
+  updateSensitiveIdentifiersAction: HealthMutationAction;
+  createLifeThreateningDiagnosisAction: HealthMutationAction;
+  updateLifeThreateningDiagnosisAction: HealthMutationAction;
+  deactivateLifeThreateningDiagnosisAction: HealthMutationAction;
+  reactivateLifeThreateningDiagnosisAction: HealthMutationAction;
   updateConditionNoteAction: (
     state: ConditionNoteState,
     formData: FormData,
   ) => Promise<ConditionNoteState>;
 }) {
   const [language, setLanguage, languageReady] = useLanguage();
+  const patients = initialData.patients;
   const [view, setView] = useState<View>("overview");
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<Patient | null>(null);
+  const [selectedPatientId, setSelectedPatientId] = useState<string | null>(
+    null,
+  );
   const [requests, setRequests] = useState(initialData.requests);
   const [requestState, setRequestState] = useState<Record<string, "approved" | "declined">>({});
   const [notice, setNotice] = useState("");
   const [openingPatientId, setOpeningPatientId] = useState<string | null>(null);
   const profileRequestInFlight = useRef(false);
   const t: Translator = (key, params) => translate(language, key, params);
-  const patients = initialData.patients;
+  const selected = useMemo(
+    () =>
+      patients.find((patient) => patient.id === selectedPatientId) ?? null,
+    [patients, selectedPatientId],
+  );
   const navItems: { id: View; key: TranslationKey; mark: string }[] = [
     { id: "overview", key: "doctor.nav.overview", mark: "01" },
     { id: "patients", key: "doctor.nav.patients", mark: "02" },
@@ -88,7 +129,7 @@ export default function DoctorPortal({
         );
         return;
       }
-      setSelected(patient);
+      setSelectedPatientId(patient.id);
     } catch {
       flash("notice.serviceUnavailable");
     } finally {
@@ -162,21 +203,423 @@ export default function DoctorPortal({
         </div>
       </section>
 
-      {selected && <div className="dp-drawer-backdrop" onMouseDown={() => setSelected(null)}><aside className="dp-drawer" role="dialog" aria-modal="true" aria-labelledby="patient-name" onMouseDown={(event) => event.stopPropagation()}>
-        <div className="dp-drawer-head"><span className="dp-patient-avatar large">{selected.initials}</span><div><small>{selected.id}</small><h2 id="patient-name">{selected.name}</h2><p>{t("doctor.years", { count: selected.age })} · {t(medicalKey.sex(selected.sexKey))}</p></div><button onClick={() => setSelected(null)} aria-label={t("a11y.closePatientProfile")}>×</button></div>
+      {selected && <div className="dp-drawer-backdrop" onMouseDown={() => setSelectedPatientId(null)}><aside className="dp-drawer" role="dialog" aria-modal="true" aria-labelledby="patient-name" onMouseDown={(event) => event.stopPropagation()}>
+        <div className="dp-drawer-head"><span className="dp-patient-avatar large">{selected.initials}</span><div><small>{selected.id}</small><h2 id="patient-name">{selected.name}</h2><p>{t("doctor.years", { count: selected.age })} · {t(medicalKey.sex(selected.sexKey))}</p></div><button onClick={() => setSelectedPatientId(null)} aria-label={t("a11y.closePatientProfile")}>×</button></div>
         <div className="dp-access-note"><span className="dp-live-dot" /><div><strong>{t("doctor.access.authorized")}</strong><small>{accessLabel(selected, t)}</small></div></div>
+        <section className="dp-record-section health-card-section">
+          <h3>{t("doctor.health.identity.title")}</h3>
+          <dl className="dp-health-grid">
+            <div><dt>{t("doctor.health.familyName")}</dt><dd>{selected.familyName ?? t("common.notRecorded")}</dd></div>
+            <div><dt>{t("doctor.health.givenNames")}</dt><dd>{selected.givenNames ?? t("common.notRecorded")}</dd></div>
+          </dl>
+        </section>
+        <section className="dp-record-section health-card-section">
+          <h3>{t("doctor.health.insurance.title")}</h3>
+          <dl className="dp-health-grid">
+            <div><dt>{t("doctor.health.insurance.status")}</dt><dd>{t(`doctor.health.insurance.status.${selected.insuranceStatus ?? "unknown"}` as TranslationKey)}</dd></div>
+            <div><dt>{t("doctor.health.insurance.source")}</dt><dd>{t(`doctor.health.insurance.source.${selected.insuranceVerificationSource ?? "not_verified"}` as TranslationKey)}</dd></div>
+            <div><dt>{t("doctor.health.insurance.house")}</dt><dd>{[selected.insuranceHouseCode, selected.insuranceHouseName].filter(Boolean).join(" · ") || t("common.notRecorded")}</dd></div>
+            <div><dt>{t("doctor.health.verifiedAt")}</dt><dd>{selected.insuranceVerifiedAt ? formatDateTime(language, selected.insuranceVerifiedAt) : t("common.notRecorded")}</dd></div>
+          </dl>
+        </section>
+        <section className="dp-record-section health-card-section critical-diagnoses">
+          <h3>{t("doctor.health.lifeThreatening.title")}</h3>
+          {selected.lifeThreateningDiagnoses?.length ? selected.lifeThreateningDiagnoses.map((diagnosis) => <article key={diagnosis.id}>
+            <strong>{diagnosis.name}</strong>
+            <span>{diagnosis.codeSystem === "other" && diagnosis.otherCodeSystemName ? diagnosis.otherCodeSystemName : t(`doctor.health.codeSystem.${diagnosis.codeSystem}` as TranslationKey)} · {diagnosis.code}</span>
+            <small>{t("doctor.health.verifiedBy", { name: diagnosis.verifiedByName, code: diagnosis.verifiedByCode, date: formatDateTime(language, diagnosis.verifiedAt) })}</small>
+            {selected.canEdit && selected.databaseId && <DiagnosisMutationForm
+              key={`${diagnosis.id}:${diagnosis.verifiedAt}`}
+              patientId={selected.databaseId}
+              diagnosis={diagnosis}
+              isActive
+              updateAction={updateLifeThreateningDiagnosisAction}
+              deactivateAction={deactivateLifeThreateningDiagnosisAction}
+              reactivateAction={reactivateLifeThreateningDiagnosisAction}
+              t={t}
+            />}
+          </article>) : <p>{t("doctor.health.lifeThreatening.none")}</p>}
+          {selected.canEdit && selected.databaseId && <DiagnosisCreateForm
+            patientId={selected.databaseId}
+            action={createLifeThreateningDiagnosisAction}
+            t={t}
+          />}
+        </section>
+        {selected.canEdit &&
+          selected.databaseId &&
+          selected.inactiveLifeThreateningDiagnoses?.length ? (
+            <section className="dp-record-section health-card-section diagnosis-history">
+              <h3>{t("doctor.health.diagnosis.historyTitle")}</h3>
+              <p>{t("doctor.health.diagnosis.historyDescription")}</p>
+              {selected.inactiveLifeThreateningDiagnoses.map((diagnosis) => (
+                <article key={diagnosis.id}>
+                  <strong>{diagnosis.name}</strong>
+                  <span>
+                    {diagnosis.codeSystem === "other" &&
+                    diagnosis.otherCodeSystemName
+                      ? diagnosis.otherCodeSystemName
+                      : t(
+                          `doctor.health.codeSystem.${diagnosis.codeSystem}` as TranslationKey,
+                        )}{" "}
+                    · {diagnosis.code}
+                  </span>
+                  <small>
+                    {t("doctor.health.verifiedBy", {
+                      name: diagnosis.verifiedByName,
+                      code: diagnosis.verifiedByCode,
+                      date: formatDateTime(language, diagnosis.verifiedAt),
+                    })}
+                  </small>
+                  <DiagnosisMutationForm
+                    key={`${diagnosis.id}:${diagnosis.verifiedAt}`}
+                    patientId={selected.databaseId!}
+                    diagnosis={diagnosis}
+                    isActive={false}
+                    updateAction={updateLifeThreateningDiagnosisAction}
+                    deactivateAction={deactivateLifeThreateningDiagnosisAction}
+                    reactivateAction={reactivateLifeThreateningDiagnosisAction}
+                    t={t}
+                  />
+                </article>
+              ))}
+            </section>
+          ) : null}
         {!selected.allergyKeys.includes("noneKnown") && <div className="dp-allergy-alert"><strong>{t("doctor.allergyAlert")}</strong><span>{selected.allergyKeys.map((key) => t(medicalKey.allergy(key))).join(" · ")}</span></div>}
         <section className="dp-record-section"><h3>{t("common.conditions")}</h3><div className="dp-record-tags">{selected.conditionKeys.map((key) => <span key={key}>{t(medicalKey.condition(key))}</span>)}</div>
           {selected.canEdit && selected.conditionRecords?.[0] && <ConditionNoteForm record={selected.conditionRecords[0]} action={updateConditionNoteAction} t={t} />}
         </section>
         <section className="dp-record-section"><h3>{t("doctor.currentMedications")}</h3>{selected.medications.map((medication) => <div className="dp-med-row" key={medication.name}><span aria-hidden="true">Rx</span><strong>{medication.name}{medication.dose && ` ${medication.dose}`}</strong></div>)}</section>
+        <section className="dp-record-section health-card-section">
+          <h3>{t("doctor.health.familyDoctor.title")}</h3>
+          {selected.familyDoctor ? <dl className="dp-health-grid">
+            <div><dt>{t("doctor.health.familyDoctor.name")}</dt><dd>{selected.familyDoctor.name}</dd></div>
+            <div><dt>{t("doctor.health.familyDoctor.code")}</dt><dd>{selected.familyDoctor.professionalCode ?? t("common.notRecorded")}</dd></div>
+            <div><dt>{t("doctor.health.familyDoctor.telephone")}</dt><dd>{selected.familyDoctor.telephone ?? t("common.notRecorded")}</dd></div>
+          </dl> : <p>{t("common.notRecorded")}</p>}
+        </section>
+        {selected.canEdit && selected.databaseId && <HealthCardProfileForm
+          key={`${selected.databaseId}:${selected.lastReview}`}
+          patient={selected}
+          patientId={selected.databaseId}
+          action={updateHealthCardProfileAction}
+          t={t}
+        />}
+        <section className="dp-record-section health-card-section">
+          <h3>{t("doctor.health.emergencyContacts.title")}</h3>
+          {selected.emergencyContacts?.length ? selected.emergencyContacts.slice(0, 2).map((contact, index) => <article className="dp-health-contact" key={contact.id}>
+            <strong>{t("doctor.health.emergencyContacts.number", { number: index + 1 })}: {contact.name}</strong>
+            <span>{contact.relationship === "husband" ? t("medical.relationship.husband") : t("medical.relationship.other")}</span>
+            <a href={`tel:${contact.telephone}`}>{contact.telephone}</a>
+          </article>) : <p>{t("common.notRecorded")}</p>}
+        </section>
+        {selected.profileVerification && <section className="dp-record-section health-card-section">
+          <h3>{t("doctor.health.profileVerification.title")}</h3>
+          <p>{t("doctor.health.verifiedBy", {
+            name: selected.profileVerification.clinicianName,
+            code: selected.profileVerification.clinicianCode,
+            date: formatDateTime(language, selected.profileVerification.verifiedAt),
+          })}</p>
+        </section>}
+        {selected.canEdit && selected.databaseId && <SensitiveIdentifiersSection
+          key={selected.databaseId}
+          patientId={selected.databaseId}
+          readAction={readSensitiveIdentifiersAction}
+          updateAction={updateSensitiveIdentifiersAction}
+          t={t}
+          language={language}
+        />}
         <section className="dp-record-section"><h3>{t("doctor.lastClinicalReview")}</h3><p>{formatDate(language, selected.lastReview)} · {initialData.clinician.name}</p></section>
-        <div className="dp-drawer-actions"><button onClick={() => flash("notice.noteOpened")}>{t("doctor.addClinicalNote")}</button><button onClick={() => { flash("notice.profileReviewed", { name: selected.name }); setSelected(null); }}>{t("doctor.markReviewed")}</button></div>
+        <div className="dp-drawer-actions"><button onClick={() => flash("notice.noteOpened")}>{t("doctor.addClinicalNote")}</button><button onClick={() => { flash("notice.profileReviewed", { name: selected.name }); setSelectedPatientId(null); }}>{t("doctor.markReviewed")}</button></div>
         <small className="dp-audit-note">{t("doctor.auditNote")}</small>
       </aside></div>}
       {notice && <div className="dp-toast" role="status">✓ {notice}</div>}
     </main>
   );
+}
+
+function useSingleFlightSubmit(
+  pending: boolean,
+  completionState: string,
+) {
+  const requestInFlight = useRef(false);
+  useEffect(() => {
+    if (!pending) requestInFlight.current = false;
+  }, [completionState, pending]);
+  return (event: React.FormEvent<HTMLFormElement>) => {
+    if (requestInFlight.current) {
+      event.preventDefault();
+      return;
+    }
+    requestInFlight.current = true;
+  };
+}
+
+function useRefreshingMutation(
+  action: HealthMutationAction,
+  onSaved?: () => void,
+) {
+  const router = useRouter();
+  return useActionState(
+    async (state: HealthDataMutationState, formData: FormData) => {
+      const result = await action(state, formData);
+      if (result.status === "saved") {
+        onSaved?.();
+        router.refresh();
+      }
+      return result;
+    },
+    initialHealthMutationState,
+  );
+}
+
+function MutationFeedback({
+  state,
+  t,
+}: {
+  state: HealthDataMutationState;
+  t: Translator;
+}) {
+  if (state.status === "idle") return null;
+  return <p
+    className={state.status === "saved" ? "note-success" : "note-error"}
+    role="status"
+  >
+    {t(`doctor.health.form.${state.status}` as TranslationKey)}
+  </p>;
+}
+
+function HealthCardProfileForm({
+  patient,
+  patientId,
+  action,
+  t,
+}: {
+  patient: Patient;
+  patientId: string;
+  action: HealthMutationAction;
+  t: Translator;
+}) {
+  const [state, formAction, pending] = useRefreshingMutation(
+    action,
+  );
+  const onSubmit = useSingleFlightSubmit(pending, state.status);
+
+  return <section className="dp-record-section health-data-form">
+    <h3>{t("doctor.health.form.profileTitle")}</h3>
+    <form action={formAction} onSubmit={onSubmit}>
+      <input type="hidden" name="patientId" value={patientId} />
+      <div className="dp-health-grid">
+        <label>{t("doctor.health.familyName")}<input name="familyName" defaultValue={patient.familyName ?? ""} /></label>
+        <label>{t("doctor.health.givenNames")}<input name="givenNames" defaultValue={patient.givenNames ?? ""} /></label>
+        <label>{t("doctor.health.insurance.status")}<select name="insuranceStatus" defaultValue={patient.insuranceStatus ?? "unknown"}>
+          {(["unknown", "insured", "uninsured", "verification_pending"] as const).map((status) => <option value={status} key={status}>{t(`doctor.health.insurance.status.${status}` as TranslationKey)}</option>)}
+        </select></label>
+        <label>{t("doctor.health.insurance.source")}<select name="insuranceVerificationSource" defaultValue={patient.insuranceVerificationSource ?? "not_verified"}>
+          {(["not_verified", "cnas_manual_check", "health_card", "supporting_document", "clinician_attestation"] as const).map((source) => <option value={source} key={source}>{t(`doctor.health.insurance.source.${source}` as TranslationKey)}</option>)}
+        </select></label>
+        <label>{t("doctor.health.insurance.houseCode")}<input name="insuranceHouseCode" defaultValue={patient.insuranceHouseCode ?? ""} /></label>
+        <label>{t("doctor.health.insurance.houseName")}<input name="insuranceHouseName" defaultValue={patient.insuranceHouseName ?? ""} /></label>
+        <label>{t("doctor.health.familyDoctor.name")}<input name="familyDoctorName" defaultValue={patient.familyDoctor?.name ?? ""} /></label>
+        <label>{t("doctor.health.familyDoctor.code")}<input name="familyDoctorProfessionalCode" defaultValue={patient.familyDoctor?.professionalCode ?? ""} /></label>
+        <label>{t("doctor.health.familyDoctor.telephone")}<input name="familyDoctorTelephone" type="tel" defaultValue={patient.familyDoctor?.telephone ?? ""} /></label>
+      </div>
+      <MutationFeedback state={state} t={t} />
+      <button type="submit" disabled={pending}>{t(pending ? "doctor.health.form.saving" : "doctor.health.form.save")}</button>
+    </form>
+  </section>;
+}
+
+function DiagnosisFields({
+  diagnosis,
+  t,
+}: {
+  diagnosis?: NonNullable<Patient["lifeThreateningDiagnoses"]>[number];
+  t: Translator;
+}) {
+  return <div className="diagnosis-fields">
+    <label>{t("doctor.health.diagnosis.name")}<input name="name" required minLength={2} maxLength={240} defaultValue={diagnosis?.name ?? ""} /></label>
+    <label>{t("doctor.health.diagnosis.codeSystem")}<select name="codeSystem" defaultValue={diagnosis?.codeSystem ?? "icd10"}>
+      {(["icd10", "snomed_ct", "other"] as const).map((system) => <option key={system} value={system}>{t(`doctor.health.codeSystem.${system}` as TranslationKey)}</option>)}
+    </select></label>
+    <label>{t("doctor.health.diagnosis.code")}<input name="code" required maxLength={80} defaultValue={diagnosis?.code ?? ""} /></label>
+    <label>{t("doctor.health.diagnosis.otherSystem")}<input name="otherCodeSystemName" maxLength={120} defaultValue={diagnosis?.otherCodeSystemName ?? ""} /></label>
+  </div>;
+}
+
+function DiagnosisCreateForm({
+  patientId,
+  action,
+  t,
+}: {
+  patientId: string;
+  action: HealthMutationAction;
+  t: Translator;
+}) {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [state, formAction, pending] = useRefreshingMutation(
+    action,
+    () => formRef.current?.reset(),
+  );
+  const onSubmit = useSingleFlightSubmit(pending, state.status);
+  return <form ref={formRef} className="diagnosis-form" action={formAction} onSubmit={onSubmit}>
+    <h4>{t("doctor.health.diagnosis.add")}</h4>
+    <input type="hidden" name="patientId" value={patientId} />
+    <DiagnosisFields t={t} />
+    <MutationFeedback state={state} t={t} />
+    <button type="submit" disabled={pending}>{t(pending ? "doctor.health.form.saving" : "doctor.health.diagnosis.add")}</button>
+  </form>;
+}
+
+function DiagnosisMutationForm({
+  patientId,
+  diagnosis,
+  isActive,
+  updateAction,
+  deactivateAction,
+  reactivateAction,
+  t,
+}: {
+  patientId: string;
+  diagnosis: NonNullable<Patient["lifeThreateningDiagnoses"]>[number];
+  isActive: boolean;
+  updateAction: HealthMutationAction;
+  deactivateAction: HealthMutationAction;
+  reactivateAction: HealthMutationAction;
+  t: Translator;
+}) {
+  const [updateState, updateFormAction, updatePending] =
+    useRefreshingMutation(
+    updateAction,
+  );
+  const [deactivateState, deactivateFormAction, deactivatePending] =
+    useRefreshingMutation(deactivateAction);
+  const [reactivateState, reactivateFormAction, reactivatePending] =
+    useRefreshingMutation(reactivateAction);
+  const onUpdate = useSingleFlightSubmit(updatePending, updateState.status);
+  const onDeactivate = useSingleFlightSubmit(
+    deactivatePending,
+    deactivateState.status,
+  );
+  const onReactivate = useSingleFlightSubmit(
+    reactivatePending,
+    reactivateState.status,
+  );
+
+  return <div className="diagnosis-editor">
+    <form action={updateFormAction} onSubmit={onUpdate}>
+      <input type="hidden" name="patientId" value={patientId} />
+      <input type="hidden" name="diagnosisId" value={diagnosis.id} />
+      <DiagnosisFields diagnosis={diagnosis} t={t} />
+      <MutationFeedback state={updateState} t={t} />
+      <button type="submit" disabled={updatePending}>{t(updatePending ? "doctor.health.form.saving" : "doctor.health.form.save")}</button>
+    </form>
+    {isActive ? (
+      <form action={deactivateFormAction} onSubmit={onDeactivate}>
+        <input type="hidden" name="diagnosisId" value={diagnosis.id} />
+        <label className="diagnosis-confirmation">
+          <input type="checkbox" name="confirmed" value="yes" required />
+          {t("doctor.health.diagnosis.deactivateConfirmation")}
+        </label>
+        <MutationFeedback state={deactivateState} t={t} />
+        <button className="danger-button" type="submit" disabled={deactivatePending}>{t(deactivatePending ? "doctor.health.form.saving" : "doctor.health.diagnosis.deactivate")}</button>
+      </form>
+    ) : (
+      <form action={reactivateFormAction} onSubmit={onReactivate}>
+        <input type="hidden" name="diagnosisId" value={diagnosis.id} />
+        <MutationFeedback state={reactivateState} t={t} />
+        <button type="submit" disabled={reactivatePending}>{t(reactivatePending ? "doctor.health.form.saving" : "doctor.health.diagnosis.reactivate")}</button>
+      </form>
+    )}
+  </div>;
+}
+
+function SensitiveIdentifiersSection({
+  patientId,
+  readAction,
+  updateAction,
+  t,
+  language,
+}: {
+  patientId: string;
+  readAction: (patientId: string) => Promise<SensitiveIdentifierReadResult>;
+  updateAction: HealthMutationAction;
+  t: Translator;
+  language: Language;
+}) {
+  const [identifiers, setIdentifiers] = useState<
+    Extract<SensitiveIdentifierReadResult, { ok: true }>["identifiers"] | null
+  >(null);
+  const [error, setError] = useState<"unauthorized" | "unavailable" | null>(null);
+  const [pending, setPending] = useState(false);
+  const requestInFlight = useRef(false);
+  const [updateState, updateFormAction, updatePending] =
+    useRefreshingMutation(
+    updateAction,
+    () => {
+      setIdentifiers(null);
+      setError(null);
+    },
+  );
+  const onUpdateSubmit = useSingleFlightSubmit(
+    updatePending,
+    updateState.status,
+  );
+
+  const reveal = async () => {
+    if (requestInFlight.current) return;
+    requestInFlight.current = true;
+    setPending(true);
+    setError(null);
+    try {
+      const result = await readAction(patientId);
+      if (!result.ok) {
+        setError(result.error);
+        return;
+      }
+      setIdentifiers(result.identifiers);
+    } catch {
+      setError("unavailable");
+    } finally {
+      requestInFlight.current = false;
+      setPending(false);
+    }
+  };
+
+  const hide = () => {
+    setIdentifiers(null);
+    setError(null);
+  };
+  const value = (identifier: string | null) =>
+    identifiers ? identifier ?? t("common.notRecorded") : "••••••••";
+
+  return <section className="dp-record-section sensitive-identifiers">
+    <h3>{t("doctor.health.sensitive.title")}</h3>
+    <p>{t("doctor.health.sensitive.description")}</p>
+    <dl className="dp-health-grid">
+      <div><dt>{t("doctor.health.sensitive.cnp")}</dt><dd>{value(identifiers?.cnp ?? null)}</dd></div>
+      <div><dt>{t("doctor.health.sensitive.insuranceNumber")}</dt><dd>{value(identifiers?.insuranceNumber ?? null)}</dd></div>
+      <div><dt>{t("doctor.health.sensitive.cardNumber")}</dt><dd>{value(identifiers?.healthCardNumber ?? null)}</dd></div>
+      <div><dt>{t("doctor.health.sensitive.cardExpires")}</dt><dd>{identifiers?.healthCardExpiresAt ? formatDate(language, identifiers.healthCardExpiresAt) : value(null)}</dd></div>
+    </dl>
+    {identifiers?.verifiedAt && identifiers.verifiedByName && identifiers.verifiedByCode && <p>{t("doctor.health.verifiedBy", {
+      name: identifiers.verifiedByName,
+      code: identifiers.verifiedByCode,
+      date: formatDateTime(language, identifiers.verifiedAt),
+    })}</p>}
+    {identifiers && <form className="sensitive-update-form" action={updateFormAction} onSubmit={onUpdateSubmit}>
+      <input type="hidden" name="patientId" value={patientId} />
+      <label>{t("doctor.health.sensitive.cnp")}<input name="cnp" inputMode="numeric" pattern="[0-9]{13}" defaultValue={identifiers.cnp ?? ""} /></label>
+      <label>{t("doctor.health.sensitive.insuranceNumber")}<input name="insuranceNumber" defaultValue={identifiers.insuranceNumber ?? ""} /></label>
+      <label>{t("doctor.health.sensitive.cardNumber")}<input name="healthCardNumber" defaultValue={identifiers.healthCardNumber ?? ""} /></label>
+      <label>{t("doctor.health.sensitive.cardExpires")}<input type="date" name="healthCardExpiresAt" defaultValue={identifiers.healthCardExpiresAt ?? ""} /></label>
+      <MutationFeedback state={updateState} t={t} />
+      <button type="submit" disabled={updatePending}>{t(updatePending ? "doctor.health.form.saving" : "doctor.health.form.save")}</button>
+    </form>}
+    {error && <p className="note-error" role="alert">{t(error === "unavailable" ? "doctor.health.sensitive.unavailable" : "doctor.health.sensitive.unauthorized")}</p>}
+    <button type="button" disabled={pending} onClick={identifiers ? hide : reveal}>
+      {t(pending ? "doctor.health.sensitive.loading" : identifiers ? "doctor.health.sensitive.hide" : "doctor.health.sensitive.reveal")}
+    </button>
+  </section>;
 }
 
 function ConditionNoteForm({

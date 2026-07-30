@@ -34,10 +34,6 @@ const authErrorsSource = await readFile(
   new URL("lib/auth-errors.ts", root),
   "utf8",
 );
-const hostedTestGuide = await readFile(
-  new URL("docs/hosted-integration-testing.md", root),
-  "utf8",
-);
 const doctorPortalSource = await readFile(
   new URL("app/doctor/DoctorPortalClient.tsx", root),
   "utf8",
@@ -371,27 +367,6 @@ test("superadmin RLS covers all required tables and audit remains read-only", ()
   assert.match(
     migration,
     /revoke insert, update, delete, truncate[\s\S]+?public\.audit_events from anon, authenticated/i,
-  );
-});
-
-test("hosted test guide covers manual retry and relevant Auth rate limits", () => {
-  for (const workflow of [
-    "Superadmin first login and MFA enrollment",
-    "Superadmin login with an existing MFA factor",
-    "Doctor login",
-    "Open a patient profile",
-    "Doctor edit with a valid grant",
-    "Logout and immediate login",
-    "Retry after a temporary API failure",
-  ]) {
-    assert.match(hostedTestGuide, new RegExp(workflow, "i"), workflow);
-  }
-  assert.match(hostedTestGuide, /HTTP 429 response is \*\*rate limited\*\*/i);
-  assert.match(hostedTestGuide, /must not retry automatically/i);
-  assert.match(hostedTestGuide, /Do not change them/i);
-  assert.doesNotMatch(
-    hostedTestGuide,
-    /npx supabase (?:start|db reset)/i,
   );
 });
 

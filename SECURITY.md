@@ -34,6 +34,14 @@ credentials, tokens, or regulated health data.
 - Temporary service failures never change an application account status.
 - The UI retries only after an explicit user action. Pending submissions are
   disabled and MFA requests also use an in-flight duplicate guard.
+- CNP, insurance number, and national health-card details are stored separately
+  from ordinary profile data. The table has no direct browser policy or grant.
+- Sensitive identifiers can be revealed or updated only through audited
+  purpose-specific functions by an active AAL2 Superadmin or an approved
+  clinician with a current active editable patient grant.
+- Ordinary patient profiles and prototype sharing surfaces explicitly exclude
+  sensitive identifiers. Revealed values remain only in component memory and
+  are discarded when hidden or when the profile drawer closes.
 
 ## Data-handling rules
 

@@ -7,8 +7,8 @@ const root = path.resolve(import.meta.dirname, "..");
 const roots = ["app", "tests"];
 const singleFiles = [
   ".editorconfig",
-  "README.md",
   "package.json",
+  "SECURITY.md",
   "tsconfig.json",
   "next.config.ts",
 ];

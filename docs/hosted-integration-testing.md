@@ -101,6 +101,61 @@ error. Use **Try again** or sign out; do not refresh automatically.
    Block the factor-list request once, confirm the fail-closed security screen,
    remove the block, and retry manually.
 
+## Phase 2C sensitive-identifier boundary
+
+Use fictional values only and keep them outside seed files, screenshots, logs,
+URLs, and test output.
+
+1. Confirm a view-only doctor sees the ordinary health-card-compatible profile
+   but no **Sensitive identifiers** section.
+2. Give the approved doctor a current active editable grant and reopen the
+   patient. Confirm the section appears with every value masked.
+3. Select **Reveal sensitive identifiers** once. Confirm the button is disabled
+   while pending and exactly one `sensitive_identifiers_viewed` audit event is
+   created without identifier values in metadata.
+4. Select **Hide and discard revealed values**. Confirm values are masked again.
+   Close and reopen the drawer and confirm no revealed value persists.
+5. Revoke or expire the editable grant before revealing. Confirm the RPC denies
+   access even if the earlier page state still showed an editable grant.
+6. Confirm an active AAL2 Superadmin can use the audited RPC, while an AAL1,
+   suspended, ordinary, patient, or view-only clinician identity cannot.
+7. Inspect QR, NFC, email-link, and emergency-card payloads and confirm CNP,
+   insurance number, and national health-card details are absent.
+
+## Phase 2C clinician-certified write matrix
+
+Run this only after migration `202607300003` has passed review and has been
+applied to the isolated hosted development project.
+
+1. Give an approved clinician a current active editable grant. Use each doctor
+   form once to update the non-sensitive health-card profile, update sensitive
+   identifiers, create a life-threatening diagnosis, update that diagnosis,
+   confirm and deactivate it, then reactivate it from the inactive history.
+   Confirm every operation succeeds exactly once, the create form resets, and
+   the refreshed values appear without closing the patient drawer.
+2. Inspect the corresponding audit rows. Metadata may name changed fields, but
+   must contain no diagnosis text or code and no CNP, insurance, or card value.
+3. Submit the sensitive form again without changing a field. Confirm it is
+   rejected as invalid input and creates no update audit event.
+4. Repeat each operation with a view-only grant, then with expired, revoked,
+   and pending grants. Confirm every write is denied.
+5. Repeat with a suspended clinician, a patient session, and an anonymous
+   session. Confirm every write is denied and no certified data changes.
+6. With an active Superadmin at AAL1, confirm every write is denied or routed
+   through MFA. Complete MFA to reach AAL2 and confirm each operation succeeds
+   and is audited once.
+7. Try contradictory insurance combinations: `insured` or `uninsured` without
+   a real source and timestamp, and `unknown` with a source or timestamp.
+   Confirm the database rejects every combination.
+8. While each form request is pending, confirm its submit button is disabled.
+   Double-click or press Enter repeatedly and confirm only one RPC and one audit
+   event occur.
+9. In this isolated project only, link one fictional AAL2 Superadmin Auth user
+   to an approved clinician as a defensive dual-role test. Create, update,
+   deactivate, and reactivate a fictional diagnosis. Confirm each row and audit
+   event stores only the administrator actor/verifier ID and never both IDs.
+   Repeat at AAL1 and confirm every operation is denied.
+
 ## Supabase Auth rate limits that affect these flows
 
 Check the hosted project Dashboard before testing because project settings and
@@ -129,4 +184,3 @@ Authoritative references:
 - <https://supabase.com/docs/guides/auth/rate-limits>
 - <https://supabase.com/docs/guides/auth/debugging/error-codes>
 - <https://supabase.com/docs/guides/auth/auth-mfa>
-

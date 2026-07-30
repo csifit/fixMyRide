@@ -43,7 +43,15 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
     { id: "share" as const, icon: "↗", key: "patient.nav.share" as const },
     { id: "access" as const, icon: "◷", key: "patient.nav.access" as const },
   ];
-  const emergencyContact = `${profile.emergencyContact.name} · ${t(medicalKey.relationship(profile.emergencyContact.relationshipKey))}`;
+  const emergencyContacts = profile.emergencyContacts.slice(0, 2);
+  const primaryEmergencyContact = emergencyContacts[0];
+  const emergencyContact = primaryEmergencyContact
+    ? `${primaryEmergencyContact.name} · ${
+        primaryEmergencyContact.relationshipKey === "husband"
+          ? t(medicalKey.relationship("husband"))
+          : t("medical.relationship.other")
+      }`
+    : t("common.notRecorded");
 
   return (
     <main className={`${emergency ? "app emergency-theme" : "app"} ${languageReady ? "" : "i18n-pending"}`}>
@@ -81,7 +89,7 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
             <div className="critical-grid">
               <div><span>{t("patient.bloodGroup")}</span><strong className="blood">{profile.blood}</strong></div>
               <div><span>{t("patient.allergies")}</span><div className="tags">{profile.allergyKeys.map((key) => <strong key={key}>{t(medicalKey.allergy(key))}</strong>)}</div></div>
-              <div><span>{t("patient.emergencyContact")}</span><strong>{emergencyContact}</strong><a href={`tel:${profile.emergencyContact.phone}`}>{profile.emergencyContact.phone}</a></div>
+              <div><span>{t("patient.emergencyContact")}</span><strong>{emergencyContact}</strong>{primaryEmergencyContact && <a href={`tel:${primaryEmergencyContact.phone}`}>{primaryEmergencyContact.phone}</a>}</div>
             </div>
           </section>
           <div className="info-grid">
@@ -92,7 +100,7 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
             <article className="card"><div className="section-title"><MiniIcon>⌁</MiniIcon><h2>{t("patient.section.conditions")}</h2></div><div className="detail-block"><span>{t("patient.chronicConditions")}</span><div className="tags calm">{profile.conditionKeys.map((key) => <strong key={key}>{t(medicalKey.condition(key))}</strong>)}</div></div><div className="detail-block"><span>{t("patient.previousProcedures")}</span><strong>{profile.procedures.map((procedure) => `${t(medicalKey.procedure(procedure.key))} · ${procedure.year}`).join(", ") || t("common.noneRecorded")}</strong></div></article>
             <article className="card"><div className="section-title"><MiniIcon>◇</MiniIcon><h2>{t("patient.section.devices")}</h2></div><p className="empty-state"><span>✓</span>{profile.implantKeys.map((key) => t(medicalKey.implant(key))).join(", ") || t("patient.implants.none")}</p></article>
             <article className="card wide"><div className="section-title"><MiniIcon>♧</MiniIcon><h2>{t("patient.section.contacts")}</h2></div><div className="contact-grid">
-              <div><span className="contact-avatar">EC</span><div><small>{t("patient.emergencyContact")}</small><strong>{emergencyContact}</strong><a href={`tel:${profile.emergencyContact.phone}`}>{profile.emergencyContact.phone}</a></div></div>
+              {emergencyContacts.map((contact, index) => <div key={`${contact.name}-${index}`}><span className="contact-avatar">EC</span><div><small>{t("patient.emergencyContact")} {index + 1}</small><strong>{contact.name} · {contact.relationshipKey === "husband" ? t(medicalKey.relationship("husband")) : t("medical.relationship.other")}</strong><a href={`tel:${contact.phone}`}>{contact.phone}</a></div></div>)}
               <div><span className="contact-avatar doctor">DR</span><div><small>{t("patient.familyDoctor")}</small><strong>{profile.doctor.name}</strong><a href={`tel:${profile.doctor.phone}`}>{profile.doctor.phone}</a></div></div>
             </div></article>
           </div>
@@ -108,7 +116,7 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
               <button onClick={() => flash("notice.cardReady")}><MiniIcon>↓</MiniIcon><span><b>{t("patient.share.download")}</b><small>{t("patient.share.downloadHelp")}</small></span><i>→</i></button>
             </div>
           </div>
-          <article className="privacy-card"><div className="section-title"><MiniIcon>⌾</MiniIcon><h2>{t("patient.share.privacy")}</h2></div><div className="privacy-row"><span>{t("patient.share.expiry")}</span><strong>{t("patient.share.minutes")}</strong></div><div className="privacy-row"><span>{t("patient.share.noActiveLinks")}</span><button onClick={() => flash("notice.linksRevoked")}>{t("patient.share.revoke")}</button></div></article>
+          <article className="privacy-card"><div className="section-title"><MiniIcon>⌾</MiniIcon><h2>{t("patient.share.privacy")}</h2></div><p>{t("patient.share.sensitiveExcluded")}</p><div className="privacy-row"><span>{t("patient.share.expiry")}</span><strong>{t("patient.share.minutes")}</strong></div><div className="privacy-row"><span>{t("patient.share.noActiveLinks")}</span><button onClick={() => flash("notice.linksRevoked")}>{t("patient.share.revoke")}</button></div></article>
         </div>}
 
         {section === "access" && <div className="page narrow">

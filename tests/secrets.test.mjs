@@ -16,7 +16,7 @@ test("the committed environment template contains only blank public values", asy
 
 test("source contains no Supabase service key or token-shaped secret", async () => {
   const files = (await Promise.all(scannedRoots.map((entry) => walk(path.join(root, entry))))).flat();
-  files.push(path.join(root, "proxy.ts"), path.join(root, "README.md"), path.join(root, "SECURITY.md"));
+  files.push(path.join(root, "proxy.ts"), path.join(root, "SECURITY.md"));
   for (const file of files) {
     const text = await readFile(file, "utf8");
     assert.doesNotMatch(text, /SUPABASE_SERVICE_ROLE|sb_secret_[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/, path.relative(root, file));

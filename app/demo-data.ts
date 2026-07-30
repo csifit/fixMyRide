@@ -18,8 +18,12 @@ export type PatientPortalData = {
     conditionKeys: ConditionKey[];
     procedures: { key: "appendectomy"; year: number }[];
     implantKeys: "none"[];
-    emergencyContact: { name: string; relationshipKey: "husband"; phone: string };
-    doctor: { name: string; phone: string };
+    emergencyContacts: {
+      name: string;
+      relationshipKey: "husband" | "other";
+      phone: string;
+    }[];
+    doctor: { name: string; professionalCode?: string; phone: string };
     lastUpdated: string;
   };
   accessHistory: {
@@ -29,6 +33,17 @@ export type PatientPortalData = {
   }[];
 };
 
+export type LifeThreateningDiagnosisSummary = {
+  id: string;
+  name: string;
+  codeSystem: "icd10" | "snomed_ct" | "other";
+  code: string;
+  otherCodeSystemName: string | null;
+  verifiedAt: string;
+  verifiedByName: string;
+  verifiedByCode: string;
+};
+
 export type DoctorPatientSummary = {
   id: string; databaseId?: string; initials: string; name: string; age: number; sexKey: SexKey;
   lastReview: string; statusKey: PatientStatusKey; conditionKeys: ConditionKey[];
@@ -36,6 +51,36 @@ export type DoctorPatientSummary = {
   access: { kind: "familyCareTeam" } | { kind: "temporary"; days: number };
   canEdit?: boolean;
   conditionRecords?: { id: string; key: ConditionKey; note: string }[];
+  familyName?: string | null;
+  givenNames?: string | null;
+  insuranceStatus?: "unknown" | "insured" | "uninsured" | "verification_pending";
+  insuranceVerificationSource?:
+    | "not_verified"
+    | "cnas_manual_check"
+    | "health_card"
+    | "supporting_document"
+    | "clinician_attestation";
+  insuranceVerifiedAt?: string | null;
+  insuranceHouseCode?: string | null;
+  insuranceHouseName?: string | null;
+  familyDoctor?: {
+    name: string;
+    professionalCode: string | null;
+    telephone: string | null;
+  } | null;
+  emergencyContacts?: {
+    id: string;
+    name: string;
+    relationship: string;
+    telephone: string;
+  }[];
+  lifeThreateningDiagnoses?: LifeThreateningDiagnosisSummary[];
+  inactiveLifeThreateningDiagnoses?: LifeThreateningDiagnosisSummary[];
+  profileVerification?: {
+    verifiedAt: string;
+    clinicianName: string;
+    clinicianCode: string;
+  } | null;
 };
 
 export type DoctorAccessRequest = {
@@ -64,8 +109,11 @@ export const patientPortalData: PatientPortalData = {
     conditionKeys: ["type2Diabetes", "hypertension"],
     procedures: [{ key: "appendectomy", year: 2009 }],
     implantKeys: ["none"],
-    emergencyContact: { name: "Márton Varga", relationshipKey: "husband", phone: "+40 721 555 014" },
-    doctor: { name: "Dr. Ana Popescu", phone: "+40 21 555 0182" },
+    emergencyContacts: [
+      { name: "Márton Varga", relationshipKey: "husband", phone: "+40 721 555 014" },
+      { name: "Ilona Varga", relationshipKey: "other", phone: "+40 722 555 019" },
+    ],
+    doctor: { name: "Dr. Ana Popescu", professionalCode: "DEMO-MF-01", phone: "+40 21 555 0182" },
     lastUpdated: "2026-07-24T10:42:00+03:00",
   },
   accessHistory: [
