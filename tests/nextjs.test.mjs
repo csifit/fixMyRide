@@ -34,6 +34,14 @@ test("doctor route redirects unauthenticated users and has no-store rendering", 
   assert.match(doctorPage, /revalidate = 0/);
 });
 
+test("doctor login stores the Server Action cookies before full navigation", async () => {
+  const action = await readFile(new URL("app/doctor/actions.ts", root), "utf8");
+  const form = await readFile(new URL("app/doctor/login/LoginForm.tsx", root), "utf8");
+  assert.match(action, /return \{ error: null, success: true \}/);
+  assert.doesNotMatch(action, /record_auth_audit[\s\S]+?redirect\("\/doctor"\)/);
+  assert.match(form, /if \(state\.success\) window\.location\.assign\("\/doctor"\)/);
+});
+
 test("admin route is protected, dynamic, and redirects aal1 superadmins to MFA", async () => {
   const adminPage = await readFile(new URL("app/admin/page.tsx", root), "utf8");
   const proxy = await readFile(new URL("proxy.ts", root), "utf8");

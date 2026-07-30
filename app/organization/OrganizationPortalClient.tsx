@@ -43,6 +43,7 @@ export default function OrganizationPortalClient({
         <h1>{t("organization.welcome").replace("{name}", displayName)}</h1>
         <p>{t(`organization.${kind}.securityNote` as TranslationKey)}</p>
         {kind === "clinic_manager" && <Link className="organization-action" href="/clinic-manager/invoicing">{t("invoicing.title")}</Link>}
+        {kind === "staff" && <><Link className="organization-action" href="/staff/appointments">{t("appointments.title")}</Link><Link className="organization-action organization-action-spaced" href="/staff/patients">{t("staffPatients.title")}</Link></>}
 
         {managerDashboard?.clinics.map((clinic) => (
           <article className="organization-card" key={clinic.id}>

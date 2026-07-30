@@ -25,6 +25,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export type LoginState = {
   error: LoginErrorKind | "configuration" | null;
+  success: boolean;
 };
 export type ConditionNoteState = {
   status: "idle" | "saved" | "unauthorized" | "unavailable";
@@ -102,23 +103,25 @@ export async function loginAction(
     email: formData.get("email"),
     password: formData.get("password"),
   });
-  if (!input.success) return { error: "invalid_credentials" };
+  if (!input.success) return { error: "invalid_credentials", success: false };
 
   let supabase;
   try {
     supabase = await createClient();
   } catch {
-    return { error: "configuration" };
+    return { error: "configuration", success: false };
   }
 
   const { error } = await supabase.auth.signInWithPassword(input.data);
-  if (error) return { error: classifyLoginError(error) };
+  if (error) {
+    return { error: classifyLoginError(error), success: false };
+  }
 
   await supabase.rpc("record_auth_audit", {
     auth_action: "sign_in",
     request_correlation_id: crypto.randomUUID(),
   });
-  redirect("/doctor");
+  return { error: null, success: true };
 }
 
 export async function logoutAction() {

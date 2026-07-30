@@ -260,7 +260,12 @@ export async function loadDoctorDashboard(
     .select("patient_id, can_view, can_edit, status, expires_at, revoked_at, granted_at")
     .eq("clinician_id", clinician.id)
     .eq("status", "active");
-  if (grantError) throw new DataAccessError(classifyDatabaseError(grantError));
+  if (grantError) {
+    console.error("doctor_dashboard_grants", {
+      code: grantError.code,
+    });
+    throw new DataAccessError(classifyDatabaseError(grantError));
+  }
 
   const grants = (grantData ?? []) as GrantRow[];
   const allowedGrants = grants.filter((grant) =>
@@ -286,9 +291,15 @@ export async function loadDoctorDashboard(
   );
   const profileError = profileResults.find(({ error }) => error)?.error;
   if (profileError) {
+    console.error("doctor_dashboard_profiles", {
+      code: profileError.code,
+    });
     throw new DataAccessError(classifyDatabaseError(profileError));
   }
   if (profileResults.some(({ data }) => !data)) {
+    console.error("doctor_dashboard_profiles", {
+      code: "authorization_returned_null",
+    });
     throw new DataAccessError("unauthorized");
   }
 

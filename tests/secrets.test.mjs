@@ -10,16 +10,20 @@ test("the committed environment template contains only blank public values", asy
   const example = await readFile(path.join(root, ".env.example"), "utf8");
   assert.equal(
     example.replaceAll("\r\n", "\n"),
-    "NEXT_PUBLIC_SUPABASE_URL=\nNEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\nNEXT_PUBLIC_SITE_URL=\nMXROUTE_SERVER=\nMXROUTE_USERNAME=\nMXROUTE_PASSWORD=\n",
+    "NEXT_PUBLIC_SUPABASE_URL=\nNEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\nNEXT_PUBLIC_SITE_URL=\nMXROUTE_SERVER=\nMXROUTE_USERNAME=\nMXROUTE_PASSWORD=\nSUPABASE_SECRET_KEY=\nSMSLINK_CONNECTION_ID=\nSMSLINK_PASSWORD=\nSMSLINK_TEST_MODE=true\nCRON_SECRET=\n",
   );
 });
 
-test("source contains no Supabase service key or token-shaped secret", async () => {
+test("service credential is isolated to the server-only client and source contains no token-shaped secret", async () => {
   const files = (await Promise.all(scannedRoots.map((entry) => walk(path.join(root, entry))))).flat();
   files.push(path.join(root, "proxy.ts"), path.join(root, "SECURITY.md"));
   for (const file of files) {
     const text = await readFile(file, "utf8");
-    assert.doesNotMatch(text, /SUPABASE_SERVICE_ROLE|sb_secret_[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/, path.relative(root, file));
+    assert.doesNotMatch(text, /sb_secret_[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/, path.relative(root, file));
+    if (text.includes("SUPABASE_SECRET_KEY")) {
+      assert.equal(path.relative(root, file), path.join("lib", "supabase", "service.ts"));
+      assert.match(text, /^import "server-only";/);
+    }
   }
 });
 

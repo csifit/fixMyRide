@@ -1,17 +1,20 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import Link from "next/link";
 import { translate, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import { loginAction, type LoginState } from "../actions";
 
-const initialState: LoginState = { error: null };
+const initialState: LoginState = { error: null, success: false };
 
 export default function LoginForm({ configured }: { configured: boolean }) {
   const [language, setLanguage, ready] = useLanguage();
   const [state, action, pending] = useActionState(loginAction, initialState);
   const t = (key: TranslationKey) => translate(language, key);
+  useEffect(() => {
+    if (state.success) window.location.assign("/doctor");
+  }, [state.success]);
   const errorKey: TranslationKey | null =
     state.error === "configuration"
       ? "auth.configuration.description"
@@ -53,7 +56,7 @@ export default function LoginForm({ configured }: { configured: boolean }) {
             <label>{t("auth.login.email")}<input name="email" type="email" autoComplete="email" required /></label>
             <label>{t("auth.login.password")}<input name="password" type="password" autoComplete="current-password" required minLength={8} /></label>
             {errorKey && <p className="auth-error" role="alert">{t(errorKey)}</p>}
-            <button type="submit" disabled={pending}>{pending ? t("auth.login.submitting") : t("auth.login.submit")}</button>
+            <button type="submit" disabled={pending || state.success}>{pending || state.success ? t("auth.login.submitting") : t("auth.login.submit")}</button>
           </form>
         )}
         <small>{t("auth.login.noSignup")}</small>
