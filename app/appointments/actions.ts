@@ -9,6 +9,7 @@ import {
   transitionManagedAppointment,
 } from "@/lib/dal/appointments";
 import { sendAppointmentCreatedEmail } from "@/lib/email/appointment";
+import { decidePublicAppointmentRequest } from "@/lib/dal/public-appointments";
 import { dispatchDueAppointmentNotifications } from "@/lib/sms/appointment-notifications";
 
 export type AppointmentActionState = {
@@ -36,6 +37,10 @@ const transitionSchema = z.object({
     z.literal(""),
     z.coerce.number().pipe(z.union([z.literal(15), z.literal(30), z.literal(45)])),
   ]).transform((value) => value === "" ? null : value),
+});
+const requestDecisionSchema = z.object({
+  requestId: z.uuid(),
+  decision: z.enum(["confirmed", "declined"]),
 });
 
 function errorState(error: unknown): AppointmentActionState {
@@ -123,6 +128,28 @@ export async function transitionAppointmentAction(
     return parsed.data.status === "confirmed"
       ? await tryImmediateSms(parsed.data.appointmentId)
       : { status: "saved" };
+  } catch (error) {
+    return errorState(error);
+  }
+}
+
+export async function decideAppointmentRequestAction(
+  _previous: AppointmentActionState,
+  formData: FormData,
+): Promise<AppointmentActionState> {
+  const parsed = requestDecisionSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    const appointmentId = await decidePublicAppointmentRequest(
+      parsed.data.requestId,
+      parsed.data.decision,
+    );
+    revalidatePath("/doctor/appointments");
+    revalidatePath("/staff/appointments");
+    if (parsed.data.decision === "confirmed" && appointmentId) {
+      return await tryImmediateSms(appointmentId);
+    }
+    return { status: "saved" };
   } catch (error) {
     return errorState(error);
   }

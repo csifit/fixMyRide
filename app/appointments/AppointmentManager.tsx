@@ -5,8 +5,10 @@ import { useActionState, useMemo, useState } from "react";
 import { translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { Appointment, DoctorAvailability } from "@/lib/dal/appointments";
+import type { PublicAppointmentRequest } from "@/lib/dal/public-appointments";
 import {
   createAppointmentAction,
+  decideAppointmentRequestAction,
   transitionAppointmentAction,
   type AppointmentActionState,
 } from "./actions";
@@ -15,6 +17,33 @@ type DoctorChoice = { id: string; name: string };
 type Translator = (key: TranslationKey) => string;
 const idle: AppointmentActionState = { status: "idle" };
 const blockingStatuses = new Set(["pending", "confirmed", "rescheduled"]);
+
+function RequestCard({
+  request,
+  doctorName,
+  language,
+  t,
+}: {
+  request: PublicAppointmentRequest;
+  doctorName: string;
+  language: Language;
+  t: Translator;
+}) {
+  const [state, action, pending] = useActionState(decideAppointmentRequestAction, idle);
+  return <article className="appointment-request-card">
+    <div><span>{t("appointments.requestedOnline")}</span><h3>{request.patientName}</h3>
+      <p>{new Intl.DateTimeFormat(language, { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Bucharest" }).format(new Date(request.scheduledStart))} · {request.slotDurationMinutes} {t("availability.minutes")}</p>
+      <small>{doctorName} · {request.patientPhone} · {request.patientEmail}</small>
+      {request.patientNote && <blockquote>{request.patientNote}</blockquote>}
+    </div>
+    <form action={action}>
+      <input type="hidden" name="requestId" value={request.id} />
+      <button name="decision" value="declined" className="request-decline" disabled={pending}>{t("appointments.decline")}</button>
+      <button name="decision" value="confirmed" disabled={pending}>{t(pending ? "appointments.saving" : "appointments.confirm")}</button>
+      <Feedback state={state} t={t} />
+    </form>
+  </article>;
+}
 
 function dateValue(date: Date) {
   const year = date.getFullYear();
@@ -208,11 +237,13 @@ export default function AppointmentManager({
   doctors,
   appointments,
   availability,
+  requests,
 }: {
   kind: "doctor" | "staff";
   doctors: DoctorChoice[];
   appointments: Appointment[];
   availability: DoctorAvailability[];
+  requests: PublicAppointmentRequest[];
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
@@ -235,6 +266,17 @@ export default function AppointmentManager({
       <p className="registration-kicker">{t("appointments.eyebrow")}</p>
       <h1>{t("appointments.title")}</h1>
       <p>{t("appointments.description")}</p>
+      <section className="appointment-request-queue">
+        <div><span>{requests.filter((request) => request.status === "pending").length}</span><div><h2>{t("appointments.requestQueue")}</h2><p>{t("appointments.requestQueueHelp")}</p></div></div>
+        {requests.filter((request) => request.status === "pending").map((request) => <RequestCard
+          key={request.id}
+          request={request}
+          doctorName={doctors.find((doctor) => doctor.id === request.clinicianId)?.name ?? ""}
+          language={language}
+          t={t}
+        />)}
+        {!requests.some((request) => request.status === "pending") && <p className="booking-empty compact">{t("appointments.noPendingRequests")}</p>}
+      </section>
       <form className="appointment-form" action={action}>
         <input type="hidden" name="locale" value={language} />
         <input type="hidden" name="doctorName" value={doctorName} />

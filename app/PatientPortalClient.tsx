@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { PatientPortalData } from "./demo-data";
 import {
@@ -61,6 +62,7 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
           {nav.map((item) => <button key={item.id} className={section === item.id ? "active" : ""} onClick={() => setSection(item.id)}><MiniIcon>{item.icon}</MiniIcon>{t(item.key)}</button>)}
         </nav>
         <div className="sidebar-foot">
+          <Link className="patient-booking-link" href="/appointments">⌕ {t("booking.findDoctor")}</Link>
           <button className="doctor-link" onClick={() => setDoctorModal(true)}><span className="status-dot" />{t("patient.doctorAccess")}<span>→</span></button>
           <div className="signed-in"><div className="avatar small">{profile.initials}</div><div><b>{profile.name}</b><span>{t("patient.signedInAsPatient")}</span></div><button onClick={() => flash("notice.demoSession")} aria-label={t("a11y.signOut")}>↗</button></div>
         </div>
