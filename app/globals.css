@@ -259,6 +259,24 @@ a { color:var(--green); text-decoration:none; }
 .appointment-transition { display:flex; flex-wrap:wrap; align-items:end; gap:8px; margin-top:13px; padding-top:13px; border-top:1px solid #e8efed; }
 .appointment-transition label { min-width:180px; }.appointment-transition p { flex-basis:100%; }
 @media (max-width:700px) { .appointment-form { grid-template-columns:1fr; }.appointment-wide { grid-column:auto; }.appointment-transition { display:grid; } }
+.availability-list { display:grid; gap:10px; margin-top:25px; }
+.availability-row { display:grid; grid-template-columns:1.1fr repeat(4,1fr) auto; align-items:end; gap:10px; padding:16px; border:1px solid #dbe6e3; border-radius:11px; background:#fff; }
+.availability-row>strong { align-self:center; font-size:12px; }
+.availability-row label { display:grid; gap:5px; color:#3b5b55; font-size:9px; font-weight:800; }
+.availability-row input,.availability-row select { min-width:0; width:100%; border:1px solid #cbdad6; border-radius:7px; padding:8px; background:#fff; color:#17332f; }
+.availability-row button { border:0; border-radius:7px; padding:9px 11px; background:#176f63; color:#fff; font-weight:800; }
+.availability-row>small { grid-column:1/-1; }
+.appointment-calendar { margin:0 0 35px; padding:20px; border:1px solid #dbe6e3; border-radius:13px; background:#fff; overflow:hidden; }
+.appointment-calendar>header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+.appointment-calendar h2 { margin:0; font-size:18px; }
+.appointment-calendar header button { border:1px solid #cbdad6; border-radius:7px; padding:7px 10px; background:#fff; color:#315d54; cursor:pointer; }
+.calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(120px,1fr)); gap:7px; overflow-x:auto; }
+.calendar-grid>article { min-height:145px; padding:10px; border:1px solid #e1eae7; border-radius:9px; background:#f8fbfa; }
+.calendar-grid h3 { margin:0 0 9px; color:#48645e; font-size:10px; }
+.calendar-grid article>div { display:grid; gap:2px; margin-top:6px; padding:7px; border-left:3px solid #27a183; border-radius:5px; background:#fff; }
+.calendar-grid time,.calendar-grid strong,.calendar-grid small { font-size:9px; }
+.calendar-grid article>small { color:#82918e; }
+@media (max-width:900px) { .availability-row { grid-template-columns:repeat(2,1fr); }.availability-row>strong,.availability-row>small { grid-column:1/-1; } }
 .staff-patient-layout { display:grid; grid-template-columns:260px 1fr; gap:18px; align-items:start; }
 .staff-patient-layout nav { display:grid; gap:2px; }
 .staff-patient-layout nav a { display:grid; gap:3px; padding:10px; border-radius:7px; color:#17332f; text-decoration:none; }

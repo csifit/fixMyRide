@@ -148,6 +148,7 @@ export default function DoctorPortal({
       <aside className="dp-sidebar">
         <Link className="dp-brand" href="/" aria-label={t("a11y.patientPortal")}><span className="dp-brand-mark">+</span><span>VitaPass<small>{t("doctor.brand.clinical")}</small></span></Link>
         <div className="dp-workspace"><span>{t("doctor.workspace")}</span><strong>{initialData.clinician.clinicName}</strong><small>{t("doctor.primaryCare")} · {initialData.clinician.clinicCountry}</small><Link href="/doctor/appointments">{t("appointments.title")}</Link><Link href="/doctor/invoicing">{t("invoicing.title")}</Link><Link href="/doctor/staff">{t("organization.staff.eyebrow")}</Link></div>
+        <Link href="/doctor/availability">{t("availability.title")}</Link>
         <nav aria-label={t("a11y.doctorNavigation")}>{navItems.map((item) => <button key={item.id} className={view === item.id ? "active" : ""} onClick={() => setView(item.id)}><i>{item.mark}</i><span>{t(item.key)}</span>{item.id === "requests" && requests.length > 0 && <b>{requests.length}</b>}</button>)}</nav>
         <div className="dp-security"><span className="dp-live-dot" /><div><strong>{t("doctor.secureSession")}</strong><small>{t("doctor.autoLock", { minutes: 26 })}</small></div></div>
         <div className="dp-clinician"><span>{initialData.clinician.initials}</span><div><strong>{initialData.clinician.name}</strong><small>{t("medical.specialty.familyMedicine")}</small></div><form action={logoutAction}><PendingSubmitButton aria-label={t("auth.logout")} title={t("auth.logout")}>{t("auth.logout")}</PendingSubmitButton></form></div>
@@ -163,6 +164,7 @@ export default function DoctorPortal({
         </header>
         <nav className="dp-primary-actions" aria-label={t("a11y.doctorNavigation")}>
           <Link href="/doctor/appointments">{t("appointments.title")}</Link>
+          <Link href="/doctor/availability">{t("availability.title")}</Link>
           <Link href="/doctor/staff">{t("organization.staff.eyebrow")}</Link>
           <Link href="/doctor/invoicing">{t("invoicing.title")}</Link>
           <form action={logoutAction}><PendingSubmitButton>{t("auth.logout")}</PendingSubmitButton></form>

@@ -15,9 +15,11 @@ const initialState: RegistrationState = { status: "idle" };
 export default function RegistrationForm({
   accountType,
   invitationToken = "",
+  initialEmail = "",
 }: {
   accountType: PublicRegistrationType;
   invitationToken?: string;
+  initialEmail?: string;
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const [state, action, pending] = useActionState(registerAction, initialState);
@@ -61,7 +63,7 @@ export default function RegistrationForm({
           <input type="hidden" name="registrationType" value={accountType} />
           {(accountType === "staff" || accountType === "doctor") && <input type="hidden" name="invitationToken" value={invitationToken} />}
           <label>{t("register.fullName")}<input name="fullName" required minLength={2} maxLength={160} autoComplete="name" /></label>
-          <label>{t("register.email")}<input name="email" required type="email" autoComplete="email" /></label>
+          <label>{t("register.email")}<input name="email" required type="email" autoComplete="email" defaultValue={initialEmail} /></label>
 
           {accountType === "patient" && <>
             <label>{t("register.patient.dateOfBirth")}<input name="dateOfBirth" required type="date" /></label>

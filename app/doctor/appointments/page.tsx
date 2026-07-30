@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import AppointmentManager from "@/app/appointments/AppointmentManager";
 import { getDoctorAccess } from "@/lib/dal/auth";
-import { loadAppointments } from "@/lib/dal/appointments";
+import { loadAppointments, loadDoctorAvailability } from "@/lib/dal/appointments";
 import AccessStatusScreen from "../AccessStatusScreen";
 
 export const dynamic = "force-dynamic";
@@ -11,8 +11,12 @@ export default async function DoctorAppointmentsPage() {
   if (access.state === "unauthenticated") redirect("/doctor/login");
   if (access.state !== "approved") return <AccessStatusScreen status={access.state} />;
   let appointments;
+  let availability;
   try {
-    appointments = await loadAppointments([access.clinician.id]);
+    [appointments, availability] = await Promise.all([
+      loadAppointments([access.clinician.id]),
+      loadDoctorAvailability([access.clinician.id]),
+    ]);
   } catch {
     return <AccessStatusScreen status="unavailable" />;
   }
@@ -20,5 +24,6 @@ export default async function DoctorAppointmentsPage() {
     kind="doctor"
     doctors={[{ id: access.clinician.id, name: access.clinician.fullName }]}
     appointments={appointments}
+    availability={availability}
   />;
 }
