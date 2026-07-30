@@ -2,7 +2,10 @@ import { redirect } from "next/navigation";
 import AppointmentManager from "@/app/appointments/AppointmentManager";
 import { getDoctorAccess } from "@/lib/dal/auth";
 import { loadAppointments, loadDoctorAvailability } from "@/lib/dal/appointments";
-import { loadManagedAppointmentRequests } from "@/lib/dal/public-appointments";
+import {
+  loadManagedAppointmentChangeRequests,
+  loadManagedAppointmentRequests,
+} from "@/lib/dal/public-appointments";
 import AccessStatusScreen from "../AccessStatusScreen";
 
 export const dynamic = "force-dynamic";
@@ -14,11 +17,13 @@ export default async function DoctorAppointmentsPage() {
   let appointments;
   let availability;
   let requests;
+  let changeRequests;
   try {
-    [appointments, availability, requests] = await Promise.all([
+    [appointments, availability, requests, changeRequests] = await Promise.all([
       loadAppointments([access.clinician.id]),
       loadDoctorAvailability([access.clinician.id]),
       loadManagedAppointmentRequests([access.clinician.id]),
+      loadManagedAppointmentChangeRequests([access.clinician.id]),
     ]);
   } catch {
     return <AccessStatusScreen status="unavailable" />;
@@ -29,5 +34,6 @@ export default async function DoctorAppointmentsPage() {
     appointments={appointments}
     availability={availability}
     requests={requests}
+    changeRequests={changeRequests}
   />;
 }

@@ -9,7 +9,16 @@ import {
   transitionManagedAppointment,
 } from "@/lib/dal/appointments";
 import { sendAppointmentCreatedEmail } from "@/lib/email/appointment";
-import { decidePublicAppointmentRequest } from "@/lib/dal/public-appointments";
+import {
+  decidePublicAppointmentChange,
+  decidePublicAppointmentRequest,
+  loadManagedChangeRequestDetails,
+  loadManagedPublicRequestDetails,
+} from "@/lib/dal/public-appointments";
+import {
+  sendAppointmentChangeDecisionEmail,
+  sendAppointmentDecisionEmail,
+} from "@/lib/email/appointment-lifecycle";
 import { dispatchDueAppointmentNotifications } from "@/lib/sms/appointment-notifications";
 
 export type AppointmentActionState = {
@@ -41,6 +50,10 @@ const transitionSchema = z.object({
 const requestDecisionSchema = z.object({
   requestId: z.uuid(),
   decision: z.enum(["confirmed", "declined"]),
+});
+const changeDecisionSchema = z.object({
+  changeRequestId: z.uuid(),
+  decision: z.enum(["approved", "declined"]),
 });
 
 function errorState(error: unknown): AppointmentActionState {
@@ -140,16 +153,67 @@ export async function decideAppointmentRequestAction(
   const parsed = requestDecisionSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   try {
+    const details = await loadManagedPublicRequestDetails(parsed.data.requestId);
+    if (!details) return { status: "unauthorized" };
     const appointmentId = await decidePublicAppointmentRequest(
       parsed.data.requestId,
       parsed.data.decision,
     );
     revalidatePath("/doctor/appointments");
     revalidatePath("/staff/appointments");
-    if (parsed.data.decision === "confirmed" && appointmentId) {
-      return await tryImmediateSms(appointmentId);
+    const [emailSent, smsState] = await Promise.all([
+      sendAppointmentDecisionEmail({
+        to: details.patientEmail,
+        patientName: details.patientName,
+        doctorName: details.doctorName,
+        clinicName: details.clinicName,
+        scheduledStart: details.scheduledStart,
+        slotDurationMinutes: details.slotDurationMinutes,
+        locale: details.locale,
+        decision: parsed.data.decision,
+      }),
+      parsed.data.decision === "confirmed" && appointmentId
+        ? tryImmediateSms(appointmentId)
+        : Promise.resolve<AppointmentActionState>({ status: "saved" }),
+    ]);
+    if (!emailSent && smsState.status === "saved_sms_pending") {
+      return { status: "saved_notifications_pending" };
     }
-    return { status: "saved" };
+    if (!emailSent) return { status: "saved_email_pending" };
+    return smsState;
+  } catch (error) {
+    return errorState(error);
+  }
+}
+
+export async function decideAppointmentChangeRequestAction(
+  _previous: AppointmentActionState,
+  formData: FormData,
+): Promise<AppointmentActionState> {
+  const parsed = changeDecisionSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    const details = await loadManagedChangeRequestDetails(parsed.data.changeRequestId);
+    if (!details) return { status: "unauthorized" };
+    await decidePublicAppointmentChange(
+      parsed.data.changeRequestId,
+      parsed.data.decision,
+    );
+    revalidatePath("/doctor/appointments");
+    revalidatePath("/staff/appointments");
+    const emailSent = await sendAppointmentChangeDecisionEmail({
+      to: details.patientEmail,
+      patientName: details.patientName,
+      doctorName: details.doctorName,
+      clinicName: details.clinicName,
+      currentStart: details.currentStart,
+      requestedStart: details.requestedStart,
+      requestedSlotDurationMinutes: details.requestedSlotDurationMinutes,
+      locale: details.locale,
+      requestType: details.requestType,
+      decision: parsed.data.decision,
+    });
+    return emailSent ? { status: "saved" } : { status: "saved_email_pending" };
   } catch (error) {
     return errorState(error);
   }

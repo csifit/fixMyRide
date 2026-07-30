@@ -5,9 +5,13 @@ import { useActionState, useMemo, useState } from "react";
 import { translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { Appointment, DoctorAvailability } from "@/lib/dal/appointments";
-import type { PublicAppointmentRequest } from "@/lib/dal/public-appointments";
+import type {
+  PublicAppointmentChangeRequest,
+  PublicAppointmentRequest,
+} from "@/lib/dal/public-appointments";
 import {
   createAppointmentAction,
+  decideAppointmentChangeRequestAction,
   decideAppointmentRequestAction,
   transitionAppointmentAction,
   type AppointmentActionState,
@@ -40,6 +44,48 @@ function RequestCard({
       <input type="hidden" name="requestId" value={request.id} />
       <button name="decision" value="declined" className="request-decline" disabled={pending}>{t("appointments.decline")}</button>
       <button name="decision" value="confirmed" disabled={pending}>{t(pending ? "appointments.saving" : "appointments.confirm")}</button>
+      <Feedback state={state} t={t} />
+    </form>
+  </article>;
+}
+
+function ChangeRequestCard({
+  request,
+  doctorName,
+  language,
+  t,
+}: {
+  request: PublicAppointmentChangeRequest;
+  doctorName: string;
+  language: Language;
+  t: Translator;
+}) {
+  const [state, action, pending] = useActionState(
+    decideAppointmentChangeRequestAction,
+    idle,
+  );
+  const format = (value: string) => new Intl.DateTimeFormat(language, {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Europe/Bucharest",
+  }).format(new Date(value));
+  return <article className="appointment-request-card appointment-change-card">
+    <div>
+      <span>{t(`appointments.change.${request.requestType}` as TranslationKey)}</span>
+      <h3>{request.patientName}</h3>
+      <p><b>{t("appointments.currentTime")}:</b> {format(request.currentStart)}</p>
+      {request.requestedStart && <p><b>{t("appointments.requestedTime")}:</b> {format(request.requestedStart)} · {request.requestedSlotDurationMinutes} {t("availability.minutes")}</p>}
+      <small>{doctorName} · {request.patientPhone} · {request.patientEmail}</small>
+      {request.patientNote && <blockquote>{request.patientNote}</blockquote>}
+    </div>
+    <form action={action}>
+      <input type="hidden" name="changeRequestId" value={request.id} />
+      <button name="decision" value="declined" className="request-decline" disabled={pending}>
+        {t("appointments.decline")}
+      </button>
+      <button name="decision" value="approved" disabled={pending}>
+        {t(pending ? "appointments.saving" : "appointments.approve")}
+      </button>
       <Feedback state={state} t={t} />
     </form>
   </article>;
@@ -163,9 +209,11 @@ function TransitionForm({
     : ["rescheduled", "cancelled", "completed", "no_show"];
   return <form className="appointment-transition" action={action}>
     <input type="hidden" name="appointmentId" value={appointment.id} />
-    <select name="status" value={status} onChange={(event) => setStatus(event.target.value)}>
-      {choices.map((choice) => <option key={choice} value={choice}>{t(`appointments.status.${choice}` as TranslationKey)}</option>)}
-    </select>
+    <label>{t("appointments.chooseAction")}
+      <select name="status" value={status} onChange={(event) => setStatus(event.target.value)}>
+        {choices.map((choice) => <option key={choice} value={choice}>{t(`appointments.status.${choice}` as TranslationKey)}</option>)}
+      </select>
+    </label>
     {status === "rescheduled" ? <SlotPicker
       clinicianId={appointment.clinicianId}
       date={date}
@@ -179,7 +227,7 @@ function TransitionForm({
       <input type="hidden" name="scheduledStart" value="" />
       <input type="hidden" name="slotDurationMinutes" value="" />
     </>}
-    <button disabled={pending}>{t(pending ? "appointments.saving" : "appointments.apply")}</button>
+    <button disabled={pending}>{t(pending ? "appointments.saving" : "appointments.saveAction")}</button>
     <Feedback state={state} t={t} />
   </form>;
 }
@@ -238,12 +286,14 @@ export default function AppointmentManager({
   appointments,
   availability,
   requests,
+  changeRequests,
 }: {
   kind: "doctor" | "staff";
   doctors: DoctorChoice[];
   appointments: Appointment[];
   availability: DoctorAvailability[];
   requests: PublicAppointmentRequest[];
+  changeRequests: PublicAppointmentChangeRequest[];
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
@@ -276,6 +326,22 @@ export default function AppointmentManager({
           t={t}
         />)}
         {!requests.some((request) => request.status === "pending") && <p className="booking-empty compact">{t("appointments.noPendingRequests")}</p>}
+      </section>
+      <section className="appointment-request-queue appointment-change-queue">
+        <div><span>{changeRequests.filter((request) => request.status === "pending").length}</span><div><h2>{t("appointments.changeQueue")}</h2><p>{t("appointments.changeQueueHelp")}</p></div></div>
+        {changeRequests.filter((request) => request.status === "pending").map((request) => <ChangeRequestCard
+          key={request.id}
+          request={request}
+          doctorName={doctors.find((doctor) => doctor.id === request.clinicianId)?.name ?? ""}
+          language={language}
+          t={t}
+        />)}
+        {!changeRequests.some((request) => request.status === "pending") && <p className="booking-empty compact">{t("appointments.noPendingChanges")}</p>}
+      </section>
+      <section className="appointment-section-heading">
+        <p className="registration-kicker">{t("appointments.quickAdd")}</p>
+        <h2>{t("appointments.quickAddTitle")}</h2>
+        <p>{t("appointments.quickAddHelp")}</p>
       </section>
       <form className="appointment-form" action={action}>
         <input type="hidden" name="locale" value={language} />
