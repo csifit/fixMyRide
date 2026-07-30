@@ -101,14 +101,14 @@ export async function sendInvitationEmail({
     subject: content.subject,
     html: `<!doctype html>
 <html lang="${language}">
-  <body style="margin:0;background:#f4f8f7;color:#17332f;font-family:Arial,sans-serif">
+  <body style="margin:0;background:#F4F8F8;color:#17332f;font-family:Arial,sans-serif">
     <div style="max-width:600px;margin:0 auto;padding:32px 18px">
       <div style="background:#ffffff;border:1px solid #dce8e5;border-radius:16px;padding:30px">
-        <p style="margin:0 0 24px;color:#176f63;font-size:22px;font-weight:800">VitaPass</p>
+        <p style="margin:0 0 24px;color:#006E6E;font-size:22px;font-weight:800">VitaPass</p>
         <h1 style="margin:0 0 12px;font-size:24px">${escapeHtml(content.title)}</h1>
         <p style="margin:0 0 24px;line-height:1.6">${escapeHtml(content.message)}</p>
         <p style="margin:0 0 26px">
-          <a href="${safeUrl}" style="display:inline-block;padding:12px 18px;border-radius:8px;background:#176f63;color:#ffffff;text-decoration:none;font-weight:700">${escapeHtml(content.action)}</a>
+          <a href="${safeUrl}" style="display:inline-block;padding:12px 18px;border-radius:8px;background:#006E6E;color:#ffffff;text-decoration:none;font-weight:700">${escapeHtml(content.action)}</a>
         </p>
         <p style="margin:0;color:#667d78;font-size:13px;line-height:1.5">${escapeHtml(footer[language])}</p>
       </div>

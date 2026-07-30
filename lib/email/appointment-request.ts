@@ -107,17 +107,17 @@ export async function sendAppointmentRequestEmail(input: {
     timeZone: "Europe/Bucharest",
   }).format(new Date(input.scheduledStart));
   const html = `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#17332f;max-width:620px">
-    <h1 style="color:#176f63">VitaPass</h1>
+    <h1 style="color:#006E6E">VitaPass</h1>
     <p>${escapeHtml(text.greeting)} ${escapeHtml(input.patientName)},</p>
     <p>${escapeHtml(text.received)}</p>
-    <div style="padding:18px;border:1px solid #dbe6e3;border-radius:10px;background:#f8fbfa">
+    <div style="padding:18px;border:1px solid #dbe6e3;border-radius:10px;background:#F8FBFB">
       <strong>${escapeHtml(text.doctor)}:</strong> ${escapeHtml(input.doctorName)}<br>
       <strong>${escapeHtml(text.clinic)}:</strong> ${escapeHtml(input.clinicName)}<br>
       <strong>${escapeHtml(text.date)}:</strong> ${escapeHtml(formattedDate)} (${input.slotDurationMinutes} min)<br>
       <strong>${escapeHtml(text.status)}:</strong> ${escapeHtml(text.pending)}
     </div>
     <p>${escapeHtml(text.manage)}</p>
-    <p><a href="${escapeHtml(statusUrl)}" style="display:inline-block;padding:11px 16px;border-radius:8px;background:#176f63;color:#fff;text-decoration:none;font-weight:bold">${escapeHtml(text.manageButton)}</a></p>
+    <p><a href="${escapeHtml(statusUrl)}" style="display:inline-block;padding:11px 16px;border-radius:8px;background:#006E6E;color:#fff;text-decoration:none;font-weight:bold">${escapeHtml(text.manageButton)}</a></p>
     <p>${escapeHtml(text.account)}</p>
     <p><a href="${escapeHtml(accountUrl)}">${escapeHtml(text.accountButton)}</a></p>
   </div>`;

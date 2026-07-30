@@ -92,14 +92,14 @@ export async function sendAppointmentCreatedEmail(input: {
   }).format(new Date(input.scheduledStart));
   const html = `
     <div style="font-family:Arial,sans-serif;line-height:1.6;color:#17332f;max-width:600px">
-      <h1 style="color:#176f63">VitaPass</h1>
+      <h1 style="color:#006E6E">VitaPass</h1>
       <p>${escapeHtml(text.greeting)} ${escapeHtml(input.patientName)},</p>
       <p>${escapeHtml(text.intro)}</p>
       <p><strong>${escapeHtml(text.doctor)}:</strong> ${escapeHtml(input.doctorName)}<br>
       <strong>${escapeHtml(text.date)}:</strong> ${escapeHtml(formattedDate)} (${input.slotDurationMinutes} min)<br>
       <strong>${escapeHtml(text.status)}:</strong> ${escapeHtml(input.status)}</p>
       <p>${escapeHtml(text.register)}</p>
-      <p><a href="${escapeHtml(registrationUrl)}" style="display:inline-block;padding:11px 16px;border-radius:8px;background:#176f63;color:#fff;text-decoration:none;font-weight:bold">${escapeHtml(text.button)}</a></p>
+      <p><a href="${escapeHtml(registrationUrl)}" style="display:inline-block;padding:11px 16px;border-radius:8px;background:#006E6E;color:#fff;text-decoration:none;font-weight:bold">${escapeHtml(text.button)}</a></p>
     </div>`;
   return sendMxrouteEmail({
     to: input.to,
