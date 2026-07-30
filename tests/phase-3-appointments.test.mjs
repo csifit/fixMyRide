@@ -12,6 +12,14 @@ const manager = await readFile(new URL("app/appointments/AppointmentManager.tsx"
 const actions = await readFile(new URL("app/appointments/actions.ts", root), "utf8");
 const email = await readFile(new URL("lib/email/appointment.ts", root), "utf8");
 const patientRegistration = await readFile(new URL("app/register/patient/page.tsx", root), "utf8");
+const availabilityFix = await readFile(new URL(
+  "supabase/migrations/202607300009_availability_upsert_fix.sql",
+  root,
+), "utf8");
+const slotWeekdayFix = await readFile(new URL(
+  "supabase/migrations/202607300010_slotted_appointment_weekday_fix.sql",
+  root,
+), "utf8");
 
 const lockedMigrations = [
   ["supabase/migrations/202607290001_phase_2b1_foundation.sql", "D60DC87BADB25C0D35894DF484B1E938D7BDA5320FB669359C8740F2E018B95B"],
@@ -21,6 +29,8 @@ const lockedMigrations = [
   ["supabase/migrations/202607300005_phase_2d_runtime_fixes.sql", "B0A55F4EBF64EA9CDDB36291ACFF6EF4A13E129188BF63E20CF913E7D151A2F1"],
   ["supabase/migrations/202607300006_appointment_management_foundation.sql", "AED7C536F61154D45F7B8C2976F59288378FC5FBABFB2A0809A74A6CB9F54811"],
   ["supabase/migrations/202607300007_phase_2e_policy_helper_grants.sql", "27F3D1E37D663BF040330BF359671058505FC6B74786A9D2C6F738A457207342"],
+  ["supabase/migrations/202607300008_doctor_availability_calendar.sql", "E053E583179BB09827770EA597CDB111850C7637F22402519CA6953EA3A07997"],
+  ["supabase/migrations/202607300009_availability_upsert_fix.sql", "321CAA4EE6F29564BF723828475AF82795486BF1B496C4CDEB27E739FA1CF2D5"],
 ];
 
 test("Phase 3 preserves every earlier migration byte-for-byte", async () => {
@@ -60,4 +70,19 @@ test("the appointment manager includes a weekly calendar and generated free slot
   assert.match(manager, /function Calendar/i);
   assert.match(manager, /calendar-grid/i);
   assert.match(manager, /blockingStatuses/i);
+});
+
+test("availability upsert avoids PL/pgSQL variable and column ambiguity", () => {
+  assert.match(availabilityFix, /resolved_clinician_id/i);
+  assert.match(availabilityFix, /on conflict on constraint doctor_availability_clinician_id_weekday_key/i);
+  assert.doesNotMatch(availabilityFix, /declare[\s\S]*?\bclinician_id uuid;/i);
+  assert.match(availabilityFix, /grant execute[\s\S]+?to authenticated/i);
+});
+
+test("slot creation and rescheduling avoid weekday variable ambiguity", () => {
+  assert.match(slotWeekdayFix, /local_weekday smallint/i);
+  assert.match(slotWeekdayFix, /row_data\.weekday = local_weekday/i);
+  assert.doesNotMatch(slotWeekdayFix, /\n\s+weekday smallint;/i);
+  assert.match(slotWeekdayFix, /create or replace function public\.create_slotted_appointment/i);
+  assert.match(slotWeekdayFix, /create or replace function public\.reschedule_slotted_appointment/i);
 });

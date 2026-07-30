@@ -54,7 +54,12 @@ export async function loadAppointments(
     )
     .in("clinician_id", clinicianIds)
     .order("scheduled_start", { ascending: true });
-  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (error) {
+    console.error("load_appointments", {
+      code: error.code,
+    });
+    throw new DataAccessError(classifyDatabaseError(error));
+  }
   return ((data ?? []) as AppointmentRow[]).map((row) => ({
     id: row.id,
     clinicianId: row.clinician_id,
@@ -81,7 +86,12 @@ export async function loadDoctorAvailability(
     .select("clinician_id, weekday, start_time, end_time, slot_duration_minutes, is_active")
     .in("clinician_id", clinicianIds)
     .order("weekday");
-  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (error) {
+    console.error("load_doctor_availability", {
+      code: error.code,
+    });
+    throw new DataAccessError(classifyDatabaseError(error));
+  }
   return (data ?? []).map((row) => ({
     clinicianId: row.clinician_id as string,
     weekday: row.weekday as number,
@@ -108,7 +118,12 @@ export async function saveDoctorAvailability(input: {
     requested_is_active: input.isActive,
     request_correlation_id: crypto.randomUUID(),
   });
-  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (error) {
+    console.error("save_my_weekly_availability", {
+      code: error.code,
+    });
+    throw new DataAccessError(classifyDatabaseError(error));
+  }
 }
 
 export type CreateAppointmentInput = {
@@ -139,7 +154,12 @@ export async function createManagedAppointment(input: CreateAppointmentInput) {
     requested_initial_status: input.initialStatus,
     request_correlation_id: crypto.randomUUID(),
   });
-  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (error) {
+    console.error("create_slotted_appointment", {
+      code: error.code,
+    });
+    throw new DataAccessError(classifyDatabaseError(error));
+  }
   return data as string;
 }
 
@@ -157,7 +177,12 @@ export async function transitionManagedAppointment(
     requested_scheduled_end: scheduledEnd,
     request_correlation_id: crypto.randomUUID(),
   });
-  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (error) {
+    console.error("transition_managed_appointment", {
+      code: error.code,
+    });
+    throw new DataAccessError(classifyDatabaseError(error));
+  }
 }
 
 export async function rescheduleSlottedAppointment(
@@ -172,5 +197,10 @@ export async function rescheduleSlottedAppointment(
     requested_slot_duration_minutes: slotDurationMinutes,
     request_correlation_id: crypto.randomUUID(),
   });
-  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (error) {
+    console.error("reschedule_slotted_appointment", {
+      code: error.code,
+    });
+    throw new DataAccessError(classifyDatabaseError(error));
+  }
 }
