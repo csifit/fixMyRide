@@ -10,7 +10,7 @@ test("the committed environment template contains only blank public values", asy
   const example = await readFile(path.join(root, ".env.example"), "utf8");
   assert.equal(
     example.replaceAll("\r\n", "\n"),
-    "NEXT_PUBLIC_SUPABASE_URL=\nNEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\n",
+    "NEXT_PUBLIC_SUPABASE_URL=\nNEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\nNEXT_PUBLIC_SITE_URL=\nMXROUTE_SERVER=\nMXROUTE_USERNAME=\nMXROUTE_PASSWORD=\n",
   );
 });
 
