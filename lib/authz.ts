@@ -42,7 +42,7 @@ export function grantAllows(
   return mode === "edit" ? grant.canView && grant.canEdit : grant.canView;
 }
 
-export type AdministratorRole = "superadmin" | "admin";
+export type AdministratorRole = "superadmin" | "admin" | "manager";
 export type AdministratorStatus = "active" | "suspended";
 export type AdminRouteState =
   | "unauthenticated"

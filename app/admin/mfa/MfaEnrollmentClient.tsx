@@ -16,7 +16,7 @@ type Enrollment = {
   secret: string;
 };
 
-export default function MfaEnrollmentClient() {
+export default function MfaEnrollmentClient({ nextHref = "/admin" }: { nextHref?: "/admin" | "/admin/invoicing" }) {
   const [language, setLanguage, ready] = useLanguage();
   const [enrollment, setEnrollment] = useState<Enrollment | null>(null);
   const [code, setCode] = useState("");
@@ -44,7 +44,7 @@ export default function MfaEnrollmentClient() {
         return;
       }
       if (discovery === "challenge_required") {
-        router.replace("/admin/mfa/challenge");
+        router.replace(`/admin/mfa/challenge?next=${encodeURIComponent(nextHref)}`);
         router.refresh();
         return;
       }
@@ -61,7 +61,7 @@ export default function MfaEnrollmentClient() {
       }
       const { data, error: enrollError } = await supabase.auth.mfa.enroll({
         factorType: "totp",
-        friendlyName: "VitaPass Superadmin",
+        friendlyName: "VitaPass privileged account",
         issuer: "VitaPass",
       });
       if (enrollError) {
@@ -101,7 +101,7 @@ export default function MfaEnrollmentClient() {
         setError(classifyMfaError(verifyError));
         return;
       }
-      router.replace("/admin");
+      router.replace(nextHref);
       router.refresh();
     } catch {
       setError("unavailable");

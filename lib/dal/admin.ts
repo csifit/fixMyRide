@@ -12,6 +12,7 @@ export type AdminDashboardData = {
     displayName: string;
     role: string;
     status: string;
+    accountingAccess: boolean;
     createdAt: string;
   }>;
   clinicians: Array<{
@@ -52,7 +53,7 @@ export async function loadAdminDashboard(
     await Promise.all([
       supabase
         .from("application_administrators")
-        .select("id, display_name, role, status, created_at")
+        .select("id, display_name, role, status, accounting_access, created_at")
         .order("created_at", { ascending: false })
         .limit(50),
       supabase
@@ -95,6 +96,7 @@ export async function loadAdminDashboard(
       displayName: row.display_name,
       role: row.role,
       status: row.status,
+      accountingAccess: row.accounting_access,
       createdAt: row.created_at,
     })),
     clinicians: (clinicians.data ?? []).map((row) => ({

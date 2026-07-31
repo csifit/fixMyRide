@@ -100,7 +100,7 @@ export default function DoctorSearchClient({
           </div>
           <div className="doctor-result-action">
             <small>{ready ? t("booking.checkAvailability") : "Check real-time availability"}</small>
-            <Link href={`/appointments/${doctor.id}?date=${preferredDate}`}>{ready ? t("booking.seeAvailability") : "See availability"}</Link>
+            <Link href={`/doctors/${doctor.id}?date=${preferredDate}`}>{ready ? t("home.viewDoctor") : "View Doctor"}</Link>
           </div>
         </article>)}
         {!filteredDoctors.length && <div className="booking-empty"><h3>{ready ? t("booking.noDoctors") : "No Doctors found"}</h3><p>{ready ? t("booking.tryAnotherSearch") : "Try another Doctor, specialty or clinic."}</p></div>}

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { classifyLoginError, type LoginErrorKind } from "@/lib/auth-errors";
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export type AdminLoginState = {
   error: LoginErrorKind | "configuration" | null;
@@ -38,7 +39,7 @@ export async function adminLoginAction(
     auth_action: "sign_in",
     request_correlation_id: crypto.randomUUID(),
   });
-  redirect("/admin");
+  redirect("/admin/login");
 }
 
 export async function adminLogoutAction() {
@@ -49,4 +50,17 @@ export async function adminLogoutAction() {
   });
   await supabase.auth.signOut();
   redirect("/admin/login");
+}
+
+export async function setAccountingAccessAction(formData: FormData) {
+  const input = z.object({ administratorId: z.uuid(), enabled: z.enum(["true", "false"]) }).safeParse({
+    administratorId: formData.get("administratorId"), enabled: formData.get("enabled"),
+  });
+  if (!input.success) return;
+  const supabase = await createClient();
+  await supabase.rpc("set_administrator_accounting_access", {
+    requested_administrator_id: input.data.administratorId,
+    new_accounting_access: input.data.enabled === "true",
+  });
+  revalidatePath("/admin");
 }

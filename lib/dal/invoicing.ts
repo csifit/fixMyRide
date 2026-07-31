@@ -15,6 +15,29 @@ export type BillingProfile = {
   status: string;
 };
 
+export type ClinicBillingUsage = {
+  month: string;
+  status: "open" | "closed";
+  clinicianId: string;
+  clinicianName: string;
+  subscriptionCents: number;
+  smsCount: number;
+  smsUnitCents: number;
+  totalCents: number;
+};
+
+export type PlatformBillingUsage = {
+  month: string;
+  payerKind: "doctor" | "clinic";
+  payerId: string;
+  payerName: string;
+  doctorCount: number;
+  smsCount: number;
+  totalCents: number;
+};
+
+export type BillingRate = { effectiveMonth: string; subscriptionCents: number; smsUnitCents: number };
+
 type BillingRow = {
   legal_name: string | null;
   fiscal_identifier: string | null;
@@ -95,6 +118,62 @@ export async function updateMyBilling(
     new_billing_email: profile.billingEmail,
     new_billing_contact: profile.billingContact,
     request_correlation_id: crypto.randomUUID(),
+  });
+  if (error) throw new DataAccessError(classifyDatabaseError(error));
+}
+
+export async function loadClinicBillingUsage(clinicId: string, months = 6): Promise<ClinicBillingUsage[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_clinic_billing_usage", {
+    requested_clinic_id: clinicId,
+    requested_months: months,
+  });
+  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  return (data ?? []).map((row: Record<string, unknown>) => ({
+    month: row.usage_month as string,
+    status: row.statement_status as "open" | "closed",
+    clinicianId: row.clinician_id as string,
+    clinicianName: row.clinician_name as string,
+    subscriptionCents: Number(row.subscription_cents),
+    smsCount: Number(row.sms_count),
+    smsUnitCents: Number(row.sms_unit_cents),
+    totalCents: Number(row.total_cents),
+  }));
+}
+
+export async function loadPlatformBillingUsage(months = 6): Promise<PlatformBillingUsage[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_platform_billing_usage", {
+    requested_months: months,
+  });
+  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  return (data ?? []).map((row: Record<string, unknown>) => ({
+    month: row.usage_month as string,
+    payerKind: row.payer_kind as "doctor" | "clinic",
+    payerId: row.payer_id as string,
+    payerName: row.payer_name as string,
+    doctorCount: Number(row.doctor_count),
+    smsCount: Number(row.sms_count),
+    totalCents: Number(row.total_cents),
+  }));
+}
+
+export async function loadBillingRates(): Promise<BillingRate[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_billing_rates");
+  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  return (data ?? []).map((row: Record<string, unknown>) => ({
+    effectiveMonth: row.effective_month as string,
+    subscriptionCents: Number(row.subscription_cents),
+    smsUnitCents: Number(row.sms_unit_cents),
+  }));
+}
+
+export async function setNextBillingRates(subscriptionCents: number, smsUnitCents: number) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("set_next_billing_rates", {
+    new_subscription_cents: subscriptionCents,
+    new_sms_unit_cents: smsUnitCents,
   });
   if (error) throw new DataAccessError(classifyDatabaseError(error));
 }

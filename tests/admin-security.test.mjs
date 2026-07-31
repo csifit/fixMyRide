@@ -166,7 +166,7 @@ test("client enrollment stops on lookup errors and existing verified TOTP", () =
   assert.ok(failClosed > lookup && failClosed < enroll);
   assert.ok(existingFactor > lookup && existingFactor < enroll);
   assert.match(enrollmentSource, /setSecurityError\(true\);\s+return;/);
-  assert.match(enrollmentSource, /router\.replace\("\/admin\/mfa\/challenge"\)/);
+  assert.match(enrollmentSource, /router\.replace\(`\/admin\/mfa\/challenge\?next=/);
 });
 
 test("MFA enrollment uses the VitaPass issuer and never localhost", () => {
@@ -174,7 +174,7 @@ test("MFA enrollment uses the VitaPass issuer and never localhost", () => {
     /supabase\.auth\.mfa\.enroll\(\{[\s\S]+?\}\)/,
   )?.[0] ?? "";
   assert.match(enrollmentCall, /issuer:\s*"VitaPass"/);
-  assert.match(enrollmentCall, /friendlyName:\s*"VitaPass Superadmin"/);
+  assert.match(enrollmentCall, /friendlyName:\s*"VitaPass privileged account"/);
   assert.doesNotMatch(enrollmentCall, /localhost(?::\d+)?/i);
 });
 

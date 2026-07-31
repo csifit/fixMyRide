@@ -18,7 +18,7 @@ import {
   grantStatusKey,
 } from "@/app/i18n/admin-values";
 import type { AdminDashboardData } from "@/lib/dal/admin";
-import { adminLogoutAction } from "./actions";
+import { adminLogoutAction, setAccountingAccessAction } from "./actions";
 import PendingSubmitButton from "@/app/PendingSubmitButton";
 
 type Section = "users" | "doctors" | "patients" | "grants" | "audit";
@@ -63,6 +63,7 @@ export default function AdminDashboard({
             </button>
           ))}
         </nav>
+        <Link className="admin-accounting-link" href="/admin/invoicing">{t("invoicing.title")}</Link>
         <div className="admin-identity">
           <strong>{data.administrator.displayName}</strong>
           <small>{t("admin.role.superadmin")} · AAL2</small>
@@ -110,7 +111,7 @@ export default function AdminDashboard({
             </small>
           </div>
           {section === "users" && (
-            <AdminTable
+            <><AdminTable
               headers={[t("admin.table.name"), t("admin.table.role"), t("admin.table.status"), t("admin.table.created")]}
               rows={data.administrators.map((row) => [
                 row.displayName,
@@ -119,7 +120,7 @@ export default function AdminDashboard({
                 formatDateTime(language, row.createdAt),
               ])}
               empty={t("admin.empty.users")}
-            />
+            /><div className="admin-accounting-access"><h2>{t("billing.accountingAccess")}</h2><p>{t("billing.accountingAccessHelp")}</p>{data.administrators.filter((row) => row.role === "manager").map((row) => <form action={setAccountingAccessAction} key={row.id}><input type="hidden" name="administratorId" value={row.id} /><span><strong>{row.displayName}</strong><small>{t(administratorRoleKey(row.role))}</small></span><input type="hidden" name="enabled" value={String(!row.accountingAccess)} /><b>{t(row.accountingAccess ? "billing.accessEnabled" : "billing.accessDisabled")}</b><button>{t(row.accountingAccess ? "billing.removeAccess" : "billing.grantAccess")}</button></form>)}</div></>
           )}
           {section === "doctors" && (
             <AdminTable

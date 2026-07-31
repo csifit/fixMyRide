@@ -1,0 +1,145 @@
+{
+  "variant": "light",
+  "backgroundColor": "#F4F8F7",
+  "metadata": {
+    "name": "VitaPass Calm Clinical",
+    "description": "A calm medical map emphasizing healthcare locations, roads, parks, and navigation."
+  },
+  "styles": [
+    {
+      "id": "natural.land",
+      "geometry": {
+        "fillColor": "#EEF5F3"
+      }
+    },
+    {
+      "id": "natural.land.landCover.forest",
+      "geometry": {
+        "fillColor": "#DCECE6"
+      }
+    },
+    {
+      "id": "natural.water",
+      "geometry": {
+        "fillColor": "#BFDADA"
+      },
+      "label": {
+        "textFillColor": "#315D54",
+        "textStrokeColor": "#EAF4F2"
+      }
+    },
+    {
+      "id": "political.border",
+      "geometry": {
+        "strokeColor": "#AFC8C2",
+        "strokeWeight": 1
+      }
+    },
+    {
+      "id": "political.city",
+      "label": {
+        "textFillColor": "#244B44",
+        "textStrokeColor": "#F7FAF9"
+      }
+    },
+    {
+      "id": "political.neighborhood",
+      "label": {
+        "textFillColor": "#648078",
+        "textStrokeColor": "#F7FAF9"
+      }
+    },
+    {
+      "id": "infrastructure.building",
+      "geometry": {
+        "fillColor": "#E4ECEA",
+        "strokeColor": "#CEDDD9"
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road",
+      "geometry": {
+        "fillColor": "#FFFFFF",
+        "strokeColor": "#D6E4E1"
+      },
+      "label": {
+        "textFillColor": "#5C716C",
+        "textStrokeColor": "#FFFFFF"
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road.local",
+      "geometry": {
+        "fillColor": "#FFFFFF",
+        "strokeColor": "#DDE8E5"
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road.arterial",
+      "geometry": {
+        "fillColor": "#F8FCFB",
+        "strokeColor": "#BFD4CF"
+      }
+    },
+    {
+      "id": "infrastructure.roadNetwork.road.highway",
+      "geometry": {
+        "fillColor": "#B9D9D5",
+        "strokeColor": "#8FBDB5"
+      }
+    },
+    {
+      "id": "pointOfInterest",
+      "label": {
+        "visible": false
+      }
+    },
+    {
+      "id": "pointOfInterest.recreation.park",
+      "geometry": {
+        "fillColor": "#D9ECE4"
+      },
+      "label": {
+        "visible": true,
+        "textFillColor": "#4F786D",
+        "textStrokeColor": "#F4F8F7"
+      }
+    },
+    {
+      "id": "pointOfInterest.emergency.hospital",
+      "geometry": {
+        "fillColor": "#D8ECE8"
+      },
+      "label": {
+        "visible": true,
+        "pinFillColor": "#006E6E",
+        "pinGlyphColor": "#FFFFFF",
+        "textFillColor": "#244B44",
+        "textStrokeColor": "#FFFFFF"
+      }
+    },
+    {
+      "id": "pointOfInterest.emergency.pharmacy",
+      "geometry": {
+        "fillColor": "#E1F0ED"
+      },
+      "label": {
+        "visible": true,
+        "pinFillColor": "#31857A",
+        "pinGlyphColor": "#FFFFFF",
+        "textFillColor": "#315D54",
+        "textStrokeColor": "#FFFFFF"
+      }
+    },
+    {
+      "id": "infrastructure.transitStation",
+      "label": {
+        "visible": true,
+        "pinFillColor": "#77AAA1",
+        "pinGlyphColor": "#FFFFFF",
+        "textFillColor": "#496B64",
+        "textStrokeColor": "#FFFFFF"
+      }
+    }
+  ]
+}

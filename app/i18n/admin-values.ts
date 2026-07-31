@@ -3,6 +3,7 @@ import type { TranslationKey } from ".";
 const administratorRoleKeys: Record<string, TranslationKey> = {
   superadmin: "admin.role.superadmin",
   admin: "admin.role.admin",
+  manager: "admin.role.manager",
 };
 
 const administratorStatusKeys: Record<string, TranslationKey> = {

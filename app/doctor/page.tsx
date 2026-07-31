@@ -2,6 +2,7 @@ import DoctorPortal from "./DoctorPortalClient";
 import { redirect } from "next/navigation";
 import { getDoctorAccess } from "@/lib/dal/auth";
 import { loadDoctorDashboard } from "@/lib/dal/doctor";
+import { loadDoctorWorkspace } from "@/lib/dal/workspaces";
 import AccessStatusScreen from "./AccessStatusScreen";
 import {
   createLifeThreateningDiagnosisAction,
@@ -30,14 +31,19 @@ export default async function DoctorPage() {
   }
 
   let data;
+  let workspace;
   try {
-    data = await loadDoctorDashboard(access.clinician);
+    [data, workspace] = await Promise.all([
+      loadDoctorDashboard(access.clinician),
+      loadDoctorWorkspace(),
+    ]);
   } catch {
     return <AccessStatusScreen status="unavailable" />;
   }
   return (
     <DoctorPortal
       initialData={data}
+      canEditBilling={workspace?.canEditBilling ?? false}
       logoutAction={logoutAction}
       createLifeThreateningDiagnosisAction={
         createLifeThreateningDiagnosisAction

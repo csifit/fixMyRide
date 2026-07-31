@@ -81,7 +81,7 @@ export default function HomeDiscoveryClient({
           <small>{specialtyName(selected.specialty)}</small>
           <strong>{selected.name}</strong>
           <span>{selected.clinicName} · {selected.city || selected.clinicCountry}</span>
-          <Link href={`/appointments/${selected.id}?date=${preferredDate}`}>{ready ? t("home.viewDoctor") : "View Doctor"}</Link>
+          <Link href={`/doctors/${selected.id}?date=${preferredDate}`}>{ready ? t("home.viewDoctor") : "View Doctor"}</Link>
         </article>}
       </div>
 
@@ -135,7 +135,7 @@ export default function HomeDiscoveryClient({
           <strong>{specialtyName(doctor.specialty)}</strong>
           <p>{doctor.clinicName}<br />{doctor.city || doctor.clinicCountry}</p>
           <div className="home-rating" aria-label={ready ? t("home.noRatings") : "No ratings yet"}><span>☆☆☆☆☆</span> (0)</div>
-          <Link href={`/appointments/${doctor.id}?date=${preferredDate}`}>{ready ? t("home.checkAvailability") : "Check availability"}</Link>
+          <Link href={`/doctors/${doctor.id}?date=${preferredDate}`}>{ready ? t("home.viewDoctor") : "View Doctor"}</Link>
         </article>)}
         {!filtered.length && <div className="booking-empty"><h3>{ready ? t("booking.noDoctors") : "No Doctors found"}</h3><p>{ready ? t("booking.tryAnotherSearch") : "Try another search."}</p></div>}
       </div>

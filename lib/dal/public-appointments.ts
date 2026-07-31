@@ -13,6 +13,13 @@ export type PublicDoctor = {
   practiceAddress: string | null;
   latitude: number | null;
   longitude: number | null;
+  professionalBio: string | null;
+  publicPhone: string | null;
+  publicEmail: string | null;
+  yearsExperience: number | null;
+  spokenLanguages: string[];
+  acceptsNewPatients: boolean;
+  isClinicSponsored: boolean;
 };
 
 export type PublicSlot = {
@@ -89,6 +96,15 @@ export async function searchPublicDoctors(search = ""): Promise<PublicDoctor[]> 
     longitude: row.longitude === null || row.longitude === undefined
       ? null
       : Number(row.longitude),
+    professionalBio: typeof row.professional_bio === "string" ? row.professional_bio : null,
+    publicPhone: typeof row.public_phone === "string" ? row.public_phone : null,
+    publicEmail: typeof row.public_email === "string" ? row.public_email : null,
+    yearsExperience: row.years_experience === null || row.years_experience === undefined
+      ? null
+      : Number(row.years_experience),
+    spokenLanguages: Array.isArray(row.spoken_languages) ? row.spoken_languages as string[] : [],
+    acceptsNewPatients: row.accepts_new_patients !== false,
+    isClinicSponsored: Boolean(row.is_clinic_sponsored),
   }));
 }
 

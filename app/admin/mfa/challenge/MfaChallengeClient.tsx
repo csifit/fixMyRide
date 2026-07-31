@@ -9,7 +9,7 @@ import { classifyMfaError, type MfaErrorKind } from "@/lib/auth-errors";
 import { adminLogoutAction } from "../../actions";
 import PendingSubmitButton from "@/app/PendingSubmitButton";
 
-export default function MfaChallengeClient({ factorId }: { factorId: string }) {
+export default function MfaChallengeClient({ factorId, nextHref = "/admin" }: { factorId: string; nextHref?: "/admin" | "/admin/invoicing" }) {
   const [language, setLanguage, ready] = useLanguage();
   const [code, setCode] = useState("");
   const [error, setError] = useState<MfaErrorKind | null>(null);
@@ -36,7 +36,7 @@ export default function MfaChallengeClient({ factorId }: { factorId: string }) {
         setError(classifyMfaError(verifyError));
         return;
       }
-      router.replace("/admin");
+      router.replace(nextHref);
       router.refresh();
     } catch {
       setError("unavailable");

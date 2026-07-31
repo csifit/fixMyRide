@@ -33,6 +33,12 @@ export type AdminAccessResult =
   | { state: Exclude<AdminRouteState, "authorized"> }
   | { state: "authorized"; administrator: AdministratorContext };
 
+export type AccountingContext = {
+  id: string;
+  displayName: string;
+  role: AdministratorRole;
+};
+
 export async function getAdminAccess(): Promise<AdminAccessResult> {
   if (!readSupabaseEnvironment().configured) return { state: "configuration" };
 
@@ -96,4 +102,24 @@ export async function getAdminMfaDestination() {
     state,
     destination: "/admin/mfa/enroll",
   } as const;
+}
+
+export async function getAccountingAccess(): Promise<
+  | { state: "authorized"; administrator: AccountingContext }
+  | { state: "configuration" | "unavailable" | "unauthenticated" | "unauthorized" | "suspended" | "mfa_required" }
+> {
+  if (!readSupabaseEnvironment().configured) return { state: "configuration" };
+  const supabase = await createClient();
+  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
+  if (claimsError && isTemporarilyUnavailable(claimsError)) return { state: "unavailable" };
+  const claims = claimsError ? undefined : claimsData?.claims;
+  const authUserId = typeof claims?.sub === "string" ? claims.sub : undefined;
+  if (!authUserId) return { state: "unauthenticated" };
+  const { data, error } = await supabase.rpc("get_my_accounting_identity").maybeSingle();
+  if (error) return { state: "unavailable" };
+  const row = data as ({ id: string; auth_user_id: string; role: AdministratorRole; status: AdministratorStatus; display_name: string; accounting_access: boolean } | null);
+  if (!row || row.auth_user_id !== authUserId || (row.role !== "superadmin" && row.role !== "admin" && !row.accounting_access)) return { state: "unauthorized" };
+  if (row.status !== "active") return { state: "suspended" };
+  if (claims?.aal !== "aal2") return { state: "mfa_required" };
+  return { state: "authorized", administrator: { id: row.id, displayName: row.display_name, role: row.role } };
 }

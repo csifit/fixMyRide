@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import AdminAccessStatusScreen from "../../AccessStatusScreen";
 import {
   getAdminAccess,
+  getAccountingAccess,
   getAdminMfaDestination,
 } from "@/lib/dal/admin-auth";
 import MfaEnrollmentClient from "../MfaEnrollmentClient";
@@ -9,10 +10,13 @@ import MfaEnrollmentClient from "../MfaEnrollmentClient";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export default async function AdminMfaEnrollmentPage() {
-  const access = await getAdminAccess();
+export default async function AdminMfaEnrollmentPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+  const requestedNext = (await searchParams).next;
+  const nextHref = requestedNext === "/admin/invoicing" ? requestedNext : "/admin";
+  const adminAccess = await getAdminAccess();
+  const access = adminAccess.state === "unauthorized" ? await getAccountingAccess() : adminAccess;
   if (access.state === "unauthenticated") redirect("/admin/login");
-  if (access.state === "authorized") redirect("/admin");
+  if (access.state === "authorized") redirect(nextHref);
   if (access.state === "configuration") {
     return <AdminAccessStatusScreen status="configuration" />;
   }
@@ -26,6 +30,6 @@ export default async function AdminMfaEnrollmentPage() {
   if (mfa.state === "security_error") {
     return <AdminAccessStatusScreen status="securityError" />;
   }
-  if (mfa.state === "challenge_required") redirect(mfa.destination);
-  return <MfaEnrollmentClient />;
+  if (mfa.state === "challenge_required") redirect(`${mfa.destination}?next=${encodeURIComponent(nextHref)}`);
+  return <MfaEnrollmentClient nextHref={nextHref} />;
 }
