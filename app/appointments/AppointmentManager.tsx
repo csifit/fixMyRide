@@ -232,50 +232,191 @@ function TransitionForm({
   </form>;
 }
 
+type CalendarView = "agenda" | "day" | "week" | "month";
+
+function startOfDay(value: Date) {
+  const date = new Date(value);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+function startOfWeek(value: Date) {
+  const date = startOfDay(value);
+  date.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+  return date;
+}
+
+function addDays(value: Date, amount: number) {
+  const date = new Date(value);
+  date.setDate(date.getDate() + amount);
+  return date;
+}
+
+function CalendarAppointment({
+  appointment,
+  language,
+  t,
+  selected,
+  onSelect,
+  compact = false,
+}: {
+  appointment: Appointment;
+  language: Language;
+  t: Translator;
+  selected: boolean;
+  onSelect: () => void;
+  compact?: boolean;
+}) {
+  return <button
+    type="button"
+    className={`calendar-appointment status-${appointment.status}${selected ? " selected" : ""}`}
+    onClick={onSelect}
+    aria-pressed={selected}
+  >
+    <time>{new Intl.DateTimeFormat(language, { hour: "2-digit", minute: "2-digit" }).format(new Date(appointment.scheduledStart))}</time>
+    <strong>{appointment.patientName}</strong>
+    {!compact && <small>{t(`appointments.status.${appointment.status}` as TranslationKey)}</small>}
+  </button>;
+}
+
 function Calendar({
   appointments,
+  availability,
+  doctors,
   language,
   t,
 }: {
   appointments: Appointment[];
+  availability: DoctorAvailability[];
+  doctors: DoctorChoice[];
   language: Language;
   t: Translator;
 }) {
-  const [weekOffset, setWeekOffset] = useState(0);
-  const days = useMemo(() => {
-    const today = new Date();
-    const monday = new Date(today);
-    monday.setHours(0, 0, 0, 0);
-    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7) + weekOffset * 7);
-    return Array.from({ length: 7 }, (_, index) => {
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + index);
-      return date;
-    });
-  }, [weekOffset]);
+  const [view, setView] = useState<CalendarView>("agenda");
+  const [cursor, setCursor] = useState(() => startOfDay(new Date()));
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const selected = appointments.find((appointment) => appointment.id === selectedId) ?? null;
+  const orderedAppointments = useMemo(
+    () => [...appointments].sort((a, b) => new Date(a.scheduledStart).getTime() - new Date(b.scheduledStart).getTime()),
+    [appointments],
+  );
+  const weekDays = useMemo(() => {
+    const monday = startOfWeek(cursor);
+    return Array.from({ length: 7 }, (_, index) => addDays(monday, index));
+  }, [cursor]);
+  const monthDays = useMemo(() => {
+    const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+    const gridStart = startOfWeek(first);
+    return Array.from({ length: 42 }, (_, index) => addDays(gridStart, index));
+  }, [cursor]);
+  const visibleAppointments = orderedAppointments.filter((appointment) => {
+    const start = new Date(appointment.scheduledStart);
+    if (view === "day") return dateValue(start) === dateValue(cursor);
+    if (view === "week") return start >= weekDays[0] && start < addDays(weekDays[6], 1);
+    return start.getFullYear() === cursor.getFullYear() && start.getMonth() === cursor.getMonth();
+  });
+  const move = (direction: number) => {
+    const next = new Date(cursor);
+    if (view === "day") next.setDate(next.getDate() + direction);
+    else if (view === "week") next.setDate(next.getDate() + direction * 7);
+    else next.setMonth(next.getMonth() + direction);
+    setCursor(startOfDay(next));
+  };
+  const periodLabel = view === "day"
+    ? new Intl.DateTimeFormat(language, { weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(cursor)
+    : view === "week"
+      ? `${new Intl.DateTimeFormat(language, { day: "numeric", month: "short" }).format(weekDays[0])} – ${new Intl.DateTimeFormat(language, { day: "numeric", month: "short", year: "numeric" }).format(weekDays[6])}`
+      : new Intl.DateTimeFormat(language, { month: "long", year: "numeric" }).format(cursor);
+
+  const renderAppointmentsForDay = (day: Date, compact = false) => {
+    const items = orderedAppointments.filter((appointment) => dateValue(new Date(appointment.scheduledStart)) === dateValue(day));
+    const shown = compact ? items.slice(0, 3) : items;
+    return <>
+      {shown.map((appointment) => <CalendarAppointment
+        key={appointment.id}
+        appointment={appointment}
+        language={language}
+        t={t}
+        selected={selectedId === appointment.id}
+        onSelect={() => setSelectedId(appointment.id)}
+        compact={compact}
+      />)}
+      {compact && items.length > shown.length && <small className="calendar-more">+{items.length - shown.length} {t("calendar.more")}</small>}
+      {!items.length && !compact && <small className="calendar-empty">{t("calendar.emptyDay")}</small>}
+    </>;
+  };
+
   return <section className="appointment-calendar">
-    <header>
-      <h2>{t("calendar.title")}</h2>
-      <div><button onClick={() => setWeekOffset((value) => value - 1)} aria-label={t("calendar.previous")}>‹</button>
-      <button onClick={() => setWeekOffset(0)}>{t("calendar.today")}</button>
-      <button onClick={() => setWeekOffset((value) => value + 1)} aria-label={t("calendar.next")}>›</button></div>
+    <header className="calendar-toolbar">
+      <div>
+        <h2>{t("calendar.title")}</h2>
+        <strong>{periodLabel}</strong>
+      </div>
+      <div className="calendar-navigation">
+        <button type="button" onClick={() => move(-1)} aria-label={t("calendar.previous")}>‹</button>
+        <button type="button" onClick={() => setCursor(startOfDay(new Date()))}>{t("calendar.today")}</button>
+        <button type="button" onClick={() => move(1)} aria-label={t("calendar.next")}>›</button>
+      </div>
+      <div className="calendar-view-switcher" aria-label={t("calendar.viewLabel")}>
+        {(["agenda", "day", "week", "month"] as CalendarView[]).map((choice) => <button
+          type="button"
+          key={choice}
+          className={view === choice ? "active" : ""}
+          aria-pressed={view === choice}
+          onClick={() => setView(choice)}
+        >{t(`calendar.view.${choice}` as TranslationKey)}</button>)}
+      </div>
     </header>
-    <div className="calendar-grid">
-      {days.map((day) => {
-        const dayAppointments = appointments.filter((appointment) =>
-          dateValue(new Date(appointment.scheduledStart)) === dateValue(day)
-          && appointment.status !== "cancelled"
-        );
-        return <article key={day.toISOString()}>
-          <h3>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric", month: "short" }).format(day)}</h3>
-          {dayAppointments.map((appointment) => <div key={appointment.id}>
-            <time>{new Intl.DateTimeFormat(language, { hour: "2-digit", minute: "2-digit" }).format(new Date(appointment.scheduledStart))}</time>
-            <strong>{appointment.patientName}</strong>
-            <small>{t(`appointments.status.${appointment.status}` as TranslationKey)}</small>
-          </div>)}
-          {!dayAppointments.length && <small>{t("calendar.emptyDay")}</small>}
-        </article>;
-      })}
+    <div className="calendar-status-legend" aria-label={t("calendar.statusLegend")}>
+      {(["pending", "confirmed", "rescheduled", "cancelled", "completed", "no_show"] as Appointment["status"][]).map((status) =>
+        <span className={`status-${status}`} key={status}>{t(`appointments.status.${status}` as TranslationKey)}</span>
+      )}
+    </div>
+    <div className="calendar-and-details">
+      <div className={`calendar-surface calendar-${view}`}>
+        {view === "agenda" && <div className="calendar-agenda-list">
+          {visibleAppointments.map((appointment) => <article key={appointment.id}>
+            <time>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric", month: "short" }).format(new Date(appointment.scheduledStart))}</time>
+            <CalendarAppointment appointment={appointment} language={language} t={t} selected={selectedId === appointment.id} onSelect={() => setSelectedId(appointment.id)} />
+          </article>)}
+          {!visibleAppointments.length && <p className="calendar-empty">{t("calendar.noAppointmentsInView")}</p>}
+        </div>}
+        {view === "day" && <article className="calendar-day-column">
+          <h3>{new Intl.DateTimeFormat(language, { weekday: "long", day: "numeric", month: "long" }).format(cursor)}</h3>
+          {renderAppointmentsForDay(cursor)}
+        </article>}
+        {view === "week" && <div className="calendar-week-grid">
+          {weekDays.map((day) => <article key={day.toISOString()}>
+            <h3>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric", month: "short" }).format(day)}</h3>
+            {renderAppointmentsForDay(day)}
+          </article>)}
+        </div>}
+        {view === "month" && <div className="calendar-month-grid">
+          {monthDays.map((day) => <article className={day.getMonth() === cursor.getMonth() ? "" : "outside-month"} key={day.toISOString()}>
+            <h3>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric" }).format(day)}</h3>
+            {renderAppointmentsForDay(day, true)}
+          </article>)}
+        </div>}
+      </div>
+      <aside className="calendar-details" aria-live="polite">
+        {selected ? <>
+          <header>
+            <div><small>{t("calendar.appointmentDetails")}</small><h3>{selected.patientName}</h3></div>
+            <button type="button" onClick={() => setSelectedId(null)} aria-label={t("calendar.closeDetails")}>×</button>
+          </header>
+          <span className={`calendar-detail-status status-${selected.status}`}>{t(`appointments.status.${selected.status}` as TranslationKey)}</span>
+          <dl>
+            <div><dt>{t("appointments.date")}</dt><dd>{new Intl.DateTimeFormat(language, { dateStyle: "full", timeStyle: "short" }).format(new Date(selected.scheduledStart))}</dd></div>
+            <div><dt>{t("calendar.duration")}</dt><dd>{selected.slotDurationMinutes ?? Math.round((new Date(selected.scheduledEnd).getTime() - new Date(selected.scheduledStart).getTime()) / 60_000)} {t("availability.minutes")}</dd></div>
+            <div><dt>{t("appointments.doctor")}</dt><dd>{doctors.find((doctor) => doctor.id === selected.clinicianId)?.name ?? "—"}</dd></div>
+            <div><dt>{t("appointments.patientPhone")}</dt><dd>{selected.patientPhone}</dd></div>
+            {selected.patientEmail && <div><dt>{t("appointments.patientEmail")}</dt><dd>{selected.patientEmail}</dd></div>}
+            <div><dt>{t("appointments.source")}</dt><dd>{t(`appointments.source.${selected.source}` as TranslationKey)}</dd></div>
+            {selected.operationalNote && <div><dt>{t("appointments.note")}</dt><dd>{selected.operationalNote}</dd></div>}
+          </dl>
+          <TransitionForm appointment={selected} availability={availability} appointments={appointments} language={language} t={t} />
+        </> : <p className="calendar-select-prompt">{t("calendar.selectAppointment")}</p>}
+      </aside>
     </div>
   </section>;
 }
@@ -316,6 +457,7 @@ export default function AppointmentManager({
       <p className="registration-kicker">{t("appointments.eyebrow")}</p>
       <h1>{t("appointments.title")}</h1>
       <p>{t("appointments.description")}</p>
+      {kind === "staff" && <p className="appointment-scope-note">{t("appointments.staffScope")}</p>}
       <section className="appointment-request-queue">
         <div><span>{requests.filter((request) => request.status === "pending").length}</span><div><h2>{t("appointments.requestQueue")}</h2><p>{t("appointments.requestQueueHelp")}</p></div></div>
         {requests.filter((request) => request.status === "pending").map((request) => <RequestCard
@@ -357,16 +499,7 @@ export default function AppointmentManager({
         <button disabled={pending || !clinicianId}>{t(pending ? "appointments.saving" : "appointments.create")}</button>
         <Feedback state={state} t={t} />
       </form>
-      <Calendar appointments={appointments} language={language} t={t} />
-      <h2>{t("appointments.list")}</h2>
-      <div className="appointment-list">
-        {appointments.length ? appointments.map((appointment) => <article key={appointment.id}>
-          <header><div><h3>{appointment.patientName}</h3><p>{new Intl.DateTimeFormat(language, { dateStyle: "medium", timeStyle: "short" }).format(new Date(appointment.scheduledStart))} · {appointment.slotDurationMinutes ?? Math.round((new Date(appointment.scheduledEnd).getTime() - new Date(appointment.scheduledStart).getTime()) / 60_000)} {t("availability.minutes")}</p></div><b>{t(`appointments.status.${appointment.status}` as TranslationKey)}</b></header>
-          <p>{appointment.patientPhone} · {t(`appointments.source.${appointment.source}` as TranslationKey)}</p>
-          {appointment.operationalNote && <p>{appointment.operationalNote}</p>}
-          <TransitionForm appointment={appointment} availability={availability} appointments={appointments} language={language} t={t} />
-        </article>) : <p className="organization-card">{t("appointments.empty")}</p>}
-      </div>
+      <Calendar appointments={appointments} availability={availability} doctors={doctors} language={language} t={t} />
     </section>
   </main>;
 }

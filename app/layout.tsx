@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
+import { brand } from "@/lib/brand";
 import "./globals.css";
 
 const productionHost =
@@ -9,28 +11,26 @@ const productionHost =
 
 export const metadata: Metadata = {
   metadataBase: new URL(productionHost),
-  title: "VitaPass — Connected patient and clinical care",
+  title: `${brand.name} — Connected patient and clinical care`,
   description:
-    "A multilingual medical-profile prototype for patients and healthcare professionals.",
+    "A multilingual medical-profile service for patients and healthcare professionals.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
   },
   openGraph: {
-    title: "VitaPass",
+    title: brand.name,
     description: "Clinical care, connected.",
-    images: [
-      {
-        url: "/og-clinical.png",
-        width: 1734,
-        height: 907,
-        alt: "VitaPass clinical care portal",
-      },
-    ],
+    images: [{
+      url: "/og-clinical.png",
+      width: 1734,
+      height: 907,
+      alt: `${brand.name} clinical care portal`,
+    }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "VitaPass",
+    title: brand.name,
     description: "Clinical care, connected.",
     images: ["/og-clinical.png"],
   },
@@ -43,7 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body style={{ "--brand-primary": brand.primaryColor } as CSSProperties}>
+        {children}
+      </body>
     </html>
   );
 }

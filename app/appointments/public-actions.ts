@@ -17,7 +17,7 @@ export type PublicBookingState = {
 
 const schema = z.object({
   clinicianId: z.uuid(),
-  scheduledStart: z.iso.datetime(),
+  scheduledStart: z.iso.datetime({ offset: true }),
   slotDurationMinutes: z.coerce.number().pipe(z.union([
     z.literal(15), z.literal(30), z.literal(45),
   ])),

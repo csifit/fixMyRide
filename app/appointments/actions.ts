@@ -32,7 +32,7 @@ const createSchema = z.object({
   patientEmail: z.email().max(320),
   doctorName: z.string().trim().min(2).max(160),
   source: z.enum(["online", "phone", "walk_in", "email", "other"]),
-  scheduledStart: z.iso.datetime(),
+  scheduledStart: z.iso.datetime({ offset: true }),
   slotDurationMinutes: z.coerce.number().pipe(z.union([z.literal(15), z.literal(30), z.literal(45)])),
   locale: z.enum(["en", "de", "ro", "hu"]),
   operationalNote: z.string().trim().max(500).transform((value) => value || null),
@@ -41,7 +41,10 @@ const createSchema = z.object({
 const transitionSchema = z.object({
   appointmentId: z.uuid(),
   status: z.enum(["confirmed", "rescheduled", "cancelled", "completed", "no_show"]),
-  scheduledStart: z.union([z.literal(""), z.iso.datetime()]).transform((value) => value || null),
+  scheduledStart: z.union([
+    z.literal(""),
+    z.iso.datetime({ offset: true }),
+  ]).transform((value) => value || null),
   slotDurationMinutes: z.union([
     z.literal(""),
     z.coerce.number().pipe(z.union([z.literal(15), z.literal(30), z.literal(45)])),

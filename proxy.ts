@@ -11,6 +11,7 @@ export const config = {
     "/admin/:path*",
     "/clinic-manager/:path*",
     "/staff/:path*",
+    "/patient/:path*",
     "/auth/:path*",
     "/register/set-password",
   ],

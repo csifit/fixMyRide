@@ -19,7 +19,7 @@ const passwordSchema = z.object({
 });
 
 const destinations: Record<string, string> = {
-  patient: "/",
+  patient: "/patient/appointments",
   doctor: "/doctor",
   clinic_manager: "/clinic-manager",
   staff: "/staff",

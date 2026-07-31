@@ -34,20 +34,20 @@ export async function sendSmsLinkMessage(
   const environment = readSmsEnvironment();
   if (!environment.success) return { ok: false, errorCode: "configuration" };
 
-  const body = new URLSearchParams({
+  const body = {
     connection_id: environment.data.connectionId,
     password: environment.data.password,
     to,
     message: message.slice(0, 3200),
     test: environment.data.test ? "1" : "0",
-  });
+  };
   try {
     const response = await fetch(
       "https://secure.smslink.ro/sms/gateway/communicate/json.php",
       {
         method: "POST",
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-        body,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
         cache: "no-store",
         signal: AbortSignal.timeout(10_000),
       },

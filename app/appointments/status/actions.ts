@@ -21,7 +21,7 @@ const cancelSchema = z.object({
 const changeSchema = z.object({
   token: tokenSchema,
   requestType: z.enum(["cancel", "reschedule"]),
-  scheduledStart: z.union([z.literal(""), z.iso.datetime()]),
+  scheduledStart: z.union([z.literal(""), z.iso.datetime({ offset: true })]),
   slotDurationMinutes: z.union([
     z.literal(""),
     z.coerce.number().pipe(z.union([z.literal(15), z.literal(30), z.literal(45)])),

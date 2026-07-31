@@ -55,7 +55,9 @@ test("confirmed appointments queue one confirmation and one 24-hour reminder", (
 test("SMSLink uses its HTTPS JSON POST API and never places credentials in a URL", () => {
   assert.match(smslink, /https:\/\/secure\.smslink\.ro\/sms\/gateway\/communicate\/json\.php/i);
   assert.match(smslink, /method:\s*"POST"/i);
-  assert.match(smslink, /application\/x-www-form-urlencoded/i);
+  assert.match(smslink, /application\/json/i);
+  assert.match(smslink, /JSON\.stringify\(body\)/i);
+  assert.doesNotMatch(smslink, /URLSearchParams/i);
   assert.doesNotMatch(smslink, /\?connection_id=/i);
   assert.match(smslink, /AbortSignal\.timeout\(10_000\)/i);
   assert.match(cron, /authorization.*Bearer/i);

@@ -10,6 +10,11 @@ const migration = await readFile(new URL(
 ), "utf8");
 const manager = await readFile(new URL("app/appointments/AppointmentManager.tsx", root), "utf8");
 const actions = await readFile(new URL("app/appointments/actions.ts", root), "utf8");
+const staffAppointmentsPage = await readFile(new URL("app/staff/appointments/page.tsx", root), "utf8");
+const appointmentFoundation = await readFile(new URL(
+  "supabase/migrations/202607300006_appointment_management_foundation.sql",
+  root,
+), "utf8");
 const email = await readFile(new URL("lib/email/appointment.ts", root), "utf8");
 const patientRegistration = await readFile(new URL("app/register/patient/page.tsx", root), "utf8");
 const availabilityFix = await readFile(new URL(
@@ -65,11 +70,26 @@ test("appointment email contains details and a prefilled VitaPass registration l
   assert.match(patientRegistration, /initialEmail/i);
 });
 
-test("the appointment manager includes a weekly calendar and generated free slots", () => {
+test("the appointment manager includes four calendar views, status colors, details, and generated free slots", () => {
   assert.match(manager, /function slotsFor/i);
   assert.match(manager, /function Calendar/i);
-  assert.match(manager, /calendar-grid/i);
+  assert.match(manager, /"agenda" \| "day" \| "week" \| "month"/i);
+  assert.match(manager, /calendar-status-legend/i);
+  assert.match(manager, /calendar-details/i);
+  assert.match(manager, /setSelectedId\(appointment\.id\)/i);
+  assert.match(manager, /TransitionForm appointment=\{selected\}/i);
   assert.match(manager, /blockingStatuses/i);
+});
+
+test("assigned Staff receive the complete appointment workspace for only their doctors", () => {
+  assert.match(staffAppointmentsPage, /<AppointmentManager[\s\S]+?kind="staff"/i);
+  assert.match(staffAppointmentsPage, /loadAppointments\(doctors\.map/i);
+  assert.match(staffAppointmentsPage, /loadDoctorAvailability\(doctors\.map/i);
+  assert.match(staffAppointmentsPage, /loadManagedAppointmentRequests\(doctors\.map/i);
+  assert.match(staffAppointmentsPage, /loadManagedAppointmentChangeRequests\(doctors\.map/i);
+  assert.match(appointmentFoundation, /private\.can_manage_doctor_appointments\(clinician_id\)/i);
+  assert.match(appointmentFoundation, /assignment\.staff_id = actor\.staff_id[\s\S]+?assignment\.clinician_id = requested_clinician_id[\s\S]+?assignment\.status = 'active'/i);
+  assert.match(actions, /revalidatePath\("\/staff\/appointments"\)/i);
 });
 
 test("availability upsert avoids PL/pgSQL variable and column ambiguity", () => {

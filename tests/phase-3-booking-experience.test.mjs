@@ -68,3 +68,10 @@ test("request email contains appointment details, protected status and account l
   assert.match(email, /scheduledStart|doctorName|clinicName|slotDurationMinutes/i);
   assert.match(email, /Europe\/Bucharest/i);
 });
+
+test("public booking accepts timezone offsets returned by PostgreSQL", () => {
+  assert.match(
+    publicActions,
+    /scheduledStart:\s*z\.iso\.datetime\(\{\s*offset:\s*true\s*\}\)/,
+  );
+});
