@@ -21,7 +21,7 @@ export default async function PublicAppointmentsPage({
   const date = /^\d{4}-\d{2}-\d{2}$/.test(params.date ?? "") ? params.date! : today;
   let doctors: PublicDoctor[] = [];
   try {
-    doctors = await searchPublicDoctors(query);
+    doctors = await searchPublicDoctors("");
   } catch {
     doctors = [];
   }

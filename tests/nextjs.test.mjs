@@ -18,7 +18,7 @@ test("standard Next.js production output exists", async () => {
 });
 
 test("patient and doctor pages use local prototype data", async () => {
-  const patientPage = await readFile(new URL("app/page.tsx", root), "utf8");
+  const patientPage = await readFile(new URL("app/patient/page.tsx", root), "utf8");
   const doctorPage = await readFile(new URL("app/doctor/page.tsx", root), "utf8");
   assert.match(patientPage, /patientPortalData/);
   assert.match(patientPage, /PatientPortal/);

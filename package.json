@@ -9,12 +9,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run build && node --test tests/admin-security.test.mjs tests/authz.test.mjs tests/brand-colors.test.mjs tests/database-security.test.mjs tests/encoding.test.mjs tests/i18n.test.mjs tests/language-hydration.test.mjs tests/nextjs.test.mjs tests/phase-2c-security.test.mjs tests/phase-2d-security.test.mjs tests/phase-2e-security.test.mjs tests/phase-3-appointments.test.mjs tests/phase-3-booking-experience.test.mjs tests/phase-3c-post-booking.test.mjs tests/phase-3d-patient-appointments.test.mjs tests/secrets.test.mjs",
+    "test": "npm run build && node --test tests/admin-security.test.mjs tests/authz.test.mjs tests/brand-colors.test.mjs tests/database-security.test.mjs tests/encoding.test.mjs tests/i18n.test.mjs tests/language-hydration.test.mjs tests/nextjs.test.mjs tests/phase-2c-security.test.mjs tests/phase-2d-security.test.mjs tests/phase-2e-security.test.mjs tests/phase-3-appointments.test.mjs tests/phase-3-booking-experience.test.mjs tests/phase-3c-post-booking.test.mjs tests/phase-3d-patient-appointments.test.mjs tests/phase-3e-homepage.test.mjs tests/secrets.test.mjs",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^2.1.1",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.111.0",
+    "@types/google.maps": "^3.65.3",
     "next": "^16.2.12",
     "react": "19.2.6",
     "react-dom": "19.2.6",

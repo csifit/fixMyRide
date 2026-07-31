@@ -74,7 +74,7 @@ export default function PatientAppointmentCenter({
     <header className="patient-appointment-header">
       <Link className="booking-logo" href="/"><span>{brand.mark}</span>{brand.name}</Link>
       <nav>
-        <Link href="/">{t("patientAppointments.medicalFolder")}</Link>
+        <Link href="/patient">{t("patientAppointments.medicalFolder")}</Link>
         <Link href="/appointments">{t("booking.findDoctor")}</Link>
       </nav>
       <select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}>

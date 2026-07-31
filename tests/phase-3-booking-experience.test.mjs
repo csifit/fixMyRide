@@ -54,7 +54,8 @@ test("management links store only SHA-256 digests", () => {
 });
 
 test("patient booking follows search, availability, details, review and status steps", () => {
-  assert.match(search, /booking-search/i);
+  assert.match(search, /booking-directory-search/i);
+  assert.match(search, /setSpecialty|setLocation/i);
   assert.match(availability, /public-slot-grid/i);
   assert.match(reserveFlow, /setStep\(2\)/i);
   assert.match(reserveFlow, /booking-review/i);

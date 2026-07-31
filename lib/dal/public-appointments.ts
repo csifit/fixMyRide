@@ -9,6 +9,10 @@ export type PublicDoctor = {
   specialty: string;
   clinicName: string;
   clinicCountry: string;
+  city: string | null;
+  practiceAddress: string | null;
+  latitude: number | null;
+  longitude: number | null;
 };
 
 export type PublicSlot = {
@@ -75,6 +79,16 @@ export async function searchPublicDoctors(search = ""): Promise<PublicDoctor[]> 
     specialty: row.specialty as string,
     clinicName: row.clinic_name as string,
     clinicCountry: row.clinic_country as string,
+    city: typeof row.city === "string" ? row.city : null,
+    practiceAddress: typeof row.practice_address === "string"
+      ? row.practice_address
+      : null,
+    latitude: row.latitude === null || row.latitude === undefined
+      ? null
+      : Number(row.latitude),
+    longitude: row.longitude === null || row.longitude === undefined
+      ? null
+      : Number(row.longitude),
   }));
 }
 

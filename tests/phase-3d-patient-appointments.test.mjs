@@ -43,7 +43,7 @@ test("Doctor or assigned Staff still approves patient change requests", () => {
 
 test("Patient Appointment Center keeps the medical folder available", () => {
   assert.match(patientPage, /patientAppointments\.medicalFolder/i);
-  assert.match(patientPage, /href="\/"/i);
+  assert.match(patientPage, /href="\/patient"/i);
   assert.match(medicalFolder, /href="\/patient\/appointments"/i);
   assert.match(medicalFolder, /patient\.section\.personal/i);
   assert.match(medicalFolder, /patient\.share\.title/i);
@@ -57,4 +57,3 @@ test("new product surfaces use central white-label configuration", () => {
   assert.match(layout, /--brand-primary/i);
   assert.match(patientPage, /brand\.name/i);
 });
-
