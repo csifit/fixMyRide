@@ -23,12 +23,22 @@ test("address entry uses Google Places Autocomplete New with a shared loader", (
 });
 
 test("coordinates are captured as hidden implementation fields and never requested from users", () => {
-  assert.match(addressSearch, /type="hidden" name=\{fieldNames\.latitude\}/);
-  assert.match(addressSearch, /type="hidden" name=\{fieldNames\.longitude\}/);
+  assert.match(addressSearch, /ref=\{latitudeField\} type="hidden" name=\{fieldNames\.latitude\}/);
+  assert.match(addressSearch, /ref=\{longitudeField\} type="hidden" name=\{fieldNames\.longitude\}/);
   for (const surface of [admin, doctorSettings, clinicSettings]) {
     assert.match(surface, /<GoogleAddressSearch/);
     assert.doesNotMatch(surface, /t\("workspace\.(?:latitude|longitude)"\)/);
     assert.doesNotMatch(surface, /name="(?:latitude|longitude)" type="number"/);
+  }
+});
+
+test("typed Google text is synchronized into submitted FormData", () => {
+  assert.match(addressSearch, /const syncTypedAddress/);
+  assert.match(addressSearch, /autocomplete\?\.value\.trim\(\)/);
+  assert.match(addressSearch, /addEventListener\("submit", syncTypedAddress, true\)/);
+  assert.match(addressSearch, /addEventListener\("formdata", syncFormData\)/);
+  for (const name of ["address", "city", "countryCode", "latitude", "longitude"]) {
+    assert.match(addressSearch, new RegExp(`event\\.formData\\.set\\(fieldNames\\.${name}`), name);
   }
 });
 

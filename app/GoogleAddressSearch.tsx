@@ -75,6 +75,11 @@ export default function GoogleAddressSearch({
 }) {
   const apiKey = googleMapsApiKey();
   const host = useRef<HTMLDivElement>(null);
+  const addressField = useRef<HTMLInputElement>(null);
+  const cityField = useRef<HTMLInputElement>(null);
+  const countryField = useRef<HTMLInputElement>(null);
+  const latitudeField = useRef<HTMLInputElement>(null);
+  const longitudeField = useRef<HTMLInputElement>(null);
   const selectionCallback = useRef(onSelection);
   const textCallback = useRef(onTextChange);
   const initialValue: GoogleAddressSelection = {
@@ -94,6 +99,11 @@ export default function GoogleAddressSearch({
 
   function commit(next: GoogleAddressSelection, selected: boolean) {
     valueRef.current = next;
+    if (addressField.current) addressField.current.value = next.address;
+    if (cityField.current) cityField.current.value = next.city;
+    if (countryField.current) countryField.current.value = next.countryCode;
+    if (latitudeField.current) latitudeField.current.value = next.latitude?.toString() ?? "";
+    if (longitudeField.current) longitudeField.current.value = next.longitude?.toString() ?? "";
     setValue(next);
     textCallback.current?.(next.address);
     selectionCallback.current?.(selected ? next : null);
@@ -103,6 +113,26 @@ export default function GoogleAddressSearch({
     if (!apiKey || !host.current) return;
     let active = true;
     let autocomplete: google.maps.places.PlaceAutocompleteElement | null = null;
+    let containingForm: HTMLFormElement | null = null;
+    const syncTypedAddress = () => {
+      const typedAddress = autocomplete?.value.trim() ?? "";
+      if (!typedAddress || typedAddress === valueRef.current.address) return;
+      commit({
+        ...valueRef.current,
+        address: typedAddress,
+        city: "",
+        latitude: null,
+        longitude: null,
+      }, false);
+    };
+    const syncFormData = (event: FormDataEvent) => {
+      syncTypedAddress();
+      event.formData.set(fieldNames.address, valueRef.current.address);
+      event.formData.set(fieldNames.city, valueRef.current.city);
+      event.formData.set(fieldNames.countryCode, valueRef.current.countryCode);
+      event.formData.set(fieldNames.latitude, valueRef.current.latitude?.toString() ?? "");
+      event.formData.set(fieldNames.longitude, valueRef.current.longitude?.toString() ?? "");
+    };
     async function initialize() {
       try {
         configureGoogleMapsLoader(apiKey);
@@ -147,6 +177,9 @@ export default function GoogleAddressSearch({
         });
         autocomplete.addEventListener("gmp-error", () => setFailed(true));
         host.current.replaceChildren(autocomplete);
+        containingForm = host.current.closest("form");
+        containingForm?.addEventListener("submit", syncTypedAddress, true);
+        containingForm?.addEventListener("formdata", syncFormData);
         setReady(true);
         setFailed(false);
       } catch {
@@ -156,9 +189,11 @@ export default function GoogleAddressSearch({
     void initialize();
     return () => {
       active = false;
+      containingForm?.removeEventListener("submit", syncTypedAddress, true);
+      containingForm?.removeEventListener("formdata", syncFormData);
       autocomplete?.remove();
     };
-  }, [apiKey, disabled, language, placeholder]);
+  }, [apiKey, disabled, fieldNames, language, placeholder]);
 
   const fallback = !apiKey || failed;
   return <div className={`google-address-search ${className}`.trim()}>
@@ -169,11 +204,11 @@ export default function GoogleAddressSearch({
     </div> : <div ref={host} className="google-address-host" aria-busy={!ready} />}
     <small>{fallback ? unavailable : help}</small>
     {formFields && <>
-      <input type="hidden" name={fieldNames.address} value={value.address} />
-      <input type="hidden" name={fieldNames.city} value={value.city} />
-      <input type="hidden" name={fieldNames.countryCode} value={value.countryCode} />
-      <input type="hidden" name={fieldNames.latitude} value={value.latitude ?? ""} />
-      <input type="hidden" name={fieldNames.longitude} value={value.longitude ?? ""} />
+      <input ref={addressField} type="hidden" name={fieldNames.address} defaultValue={value.address} />
+      <input ref={cityField} type="hidden" name={fieldNames.city} defaultValue={value.city} />
+      <input ref={countryField} type="hidden" name={fieldNames.countryCode} defaultValue={value.countryCode} />
+      <input ref={latitudeField} type="hidden" name={fieldNames.latitude} defaultValue={value.latitude ?? ""} />
+      <input ref={longitudeField} type="hidden" name={fieldNames.longitude} defaultValue={value.longitude ?? ""} />
     </>}
   </div>;
 }
