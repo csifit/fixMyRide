@@ -37,5 +37,5 @@ export default async function AdminPage() {
   } catch {
     return <AdminAccessStatusScreen status="unavailable" />;
   }
-  return <AdminDashboard data={data} />;
+  return <AdminDashboard data={data} section="attention" />;
 }

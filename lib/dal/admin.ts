@@ -4,9 +4,41 @@ import { createClient } from "../supabase/server";
 import type { AdministratorContext } from "./admin-auth";
 import { DataAccessError } from "./errors";
 
+export type AdminSection =
+  | "attention"
+  | "doctors"
+  | "clinics"
+  | "patients"
+  | "organizations"
+  | "managers"
+  | "specialties"
+  | "reviews"
+  | "sms"
+  | "contracts"
+  | "privacy"
+  | "security";
+
 export type AdminDashboardData = {
   generatedAt: string;
-  administrator: { displayName: string };
+  administrator: { displayName: string; role: "superadmin" | "admin" };
+  counts: {
+    attention: number;
+    doctors: number;
+    patients: number;
+    clinics: number;
+    clinicManagers: number;
+    platformManagers: number;
+  };
+  tasks: Array<{
+    id: string;
+    kind: string;
+    title: string;
+    detail: string;
+    status: string;
+    priority: "high" | "normal";
+    createdAt: string;
+    href: string;
+  }>;
   administrators: Array<{
     id: string;
     displayName: string;
@@ -21,111 +53,123 @@ export type AdminDashboardData = {
     specialty: string;
     clinicName: string;
     status: string;
+    professionalIdentifier: string;
+    createdAt: string;
   }>;
   patients: Array<{
     id: string;
     vitapassId: string;
     fullName: string;
     archived: boolean;
+    createdAt: string;
   }>;
-  grants: Array<{
+  clinics: Array<{
     id: string;
-    patientId: string;
-    clinicianId: string;
+    displayName: string;
+    legalName: string;
+    countryCode: string;
     status: string;
-    canView: boolean;
-    canEdit: boolean;
-    expiresAt: string | null;
+    city: string;
+    address: string;
+    managerCount: number;
+    doctorCount: number;
+    createdAt: string;
   }>;
-  auditEvents: Array<{
+  clinicManagers: Array<{
     id: string;
-    action: string;
-    resourceType: string;
-    occurredAt: string;
+    displayName: string;
+    status: string;
+    clinicCount: number;
+    createdAt: string;
   }>;
 };
+
+type JsonRecord = Record<string, unknown>;
+
+const text = (row: JsonRecord, key: string) =>
+  typeof row[key] === "string" ? (row[key] as string) : "";
+const number = (row: JsonRecord, key: string) =>
+  typeof row[key] === "number" ? (row[key] as number) : 0;
+const records = (value: unknown) =>
+  Array.isArray(value) ? (value.filter((item) => item && typeof item === "object") as JsonRecord[]) : [];
 
 export async function loadAdminDashboard(
   administrator: AdministratorContext,
 ): Promise<AdminDashboardData> {
   const supabase = await createClient();
-  const [administrators, clinicians, patients, grants, auditEvents] =
-    await Promise.all([
-      supabase
-        .from("application_administrators")
-        .select("id, display_name, role, status, accounting_access, created_at")
-        .order("created_at", { ascending: false })
-        .limit(50),
-      supabase
-        .from("clinicians")
-        .select("id, full_name, specialty, clinic_name, verification_status")
-        .order("created_at", { ascending: false })
-        .limit(50),
-      supabase
-        .from("patients")
-        .select("id, vitapass_id, full_name, archived_at")
-        .order("created_at", { ascending: false })
-        .limit(50),
-      supabase
-        .from("patient_access_grants")
-        .select("id, patient_id, clinician_id, status, can_view, can_edit, expires_at")
-        .order("created_at", { ascending: false })
-        .limit(50),
-      supabase
-        .from("audit_events")
-        .select("id, action, resource_type, occurred_at")
-        .order("occurred_at", { ascending: false })
-        .limit(100),
-    ]);
-
-  if (
-    administrators.error ||
-    clinicians.error ||
-    patients.error ||
-    grants.error ||
-    auditEvents.error
-  ) {
-    throw new DataAccessError("unauthorized");
+  const { data, error } = await supabase.rpc("get_admin_operations_snapshot");
+  if (error || !data || typeof data !== "object") {
+    throw new DataAccessError(error?.code === "42501" ? "unauthorized" : "unavailable");
   }
 
+  const snapshot = data as JsonRecord;
+  const counts = (snapshot.counts ?? {}) as JsonRecord;
   return {
-    generatedAt: new Date().toISOString(),
-    administrator: { displayName: administrator.displayName },
-    administrators: (administrators.data ?? []).map((row) => ({
-      id: row.id,
-      displayName: row.display_name,
-      role: row.role,
-      status: row.status,
-      accountingAccess: row.accounting_access,
-      createdAt: row.created_at,
+    generatedAt: text(snapshot, "generated_at") || new Date().toISOString(),
+    administrator: {
+      displayName: administrator.displayName,
+      role: administrator.role,
+    },
+    counts: {
+      attention: number(counts, "attention"),
+      doctors: number(counts, "doctors"),
+      patients: number(counts, "patients"),
+      clinics: number(counts, "clinics"),
+      clinicManagers: number(counts, "clinic_managers"),
+      platformManagers: number(counts, "platform_managers"),
+    },
+    tasks: records(snapshot.tasks).map((row) => ({
+      id: text(row, "id"),
+      kind: text(row, "kind"),
+      title: text(row, "title"),
+      detail: text(row, "detail"),
+      status: text(row, "status"),
+      priority: text(row, "priority") === "high" ? "high" : "normal",
+      createdAt: text(row, "created_at"),
+      href: text(row, "href") || "/admin",
     })),
-    clinicians: (clinicians.data ?? []).map((row) => ({
-      id: row.id,
-      fullName: row.full_name,
-      specialty: row.specialty,
-      clinicName: row.clinic_name,
-      status: row.verification_status,
+    administrators: records(snapshot.administrators).map((row) => ({
+      id: text(row, "id"),
+      displayName: text(row, "display_name"),
+      role: text(row, "role"),
+      status: text(row, "status"),
+      accountingAccess: row.accounting_access === true,
+      createdAt: text(row, "created_at"),
     })),
-    patients: (patients.data ?? []).map((row) => ({
-      id: row.id,
-      vitapassId: row.vitapass_id,
-      fullName: row.full_name,
-      archived: Boolean(row.archived_at),
+    clinicians: records(snapshot.doctors).map((row) => ({
+      id: text(row, "id"),
+      fullName: text(row, "full_name"),
+      specialty: text(row, "specialty"),
+      clinicName: text(row, "clinic_name"),
+      status: text(row, "verification_status"),
+      professionalIdentifier: text(row, "professional_identifier"),
+      createdAt: text(row, "created_at"),
     })),
-    grants: (grants.data ?? []).map((row) => ({
-      id: row.id,
-      patientId: row.patient_id,
-      clinicianId: row.clinician_id,
-      status: row.status,
-      canView: row.can_view,
-      canEdit: row.can_edit,
-      expiresAt: row.expires_at,
+    patients: records(snapshot.patients).map((row) => ({
+      id: text(row, "id"),
+      vitapassId: text(row, "vitapass_id"),
+      fullName: text(row, "full_name"),
+      archived: row.archived === true,
+      createdAt: text(row, "created_at"),
     })),
-    auditEvents: (auditEvents.data ?? []).map((row) => ({
-      id: row.id,
-      action: row.action,
-      resourceType: row.resource_type,
-      occurredAt: row.occurred_at,
+    clinics: records(snapshot.clinics).map((row) => ({
+      id: text(row, "id"),
+      displayName: text(row, "display_name"),
+      legalName: text(row, "legal_name"),
+      countryCode: text(row, "country_code"),
+      status: text(row, "status"),
+      city: text(row, "city"),
+      address: text(row, "address"),
+      managerCount: number(row, "manager_count"),
+      doctorCount: number(row, "doctor_count"),
+      createdAt: text(row, "created_at"),
+    })),
+    clinicManagers: records(snapshot.clinic_managers).map((row) => ({
+      id: text(row, "id"),
+      displayName: text(row, "display_name"),
+      status: text(row, "status"),
+      clinicCount: number(row, "clinic_count"),
+      createdAt: text(row, "created_at"),
     })),
   };
 }

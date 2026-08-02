@@ -14,7 +14,7 @@ import { createClient } from "../supabase/server";
 export type AdministratorContext = {
   id: string;
   authUserId: string;
-  role: "superadmin";
+  role: "superadmin" | "admin";
   status: "active";
   displayName: string;
 };
@@ -74,7 +74,7 @@ export async function getAdminAccess(): Promise<AdminAccessResult> {
     administrator: {
       id: administrator.id,
       authUserId: authenticatedUserId,
-      role: "superadmin",
+      role: administrator.role as "superadmin" | "admin",
       status: "active",
       displayName: administrator.display_name,
     },

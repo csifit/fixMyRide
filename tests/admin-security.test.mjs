@@ -485,9 +485,6 @@ test("database enums and audit codes are rendered only through translation maps"
     "administratorRoleKey",
     "administratorStatusKey",
     "clinicianStatusKey",
-    "grantStatusKey",
-    "auditActionKey",
-    "auditResourceKey",
   ]) {
     assert.match(dashboardSource, new RegExp(`t\\(${mapper}\\(row\\.`), mapper);
   }
@@ -495,6 +492,7 @@ test("database enums and audit codes are rendered only through translation maps"
     dashboardSource,
     /\[(?:[^\]]*,\s*)?row\.(?:role|status|action|resourceType)(?:,|\])/,
   );
+  assert.doesNotMatch(dashboardSource, /admin\.nav\.(?:grants|audit)/);
   for (const rawValue of [
     "superadmin",
     "admin",

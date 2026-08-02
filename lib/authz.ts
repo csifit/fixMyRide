@@ -62,7 +62,7 @@ export function classifyAdminAccess(input: {
   if (
     !input.administratorAuthUserId ||
     input.administratorAuthUserId !== input.authenticatedUserId ||
-    input.role !== "superadmin"
+    (input.role !== "superadmin" && input.role !== "admin")
   ) {
     return "unauthorized";
   }
