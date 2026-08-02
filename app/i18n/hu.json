@@ -1000,8 +1000,6 @@
   "admin.clinic.organization": "Klinikai szervezet",
   "admin.clinic.selectOrganization": "Szervezet kiválasztása",
   "admin.clinic.locationName": "Helyszín neve",
-  "admin.clinic.activeFrom": "Aktív ettől",
-  "admin.clinic.endsBefore": "Vége ez előtt",
   "admin.clinic.add.submit": "Helyszín hozzáadása",
   "admin.clinic.save": "Helyszín mentése",
   "admin.clinic.saving": "Mentés…",
@@ -1021,7 +1019,7 @@
   "admin.clinic.assignment.ended": "Lezárva",
   "admin.clinic.result.created": "A rendelőhely elkészült.",
   "admin.clinic.result.saved": "A rendelőhely módosításai elmentve.",
-  "admin.clinic.result.invalid": "Ellenőrizze a dátumokat, és aktiválás előtt válasszon érvényes Google-címet.",
+  "admin.clinic.result.invalid": "Ellenőrizze a kötelező adatokat, és aktiválás előtt válasszon érvényes Google-címet.",
   "admin.clinic.result.unauthorized": "Nincs jogosultsága rendelőhelyek kezelésére.",
   "admin.clinic.result.unavailable": "A helyszínkezelés átmenetileg nem érhető el."
   ,"admin.patient.status.active": "Aktív"

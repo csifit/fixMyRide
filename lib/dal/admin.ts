@@ -113,15 +113,11 @@ export type AdminDashboardData = {
     address: string;
     latitude: number | null;
     longitude: number | null;
-    activeFrom: string;
-    endsBefore: string;
     assignments: Array<{
       id: string;
       clinicianId: string;
       doctorName: string;
       status: string;
-      startsOn: string;
-      endsBefore: string;
     }>;
     statusHistory: Array<{
       previousStatus: string;
@@ -280,15 +276,11 @@ export async function loadAdminDashboard(
       address: text(row, "address"),
       latitude: row.latitude === null || row.latitude === undefined ? null : Number(row.latitude),
       longitude: row.longitude === null || row.longitude === undefined ? null : Number(row.longitude),
-      activeFrom: text(row, "active_from"),
-      endsBefore: text(row, "ends_before"),
       assignments: records(row.assignments).map((assignment) => ({
         id: text(assignment, "id"),
         clinicianId: text(assignment, "clinician_id"),
         doctorName: text(assignment, "doctor_name"),
         status: text(assignment, "status"),
-        startsOn: text(assignment, "starts_on"),
-        endsBefore: text(assignment, "ends_before"),
       })),
       statusHistory: records(row.status_history).map((history) => ({
         previousStatus: text(history, "previous_status"),

@@ -44,7 +44,7 @@ test("new clinic tables have RLS and no direct browser grants", () => {
   assert.doesNotMatch(migration, /grant .* on (?:table )?public\.(?:clinic_locations|clinic_location_doctor_assignments|clinic_location_status_history)/i);
 });
 
-test("location lifecycle and Doctor assignments are dated, audited and never hard-deleted", () => {
+test("location lifecycle dates remain historical, audited and never hard-deleted", () => {
   assert.match(migration, /active_from date/);
   assert.match(migration, /ends_before date/);
   assert.match(migration, /create table public\.clinic_location_status_history/i);
@@ -73,6 +73,9 @@ test("Admin Clinics UI uses accordions and RPC-backed create, edit and assignmen
   assert.match(actions, /locationPair/);
   assert.match(dal, /supabase\.rpc\("create_admin_clinic_location"/);
   assert.match(dal, /supabase\.rpc\("set_admin_doctor_location_assignment"/);
+  assert.doesNotMatch(dashboard, /name="(?:activeFrom|startsOn|endsBefore)"/);
+  assert.doesNotMatch(actions, /formData\.get\("(?:activeFrom|startsOn|endsBefore)"\)/);
+  assert.doesNotMatch(dal, /new_(?:active_from|starts_on|ends_before)/);
   assert.doesNotMatch(`${dashboard}\n${actions}\n${dal}`, /deleteClinic|removeClinic|deleteLocation/i);
 });
 

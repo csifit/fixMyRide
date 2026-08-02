@@ -177,7 +177,6 @@ export async function updateAdminDoctorAction(
 }
 
 const optionalText = (max: number) => z.string().trim().max(max);
-const optionalDate = z.union([z.literal(""), z.iso.date()]).transform((value) => value || null);
 const optionalCoordinate = z.union([z.literal(""), z.coerce.number()])
   .transform((value) => value === "" ? null : value);
 const clinicLocationFields = {
@@ -191,8 +190,6 @@ const clinicLocationFields = {
   latitude: optionalCoordinate.refine((value) => value === null || (value >= -90 && value <= 90)),
   longitude: optionalCoordinate.refine((value) => value === null || (value >= -180 && value <= 180)),
   locationStatus: z.enum(["pending", "active", "suspended", "rejected"]),
-  activeFrom: optionalDate,
-  endsBefore: optionalDate,
 };
 const locationPair = <T extends z.ZodRawShape>(schema: z.ZodObject<T>) => schema.refine(
   (value) => {
@@ -233,7 +230,6 @@ function clinicFormInput(formData: FormData) {
     publicEmail: formData.get("publicEmail") ?? "", city: formData.get("city") ?? "",
     address: formData.get("address") ?? "", latitude: formData.get("latitude") ?? "",
     longitude: formData.get("longitude") ?? "", locationStatus: formData.get("locationStatus"),
-    activeFrom: formData.get("activeFrom") ?? "", endsBefore: formData.get("endsBefore") ?? "",
   };
 }
 
@@ -294,8 +290,6 @@ const clinicDoctorAssignmentSchema = z.object({
   locationId: z.uuid(),
   clinicianId: z.uuid(),
   assignmentStatus: z.enum(["active", "suspended", "ended"]),
-  startsOn: optionalDate,
-  endsBefore: optionalDate,
 });
 
 export async function setAdminDoctorLocationAssignmentAction(
@@ -304,8 +298,7 @@ export async function setAdminDoctorLocationAssignmentAction(
 ): Promise<AdminClinicState> {
   const parsed = clinicDoctorAssignmentSchema.safeParse({
     locationId: formData.get("locationId"), clinicianId: formData.get("clinicianId"),
-    assignmentStatus: formData.get("assignmentStatus"), startsOn: formData.get("startsOn") ?? "",
-    endsBefore: formData.get("endsBefore") ?? "",
+    assignmentStatus: formData.get("assignmentStatus"),
   });
   if (!parsed.success) return { status: "invalid" };
   try {
@@ -313,8 +306,6 @@ export async function setAdminDoctorLocationAssignmentAction(
       locationId: parsed.data.locationId,
       clinicianId: parsed.data.clinicianId,
       status: parsed.data.assignmentStatus,
-      startsOn: parsed.data.startsOn,
-      endsBefore: parsed.data.endsBefore,
     });
     refreshClinicPaths();
     return { status: "saved" };

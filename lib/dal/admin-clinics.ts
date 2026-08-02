@@ -14,8 +14,6 @@ export type AdminClinicLocationInput = {
   latitude: number | null;
   longitude: number | null;
   status: "pending" | "active" | "suspended" | "rejected";
-  activeFrom: string | null;
-  endsBefore: string | null;
 };
 
 export async function createAdminClinicLocation(
@@ -35,8 +33,6 @@ export async function createAdminClinicLocation(
     new_latitude: input.latitude,
     new_longitude: input.longitude,
     new_status: input.status,
-    new_active_from: input.activeFrom,
-    new_ends_before: input.endsBefore,
     request_correlation_id: crypto.randomUUID(),
   });
   if (error) throw new DataAccessError(classifyDatabaseError(error));
@@ -59,8 +55,6 @@ export async function updateAdminClinicLocation(
     new_latitude: input.latitude,
     new_longitude: input.longitude,
     new_status: input.status,
-    new_active_from: input.activeFrom,
-    new_ends_before: input.endsBefore,
     status_reason: input.statusReason,
     request_correlation_id: crypto.randomUUID(),
   });
@@ -71,16 +65,12 @@ export async function setAdminDoctorLocationAssignment(input: {
   locationId: string;
   clinicianId: string;
   status: "active" | "suspended" | "ended";
-  startsOn: string | null;
-  endsBefore: string | null;
 }) {
   const supabase = await createClient();
   const { error } = await supabase.rpc("set_admin_doctor_location_assignment", {
     requested_location_id: input.locationId,
     requested_clinician_id: input.clinicianId,
     new_status: input.status,
-    new_starts_on: input.startsOn,
-    new_ends_before: input.endsBefore,
     request_correlation_id: crypto.randomUUID(),
   });
   if (error) throw new DataAccessError(classifyDatabaseError(error));

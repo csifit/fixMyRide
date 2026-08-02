@@ -1000,8 +1000,6 @@
   "admin.clinic.organization": "Organizație clinică",
   "admin.clinic.selectOrganization": "Selectează organizația",
   "admin.clinic.locationName": "Numele locației",
-  "admin.clinic.activeFrom": "Activă din",
-  "admin.clinic.endsBefore": "Se încheie înainte de",
   "admin.clinic.add.submit": "Adaugă locația",
   "admin.clinic.save": "Salvează locația",
   "admin.clinic.saving": "Se salvează…",
@@ -1021,7 +1019,7 @@
   "admin.clinic.assignment.ended": "Încheiată",
   "admin.clinic.result.created": "Locația clinică a fost creată.",
   "admin.clinic.result.saved": "Modificările locației au fost salvate.",
-  "admin.clinic.result.invalid": "Verificați datele și selectați o adresă Google validă înainte de activarea locației.",
+  "admin.clinic.result.invalid": "Verificați informațiile obligatorii și selectați o adresă Google validă înainte de activarea locației.",
   "admin.clinic.result.unauthorized": "Nu ai permisiunea să administrezi locațiile clinicilor.",
   "admin.clinic.result.unavailable": "Administrarea locațiilor este temporar indisponibilă."
   ,"admin.patient.status.active": "Activ"
