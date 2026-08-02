@@ -10,4 +10,6 @@ export const brand = {
       : "#006E6E",
   supportEmail:
     process.env.NEXT_PUBLIC_BRAND_SUPPORT_EMAIL?.trim() || "support@vitapass.online",
+  timeZone:
+    process.env.NEXT_PUBLIC_BRAND_TIME_ZONE?.trim() || "Europe/Bucharest",
 } as const;

@@ -1019,7 +1019,7 @@
   "admin.clinic.assignment.ended": "Încheiată",
   "admin.clinic.result.created": "Locația clinică a fost creată.",
   "admin.clinic.result.saved": "Modificările locației au fost salvate.",
-  "admin.clinic.result.invalid": "Verificați informațiile obligatorii și selectați o adresă Google validă înainte de activarea locației.",
+  "admin.clinic.result.invalid": "Completați informațiile obligatorii ale locației. Pentru o locație activă este necesară o adresă.",
   "admin.clinic.result.unauthorized": "Nu ai permisiunea să administrezi locațiile clinicilor.",
   "admin.clinic.result.unavailable": "Administrarea locațiilor este temporar indisponibilă."
   ,"admin.patient.status.active": "Activ"

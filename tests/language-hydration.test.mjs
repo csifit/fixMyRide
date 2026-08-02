@@ -5,6 +5,8 @@ import ts from "typescript";
 
 const sourceUrl = new URL("../app/i18n/language-store.ts", import.meta.url);
 const source = await readFile(sourceUrl, "utf8");
+const formattingSource = await readFile(new URL("../app/i18n/index.ts", import.meta.url), "utf8");
+const brandSource = await readFile(new URL("../lib/brand.ts", import.meta.url), "utf8");
 const compiled = ts.transpileModule(source, {
   compilerOptions: {
     module: ts.ModuleKind.ESNext,
@@ -41,3 +43,10 @@ for (const saved of ["ro", "de", "hu"]) {
     assert.equal(storage.getItem(languageStorageKey), saved);
   });
 }
+
+test("date text uses one brand timezone during server and browser hydration", () => {
+  assert.match(brandSource, /NEXT_PUBLIC_BRAND_TIME_ZONE/);
+  assert.match(brandSource, /Europe\/Bucharest/);
+  assert.match(formattingSource, /timeZone: brand\.timeZone/);
+  assert.doesNotMatch(formattingSource, /Intl\.DateTimeFormat\(locales\[language\], options\)/);
+});

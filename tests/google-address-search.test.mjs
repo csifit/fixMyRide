@@ -48,10 +48,11 @@ test("keyless and Google error states retain a usable manual address fallback", 
   assert.match(addressSearch, /latitude: null, longitude: null/);
 });
 
-test("Admin activation requires a selected address with resolved coordinates", () => {
+test("Admin activation accepts an address even when Google omits map metadata", () => {
   assert.match(adminActions, /location\.locationStatus !== "active"/);
-  assert.match(adminActions, /location\.address && location\.city/);
-  assert.match(adminActions, /location\.latitude !== null && location\.longitude !== null/);
+  assert.match(adminActions, /Boolean\(location\.address\)/);
+  assert.doesNotMatch(adminActions, /location\.address && location\.city/);
+  assert.doesNotMatch(adminActions, /location\.latitude !== null && location\.longitude !== null/);
 });
 
 test("Google address-search guidance has translation parity", () => {

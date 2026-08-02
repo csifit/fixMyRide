@@ -202,14 +202,8 @@ const locationPair = <T extends z.ZodRawShape>(schema: z.ZodObject<T>) => schema
     const location = value as {
       locationStatus: string;
       address: string;
-      city: string;
-      latitude: number | null;
-      longitude: number | null;
     };
-    return location.locationStatus !== "active" || Boolean(
-      location.address && location.city
-      && location.latitude !== null && location.longitude !== null,
-    );
+    return location.locationStatus !== "active" || Boolean(location.address);
   },
   { path: ["address"] },
 );

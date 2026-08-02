@@ -1019,7 +1019,7 @@
   "admin.clinic.assignment.ended": "Ended",
   "admin.clinic.result.created": "Clinic location created.",
   "admin.clinic.result.saved": "Clinic location changes saved.",
-  "admin.clinic.result.invalid": "Check the required details and select a valid Google address before activating the location.",
+  "admin.clinic.result.invalid": "Enter the required location details. An address is required for an active location.",
   "admin.clinic.result.unauthorized": "You are not authorized to manage clinic locations.",
   "admin.clinic.result.unavailable": "Clinic location management is temporarily unavailable."
   ,"admin.patient.status.active": "Active"

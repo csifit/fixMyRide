@@ -1019,7 +1019,7 @@
   "admin.clinic.assignment.ended": "Beendet",
   "admin.clinic.result.created": "Klinikstandort erstellt.",
   "admin.clinic.result.saved": "Änderungen am Klinikstandort gespeichert.",
-  "admin.clinic.result.invalid": "Prüfen Sie die Pflichtangaben und wählen Sie vor der Aktivierung eine gültige Google-Adresse aus.",
+  "admin.clinic.result.invalid": "Geben Sie die erforderlichen Standortdaten ein. Für einen aktiven Standort ist eine Adresse erforderlich.",
   "admin.clinic.result.unauthorized": "Sie dürfen Klinikstandorte nicht verwalten.",
   "admin.clinic.result.unavailable": "Die Standortverwaltung ist vorübergehend nicht verfügbar."
   ,"admin.patient.status.active": "Aktiv"

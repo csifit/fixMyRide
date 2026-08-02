@@ -2,6 +2,7 @@ import de from "./de.json";
 import en from "./en.json";
 import hu from "./hu.json";
 import ro from "./ro.json";
+import { brand } from "@/lib/brand";
 
 export const languages = ["en", "de", "ro", "hu"] as const;
 export type Language = (typeof languages)[number];
@@ -44,9 +45,13 @@ export function formatDate(
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: brand.timeZone,
   },
 ) {
-  return new Intl.DateTimeFormat(locales[language], options).format(new Date(value));
+  return new Intl.DateTimeFormat(locales[language], {
+    timeZone: brand.timeZone,
+    ...options,
+  }).format(new Date(value));
 }
 
 export function formatDateTime(language: Language, value: string) {
@@ -56,6 +61,7 @@ export function formatDateTime(language: Language, value: string) {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: brand.timeZone,
   }).format(new Date(value));
 }
 

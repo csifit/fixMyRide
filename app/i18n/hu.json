@@ -1019,7 +1019,7 @@
   "admin.clinic.assignment.ended": "Lezárva",
   "admin.clinic.result.created": "A rendelőhely elkészült.",
   "admin.clinic.result.saved": "A rendelőhely módosításai elmentve.",
-  "admin.clinic.result.invalid": "Ellenőrizze a kötelező adatokat, és aktiválás előtt válasszon érvényes Google-címet.",
+  "admin.clinic.result.invalid": "Adja meg a kötelező helyadatokat. Aktív helyszínhez cím szükséges.",
   "admin.clinic.result.unauthorized": "Nincs jogosultsága rendelőhelyek kezelésére.",
   "admin.clinic.result.unavailable": "A helyszínkezelés átmenetileg nem érhető el."
   ,"admin.patient.status.active": "Aktív"
