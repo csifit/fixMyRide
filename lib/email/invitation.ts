@@ -1,9 +1,10 @@
 import "server-only";
 
 import type { Language } from "@/app/i18n";
+import { brand } from "@/lib/brand";
 import { sendMxrouteEmail } from "./mxroute";
 
-type InvitationKind = "clinic_doctor" | "doctor_staff";
+type InvitationKind = "clinic_doctor" | "doctor_staff" | "platform_doctor";
 
 const copy: Record<
   Language,
@@ -22,6 +23,12 @@ const copy: Record<
       message: "A doctor invited you to join their appointment-management Staff.",
       action: "Accept Staff invitation",
     },
+    platform_doctor: {
+      subject: "VitaPass Doctor invitation",
+      title: "You have been invited to VitaPass",
+      message: "A platform administrator invited you to create a Doctor account.",
+      action: "Accept Doctor invitation",
+    },
   },
   de: {
     clinic_doctor: {
@@ -35,6 +42,12 @@ const copy: Record<
       title: "Sie wurden zu VitaPass eingeladen",
       message: "Ein Arzt oder eine Ärztin hat Sie zur Terminverwaltung eingeladen.",
       action: "Mitarbeitereinladung annehmen",
+    },
+    platform_doctor: {
+      subject: "VitaPass-Arzteinladung",
+      title: "Sie wurden zu VitaPass eingeladen",
+      message: "Ein Plattformadministrator hat Sie eingeladen, ein Arztkonto zu erstellen.",
+      action: "Arzteinladung annehmen",
     },
   },
   ro: {
@@ -50,6 +63,12 @@ const copy: Record<
       message: "Un medic te-a invitat să faci parte din personalul care gestionează programările.",
       action: "Acceptă invitația pentru personal",
     },
+    platform_doctor: {
+      subject: "Invitație VitaPass pentru medic",
+      title: "Ai fost invitat în VitaPass",
+      message: "Un administrator al platformei te-a invitat să creezi un cont de medic.",
+      action: "Acceptă invitația de medic",
+    },
   },
   hu: {
     clinic_doctor: {
@@ -63,6 +82,12 @@ const copy: Record<
       title: "Meghívást kapott a VitaPass rendszerbe",
       message: "Egy orvos meghívta az időpontokat kezelő munkatársai közé.",
       action: "Munkatársi meghívó elfogadása",
+    },
+    platform_doctor: {
+      subject: "VitaPass orvosi meghívó",
+      title: "Meghívást kapott a VitaPass rendszerbe",
+      message: "Egy platformadminisztrátor meghívta egy orvosi fiók létrehozására.",
+      action: "Orvosi meghívó elfogadása",
     },
   },
 };
@@ -96,17 +121,18 @@ export async function sendInvitationEmail({
 }) {
   const content = copy[language][kind];
   const safeUrl = escapeHtml(invitationUrl);
+  const branded = (value: string) => value.replaceAll("VitaPass", brand.name);
   return sendMxrouteEmail({
     to,
-    subject: content.subject,
+    subject: branded(content.subject),
     html: `<!doctype html>
 <html lang="${language}">
   <body style="margin:0;background:#F4F8F8;color:#17332f;font-family:Arial,sans-serif">
     <div style="max-width:600px;margin:0 auto;padding:32px 18px">
       <div style="background:#ffffff;border:1px solid #dce8e5;border-radius:16px;padding:30px">
-        <p style="margin:0 0 24px;color:#006E6E;font-size:22px;font-weight:800">VitaPass</p>
-        <h1 style="margin:0 0 12px;font-size:24px">${escapeHtml(content.title)}</h1>
-        <p style="margin:0 0 24px;line-height:1.6">${escapeHtml(content.message)}</p>
+        <p style="margin:0 0 24px;color:#006E6E;font-size:22px;font-weight:800">${escapeHtml(brand.name)}</p>
+        <h1 style="margin:0 0 12px;font-size:24px">${escapeHtml(branded(content.title))}</h1>
+        <p style="margin:0 0 24px;line-height:1.6">${escapeHtml(branded(content.message))}</p>
         <p style="margin:0 0 26px">
           <a href="${safeUrl}" style="display:inline-block;padding:12px 18px;border-radius:8px;background:#006E6E;color:#ffffff;text-decoration:none;font-weight:700">${escapeHtml(content.action)}</a>
         </p>

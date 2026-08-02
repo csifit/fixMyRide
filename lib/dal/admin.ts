@@ -49,11 +49,31 @@ export type AdminDashboardData = {
   }>;
   clinicians: Array<{
     id: string;
+    email: string;
     fullName: string;
     specialty: string;
     clinicName: string;
+    clinicCountry: string;
     status: string;
     professionalIdentifier: string;
+    payerName: string;
+    payerKind: "doctor" | "clinic";
+    clinics: Array<{ id: string; name: string; status: string }>;
+    freeAccess: Array<{ startsOn: string; endsBefore: string; months: number }>;
+    statusHistory: Array<{
+      previousStatus: string;
+      newStatus: string;
+      reason: string;
+      changedAt: string;
+    }>;
+    createdAt: string;
+  }>;
+  doctorInvitations: Array<{
+    id: string;
+    email: string;
+    status: string;
+    freeAccessMonths: number;
+    expiresAt: string;
     createdAt: string;
   }>;
   patients: Array<{
@@ -138,11 +158,39 @@ export async function loadAdminDashboard(
     })),
     clinicians: records(snapshot.doctors).map((row) => ({
       id: text(row, "id"),
+      email: text(row, "email"),
       fullName: text(row, "full_name"),
       specialty: text(row, "specialty"),
       clinicName: text(row, "clinic_name"),
+      clinicCountry: text(row, "clinic_country"),
       status: text(row, "verification_status"),
       professionalIdentifier: text(row, "professional_identifier"),
+      payerName: text(row, "payer_name"),
+      payerKind: text(row, "payer_kind") === "clinic" ? "clinic" : "doctor",
+      clinics: records(row.clinics).map((clinic) => ({
+        id: text(clinic, "id"),
+        name: text(clinic, "name"),
+        status: text(clinic, "status"),
+      })),
+      freeAccess: records(row.free_access).map((period) => ({
+        startsOn: text(period, "starts_on"),
+        endsBefore: text(period, "ends_before"),
+        months: number(period, "months"),
+      })),
+      statusHistory: records(row.status_history).map((history) => ({
+        previousStatus: text(history, "previous_status"),
+        newStatus: text(history, "new_status"),
+        reason: text(history, "reason"),
+        changedAt: text(history, "changed_at"),
+      })),
+      createdAt: text(row, "created_at"),
+    })),
+    doctorInvitations: records(snapshot.doctor_invitations).map((row) => ({
+      id: text(row, "id"),
+      email: text(row, "email"),
+      status: text(row, "status"),
+      freeAccessMonths: number(row, "free_access_months"),
+      expiresAt: text(row, "expires_at"),
       createdAt: text(row, "created_at"),
     })),
     patients: records(snapshot.patients).map((row) => ({

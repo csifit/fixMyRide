@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useActionState, useEffect, useRef } from "react";
 import { languages, translate, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
+import { brand } from "@/lib/brand";
 import {
   registerAction,
   type PublicRegistrationType,
@@ -44,7 +45,7 @@ export default function RegistrationForm({
     <main className="registration-shell">
       <section className="registration-card">
         <header className="registration-header">
-          <Link href="/" className="registration-brand">VitaPass</Link>
+          <Link href="/" className="registration-brand">{brand.name}</Link>
           <select
             aria-label={t("a11y.languageSelector")}
             value={language}
@@ -63,7 +64,7 @@ export default function RegistrationForm({
           <input type="hidden" name="registrationType" value={accountType} />
           {(accountType === "staff" || accountType === "doctor") && <input type="hidden" name="invitationToken" value={invitationToken} />}
           <label>{t("register.fullName")}<input name="fullName" required minLength={2} maxLength={160} autoComplete="name" /></label>
-          <label>{t("register.email")}<input name="email" required type="email" autoComplete="email" defaultValue={initialEmail} /></label>
+          <label>{t("register.email")}<input name="email" required type="email" autoComplete="email" defaultValue={initialEmail} readOnly={Boolean(invitationToken && initialEmail)} /></label>
 
           {accountType === "patient" && <>
             <label>{t("register.patient.dateOfBirth")}<input name="dateOfBirth" required type="date" /></label>

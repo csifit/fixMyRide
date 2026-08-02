@@ -486,7 +486,11 @@ test("database enums and audit codes are rendered only through translation maps"
     "administratorStatusKey",
     "clinicianStatusKey",
   ]) {
-    assert.match(dashboardSource, new RegExp(`t\\(${mapper}\\(row\\.`), mapper);
+    assert.match(
+      dashboardSource,
+      new RegExp(`t\\(${mapper}\\((?:row|doctor|history|clinic)\\.`),
+      mapper,
+    );
   }
   assert.doesNotMatch(
     dashboardSource,
