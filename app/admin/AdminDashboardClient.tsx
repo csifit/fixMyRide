@@ -13,6 +13,7 @@ import {
 import { brand } from "@/lib/brand";
 import type { AdminDashboardData, AdminSection } from "@/lib/dal/admin";
 import PendingSubmitButton from "@/app/PendingSubmitButton";
+import GoogleAddressSearch from "@/app/GoogleAddressSearch";
 import {
   adminLogoutAction,
   createAdminClinicLocationAction,
@@ -184,12 +185,8 @@ function ClinicAdminView({ data, t, language }: { data: AdminDashboardData; t: (
       <form action={action}>
         <label>{t("admin.clinic.organization")}<select name="clinicId" required defaultValue=""><option value="" disabled>{t("admin.clinic.selectOrganization")}</option>{data.clinicOrganizations.map((clinic) => <option key={clinic.id} value={clinic.id}>{clinic.displayName} · {t(administratorStatusKey(clinic.status))}</option>)}</select></label>
         <label>{t("admin.clinic.locationName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
-        <label>{t("workspace.country")}<input name="countryCode" defaultValue="RO" required maxLength={2} /></label>
         <label>{t("admin.table.status")}<select name="locationStatus" defaultValue="pending"><option value="pending">{t("admin.status.pending")}</option><option value="active">{t("admin.status.active")}</option><option value="suspended">{t("admin.status.suspended")}</option><option value="rejected">{t("admin.status.rejected")}</option></select></label>
-        <label>{t("workspace.city")}<input name="city" maxLength={120} /></label>
-        <label>{t("workspace.address")}<input name="address" maxLength={240} /></label>
-        <label>{t("workspace.latitude")}<input name="latitude" type="number" step="any" /></label>
-        <label>{t("workspace.longitude")}<input name="longitude" type="number" step="any" /></label>
+        <GoogleAddressSearch className="admin-clinic-wide" label={t("workspace.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("workspace.addressSearchFallback")} language={language} />
         <label>{t("admin.clinic.activeFrom")}<input name="activeFrom" type="date" /></label>
         <label>{t("admin.clinic.endsBefore")}<input name="endsBefore" type="date" /></label>
         <input type="hidden" name="description" value="" /><input type="hidden" name="publicPhone" value="" /><input type="hidden" name="publicEmail" value="" />
@@ -211,12 +208,10 @@ function ClinicAdminRow({ location, doctors, t, language }: { location: AdminDas
         <input type="hidden" name="locationId" value={location.id} />
         <label>{t("admin.clinic.organization")}<input value={location.organizationName} readOnly /></label>
         <label>{t("admin.clinic.locationName")}<input name="displayName" defaultValue={location.displayName} required /></label>
-        <label>{t("workspace.country")}<input name="countryCode" defaultValue={location.countryCode} required maxLength={2} /></label>
         <label>{t("admin.table.status")}<select name="locationStatus" defaultValue={location.status}><option value="pending">{t("admin.status.pending")}</option><option value="active">{t("admin.status.active")}</option><option value="suspended">{t("admin.status.suspended")}</option><option value="rejected">{t("admin.status.rejected")}</option></select></label>
         <label className="admin-clinic-wide">{t("workspace.description")}<textarea name="description" rows={3} defaultValue={location.description} /></label>
         <label>{t("workspace.phone")}<input name="publicPhone" defaultValue={location.publicPhone} /></label><label>{t("workspace.email")}<input name="publicEmail" type="email" defaultValue={location.publicEmail} /></label>
-        <label>{t("workspace.city")}<input name="city" defaultValue={location.city} /></label><label>{t("workspace.address")}<input name="address" defaultValue={location.address} /></label>
-        <label>{t("workspace.latitude")}<input name="latitude" type="number" step="any" defaultValue={location.latitude ?? ""} /></label><label>{t("workspace.longitude")}<input name="longitude" type="number" step="any" defaultValue={location.longitude ?? ""} /></label>
+        <GoogleAddressSearch className="admin-clinic-wide" label={t("workspace.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("workspace.addressSearchFallback")} language={language} initialAddress={location.address} initialCity={location.city} initialCountryCode={location.countryCode} initialLatitude={location.latitude} initialLongitude={location.longitude} disabled={updatePending} />
         <label>{t("admin.clinic.activeFrom")}<input name="activeFrom" type="date" defaultValue={location.activeFrom} /></label><label>{t("admin.clinic.endsBefore")}<input name="endsBefore" type="date" defaultValue={location.endsBefore} /></label>
         <label className="admin-clinic-wide">{t("admin.clinic.statusReason")}<textarea name="statusReason" rows={2} maxLength={500} /></label>
         <PendingSubmitButton type="submit" disabled={updatePending}>{t(updatePending ? "admin.clinic.saving" : "admin.clinic.save")}</PendingSubmitButton><ClinicResult state={updateState} t={t} />

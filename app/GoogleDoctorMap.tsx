@@ -1,28 +1,16 @@
 "use client";
 
-import { importLibrary, setOptions } from "@googlemaps/js-api-loader";
+import { importLibrary } from "@googlemaps/js-api-loader";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { brand } from "@/lib/brand";
+import { configureGoogleMapsLoader, googleMapsApiKey } from "@/lib/google-maps-loader";
 import type { PublicDoctor } from "@/lib/dal/public-appointments";
 
 type PinStyle = CSSProperties & {
   "--pin-x": string;
   "--pin-y": string;
 };
-
-let loaderConfigured = false;
-
-function configureLoader(apiKey: string) {
-  if (loaderConfigured) return;
-  setOptions({
-    key: apiKey,
-    v: "weekly",
-    region: "RO",
-    authReferrerPolicy: "origin",
-  });
-  loaderConfigured = true;
-}
 
 function previewPinPosition(doctor: PublicDoctor, index: number): PinStyle {
   if (doctor.latitude !== null && doctor.longitude !== null) {
@@ -54,7 +42,7 @@ export default function GoogleDoctorMap({
     unavailable: string;
   };
 }) {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.trim() ?? "";
+  const apiKey = googleMapsApiKey();
   const mapId = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID?.trim() || "DEMO_MAP_ID";
   const mapElement = useRef<HTMLDivElement>(null);
   const onSelectRef = useRef(onSelect);
@@ -75,7 +63,7 @@ export default function GoogleDoctorMap({
     const markers: google.maps.marker.AdvancedMarkerElement[] = [];
     async function initialize() {
       try {
-        configureLoader(apiKey);
+        configureGoogleMapsLoader(apiKey);
         const [{ Map }, { AdvancedMarkerElement, PinElement }] = await Promise.all([
           importLibrary("maps") as Promise<google.maps.MapsLibrary>,
           importLibrary("marker") as Promise<google.maps.MarkerLibrary>,

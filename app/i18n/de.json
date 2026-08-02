@@ -1021,7 +1021,7 @@
   "admin.clinic.assignment.ended": "Beendet",
   "admin.clinic.result.created": "Klinikstandort erstellt.",
   "admin.clinic.result.saved": "Änderungen am Klinikstandort gespeichert.",
-  "admin.clinic.result.invalid": "Prüfen Sie Standort, Daten und Kartenkoordinaten.",
+  "admin.clinic.result.invalid": "Prüfen Sie die Daten und wählen Sie vor der Aktivierung eine gültige Google-Adresse aus.",
   "admin.clinic.result.unauthorized": "Sie dürfen Klinikstandorte nicht verwalten.",
   "admin.clinic.result.unavailable": "Die Standortverwaltung ist vorübergehend nicht verfügbar."
   ,"admin.patient.status.active": "Aktiv"
@@ -1055,4 +1055,9 @@
   ,"patientAppointments.account.suspended": "Ihr VitaPass-Konto ist gesperrt. Bitte wenden Sie sich an den Support."
   ,"patientAppointments.account.blocked": "Ihr VitaPass-Konto ist blockiert. Bitte wenden Sie sich an den Support."
   ,"patientAppointments.account.archived": "Dieses VitaPass-Konto ist archiviert und kann nicht auf Patientendienste zugreifen."
+  ,"home.addressSearchPlaceholder": "Adresse oder Ort suchen"
+  ,"home.addressSearchHelp": "Wählen Sie eine Google-Adresse, um Ärzte im Umkreis von 50 km zu finden."
+  ,"home.addressSearchFallback": "Die Google-Adresssuche ist nicht verfügbar. Geben Sie einen Ort oder eine Adresse ein."
+  ,"workspace.addressSearchHelp": "Wählen Sie die Adresse bei Google aus, damit die Klinik korrekt auf der Karte erscheint."
+  ,"workspace.addressSearchFallback": "Die Google-Adresssuche ist nicht verfügbar. Geben Sie Adresse, Ort und Land manuell ein."
 }

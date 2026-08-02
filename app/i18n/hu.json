@@ -1021,7 +1021,7 @@
   "admin.clinic.assignment.ended": "Lezárva",
   "admin.clinic.result.created": "A rendelőhely elkészült.",
   "admin.clinic.result.saved": "A rendelőhely módosításai elmentve.",
-  "admin.clinic.result.invalid": "Ellenőrizze a helyszínt, dátumokat és térképkoordinátákat.",
+  "admin.clinic.result.invalid": "Ellenőrizze a dátumokat, és aktiválás előtt válasszon érvényes Google-címet.",
   "admin.clinic.result.unauthorized": "Nincs jogosultsága rendelőhelyek kezelésére.",
   "admin.clinic.result.unavailable": "A helyszínkezelés átmenetileg nem érhető el."
   ,"admin.patient.status.active": "Aktív"
@@ -1055,4 +1055,9 @@
   ,"patientAppointments.account.suspended": "VitaPass-fiókja fel van függesztve. Kérjen segítséget az ügyfélszolgálattól."
   ,"patientAppointments.account.blocked": "VitaPass-fiókja le van tiltva. Kérjen segítséget az ügyfélszolgálattól."
   ,"patientAppointments.account.archived": "Ez a VitaPass-fiók archiválva van, és nem fér hozzá a páciensszolgáltatásokhoz."
+  ,"home.addressSearchPlaceholder": "Cím vagy település keresése"
+  ,"home.addressSearchHelp": "Válasszon Google-címet az 50 km-en belüli orvosok kereséséhez."
+  ,"home.addressSearchFallback": "A Google címkereső nem érhető el. Írjon be egy települést vagy címet."
+  ,"workspace.addressSearchHelp": "Válassza ki a címet a Google találatai közül, hogy a rendelő pontosan jelenjen meg a térképen."
+  ,"workspace.addressSearchFallback": "A Google címkereső nem érhető el. Adja meg kézzel a címet, települést és országot."
 }

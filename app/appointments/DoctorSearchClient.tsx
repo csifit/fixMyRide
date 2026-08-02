@@ -7,6 +7,8 @@ import { clinicianSpecialtyKey } from "@/app/i18n/admin-values";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { PublicDoctor } from "@/lib/dal/public-appointments";
 import PublicBookingHeader from "./PublicBookingHeader";
+import GoogleAddressSearch, { type GoogleAddressSelection } from "@/app/GoogleAddressSearch";
+import { distanceInKilometers } from "@/lib/geo";
 
 function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
@@ -25,7 +27,8 @@ export default function DoctorSearchClient({
   const t = (key: TranslationKey) => translate(language, key);
   const [search, setSearch] = useState(query);
   const [specialty, setSpecialty] = useState("");
-  const [location, setLocation] = useState("");
+  const [locationText, setLocationText] = useState("");
+  const [locationSelection, setLocationSelection] = useState<GoogleAddressSelection | null>(null);
   const [preferredDate, setPreferredDate] = useState(date);
   const specialtyName = (value: string) => {
     const key = clinicianSpecialtyKey(value);
@@ -35,15 +38,20 @@ export default function DoctorSearchClient({
     () => [...new Set(doctors.map((doctor) => doctor.specialty))].sort(),
     [doctors],
   );
-  const locations = useMemo(
-    () => [...new Set(doctors.map((doctor) => doctor.city || doctor.clinicCountry))].sort(),
-    [doctors],
-  );
   const filteredDoctors = doctors.filter((doctor) => {
     const haystack = `${doctor.name} ${doctor.specialty} ${specialtyName(doctor.specialty)} ${doctor.clinicName} ${doctor.city ?? ""} ${doctor.practiceAddress ?? ""} ${doctor.clinicCountry}`.toLocaleLowerCase(language);
+    const locationMatches = locationSelection
+      && locationSelection.latitude !== null
+      && locationSelection.longitude !== null
+      ? doctor.latitude !== null && doctor.longitude !== null
+        && distanceInKilometers(
+          { latitude: locationSelection.latitude, longitude: locationSelection.longitude },
+          { latitude: doctor.latitude, longitude: doctor.longitude },
+        ) <= 50
+      : !locationText.trim() || haystack.includes(locationText.trim().toLocaleLowerCase(language));
     return (!search.trim() || haystack.includes(search.trim().toLocaleLowerCase(language)))
       && (!specialty || doctor.specialty === specialty)
-      && (!location || (doctor.city || doctor.clinicCountry) === location);
+      && locationMatches;
   });
   return <main className="booking-shell">
     <PublicBookingHeader />
@@ -64,12 +72,7 @@ export default function DoctorSearchClient({
               {specialties.map((item) => <option key={item} value={item}>{specialtyName(item)}</option>)}
             </select>
           </label>
-          <label><span>{ready ? t("home.locationLabel") : "Location"}</span>
-            <select value={location} onChange={(event) => setLocation(event.target.value)}>
-              <option value="">{ready ? t("home.allLocations") : "All locations"}</option>
-              {locations.map((item) => <option key={item}>{item}</option>)}
-            </select>
-          </label>
+          <GoogleAddressSearch label={ready ? t("home.locationLabel") : "Location"} placeholder={ready ? t("home.addressSearchPlaceholder") : "Search an address or city"} help={ready ? t("home.addressSearchHelp") : "Select a Google address to find Doctors within 50 km."} unavailable={ready ? t("home.addressSearchFallback") : "Google address search is unavailable. Type a city or address."} language={language} formFields={false} onSelection={setLocationSelection} onTextChange={setLocationText} />
         </div>
         <label><span>{ready ? t("booking.date") : "Preferred date"}</span>
           <input type="date" name="date" value={preferredDate} min={date} onChange={(event) => setPreferredDate(event.target.value)} />

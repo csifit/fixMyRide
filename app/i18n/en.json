@@ -1021,7 +1021,7 @@
   "admin.clinic.assignment.ended": "Ended",
   "admin.clinic.result.created": "Clinic location created.",
   "admin.clinic.result.saved": "Clinic location changes saved.",
-  "admin.clinic.result.invalid": "Check the location, dates and map coordinates.",
+  "admin.clinic.result.invalid": "Check the dates and select a valid Google address before activating the location.",
   "admin.clinic.result.unauthorized": "You are not authorized to manage clinic locations.",
   "admin.clinic.result.unavailable": "Clinic location management is temporarily unavailable."
   ,"admin.patient.status.active": "Active"
@@ -1055,4 +1055,9 @@
   ,"patientAppointments.account.suspended": "Your VitaPass account is suspended. Please contact support for assistance."
   ,"patientAppointments.account.blocked": "Your VitaPass account is blocked. Please contact support for assistance."
   ,"patientAppointments.account.archived": "This VitaPass account is archived and cannot access Patient services."
+  ,"home.addressSearchPlaceholder": "Search an address or city"
+  ,"home.addressSearchHelp": "Select a Google address to find Doctors within 50 km."
+  ,"home.addressSearchFallback": "Google address search is unavailable. Type a city or address."
+  ,"workspace.addressSearchHelp": "Choose the address from Google so the clinic is placed correctly on the map."
+  ,"workspace.addressSearchFallback": "Google address search is unavailable. Enter the address, city and country manually."
 }

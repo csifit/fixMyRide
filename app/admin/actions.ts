@@ -200,6 +200,21 @@ const locationPair = <T extends z.ZodRawShape>(schema: z.ZodObject<T>) => schema
     return (coordinates.latitude === null) === (coordinates.longitude === null);
   },
   { path: ["latitude"] },
+).refine(
+  (value) => {
+    const location = value as {
+      locationStatus: string;
+      address: string;
+      city: string;
+      latitude: number | null;
+      longitude: number | null;
+    };
+    return location.locationStatus !== "active" || Boolean(
+      location.address && location.city
+      && location.latitude !== null && location.longitude !== null,
+    );
+  },
+  { path: ["address"] },
 );
 const createClinicLocationSchema = locationPair(z.object({
   clinicId: z.uuid(),

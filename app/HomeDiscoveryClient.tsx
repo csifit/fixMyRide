@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import GoogleDoctorMap from "./GoogleDoctorMap";
+import GoogleAddressSearch, { type GoogleAddressSelection } from "./GoogleAddressSearch";
 import { translate, type Language, type TranslationKey } from "@/app/i18n";
 import { clinicianSpecialtyKey } from "@/app/i18n/admin-values";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import { brand } from "@/lib/brand";
+import { distanceInKilometers } from "@/lib/geo";
 import type { PublicDoctor } from "@/lib/dal/public-appointments";
 
 function initials(name: string) {
@@ -24,7 +26,8 @@ export default function HomeDiscoveryClient({
   const t = (key: TranslationKey) => translate(language, key);
   const [query, setQuery] = useState("");
   const [specialty, setSpecialty] = useState("");
-  const [location, setLocation] = useState("");
+  const [locationText, setLocationText] = useState("");
+  const [locationSelection, setLocationSelection] = useState<GoogleAddressSelection | null>(null);
   const [preferredDate, setPreferredDate] = useState(date);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const specialtyName = (value: string) => {
@@ -35,15 +38,20 @@ export default function HomeDiscoveryClient({
     () => [...new Set(doctors.map((doctor) => doctor.specialty))].sort(),
     [doctors],
   );
-  const locations = useMemo(
-    () => [...new Set(doctors.map((doctor) => doctor.city || doctor.clinicCountry))].sort(),
-    [doctors],
-  );
   const filtered = doctors.filter((doctor) => {
     const haystack = `${doctor.name} ${doctor.specialty} ${specialtyName(doctor.specialty)} ${doctor.clinicName} ${doctor.city ?? ""} ${doctor.practiceAddress ?? ""} ${doctor.clinicCountry}`.toLocaleLowerCase(language);
+    const locationMatches = locationSelection
+      && locationSelection.latitude !== null
+      && locationSelection.longitude !== null
+      ? doctor.latitude !== null && doctor.longitude !== null
+        && distanceInKilometers(
+          { latitude: locationSelection.latitude, longitude: locationSelection.longitude },
+          { latitude: doctor.latitude, longitude: doctor.longitude },
+        ) <= 50
+      : !locationText.trim() || haystack.includes(locationText.trim().toLocaleLowerCase(language));
     return (!query.trim() || haystack.includes(query.trim().toLocaleLowerCase(language)))
       && (!specialty || doctor.specialty === specialty)
-      && (!location || (doctor.city || doctor.clinicCountry) === location);
+      && locationMatches;
   });
   const selected = filtered.find((doctor) => doctor.id === selectedId) ?? null;
 
@@ -102,12 +110,7 @@ export default function HomeDiscoveryClient({
                 {specialties.map((item) => <option key={item} value={item}>{specialtyName(item)}</option>)}
               </select>
             </label>
-            <label><span>{ready ? t("home.locationLabel") : "Location"}</span>
-              <select value={location} onChange={(event) => setLocation(event.target.value)}>
-                <option value="">{ready ? t("home.allLocations") : "All locations"}</option>
-                {locations.map((item) => <option key={item}>{item}</option>)}
-              </select>
-            </label>
+            <GoogleAddressSearch label={ready ? t("home.locationLabel") : "Location"} placeholder={ready ? t("home.addressSearchPlaceholder") : "Search an address or city"} help={ready ? t("home.addressSearchHelp") : "Select a Google address to find Doctors within 50 km."} unavailable={ready ? t("home.addressSearchFallback") : "Google address search is unavailable. Type a city or address."} language={language} formFields={false} onSelection={setLocationSelection} onTextChange={setLocationText} />
           </div>
           <label><span>{ready ? t("home.dateLabel") : "Preferred date"}</span>
             <input type="date" value={preferredDate} min={date} onChange={(event) => setPreferredDate(event.target.value)} />

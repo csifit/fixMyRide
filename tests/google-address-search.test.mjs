@@ -1,0 +1,65 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+
+const root = new URL("../", import.meta.url);
+const addressSearch = await readFile(new URL("app/GoogleAddressSearch.tsx", root), "utf8");
+const loader = await readFile(new URL("lib/google-maps-loader.ts", root), "utf8");
+const home = await readFile(new URL("app/HomeDiscoveryClient.tsx", root), "utf8");
+const directory = await readFile(new URL("app/appointments/DoctorSearchClient.tsx", root), "utf8");
+const admin = await readFile(new URL("app/admin/AdminDashboardClient.tsx", root), "utf8");
+const adminActions = await readFile(new URL("app/admin/actions.ts", root), "utf8");
+const doctorSettings = await readFile(new URL("app/doctor/settings/DoctorSettingsClient.tsx", root), "utf8");
+const clinicSettings = await readFile(new URL("app/clinic-manager/clinics/ClinicSettingsClient.tsx", root), "utf8");
+const catalogs = Object.fromEntries(await Promise.all(["en", "de", "ro", "hu"].map(async (language) => [language, JSON.parse(await readFile(new URL(`app/i18n/${language}.json`, root), "utf8"))])));
+
+test("address entry uses Google Places Autocomplete New with a shared loader", () => {
+  assert.match(addressSearch, /importLibrary\("places"\)/);
+  assert.match(addressSearch, /new PlaceAutocompleteElement/);
+  assert.match(addressSearch, /"gmp-select"/);
+  assert.match(addressSearch, /fetchFields\(\{ fields: \["formattedAddress", "location", "addressComponents"\] \}\)/);
+  assert.match(loader, /NEXT_PUBLIC_GOOGLE_MAPS_API_KEY/);
+  assert.match(loader, /authReferrerPolicy: "origin"/);
+});
+
+test("coordinates are captured as hidden implementation fields and never requested from users", () => {
+  assert.match(addressSearch, /type="hidden" name=\{fieldNames\.latitude\}/);
+  assert.match(addressSearch, /type="hidden" name=\{fieldNames\.longitude\}/);
+  for (const surface of [admin, doctorSettings, clinicSettings]) {
+    assert.match(surface, /<GoogleAddressSearch/);
+    assert.doesNotMatch(surface, /t\("workspace\.(?:latitude|longitude)"\)/);
+    assert.doesNotMatch(surface, /name="(?:latitude|longitude)" type="number"/);
+  }
+});
+
+test("homepage and Appointment directory use Google address proximity search", () => {
+  for (const surface of [home, directory]) {
+    assert.match(surface, /<GoogleAddressSearch/);
+    assert.match(surface, /distanceInKilometers/);
+    assert.match(surface, /<= 50/);
+    assert.doesNotMatch(surface, /<select value=\{location\}/);
+  }
+});
+
+test("keyless and Google error states retain a usable manual address fallback", () => {
+  assert.match(addressSearch, /const fallback = !apiKey \|\| failed/);
+  assert.match(addressSearch, /google-address-fallback/);
+  assert.match(addressSearch, /onChange=\{\(event\) => commit/);
+  assert.match(addressSearch, /latitude: null, longitude: null/);
+});
+
+test("Admin activation requires a selected address with resolved coordinates", () => {
+  assert.match(adminActions, /location\.locationStatus !== "active"/);
+  assert.match(adminActions, /location\.address && location\.city/);
+  assert.match(adminActions, /location\.latitude !== null && location\.longitude !== null/);
+});
+
+test("Google address-search guidance has translation parity", () => {
+  const keys = [
+    "home.addressSearchPlaceholder", "home.addressSearchHelp", "home.addressSearchFallback",
+    "workspace.addressSearchHelp", "workspace.addressSearchFallback",
+  ];
+  for (const language of ["en", "de", "ro", "hu"]) {
+    for (const key of keys) assert.equal(typeof catalogs[language][key], "string", `${language}: ${key}`);
+  }
+});

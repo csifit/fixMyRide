@@ -1021,7 +1021,7 @@
   "admin.clinic.assignment.ended": "Încheiată",
   "admin.clinic.result.created": "Locația clinică a fost creată.",
   "admin.clinic.result.saved": "Modificările locației au fost salvate.",
-  "admin.clinic.result.invalid": "Verifică locația, datele și coordonatele hărții.",
+  "admin.clinic.result.invalid": "Verificați datele și selectați o adresă Google validă înainte de activarea locației.",
   "admin.clinic.result.unauthorized": "Nu ai permisiunea să administrezi locațiile clinicilor.",
   "admin.clinic.result.unavailable": "Administrarea locațiilor este temporar indisponibilă."
   ,"admin.patient.status.active": "Activ"
@@ -1055,4 +1055,9 @@
   ,"patientAppointments.account.suspended": "Contul dumneavoastră VitaPass este suspendat. Contactați serviciul de asistență."
   ,"patientAppointments.account.blocked": "Contul dumneavoastră VitaPass este blocat. Contactați serviciul de asistență."
   ,"patientAppointments.account.archived": "Acest cont VitaPass este arhivat și nu poate accesa serviciile pentru pacienți."
+  ,"home.addressSearchPlaceholder": "Caută o adresă sau localitate"
+  ,"home.addressSearchHelp": "Selectați o adresă Google pentru a găsi medici pe o rază de 50 km."
+  ,"home.addressSearchFallback": "Căutarea adreselor Google nu este disponibilă. Introduceți o localitate sau o adresă."
+  ,"workspace.addressSearchHelp": "Alegeți adresa din Google pentru ca locația clinicii să apară corect pe hartă."
+  ,"workspace.addressSearchFallback": "Căutarea adreselor Google nu este disponibilă. Introduceți manual adresa, localitatea și țara."
 }

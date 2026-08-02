@@ -6,6 +6,7 @@ const root = new URL("../", import.meta.url);
 const page = await readFile(new URL("app/page.tsx", root), "utf8");
 const homepage = await readFile(new URL("app/HomeDiscoveryClient.tsx", root), "utf8");
 const googleMap = await readFile(new URL("app/GoogleDoctorMap.tsx", root), "utf8");
+const googleLoader = await readFile(new URL("lib/google-maps-loader.ts", root), "utf8");
 const environment = await readFile(new URL(".env.example", root), "utf8");
 const patientPage = await readFile(new URL("app/patient/page.tsx", root), "utf8");
 const patientAppointments = await readFile(new URL(
@@ -45,7 +46,7 @@ test("Google Maps loads on demand and keeps a keyless fallback", () => {
   assert.match(googleMap, /importLibrary\("maps"\)/i);
   assert.match(googleMap, /importLibrary\("marker"\)/i);
   assert.match(googleMap, /AdvancedMarkerElement/i);
-  assert.match(googleMap, /NEXT_PUBLIC_GOOGLE_MAPS_API_KEY/i);
+  assert.match(googleLoader, /NEXT_PUBLIC_GOOGLE_MAPS_API_KEY/i);
   assert.match(googleMap, /if \(apiKey && !loadFailed\)/i);
   assert.match(googleMap, /home-map-canvas/i);
   assert.match(environment, /^NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$/m);

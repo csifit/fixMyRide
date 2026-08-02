@@ -5,6 +5,7 @@ import { useActionState } from "react";
 import { translate, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { DoctorWorkspace } from "@/lib/dal/workspaces";
+import GoogleAddressSearch from "@/app/GoogleAddressSearch";
 import { updateDoctorProfileAction, updateWorkspaceAction, type SettingsState } from "./actions";
 
 const initial: SettingsState = { status: "idle" };
@@ -37,9 +38,7 @@ export default function DoctorSettingsClient({ workspace, logoutAction }: { work
           {!workspace.isIndependent && <div className="settings-lock"><strong>{t("workspace.managedClinic")}</strong><p>{t("workspace.managedClinicHelp")}</p></div>}
           <fieldset disabled={!workspace.canEditWorkspace || workspacePending}>
             <label>{t("workspace.clinicName")}<input name="clinicName" defaultValue={workspace.clinicName} /></label>
-            <div className="settings-two"><label>{t("workspace.country")}<input name="clinicCountry" maxLength={2} defaultValue={workspace.clinicCountry} /></label><label>{t("workspace.city")}<input name="city" defaultValue={workspace.city ?? ""} /></label></div>
-            <label>{t("workspace.address")}<input name="practiceAddress" defaultValue={workspace.practiceAddress ?? ""} /></label>
-            <div className="settings-two"><label>{t("workspace.latitude")}<input type="number" step="any" name="latitude" defaultValue={workspace.latitude ?? ""} /></label><label>{t("workspace.longitude")}<input type="number" step="any" name="longitude" defaultValue={workspace.longitude ?? ""} /></label></div>
+            <GoogleAddressSearch label={t("workspace.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("workspace.addressSearchFallback")} language={language} initialAddress={workspace.practiceAddress ?? ""} initialCity={workspace.city ?? ""} initialCountryCode={workspace.clinicCountry} initialLatitude={workspace.latitude} initialLongitude={workspace.longitude} disabled={!workspace.canEditWorkspace || workspacePending} fieldNames={{ address: "practiceAddress", city: "city", countryCode: "clinicCountry", latitude: "latitude", longitude: "longitude" }} />
           </fieldset>
           {workspace.canEditWorkspace && <><Status state={workspaceState} t={t} /><button disabled={workspacePending}>{t(workspacePending ? "workspace.saving" : "workspace.save")}</button></>}
         </form>
