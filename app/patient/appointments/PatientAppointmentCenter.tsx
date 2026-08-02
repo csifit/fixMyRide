@@ -37,6 +37,7 @@ export default function PatientAppointmentCenter({
   currentDate,
   slots,
   unavailable = false,
+  accessIssue = null,
 }: {
   patientName: string;
   appointments: PatientAppointment[];
@@ -45,6 +46,7 @@ export default function PatientAppointmentCenter({
   currentDate: string;
   slots: PublicSlot[];
   unavailable?: boolean;
+  accessIssue?: "suspended" | "blocked" | "archived" | "unavailable" | null;
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
@@ -90,7 +92,8 @@ export default function PatientAppointmentCenter({
       <Link className="booking-primary" href="/appointments">{t("patientAppointments.bookNew")}</Link>
     </section>
 
-    {unavailable ? <section className="booking-empty"><h2>{t("patientAppointments.unavailable")}</h2></section>
+    {accessIssue ? <section className="booking-empty"><h2>{t(accessIssue === "unavailable" ? "patientAppointments.unavailable" : `patientAppointments.account.${accessIssue}` as TranslationKey)}</h2></section>
+      : unavailable ? <section className="booking-empty"><h2>{t("patientAppointments.unavailable")}</h2></section>
       : !appointments.length ? <section className="booking-empty"><h2>{t("patientAppointments.empty")}</h2><p>{t("patientAppointments.emptyHelp")}</p></section>
       : <div className="patient-appointment-layout">
         <aside className="patient-appointment-list">

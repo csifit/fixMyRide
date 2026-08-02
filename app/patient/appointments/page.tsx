@@ -24,7 +24,9 @@ export default async function PatientAppointmentsPage({
       selectedDate=""
       currentDate=""
       slots={[]}
-      unavailable
+      accessIssue={["suspended", "blocked", "archived"].includes(access.state)
+        ? access.state as "suspended" | "blocked" | "archived"
+        : "unavailable"}
     />;
   }
   const { booking = "", date = "" } = await searchParams;
@@ -62,6 +64,6 @@ export default async function PatientAppointmentsPage({
     selectedDate={selectedDate}
     currentDate={today}
     slots={slots}
-    unavailable={unavailable}
+      unavailable={unavailable}
   />;
 }

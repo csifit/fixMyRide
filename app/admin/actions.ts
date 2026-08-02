@@ -11,6 +11,7 @@ import {
   setAdminDoctorLocationAssignment,
   updateAdminClinicLocation,
 } from "@/lib/dal/admin-clinics";
+import { updateAdminPatientAccount } from "@/lib/dal/admin-patients";
 import { DataAccessError } from "@/lib/dal/errors";
 import { sendInvitationEmail } from "@/lib/email/invitation";
 import { getSiteUrl } from "@/lib/site-url";
@@ -30,6 +31,10 @@ export type AdminDoctorUpdateState = {
 
 export type AdminClinicState = {
   status: "idle" | "created" | "saved" | "invalid" | "unauthorized" | "unavailable";
+};
+
+export type AdminPatientState = {
+  status: "idle" | "saved" | "invalid" | "unauthorized" | "unavailable";
 };
 
 const credentialsSchema = z.object({
@@ -300,5 +305,50 @@ export async function setAdminDoctorLocationAssignmentAction(
     return { status: "saved" };
   } catch (error) {
     return clinicFailure(error);
+  }
+}
+
+const patientAccountSchema = z.object({
+  patientId: z.uuid(),
+  fullName: z.string().trim().min(2).max(160),
+  familyName: z.string().trim().max(100),
+  givenNames: z.string().trim().max(140),
+  accountPhone: z.string().trim().max(40).refine((value) => value === "" || value.length >= 5),
+  preferredLanguage: z.enum(["en", "de", "ro", "hu"]),
+  accountStatus: z.enum(["active", "suspended", "blocked"]),
+  statusReason: z.string().trim().max(500),
+}).refine(
+  (value) => Boolean(value.familyName) === Boolean(value.givenNames),
+  { path: ["familyName"] },
+);
+
+export async function updateAdminPatientAccountAction(
+  _state: AdminPatientState,
+  formData: FormData,
+): Promise<AdminPatientState> {
+  const parsed = patientAccountSchema.safeParse({
+    patientId: formData.get("patientId"),
+    fullName: formData.get("fullName"),
+    familyName: formData.get("familyName") ?? "",
+    givenNames: formData.get("givenNames") ?? "",
+    accountPhone: formData.get("accountPhone") ?? "",
+    preferredLanguage: formData.get("preferredLanguage"),
+    accountStatus: formData.get("accountStatus"),
+    statusReason: formData.get("statusReason") ?? "",
+  });
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await updateAdminPatientAccount(parsed.data);
+    revalidatePath("/admin");
+    revalidatePath("/admin/patients");
+    revalidatePath("/patient");
+    revalidatePath("/patient/appointments");
+    return { status: "saved" };
+  } catch (error) {
+    if (error instanceof DataAccessError) {
+      if (error.code === "unauthorized") return { status: "unauthorized" };
+      if (error.code === "invalid_input" || error.code === "conflict") return { status: "invalid" };
+    }
+    return { status: "unavailable" };
   }
 }

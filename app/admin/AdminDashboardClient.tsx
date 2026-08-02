@@ -19,11 +19,13 @@ import {
   createAdminDoctorInvitationAction,
   setAccountingAccessAction,
   setAdminDoctorLocationAssignmentAction,
+  updateAdminPatientAccountAction,
   updateAdminClinicLocationAction,
   updateAdminDoctorAction,
   type AdminClinicState,
   type AdminDoctorInvitationState,
   type AdminDoctorUpdateState,
+  type AdminPatientState,
 } from "./actions";
 
 type NavItem = {
@@ -101,7 +103,7 @@ export default function AdminDashboard({
 
           {section === "attention" && <AttentionView data={data} t={t} language={language} />}
           {section === "doctors" && <DoctorAdminView data={data} t={t} language={language} />}
-          {section === "patients" && <AdminTable headers={[t("admin.table.name"), t("admin.table.vitapassId"), t("admin.table.status"), t("admin.table.created")]} rows={data.patients.map((row) => [row.fullName, row.vitapassId, t(row.archived ? "admin.status.archived" : "admin.status.current"), formatDateTime(language, row.createdAt)])} empty={t("admin.empty.patients")} />}
+          {section === "patients" && <PatientAdminView data={data} t={t} language={language} />}
           {section === "clinics" && <ClinicAdminView data={data} t={t} language={language} />}
           {section === "organizations" && <AdminTable headers={[t("admin.table.name"), t("admin.table.clinics"), t("admin.table.status"), t("admin.table.created")]} rows={data.clinicManagers.map((row) => [row.displayName, String(row.clinicCount), t(administratorStatusKey(row.status)), formatDateTime(language, row.createdAt)])} empty={t("admin.empty.organizations")} />}
           {section === "managers" && <ManagersView data={data} t={t} language={language} />}
@@ -115,6 +117,7 @@ export default function AdminDashboard({
 const initialDoctorInvitationState: AdminDoctorInvitationState = { status: "idle" };
 const initialDoctorUpdateState: AdminDoctorUpdateState = { status: "idle" };
 const initialClinicState: AdminClinicState = { status: "idle" };
+const initialPatientState: AdminPatientState = { status: "idle" };
 
 function DoctorAdminView({ data, t, language }: { data: AdminDashboardData; t: (key: TranslationKey) => string; language: Language }) {
   const [invitationState, invitationAction, invitationPending] = useActionState(
@@ -230,6 +233,46 @@ function ClinicAdminRow({ location, doctors, t, language }: { location: AdminDas
 function ClinicResult({ state, t }: { state: AdminClinicState; t: (key: TranslationKey) => string }) {
   if (state.status === "idle") return null;
   return <p className={state.status === "created" || state.status === "saved" ? "note-success" : "note-error"} role="status">{t(`admin.clinic.result.${state.status}` as TranslationKey)}</p>;
+}
+
+function PatientAdminView({ data, t, language }: { data: AdminDashboardData; t: (key: TranslationKey) => string; language: Language }) {
+  return <div className="admin-patient-list">{data.patients.length ? data.patients.map((patient) => <PatientAdminRow key={patient.id} patient={patient} t={t} language={language} />) : <p className="admin-empty">{t("admin.empty.patients")}</p>}</div>;
+}
+
+function PatientAdminRow({ patient, t, language }: { patient: AdminDashboardData["patients"][number]; t: (key: TranslationKey) => string; language: Language }) {
+  const [state, action, pending] = useActionState(updateAdminPatientAccountAction, initialPatientState);
+  const effectiveStatus = patient.archivedAt ? "archived" : patient.accountStatus;
+  return <details className="admin-patient-row">
+    <summary>
+      <span className="admin-doctor-avatar">{patient.fullName.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase()}</span>
+      <span><strong>{patient.fullName}</strong><small>{patient.email || t("admin.patient.noEmail")}</small></span>
+      <span><strong>{patient.vitapassId}</strong><small>{t("admin.table.vitapassId")}</small></span>
+      <span><strong>{patient.lastSignInAt ? formatDateTime(language, patient.lastSignInAt) : t("admin.patient.neverSignedIn")}</strong><small>{t("admin.patient.lastSignIn")}</small></span>
+      <b className={`admin-patient-status ${effectiveStatus}`}>{t(`admin.patient.status.${effectiveStatus}` as TranslationKey)}</b>
+    </summary>
+    <div className="admin-patient-detail">
+      <form action={action}>
+        <fieldset disabled={Boolean(patient.archivedAt) || pending}>
+          <input type="hidden" name="patientId" value={patient.id} />
+          <label>{t("admin.table.name")}<input name="fullName" defaultValue={patient.fullName} required minLength={2} maxLength={160} /></label>
+          <label>{t("admin.patient.familyName")}<input name="familyName" defaultValue={patient.familyName} maxLength={100} /></label>
+          <label>{t("admin.patient.givenNames")}<input name="givenNames" defaultValue={patient.givenNames} maxLength={140} /></label>
+          <label>{t("admin.patient.phone")}<input name="accountPhone" type="tel" defaultValue={patient.accountPhone} maxLength={40} /></label>
+          <label>{t("admin.patient.language")}<select name="preferredLanguage" defaultValue={patient.preferredLanguage || "ro"}><option value="en">{t("language.en")}</option><option value="de">{t("language.de")}</option><option value="ro">{t("language.ro")}</option><option value="hu">{t("language.hu")}</option></select></label>
+          <label>{t("admin.table.status")}<select name="accountStatus" defaultValue={patient.accountStatus}><option value="active">{t("admin.patient.status.active")}</option><option value="suspended">{t("admin.patient.status.suspended")}</option><option value="blocked">{t("admin.patient.status.blocked")}</option></select></label>
+          <label className="admin-patient-wide">{t("admin.patient.statusReason")}<textarea name="statusReason" rows={2} maxLength={500} defaultValue={patient.accountStatusReason} placeholder={t("admin.patient.statusReasonHelp")} /></label>
+          <PendingSubmitButton type="submit" disabled={pending}>{t(pending ? "admin.patient.saving" : "admin.patient.save")}</PendingSubmitButton>
+          {state.status !== "idle" && <p className={state.status === "saved" ? "note-success" : "note-error"} role="status">{t(`admin.patient.result.${state.status}` as TranslationKey)}</p>}
+        </fieldset>
+        {patient.archivedAt && <p className="note-error">{t("admin.patient.archivedHelp")}</p>}
+      </form>
+      <aside>
+        <section><h3>{t("admin.patient.accountDetails")}</h3><p><strong>{patient.email || t("admin.patient.noEmail")}</strong><span>{patient.emailConfirmedAt ? t("admin.patient.emailConfirmed") : t("admin.patient.emailNotConfirmed")}</span></p><p><strong>{t("admin.patient.created")}</strong><span>{formatDateTime(language, patient.createdAt)}</span></p><p><strong>{t("admin.patient.lastSignIn")}</strong><span>{patient.lastSignInAt ? formatDateTime(language, patient.lastSignInAt) : t("admin.patient.neverSignedIn")}</span></p></section>
+        <section><h3>{t("admin.patient.statusHistory")}</h3>{patient.statusHistory.length ? patient.statusHistory.slice(0, 6).map((history) => <p key={history.changedAt}><strong>{t(`admin.patient.status.${history.newStatus}` as TranslationKey)}</strong><span>{formatDateTime(language, history.changedAt)}{history.reason ? ` · ${history.reason}` : ""}</span></p>) : <small>{t("admin.patient.noStatusHistory")}</small>}</section>
+        <section className="admin-patient-privacy"><h3>{t("admin.patient.medicalPrivacy")}</h3><p>{t("admin.patient.medicalPrivacyHelp")}</p></section>
+      </aside>
+    </div>
+  </details>;
 }
 
 function AttentionView({ data, t, language }: { data: AdminDashboardData; t: (key: TranslationKey) => string; language: "en" | "de" | "ro" | "hu" }) {

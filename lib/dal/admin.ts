@@ -79,8 +79,24 @@ export type AdminDashboardData = {
   patients: Array<{
     id: string;
     vitapassId: string;
+    email: string;
+    emailConfirmedAt: string;
+    lastSignInAt: string;
     fullName: string;
-    archived: boolean;
+    familyName: string;
+    givenNames: string;
+    accountPhone: string;
+    preferredLanguage: string;
+    accountStatus: string;
+    accountStatusReason: string;
+    accountStatusChangedAt: string;
+    archivedAt: string;
+    statusHistory: Array<{
+      previousStatus: string;
+      newStatus: string;
+      reason: string;
+      changedAt: string;
+    }>;
     createdAt: string;
   }>;
   clinics: Array<{
@@ -144,17 +160,19 @@ export async function loadAdminDashboard(
   administrator: AdministratorContext,
 ): Promise<AdminDashboardData> {
   const supabase = await createClient();
-  const [operations, clinicOperations] = await Promise.all([
+  const [operations, clinicOperations, patientOperations] = await Promise.all([
     supabase.rpc("get_admin_operations_snapshot"),
     supabase.rpc("get_admin_clinic_operations_snapshot"),
+    supabase.rpc("get_admin_patient_operations_snapshot"),
   ]);
-  if (operations.error || clinicOperations.error || !operations.data || !clinicOperations.data || typeof operations.data !== "object" || typeof clinicOperations.data !== "object") {
-    const code = operations.error?.code ?? clinicOperations.error?.code;
+  if (operations.error || clinicOperations.error || patientOperations.error || !operations.data || !clinicOperations.data || !patientOperations.data || typeof operations.data !== "object" || typeof clinicOperations.data !== "object" || typeof patientOperations.data !== "object") {
+    const code = operations.error?.code ?? clinicOperations.error?.code ?? patientOperations.error?.code;
     throw new DataAccessError(code === "42501" ? "unauthorized" : "unavailable");
   }
 
   const snapshot = operations.data as JsonRecord;
   const clinicSnapshot = clinicOperations.data as JsonRecord;
+  const patientSnapshot = patientOperations.data as JsonRecord;
   const counts = (snapshot.counts ?? {}) as JsonRecord;
   return {
     generatedAt: text(snapshot, "generated_at") || new Date().toISOString(),
@@ -165,7 +183,7 @@ export async function loadAdminDashboard(
     counts: {
       attention: number(counts, "attention"),
       doctors: number(counts, "doctors"),
-      patients: number(counts, "patients"),
+      patients: number(patientSnapshot, "count"),
       clinics: number(clinicSnapshot, "count"),
       clinicManagers: number(counts, "clinic_managers"),
       platformManagers: number(counts, "platform_managers"),
@@ -225,11 +243,27 @@ export async function loadAdminDashboard(
       expiresAt: text(row, "expires_at"),
       createdAt: text(row, "created_at"),
     })),
-    patients: records(snapshot.patients).map((row) => ({
+    patients: records(patientSnapshot.patients).map((row) => ({
       id: text(row, "id"),
       vitapassId: text(row, "vitapass_id"),
+      email: text(row, "email"),
+      emailConfirmedAt: text(row, "email_confirmed_at"),
+      lastSignInAt: text(row, "last_sign_in_at"),
       fullName: text(row, "full_name"),
-      archived: row.archived === true,
+      familyName: text(row, "family_name"),
+      givenNames: text(row, "given_names"),
+      accountPhone: text(row, "account_phone"),
+      preferredLanguage: text(row, "preferred_language"),
+      accountStatus: text(row, "account_status"),
+      accountStatusReason: text(row, "account_status_reason"),
+      accountStatusChangedAt: text(row, "account_status_changed_at"),
+      archivedAt: text(row, "archived_at"),
+      statusHistory: records(row.status_history).map((history) => ({
+        previousStatus: text(history, "previous_status"),
+        newStatus: text(history, "new_status"),
+        reason: text(history, "reason"),
+        changedAt: text(history, "changed_at"),
+      })),
       createdAt: text(row, "created_at"),
     })),
     clinics: records(clinicSnapshot.locations).map((row) => ({

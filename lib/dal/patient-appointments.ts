@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { DataAccessError, classifyDatabaseError } from "./errors";
 
 export type PatientAccess =
-  | { state: "configuration" | "unauthenticated" | "unauthorized" | "unavailable" }
+  | { state: "configuration" | "unauthenticated" | "unauthorized" | "unavailable" | "suspended" | "blocked" | "archived" }
   | { state: "active"; patient: { id: string; fullName: string } };
 
 export type PatientAppointment = {
@@ -37,15 +37,23 @@ export async function getPatientAccess(): Promise<PatientAccess> {
   if (claimsError) return { state: "unavailable" };
   if (!claims?.claims?.sub) return { state: "unauthenticated" };
   const { data, error } = await supabase
-    .from("patients")
-    .select("id, full_name, archived_at")
-    .eq("auth_user_id", claims.claims.sub)
+    .rpc("get_my_patient_account_identity")
     .maybeSingle();
   if (error) return { state: "unavailable" };
-  if (!data || data.archived_at) return { state: "unauthorized" };
+  if (!data) return { state: "unauthorized" };
+  const identity = data as {
+    patient_id: string;
+    full_name: string;
+    account_status: string;
+    archived: boolean;
+  };
+  if (identity.archived) return { state: "archived" };
+  if (identity.account_status === "suspended") return { state: "suspended" };
+  if (identity.account_status === "blocked") return { state: "blocked" };
+  if (identity.account_status !== "active") return { state: "unauthorized" };
   return {
     state: "active",
-    patient: { id: data.id, fullName: data.full_name },
+    patient: { id: identity.patient_id, fullName: identity.full_name },
   };
 }
 
