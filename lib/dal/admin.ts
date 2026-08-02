@@ -85,15 +85,42 @@ export type AdminDashboardData = {
   }>;
   clinics: Array<{
     id: string;
+    clinicId: string;
+    organizationName: string;
+    displayName: string;
+    countryCode: string;
+    status: string;
+    description: string;
+    publicPhone: string;
+    publicEmail: string;
+    city: string;
+    address: string;
+    latitude: number | null;
+    longitude: number | null;
+    activeFrom: string;
+    endsBefore: string;
+    assignments: Array<{
+      id: string;
+      clinicianId: string;
+      doctorName: string;
+      status: string;
+      startsOn: string;
+      endsBefore: string;
+    }>;
+    statusHistory: Array<{
+      previousStatus: string;
+      newStatus: string;
+      reason: string;
+      changedAt: string;
+    }>;
+    createdAt: string;
+  }>;
+  clinicOrganizations: Array<{
+    id: string;
     displayName: string;
     legalName: string;
     countryCode: string;
     status: string;
-    city: string;
-    address: string;
-    managerCount: number;
-    doctorCount: number;
-    createdAt: string;
   }>;
   clinicManagers: Array<{
     id: string;
@@ -117,12 +144,17 @@ export async function loadAdminDashboard(
   administrator: AdministratorContext,
 ): Promise<AdminDashboardData> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_admin_operations_snapshot");
-  if (error || !data || typeof data !== "object") {
-    throw new DataAccessError(error?.code === "42501" ? "unauthorized" : "unavailable");
+  const [operations, clinicOperations] = await Promise.all([
+    supabase.rpc("get_admin_operations_snapshot"),
+    supabase.rpc("get_admin_clinic_operations_snapshot"),
+  ]);
+  if (operations.error || clinicOperations.error || !operations.data || !clinicOperations.data || typeof operations.data !== "object" || typeof clinicOperations.data !== "object") {
+    const code = operations.error?.code ?? clinicOperations.error?.code;
+    throw new DataAccessError(code === "42501" ? "unauthorized" : "unavailable");
   }
 
-  const snapshot = data as JsonRecord;
+  const snapshot = operations.data as JsonRecord;
+  const clinicSnapshot = clinicOperations.data as JsonRecord;
   const counts = (snapshot.counts ?? {}) as JsonRecord;
   return {
     generatedAt: text(snapshot, "generated_at") || new Date().toISOString(),
@@ -134,7 +166,7 @@ export async function loadAdminDashboard(
       attention: number(counts, "attention"),
       doctors: number(counts, "doctors"),
       patients: number(counts, "patients"),
-      clinics: number(counts, "clinics"),
+      clinics: number(clinicSnapshot, "count"),
       clinicManagers: number(counts, "clinic_managers"),
       platformManagers: number(counts, "platform_managers"),
     },
@@ -200,17 +232,44 @@ export async function loadAdminDashboard(
       archived: row.archived === true,
       createdAt: text(row, "created_at"),
     })),
-    clinics: records(snapshot.clinics).map((row) => ({
+    clinics: records(clinicSnapshot.locations).map((row) => ({
+      id: text(row, "id"),
+      clinicId: text(row, "clinic_id"),
+      organizationName: text(row, "organization_name"),
+      displayName: text(row, "display_name"),
+      countryCode: text(row, "country_code"),
+      status: text(row, "status"),
+      description: text(row, "description"),
+      publicPhone: text(row, "public_phone"),
+      publicEmail: text(row, "public_email"),
+      city: text(row, "city"),
+      address: text(row, "address"),
+      latitude: row.latitude === null || row.latitude === undefined ? null : Number(row.latitude),
+      longitude: row.longitude === null || row.longitude === undefined ? null : Number(row.longitude),
+      activeFrom: text(row, "active_from"),
+      endsBefore: text(row, "ends_before"),
+      assignments: records(row.assignments).map((assignment) => ({
+        id: text(assignment, "id"),
+        clinicianId: text(assignment, "clinician_id"),
+        doctorName: text(assignment, "doctor_name"),
+        status: text(assignment, "status"),
+        startsOn: text(assignment, "starts_on"),
+        endsBefore: text(assignment, "ends_before"),
+      })),
+      statusHistory: records(row.status_history).map((history) => ({
+        previousStatus: text(history, "previous_status"),
+        newStatus: text(history, "new_status"),
+        reason: text(history, "reason"),
+        changedAt: text(history, "changed_at"),
+      })),
+      createdAt: text(row, "created_at"),
+    })),
+    clinicOrganizations: records(clinicSnapshot.organizations).map((row) => ({
       id: text(row, "id"),
       displayName: text(row, "display_name"),
       legalName: text(row, "legal_name"),
       countryCode: text(row, "country_code"),
       status: text(row, "status"),
-      city: text(row, "city"),
-      address: text(row, "address"),
-      managerCount: number(row, "manager_count"),
-      doctorCount: number(row, "doctor_count"),
-      createdAt: text(row, "created_at"),
     })),
     clinicManagers: records(snapshot.clinic_managers).map((row) => ({
       id: text(row, "id"),

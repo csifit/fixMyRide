@@ -6,6 +6,11 @@ import { classifyLoginError, type LoginErrorKind } from "@/lib/auth-errors";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { createPlatformDoctorInvitation, updateAdminDoctor } from "@/lib/dal/admin-doctors";
+import {
+  createAdminClinicLocation,
+  setAdminDoctorLocationAssignment,
+  updateAdminClinicLocation,
+} from "@/lib/dal/admin-clinics";
 import { DataAccessError } from "@/lib/dal/errors";
 import { sendInvitationEmail } from "@/lib/email/invitation";
 import { getSiteUrl } from "@/lib/site-url";
@@ -21,6 +26,10 @@ export type AdminDoctorInvitationState = {
 
 export type AdminDoctorUpdateState = {
   status: "idle" | "saved" | "invalid" | "duplicate" | "unauthorized" | "unavailable";
+};
+
+export type AdminClinicState = {
+  status: "idle" | "created" | "saved" | "invalid" | "unauthorized" | "unavailable";
 };
 
 const credentialsSchema = z.object({
@@ -159,5 +168,137 @@ export async function updateAdminDoctorAction(
       if (error.code === "invalid_input") return { status: "invalid" };
     }
     return { status: "unavailable" };
+  }
+}
+
+const optionalText = (max: number) => z.string().trim().max(max);
+const optionalDate = z.union([z.literal(""), z.iso.date()]).transform((value) => value || null);
+const optionalCoordinate = z.union([z.literal(""), z.coerce.number()])
+  .transform((value) => value === "" ? null : value);
+const clinicLocationFields = {
+  displayName: z.string().trim().min(2).max(160),
+  countryCode: z.string().trim().regex(/^[A-Za-z]{2}$/).transform((value) => value.toUpperCase()),
+  description: optionalText(2000),
+  publicPhone: optionalText(40),
+  publicEmail: z.union([z.literal(""), z.email().max(320)]),
+  city: optionalText(120),
+  address: optionalText(240),
+  latitude: optionalCoordinate.refine((value) => value === null || (value >= -90 && value <= 90)),
+  longitude: optionalCoordinate.refine((value) => value === null || (value >= -180 && value <= 180)),
+  locationStatus: z.enum(["pending", "active", "suspended", "rejected"]),
+  activeFrom: optionalDate,
+  endsBefore: optionalDate,
+};
+const locationPair = <T extends z.ZodRawShape>(schema: z.ZodObject<T>) => schema.refine(
+  (value) => {
+    const coordinates = value as { latitude: number | null; longitude: number | null };
+    return (coordinates.latitude === null) === (coordinates.longitude === null);
+  },
+  { path: ["latitude"] },
+);
+const createClinicLocationSchema = locationPair(z.object({
+  clinicId: z.uuid(),
+  ...clinicLocationFields,
+}));
+const updateClinicLocationSchema = locationPair(z.object({
+  locationId: z.uuid(),
+  ...clinicLocationFields,
+  statusReason: z.string().trim().max(500),
+}));
+
+function clinicFormInput(formData: FormData) {
+  return {
+    displayName: formData.get("displayName"), countryCode: formData.get("countryCode"),
+    description: formData.get("description") ?? "", publicPhone: formData.get("publicPhone") ?? "",
+    publicEmail: formData.get("publicEmail") ?? "", city: formData.get("city") ?? "",
+    address: formData.get("address") ?? "", latitude: formData.get("latitude") ?? "",
+    longitude: formData.get("longitude") ?? "", locationStatus: formData.get("locationStatus"),
+    activeFrom: formData.get("activeFrom") ?? "", endsBefore: formData.get("endsBefore") ?? "",
+  };
+}
+
+function clinicFailure(error: unknown): AdminClinicState {
+  if (error instanceof DataAccessError) {
+    if (error.code === "unauthorized") return { status: "unauthorized" };
+    if (error.code === "invalid_input" || error.code === "conflict") return { status: "invalid" };
+  }
+  return { status: "unavailable" };
+}
+
+function refreshClinicPaths() {
+  revalidatePath("/admin");
+  revalidatePath("/admin/clinics");
+  revalidatePath("/");
+  revalidatePath("/appointments");
+}
+
+export async function createAdminClinicLocationAction(
+  _state: AdminClinicState,
+  formData: FormData,
+): Promise<AdminClinicState> {
+  const parsed = createClinicLocationSchema.safeParse({
+    clinicId: formData.get("clinicId"),
+    ...clinicFormInput(formData),
+  });
+  if (!parsed.success) return { status: "invalid" };
+  const { clinicId, locationStatus, ...location } = parsed.data;
+  try {
+    await createAdminClinicLocation(clinicId, { ...location, status: locationStatus });
+    refreshClinicPaths();
+    return { status: "created" };
+  } catch (error) {
+    return clinicFailure(error);
+  }
+}
+
+export async function updateAdminClinicLocationAction(
+  _state: AdminClinicState,
+  formData: FormData,
+): Promise<AdminClinicState> {
+  const parsed = updateClinicLocationSchema.safeParse({
+    locationId: formData.get("locationId"), statusReason: formData.get("statusReason") ?? "",
+    ...clinicFormInput(formData),
+  });
+  if (!parsed.success) return { status: "invalid" };
+  const { locationId, locationStatus, ...location } = parsed.data;
+  try {
+    await updateAdminClinicLocation(locationId, { ...location, status: locationStatus });
+    refreshClinicPaths();
+    return { status: "saved" };
+  } catch (error) {
+    return clinicFailure(error);
+  }
+}
+
+const clinicDoctorAssignmentSchema = z.object({
+  locationId: z.uuid(),
+  clinicianId: z.uuid(),
+  assignmentStatus: z.enum(["active", "suspended", "ended"]),
+  startsOn: optionalDate,
+  endsBefore: optionalDate,
+});
+
+export async function setAdminDoctorLocationAssignmentAction(
+  _state: AdminClinicState,
+  formData: FormData,
+): Promise<AdminClinicState> {
+  const parsed = clinicDoctorAssignmentSchema.safeParse({
+    locationId: formData.get("locationId"), clinicianId: formData.get("clinicianId"),
+    assignmentStatus: formData.get("assignmentStatus"), startsOn: formData.get("startsOn") ?? "",
+    endsBefore: formData.get("endsBefore") ?? "",
+  });
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await setAdminDoctorLocationAssignment({
+      locationId: parsed.data.locationId,
+      clinicianId: parsed.data.clinicianId,
+      status: parsed.data.assignmentStatus,
+      startsOn: parsed.data.startsOn,
+      endsBefore: parsed.data.endsBefore,
+    });
+    refreshClinicPaths();
+    return { status: "saved" };
+  } catch (error) {
+    return clinicFailure(error);
   }
 }

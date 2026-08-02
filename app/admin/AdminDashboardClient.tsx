@@ -15,9 +15,13 @@ import type { AdminDashboardData, AdminSection } from "@/lib/dal/admin";
 import PendingSubmitButton from "@/app/PendingSubmitButton";
 import {
   adminLogoutAction,
+  createAdminClinicLocationAction,
   createAdminDoctorInvitationAction,
   setAccountingAccessAction,
+  setAdminDoctorLocationAssignmentAction,
+  updateAdminClinicLocationAction,
   updateAdminDoctorAction,
+  type AdminClinicState,
   type AdminDoctorInvitationState,
   type AdminDoctorUpdateState,
 } from "./actions";
@@ -98,7 +102,7 @@ export default function AdminDashboard({
           {section === "attention" && <AttentionView data={data} t={t} language={language} />}
           {section === "doctors" && <DoctorAdminView data={data} t={t} language={language} />}
           {section === "patients" && <AdminTable headers={[t("admin.table.name"), t("admin.table.vitapassId"), t("admin.table.status"), t("admin.table.created")]} rows={data.patients.map((row) => [row.fullName, row.vitapassId, t(row.archived ? "admin.status.archived" : "admin.status.current"), formatDateTime(language, row.createdAt)])} empty={t("admin.empty.patients")} />}
-          {section === "clinics" && <AdminTable headers={[t("admin.table.name"), t("admin.table.location"), t("admin.table.doctors"), t("admin.table.status")]} rows={data.clinics.map((row) => [row.displayName, [row.address, row.city, row.countryCode].filter(Boolean).join(", "), String(row.doctorCount), t(administratorStatusKey(row.status))])} empty={t("admin.empty.clinics")} />}
+          {section === "clinics" && <ClinicAdminView data={data} t={t} language={language} />}
           {section === "organizations" && <AdminTable headers={[t("admin.table.name"), t("admin.table.clinics"), t("admin.table.status"), t("admin.table.created")]} rows={data.clinicManagers.map((row) => [row.displayName, String(row.clinicCount), t(administratorStatusKey(row.status)), formatDateTime(language, row.createdAt)])} empty={t("admin.empty.organizations")} />}
           {section === "managers" && <ManagersView data={data} t={t} language={language} />}
           {(["specialties", "reviews", "sms", "contracts", "privacy", "security"] as AdminSection[]).includes(section) && <PlannedView t={t} />}
@@ -110,6 +114,7 @@ export default function AdminDashboard({
 
 const initialDoctorInvitationState: AdminDoctorInvitationState = { status: "idle" };
 const initialDoctorUpdateState: AdminDoctorUpdateState = { status: "idle" };
+const initialClinicState: AdminClinicState = { status: "idle" };
 
 function DoctorAdminView({ data, t, language }: { data: AdminDashboardData; t: (key: TranslationKey) => string; language: Language }) {
   const [invitationState, invitationAction, invitationPending] = useActionState(
@@ -166,6 +171,65 @@ function DoctorAdminRow({ doctor, t, language }: { doctor: AdminDashboardData["c
       </aside>
     </div>
   </details>;
+}
+
+function ClinicAdminView({ data, t, language }: { data: AdminDashboardData; t: (key: TranslationKey) => string; language: Language }) {
+  const [state, action, pending] = useActionState(createAdminClinicLocationAction, initialClinicState);
+  return <div className="admin-clinic-workspace">
+    <details className="admin-doctor-invite admin-clinic-create">
+      <summary><span><strong>{t("admin.clinic.add.title")}</strong><small>{t("admin.clinic.add.description")}</small></span><b>+</b></summary>
+      <form action={action}>
+        <label>{t("admin.clinic.organization")}<select name="clinicId" required defaultValue=""><option value="" disabled>{t("admin.clinic.selectOrganization")}</option>{data.clinicOrganizations.map((clinic) => <option key={clinic.id} value={clinic.id}>{clinic.displayName} · {t(administratorStatusKey(clinic.status))}</option>)}</select></label>
+        <label>{t("admin.clinic.locationName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
+        <label>{t("workspace.country")}<input name="countryCode" defaultValue="RO" required maxLength={2} /></label>
+        <label>{t("admin.table.status")}<select name="locationStatus" defaultValue="pending"><option value="pending">{t("admin.status.pending")}</option><option value="active">{t("admin.status.active")}</option><option value="suspended">{t("admin.status.suspended")}</option><option value="rejected">{t("admin.status.rejected")}</option></select></label>
+        <label>{t("workspace.city")}<input name="city" maxLength={120} /></label>
+        <label>{t("workspace.address")}<input name="address" maxLength={240} /></label>
+        <label>{t("workspace.latitude")}<input name="latitude" type="number" step="any" /></label>
+        <label>{t("workspace.longitude")}<input name="longitude" type="number" step="any" /></label>
+        <label>{t("admin.clinic.activeFrom")}<input name="activeFrom" type="date" /></label>
+        <label>{t("admin.clinic.endsBefore")}<input name="endsBefore" type="date" /></label>
+        <input type="hidden" name="description" value="" /><input type="hidden" name="publicPhone" value="" /><input type="hidden" name="publicEmail" value="" />
+        <PendingSubmitButton type="submit" disabled={pending}>{t(pending ? "admin.clinic.saving" : "admin.clinic.add.submit")}</PendingSubmitButton>
+        <ClinicResult state={state} t={t} />
+      </form>
+    </details>
+    <div className="admin-clinic-list">{data.clinics.length ? data.clinics.map((location) => <ClinicAdminRow key={location.id} location={location} doctors={data.clinicians} t={t} language={language} />) : <p className="admin-empty">{t("admin.empty.clinics")}</p>}</div>
+  </div>;
+}
+
+function ClinicAdminRow({ location, doctors, t, language }: { location: AdminDashboardData["clinics"][number]; doctors: AdminDashboardData["clinicians"]; t: (key: TranslationKey) => string; language: Language }) {
+  const [updateState, updateAction, updatePending] = useActionState(updateAdminClinicLocationAction, initialClinicState);
+  const [assignmentState, assignmentAction, assignmentPending] = useActionState(setAdminDoctorLocationAssignmentAction, initialClinicState);
+  return <details className="admin-clinic-row">
+    <summary><span><strong>{location.displayName}</strong><small>{location.organizationName}</small></span><span><strong>{[location.city, location.countryCode].filter(Boolean).join(", ") || "—"}</strong><small>{location.address || t("admin.clinic.addressMissing")}</small></span><span><strong>{location.assignments.filter((item) => item.status === "active").length}</strong><small>{t("admin.table.doctors")}</small></span><b className={`admin-doctor-status ${location.status}`}>{t(administratorStatusKey(location.status))}</b></summary>
+    <div className="admin-clinic-detail">
+      <form action={updateAction} className="admin-clinic-form">
+        <input type="hidden" name="locationId" value={location.id} />
+        <label>{t("admin.clinic.organization")}<input value={location.organizationName} readOnly /></label>
+        <label>{t("admin.clinic.locationName")}<input name="displayName" defaultValue={location.displayName} required /></label>
+        <label>{t("workspace.country")}<input name="countryCode" defaultValue={location.countryCode} required maxLength={2} /></label>
+        <label>{t("admin.table.status")}<select name="locationStatus" defaultValue={location.status}><option value="pending">{t("admin.status.pending")}</option><option value="active">{t("admin.status.active")}</option><option value="suspended">{t("admin.status.suspended")}</option><option value="rejected">{t("admin.status.rejected")}</option></select></label>
+        <label className="admin-clinic-wide">{t("workspace.description")}<textarea name="description" rows={3} defaultValue={location.description} /></label>
+        <label>{t("workspace.phone")}<input name="publicPhone" defaultValue={location.publicPhone} /></label><label>{t("workspace.email")}<input name="publicEmail" type="email" defaultValue={location.publicEmail} /></label>
+        <label>{t("workspace.city")}<input name="city" defaultValue={location.city} /></label><label>{t("workspace.address")}<input name="address" defaultValue={location.address} /></label>
+        <label>{t("workspace.latitude")}<input name="latitude" type="number" step="any" defaultValue={location.latitude ?? ""} /></label><label>{t("workspace.longitude")}<input name="longitude" type="number" step="any" defaultValue={location.longitude ?? ""} /></label>
+        <label>{t("admin.clinic.activeFrom")}<input name="activeFrom" type="date" defaultValue={location.activeFrom} /></label><label>{t("admin.clinic.endsBefore")}<input name="endsBefore" type="date" defaultValue={location.endsBefore} /></label>
+        <label className="admin-clinic-wide">{t("admin.clinic.statusReason")}<textarea name="statusReason" rows={2} maxLength={500} /></label>
+        <PendingSubmitButton type="submit" disabled={updatePending}>{t(updatePending ? "admin.clinic.saving" : "admin.clinic.save")}</PendingSubmitButton><ClinicResult state={updateState} t={t} />
+      </form>
+      <aside>
+        <section><h3>{t("admin.clinic.assign.title")}</h3><p>{t("admin.clinic.assign.description")}</p><form action={assignmentAction} className="admin-assignment-form"><input type="hidden" name="locationId" value={location.id} /><label>{t("admin.table.doctor")}<select name="clinicianId" required defaultValue=""><option value="" disabled>{t("admin.clinic.assign.selectDoctor")}</option>{doctors.filter((doctor) => doctor.status === "approved").map((doctor) => <option value={doctor.id} key={doctor.id}>{doctor.fullName}</option>)}</select></label><label>{t("admin.table.status")}<select name="assignmentStatus" defaultValue="active"><option value="active">{t("admin.status.active")}</option><option value="suspended">{t("admin.status.suspended")}</option><option value="ended">{t("admin.clinic.assignment.ended")}</option></select></label><label>{t("admin.clinic.activeFrom")}<input name="startsOn" type="date" /></label><label>{t("admin.clinic.endsBefore")}<input name="endsBefore" type="date" /></label><PendingSubmitButton disabled={assignmentPending}>{t(assignmentPending ? "admin.clinic.saving" : "admin.clinic.assign.submit")}</PendingSubmitButton><ClinicResult state={assignmentState} t={t} /></form></section>
+        <section><h3>{t("admin.clinic.assignedDoctors")}</h3>{location.assignments.length ? location.assignments.map((assignment) => <p key={assignment.id}><strong>{assignment.doctorName}</strong><span>{t(`admin.clinic.assignment.${assignment.status}` as TranslationKey)} · {assignment.startsOn ? formatDate(language, assignment.startsOn) : "—"}{assignment.endsBefore ? ` – ${formatDate(language, assignment.endsBefore)}` : ""}</span></p>) : <small>{t("admin.clinic.noAssignedDoctors")}</small>}</section>
+        <section><h3>{t("admin.clinic.statusHistory")}</h3>{location.statusHistory.length ? location.statusHistory.slice(0, 5).map((history) => <p key={history.changedAt}><strong>{t(administratorStatusKey(history.newStatus))}</strong><span>{formatDateTime(language, history.changedAt)}{history.reason ? ` · ${history.reason}` : ""}</span></p>) : <small>{t("admin.clinic.noStatusHistory")}</small>}</section>
+      </aside>
+    </div>
+  </details>;
+}
+
+function ClinicResult({ state, t }: { state: AdminClinicState; t: (key: TranslationKey) => string }) {
+  if (state.status === "idle") return null;
+  return <p className={state.status === "created" || state.status === "saved" ? "note-success" : "note-error"} role="status">{t(`admin.clinic.result.${state.status}` as TranslationKey)}</p>;
 }
 
 function AttentionView({ data, t, language }: { data: AdminDashboardData; t: (key: TranslationKey) => string; language: "en" | "de" | "ro" | "hu" }) {
