@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAccountingAccess } from "@/lib/dal/admin-auth";
 import { getOrganizationAccess } from "@/lib/dal/organization";
 import { loadClinicBillingUsage, loadPlatformBillingUsage } from "@/lib/dal/invoicing";
+import { loadCommercialAdmin } from "@/lib/dal/commercial-admin";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,14 @@ function download(body: string, name: string) {
 export async function GET(request: NextRequest) {
   const scope = request.nextUrl.searchParams.get("scope");
   const month = request.nextUrl.searchParams.get("month") ?? "";
+  if (scope === "commercial") {
+    const access = await getAccountingAccess();
+    if (access.state !== "authorized") return new NextResponse("Unauthorized", { status: 401 });
+    const data = await loadCommercialAdmin();
+    const output: Array<Array<string | number>> = [["Provider ID", "Legal name", "Display name", "Country", "Provider status", "Subscription status", "Monthly price", "Currency", "Period end", "Invoices", "Last invoice status", "Billing email"]];
+    for (const provider of data.providers) output.push([provider.id, provider.legalName, provider.displayName, provider.countryCode, provider.providerStatus, provider.subscriptionStatus, (provider.monthlyPriceCents / 100).toFixed(2), provider.currency, provider.currentPeriodEnd ?? "", provider.invoiceCount, provider.lastInvoiceStatus ?? "", provider.billingEmail ?? ""]);
+    return download(csv(output), `fixmyride-provider-billing-${new Date().toISOString().slice(0, 10)}.csv`);
+  }
   if (!/^\d{4}-\d{2}-01$/.test(month)) return new NextResponse("Invalid month", { status: 400 });
   if (scope === "clinic") {
     const access = await getOrganizationAccess("clinic_manager");

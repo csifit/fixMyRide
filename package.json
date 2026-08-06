@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:automotive": "node --test --test-concurrency=1 tests/automotive-foundation.test.mjs tests/workshop-service-catalogue.test.mjs tests/automotive-domain-expansion.test.mjs tests/workshop-booking-management.test.mjs tests/customer-booking-management.test.mjs tests/application-domain-cutover.test.mjs tests/workshop-operations.test.mjs tests/repair-lifecycle.test.mjs",
+    "test:automotive": "node --test --test-concurrency=1 tests/automotive-foundation.test.mjs tests/workshop-service-catalogue.test.mjs tests/automotive-domain-expansion.test.mjs tests/workshop-booking-management.test.mjs tests/customer-booking-management.test.mjs tests/application-domain-cutover.test.mjs tests/workshop-operations.test.mjs tests/repair-lifecycle.test.mjs tests/stripe-commercial-operations.test.mjs",
     "test": "npm run build && npm run test:automotive && node --test tests/admin-clinic-activation.test.mjs tests/continuous-platform-access.test.mjs tests/google-address-search.test.mjs tests/authz.test.mjs tests/brand-colors.test.mjs tests/database-security.test.mjs tests/encoding.test.mjs tests/i18n.test.mjs tests/language-hydration.test.mjs tests/nextjs.test.mjs tests/secrets.test.mjs",
     "test:legacy": "node --test tests/phase-4d-admin-patients.test.mjs tests/phase-4c-admin-clinics.test.mjs tests/phase-4b-admin-doctors.test.mjs tests/phase-4a-admin-console.test.mjs tests/admin-security.test.mjs tests/phase-2c-security.test.mjs tests/phase-2d-security.test.mjs tests/phase-2e-security.test.mjs tests/phase-3-appointments.test.mjs tests/phase-3-booking-experience.test.mjs tests/phase-3c-post-booking.test.mjs tests/phase-3d-patient-appointments.test.mjs tests/phase-3e-homepage.test.mjs tests/phase-3f-doctor-workspaces-billing.test.mjs",
     "lint": "eslint ."
@@ -19,9 +19,10 @@
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.111.0",
     "@types/google.maps": "^3.65.3",
-    "next": "^16.2.12",
+    "next": "^16.3.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "stripe": "^22.4.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -29,7 +30,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",
-    "eslint-config-next": "^16.2.12",
+    "eslint-config-next": "^16.3.0",
     "typescript": "5.9.3"
   },
   "type": "module"

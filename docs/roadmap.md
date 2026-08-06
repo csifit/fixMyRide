@@ -48,7 +48,11 @@
   milestone removes their retained code and fixtures.
 - Repair lifecycle is implemented in migrations 030–031 and the workshop/customer
   interfaces; deployment and hosted smoke testing remain.
-- Next implementation milestone after deployment: notifications.
+- Stripe provider subscriptions, invoicing, commercial exports, and automotive
+  provider administration are implemented in migration 032 and the provider/admin
+  workspaces; deployment and Stripe test-mode smoke testing remain.
+- Next implementation milestone after deployment: notifications, followed by
+  legacy retirement.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

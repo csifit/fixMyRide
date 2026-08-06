@@ -1,0 +1,54 @@
+import "server-only";
+
+import { createClient } from "@/lib/supabase/server";
+import { createServiceClient } from "@/lib/supabase/service";
+import { classifyDatabaseError, DataAccessError } from "./errors";
+
+export type ProviderSubscriptionStatus = "not_started" | "incomplete" | "incomplete_expired" | "trialing" | "active" | "past_due" | "canceled" | "unpaid" | "paused";
+
+export type ProviderBilling = {
+  providerId: string;
+  legalName: string;
+  displayName: string;
+  providerStatus: string;
+  billingProfile: { billingEmail: string | null; billingContact: string | null; taxIdentifier: string | null; addressLine1: string | null; addressLine2: string | null; city: string | null; postalCode: string | null; countryCode: string };
+  plan: { id: string; name: string; monthlyPriceCents: number; currency: string; smsIncluded: boolean };
+  subscription: { status: ProviderSubscriptionStatus; stripeCustomerId: string | null; stripeSubscriptionId: string | null; currentPeriodStart: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; canceledAt: string | null };
+  invoices: Array<{ id: string; number: string | null; status: string; currency: string; amountDueCents: number; amountPaidCents: number; hostedInvoiceUrl: string | null; invoicePdfUrl: string | null; periodStart: string | null; periodEnd: string | null; dueAt: string | null; paidAt: string | null }>;
+};
+
+function fail(error: { code?: string; status?: number }): never {
+  throw new DataAccessError(classifyDatabaseError(error));
+}
+
+export async function loadProviderBilling(providerId: string): Promise<ProviderBilling> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_my_provider_billing", { requested_provider_id: providerId });
+  if (error) fail(error);
+  if (!data) throw new DataAccessError("unavailable");
+  return data as unknown as ProviderBilling;
+}
+
+export async function updateProviderBillingProfile(providerId: string, profile: ProviderBilling["billingProfile"]) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("update_my_provider_billing_profile", {
+    requested_provider_id: providerId,
+    new_billing_email: profile.billingEmail,
+    new_billing_contact: profile.billingContact,
+    new_tax_identifier: profile.taxIdentifier,
+    new_address_line1: profile.addressLine1,
+    new_address_line2: profile.addressLine2,
+    new_city: profile.city,
+    new_postal_code: profile.postalCode,
+    new_country_code: profile.countryCode,
+  });
+  if (error) fail(error);
+}
+
+export async function attachProviderStripeCustomer(providerId: string, customerId: string) {
+  const { error } = await createServiceClient().rpc("attach_provider_stripe_customer", {
+    requested_provider_id: providerId,
+    requested_stripe_customer_id: customerId,
+  });
+  if (error) fail(error);
+}

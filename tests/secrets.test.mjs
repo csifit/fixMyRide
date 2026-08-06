@@ -10,7 +10,7 @@ test("the committed environment template contains only blank public values", asy
   const example = await readFile(path.join(root, ".env.example"), "utf8");
   assert.equal(
     example.replaceAll("\r\n", "\n"),
-    "NEXT_PUBLIC_SUPABASE_URL=\nNEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\nNEXT_PUBLIC_SITE_URL=\nNEXT_PUBLIC_BRAND_ID=\nNEXT_PUBLIC_BRAND_NAME=\nNEXT_PUBLIC_BRAND_MARK=\nNEXT_PUBLIC_BRAND_PRIMARY_COLOR=\nNEXT_PUBLIC_BRAND_SUPPORT_EMAIL=\nNEXT_PUBLIC_BRAND_TIME_ZONE=\nNEXT_PUBLIC_GOOGLE_MAPS_API_KEY=\nNEXT_PUBLIC_GOOGLE_MAPS_MAP_ID=\nMXROUTE_SERVER=\nMXROUTE_USERNAME=\nMXROUTE_PASSWORD=\nSUPABASE_SECRET_KEY=\nSMSLINK_CONNECTION_ID=\nSMSLINK_PASSWORD=\nSMSLINK_TEST_MODE=true\nCRON_SECRET=\n",
+    "NEXT_PUBLIC_SUPABASE_URL=\nNEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=\nNEXT_PUBLIC_SITE_URL=\nNEXT_PUBLIC_BRAND_ID=\nNEXT_PUBLIC_BRAND_NAME=\nNEXT_PUBLIC_BRAND_MARK=\nNEXT_PUBLIC_BRAND_PRIMARY_COLOR=\nNEXT_PUBLIC_BRAND_SUPPORT_EMAIL=\nNEXT_PUBLIC_BRAND_TIME_ZONE=\nNEXT_PUBLIC_GOOGLE_MAPS_API_KEY=\nNEXT_PUBLIC_GOOGLE_MAPS_MAP_ID=\nMXROUTE_SERVER=\nMXROUTE_USERNAME=\nMXROUTE_PASSWORD=\nSUPABASE_SECRET_KEY=\nSMSLINK_CONNECTION_ID=\nSMSLINK_PASSWORD=\nSMSLINK_TEST_MODE=true\nCRON_SECRET=\nSTRIPE_SECRET_KEY=\nSTRIPE_WEBHOOK_SECRET=\nSTRIPE_STANDARD_MONTHLY_PRICE_ID=\n",
   );
 });
 
@@ -20,8 +20,13 @@ test("service credential is isolated to the server-only client and source contai
   for (const file of files) {
     const text = await readFile(file, "utf8");
     assert.doesNotMatch(text, /sb_secret_[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/, path.relative(root, file));
+    assert.doesNotMatch(text, /sk_(?:test|live)_[A-Za-z0-9]{20,}|whsec_[A-Za-z0-9]{20,}/, path.relative(root, file));
     if (text.includes("SUPABASE_SECRET_KEY")) {
       assert.equal(path.relative(root, file), path.join("lib", "supabase", "service.ts"));
+      assert.match(text, /^import "server-only";/);
+    }
+    if (text.includes("STRIPE_SECRET_KEY") || text.includes("STRIPE_WEBHOOK_SECRET")) {
+      assert.equal(path.relative(root, file), path.join("lib", "stripe", "server.ts"));
       assert.match(text, /^import "server-only";/);
     }
   }
