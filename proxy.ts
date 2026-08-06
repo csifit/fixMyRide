@@ -10,6 +10,7 @@ export const config = {
     "/doctor/:path*",
     "/admin/:path*",
     "/clinic-manager/:path*",
+    "/workshop-manager/:path*",
     "/staff/:path*",
     "/patient/:path*",
     "/auth/:path*",
