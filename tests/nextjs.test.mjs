@@ -10,36 +10,38 @@ test("standard Next.js production output exists", async () => {
     await readFile(new URL(".next/server/app-paths-manifest.json", root), "utf8"),
   );
   assert.equal(typeof manifest["/page"], "string");
-  assert.equal(typeof manifest["/doctor/page"], "string");
+  assert.equal(typeof manifest["/customer/bookings/page"], "string");
+  assert.equal(typeof manifest["/workshop-manager/page"], "string");
   assert.equal(typeof manifest["/admin/page"], "string");
   assert.equal(typeof manifest["/admin/login/page"], "string");
   assert.equal(typeof manifest["/admin/mfa/enroll/page"], "string");
   assert.equal(typeof manifest["/admin/mfa/challenge/page"], "string");
 });
 
-test("patient and doctor pages use local prototype data", async () => {
-  const patientPage = await readFile(new URL("app/patient/page.tsx", root), "utf8");
-  const doctorPage = await readFile(new URL("app/doctor/page.tsx", root), "utf8");
-  assert.match(patientPage, /patientPortalData/);
-  assert.match(patientPage, /PatientPortal/);
-  assert.match(doctorPage, /getDoctorAccess/);
-  assert.match(doctorPage, /loadDoctorDashboard/);
-  assert.match(doctorPage, /DoctorPortal/);
+test("customer and workshop-manager pages use canonical platform access", async () => {
+  const customerPage = await readFile(new URL("app/customer/bookings/page.tsx", root), "utf8");
+  const managerPage = await readFile(new URL("app/workshop-manager/page.tsx", root), "utf8");
+  assert.match(customerPage, /getCustomerAccess/);
+  assert.match(customerPage, /loadMyServiceBookings/);
+  assert.match(managerPage, /getWorkshopManagerAccess/);
+  assert.match(managerPage, /loadManagedServiceProviders/);
 });
 
-test("doctor route redirects unauthenticated users and has no-store rendering", async () => {
-  const doctorPage = await readFile(new URL("app/doctor/page.tsx", root), "utf8");
-  assert.match(doctorPage, /state === "unauthenticated"\) redirect\("\/doctor\/login"\)/);
-  assert.match(doctorPage, /dynamic = "force-dynamic"/);
-  assert.match(doctorPage, /revalidate = 0/);
+test("canonical account routes redirect unauthenticated users", async () => {
+  const customerPage = await readFile(new URL("app/customer/bookings/page.tsx", root), "utf8");
+  const managerPage = await readFile(new URL("app/workshop-manager/page.tsx", root), "utf8");
+  assert.match(customerPage, /state === "unauthenticated"\) redirect\("\/customer\/login"\)/);
+  assert.match(managerPage, /state === "unauthenticated"\) redirect\("\/workshop-manager\/login"\)/);
+  assert.match(customerPage, /dynamic = "force-dynamic"/);
+  assert.match(managerPage, /dynamic = "force-dynamic"/);
 });
 
-test("doctor login stores the Server Action cookies before full navigation", async () => {
-  const action = await readFile(new URL("app/doctor/actions.ts", root), "utf8");
-  const form = await readFile(new URL("app/doctor/login/LoginForm.tsx", root), "utf8");
-  assert.match(action, /return \{ error: null, success: true \}/);
-  assert.doesNotMatch(action, /record_auth_audit[\s\S]+?redirect\("\/doctor"\)/);
-  assert.match(form, /if \(state\.success\) window\.location\.assign\("\/doctor"\)/);
+test("platform login redirects to canonical destinations", async () => {
+  const action = await readFile(new URL("app/authentication/actions.ts", root), "utf8");
+  const form = await readFile(new URL("app/authentication/PlatformLoginForm.tsx", root), "utf8");
+  assert.match(action, /"\/customer\/bookings"/);
+  assert.match(action, /"\/workshop-manager"/);
+  assert.match(form, /platformLoginAction/);
 });
 
 test("admin route is protected, dynamic, and redirects aal1 superadmins to MFA", async () => {

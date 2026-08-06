@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function WorkshopStaffPage() { return <main className="settings-shell"><section className="settings-content"><p className="registration-kicker">Workshop staff</p><h1>Operations workspace</h1><p>The staff workspace will open with workshop operations and repair lifecycle management.</p><Link className="organization-action" href="/">Return home</Link></section></main>; }

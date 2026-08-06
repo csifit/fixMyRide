@@ -37,7 +37,13 @@
 - Workshop request inbox: implemented and deployed.
 - Customer booking management: implemented locally; migrations 026 and 027 and
   the hosted smoke test remain before completion.
-- Next implementation milestone after that: workshop operations settings.
+- Application domain cutover: implemented locally with canonical customer and
+  workshop-manager authentication, registration, routes, DAL modules, and
+  temporary legacy redirects; migration 028 and hosted smoke tests remain.
+- The canonical release gate is `npm test`. Retired medical-product assertions
+  remain available under `npm run test:legacy` until the legacy-retirement
+  milestone removes their retained code and fixtures.
+- Next implementation milestone after deployment: workshop operations settings.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

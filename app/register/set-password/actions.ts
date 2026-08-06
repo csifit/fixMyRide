@@ -19,10 +19,10 @@ const passwordSchema = z.object({
 });
 
 const destinations: Record<string, string> = {
-  patient: "/patient/appointments",
-  doctor: "/doctor",
-  clinic_manager: "/clinic-manager",
-  staff: "/staff",
+  customer: "/customer/bookings",
+  workshop_manager: "/workshop-manager",
+  independent_service_provider: "/service-provider",
+  workshop_staff: "/workshop-staff",
   platform_manager: "/admin",
   platform_admin: "/admin",
   superadmin: "/admin",
@@ -59,12 +59,12 @@ export async function setPasswordAction(
 
   const { data: identity, error: identityError } = await supabase
     .from("account_identities")
-    .select("account_type")
+    .select("target_account_type")
     .eq("auth_user_id", authUserId)
     .maybeSingle();
-  if (identityError || !identity?.account_type) {
+  if (identityError || !identity?.target_account_type) {
     return { status: "unavailable" };
   }
 
-  redirect(destinations[identity.account_type] ?? "/");
+  redirect(destinations[identity.target_account_type] ?? "/");
 }

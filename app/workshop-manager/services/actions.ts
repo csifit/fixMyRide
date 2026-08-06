@@ -1,5 +1,7 @@
 "use server";
 
+// Canonical workshop-manager catalogue actions.
+
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
@@ -29,7 +31,7 @@ const fields = {
   currency: z.string().trim().length(3).regex(/^[A-Za-z]{3}$/).transform((value) => value.toUpperCase()),
   requiresDiagnosis: z.boolean(),
 };
-const createSchema = z.object({ clinicId: z.uuid(), ...fields });
+const createSchema = z.object({ serviceProviderId: z.uuid(), ...fields });
 const updateSchema = z.object({ serviceId: z.uuid(), displayOrder: z.coerce.number().int().min(0).max(10000), ...fields });
 const activeSchema = z.object({ serviceId: z.uuid(), active: z.enum(["true", "false"]).transform((value) => value === "true") });
 
@@ -55,17 +57,17 @@ function failure(error: unknown): ServiceCatalogueState {
 }
 
 function refresh() {
-  revalidatePath("/clinic-manager/services");
+  revalidatePath("/workshop-manager/services");
   revalidatePath("/workshops");
   revalidatePath("/");
 }
 
 export async function createServiceAction(_state: ServiceCatalogueState, formData: FormData): Promise<ServiceCatalogueState> {
-  const parsed = createSchema.safeParse({ clinicId: formData.get("clinicId"), ...values(formData) });
+  const parsed = createSchema.safeParse({ serviceProviderId: formData.get("serviceProviderId"), ...values(formData) });
   if (!parsed.success) return { status: "invalid" };
   try {
-    const { clinicId, ...input } = parsed.data;
-    await createManagedWorkshopService(clinicId, input);
+    const { serviceProviderId, ...input } = parsed.data;
+    await createManagedWorkshopService(serviceProviderId, input);
     refresh();
     return { status: "created" };
   } catch (error) {

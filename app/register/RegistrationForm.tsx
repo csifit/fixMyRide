@@ -15,11 +15,9 @@ const initialState: RegistrationState = { status: "idle" };
 
 export default function RegistrationForm({
   accountType,
-  invitationToken = "",
   initialEmail = "",
 }: {
   accountType: PublicRegistrationType;
-  invitationToken?: string;
   initialEmail?: string;
 }) {
   const [language, setLanguage, ready] = useLanguage();
@@ -62,24 +60,13 @@ export default function RegistrationForm({
 
         <form action={action} onSubmit={preventDuplicate}>
           <input type="hidden" name="registrationType" value={accountType} />
-          {(accountType === "staff" || accountType === "doctor") && <input type="hidden" name="invitationToken" value={invitationToken} />}
           <label>{t("register.fullName")}<input name="fullName" required minLength={2} maxLength={160} autoComplete="name" /></label>
-          <label>{t("register.email")}<input name="email" required type="email" autoComplete="email" defaultValue={initialEmail} readOnly={Boolean(invitationToken && initialEmail)} /></label>
+          <label>{t("register.email")}<input name="email" required type="email" autoComplete="email" defaultValue={initialEmail} /></label>
 
-          {accountType === "patient" && <>
-            <label>{t("register.patient.dateOfBirth")}<input name="dateOfBirth" required type="date" /></label>
-            <label>{t("register.patient.sex")}<select name="sex" required><option value="female">{t("medical.sex.female")}</option><option value="male">{t("medical.sex.male")}</option></select></label>
-          </>}
-          {accountType === "doctor" && <>
-            <label>{t("register.doctor.specialty")}<input name="specialty" required minLength={2} maxLength={120} /></label>
-            <label>{t("register.doctor.professionalIdentifier")}<input name="professionalIdentifier" required minLength={3} maxLength={80} /></label>
-            <label>{t("register.doctor.clinicName")}<input name="clinicName" required minLength={2} maxLength={160} /></label>
-            <label>{t("register.country")}<input name="clinicCountry" required defaultValue="RO" pattern="[A-Za-z]{2}" maxLength={2} /></label>
-          </>}
-          {accountType === "clinic_manager" && <>
-            <label>{t("register.clinicManager.legalName")}<input name="clinicLegalName" required minLength={2} maxLength={200} /></label>
-            <label>{t("register.clinicManager.displayName")}<input name="clinicDisplayName" required minLength={2} maxLength={160} /></label>
-            <label>{t("register.country")}<input name="clinicCountry" required defaultValue="RO" pattern="[A-Za-z]{2}" maxLength={2} /></label>
+          {accountType === "workshop_manager" && <>
+            <label>{t("register.workshop_manager.legalName")}<input name="serviceProviderLegalName" required minLength={2} maxLength={200} /></label>
+            <label>{t("register.workshop_manager.displayName")}<input name="serviceProviderDisplayName" required minLength={2} maxLength={160} /></label>
+            <label>{t("register.country")}<input name="serviceProviderCountry" required defaultValue="RO" pattern="[A-Za-z]{2}" maxLength={2} /></label>
           </>}
 
           {state.status !== "idle" && (
@@ -93,7 +80,7 @@ export default function RegistrationForm({
         </form>
         <nav className="registration-links">
           <Link href="/register">{t("register.chooseAnother")}</Link>
-          <Link href="/doctor/login">{t("register.alreadyAccount")}</Link>
+          <Link href={accountType === "customer" ? "/customer/login" : "/workshop-manager/login"}>{t("register.alreadyAccount")}</Link>
         </nav>
       </section>
     </main>

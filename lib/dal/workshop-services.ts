@@ -19,7 +19,7 @@ export type ManagedWorkshopService = {
 
 export type ManagedWorkshopCatalogue = {
   workshopId: string;
-  clinicId: string;
+  serviceProviderId: string;
   workshopName: string;
   services: ManagedWorkshopService[];
 };
@@ -49,7 +49,7 @@ export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCa
     const workshopId = row.workshop_id as string;
     const catalogue = catalogues.get(workshopId) ?? {
       workshopId,
-      clinicId: row.clinic_id as string,
+      serviceProviderId: row.clinic_id as string,
       workshopName: row.workshop_name as string,
       services: [],
     };
@@ -73,10 +73,11 @@ export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCa
   return [...catalogues.values()];
 }
 
-export async function createManagedWorkshopService(clinicId: string, input: ServiceInput) {
+export async function createManagedWorkshopService(serviceProviderId: string, input: ServiceInput) {
   const supabase = await createClient();
   const { error } = await supabase.rpc("create_managed_workshop_service", {
-    requested_clinic_id: clinicId,
+    // Temporary RPC argument compatibility until the legacy database function retires.
+    requested_clinic_id: serviceProviderId,
     new_name: input.name,
     new_category: input.category,
     new_description: input.description,

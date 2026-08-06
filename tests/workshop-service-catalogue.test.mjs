@@ -5,9 +5,9 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const migration = await read("supabase/migrations/202608060023_workshop_service_catalogue.sql");
-const actions = await read("app/clinic-manager/services/actions.ts");
-const client = await read("app/clinic-manager/services/ServiceCatalogueClient.tsx");
-const portal = await read("app/organization/OrganizationPortalClient.tsx");
+const actions = await read("app/workshop-manager/services/actions.ts");
+const client = await read("app/workshop-manager/services/ServiceCatalogueClient.tsx");
+const portal = await read("app/workshop-manager/WorkshopManagerDashboard.tsx");
 const english = JSON.parse(await read("app/i18n/en.json"));
 
 test("catalogue RPCs authorize active workshop managers", () => {
@@ -30,8 +30,8 @@ test("catalogue changes use validated server actions and preserve booking histor
   assert.match(actions, /status: parsed\.data\.active \? "published" : "archived"/);
 });
 
-test("clinic managers can reach and edit the catalogue", () => {
-  assert.match(portal, /href="\/clinic-manager\/services"/);
+test("workshop managers can reach and edit the catalogue", () => {
+  assert.match(portal, /href="\/workshop-manager\/services"/);
   assert.equal(english["serviceCatalogue.title"], "Service catalogue");
   assert.match(client, /createServiceAction/);
   assert.match(client, /updateServiceAction/);

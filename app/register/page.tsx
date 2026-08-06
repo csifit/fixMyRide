@@ -27,9 +27,8 @@ export default function RegistrationChoicePage() {
         <h1>{t("register.choice.title")}</h1>
         <p>{t("register.choice.description")}</p>
         <div className="registration-choices">
-          <Link href="/register/patient">{t("register.patient.choice")}</Link>
-          <Link href="/register/doctor">{t("register.doctor.choice")}</Link>
-          <Link href="/register/clinic-manager">{t("register.clinic_manager.choice")}</Link>
+          <Link href="/register/customer">{t("register.customer.choice")}</Link>
+          <Link href="/register/workshop-manager">{t("register.workshop_manager.choice")}</Link>
         </div>
       </section>
     </main>

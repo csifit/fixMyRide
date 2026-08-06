@@ -1,5 +1,2 @@
-import RegistrationForm from "../RegistrationForm";
-
-export default function ClinicManagerRegistrationPage() {
-  return <RegistrationForm accountType="clinic_manager" />;
-}
+import { redirect } from "next/navigation";
+export default function LegacyManagerRegistrationPage() { redirect("/register/workshop-manager"); }

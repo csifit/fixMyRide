@@ -1,5 +1,7 @@
 "use client";
 
+// Canonical workshop-manager catalogue UI.
+
 import Link from "next/link";
 import { useActionState } from "react";
 import { translate, type TranslationKey } from "@/app/i18n";
@@ -64,7 +66,7 @@ function WorkshopCatalogue({ catalogue, t }: { catalogue: ManagedWorkshopCatalog
     <details className="settings-accordion catalogue-add">
       <summary><strong>+ {t("serviceCatalogue.addService")}</strong></summary>
       <form className="settings-card" action={action}>
-        <input type="hidden" name="clinicId" value={catalogue.clinicId} />
+        <input type="hidden" name="serviceProviderId" value={catalogue.serviceProviderId} />
         <fieldset disabled={pending}><ServiceFields t={t} /></fieldset>
         <Result state={state} t={t} /><button disabled={pending}>{t(pending ? "serviceCatalogue.adding" : "serviceCatalogue.addService")}</button>
       </form>
@@ -78,10 +80,10 @@ export default function ServiceCatalogueClient({ catalogues, logoutAction }: { c
   if (!ready) return <main className="registration-shell" aria-busy="true" />;
   return <main className="settings-shell">
     <datalist id="service-categories">{categories.map((category) => <option key={category} value={category} />)}</datalist>
-    <header className="settings-topbar"><Link href="/clinic-manager">← {t("workspace.back")}</Link><strong>fixMyRide</strong><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
+    <header className="settings-topbar"><Link href="/workshop-manager">← {t("workspace.back")}</Link><strong>fixMyRide</strong><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
     <section className="settings-content catalogue-content"><p className="registration-kicker">{t("serviceCatalogue.eyebrow")}</p><h1>{t("serviceCatalogue.title")}</h1><p>{t("serviceCatalogue.description")}</p>
       {catalogues.map((catalogue) => <WorkshopCatalogue key={catalogue.workshopId} catalogue={catalogue} t={t} />)}
-      {!catalogues.length && <div className="catalogue-empty"><h2>{t("serviceCatalogue.noWorkshopTitle")}</h2><p>{t("serviceCatalogue.noWorkshopDescription")}</p><Link className="organization-action" href="/clinic-manager/clinics">{t("serviceCatalogue.manageWorkshops")}</Link></div>}
+      {!catalogues.length && <div className="catalogue-empty"><h2>{t("serviceCatalogue.noWorkshopTitle")}</h2><p>{t("serviceCatalogue.noWorkshopDescription")}</p><Link className="organization-action" href="/workshop-manager/workshops">{t("serviceCatalogue.manageWorkshops")}</Link></div>}
     </section>
   </main>;
 }

@@ -56,7 +56,7 @@ export default function HomeDiscoveryClient({
         <Link href="/workshops">Find a workshop</Link>
         <a href="#services">Services</a>
         <Link href="/garage">My Garage</Link>
-        <Link href="/clinic-manager/login">For service providers</Link>
+        <Link href="/workshop-manager/login">For service providers</Link>
       </nav>
       <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label="Language">
         <option value="en">EN</option><option value="de">DE</option>
@@ -105,14 +105,14 @@ export default function HomeDiscoveryClient({
         <div><p>Local service providers</p><h2>Workshops accepting booking requests</h2></div>
         <Link href={`/workshops?date=${preferredDate}`}>View all workshops →</Link>
       </header>
-      <div className="home-doctor-grid">
-        {filtered.slice(0, 6).map((workshop) => <article className="home-doctor-card" key={workshop.id}>
-          <div className="home-doctor-avatar">{initials(workshop.name)}</div>
+      <div className="home-workshop-grid">
+        {filtered.slice(0, 6).map((workshop) => <article className="home-workshop-card" key={workshop.id}>
+          <div className="home-workshop-avatar">{initials(workshop.name)}</div>
           <span className="home-verified">✓ Verified service provider</span>
           <h3>{workshop.name}</h3>
           <strong>{workshop.serviceCategories.slice(0, 2).join(" · ") || "General repairs"}</strong>
           <p>{workshop.city || workshop.countryCode}<br />{workshop.address}</p>
-          <div className="doctor-features">
+          <div className="workshop-features">
             {workshop.offersPickup && <span>✓ Vehicle pickup</span>}
             {workshop.offersCourtesyCar && <span>✓ Courtesy car</span>}
           </div>
@@ -130,12 +130,12 @@ export default function HomeDiscoveryClient({
 
     <section className="provider-offer">
       <div><p>For workshops</p><h2>Receive and manage customer booking requests</h2><span>One simple plan with the booking workspace and customer SMS notifications included.</span></div>
-      <div><strong>€35</strong><span>per month</span><b>SMS included</b><Link href="/register/clinic-manager">Join as a service provider</Link></div>
+      <div><strong>€35</strong><span>per month</span><b>SMS included</b><Link href="/register/workshop-manager">Join as a service provider</Link></div>
     </section>
 
     <footer className="home-footer" id="legal">
-      <div><strong>Customers</strong><Link href="/workshops">Find a workshop</Link><Link href="/garage">My Garage</Link><Link href="/patient/login">Sign in</Link></div>
-      <div><strong>Service providers</strong><Link href="/register/clinic-manager">Join the platform</Link><Link href="/clinic-manager/login">Provider sign in</Link><span>€35/month · SMS included</span></div>
+      <div><strong>Customers</strong><Link href="/workshops">Find a workshop</Link><Link href="/garage">My Garage</Link><Link href="/customer/login">Sign in</Link></div>
+      <div><strong>Service providers</strong><Link href="/register/workshop-manager">Join the platform</Link><Link href="/workshop-manager/login">Provider sign in</Link><span>€35/month · SMS included</span></div>
       <div><strong>Legal</strong><a href="#legal">Terms and conditions</a><a href="#legal">Privacy policy</a><a href="#legal">Cookie policy</a></div>
       <div><strong>Contact</strong><a href={`mailto:${brand.supportEmail}`}>Support</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>Report a problem</a></div>
       <p>© {new Date().getFullYear()} {brand.name}</p>

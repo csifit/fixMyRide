@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function IndependentServiceProviderPage() { return <main className="settings-shell"><section className="settings-content"><p className="registration-kicker">Independent service provider</p><h1>Provider workspace</h1><p>The independent-provider operational workspace will open with the repair-lifecycle milestone. Public workshop discovery and customer booking remain available now.</p><Link className="organization-action" href="/workshops">View workshops</Link></section></main>; }
