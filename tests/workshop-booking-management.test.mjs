@@ -21,6 +21,8 @@ test("booking inbox RPCs authorize active workshop managers through the automoti
 
 test("management actions lock requests and enforce lifecycle transitions", () => {
   assert.match(migration, /authorization and row locking share one statement/i);
+  assert.match(migration, /select booking as booking_record, manager\.id as manager_id\s+into authorized/i);
+  assert.doesNotMatch(migration, /into booking_row, manager_id/i);
   assert.match(migration, /for update of booking/i);
   for (const action of ["confirm", "propose_time", "reschedule", "decline", "cancel"]) {
     assert.match(migration, new RegExp(`requested_action = '${action}'`, "i"), action);

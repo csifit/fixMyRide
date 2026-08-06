@@ -215,6 +215,7 @@ security definer
 set search_path = ''
 as $$
 declare
+  authorized record;
   manager_id uuid;
   booking_row public.service_booking_requests%rowtype;
   previous_status public.service_booking_status;
@@ -223,7 +224,8 @@ declare
   history_action public.service_booking_management_action;
 begin
   -- Authorization and row locking share one statement and one MVCC snapshot.
-  select booking, manager.id into booking_row, manager_id
+  select booking as booking_record, manager.id as manager_id
+  into authorized
   from public.service_booking_requests booking
   join public.workshops workshop
     on workshop.legacy_workshop_profile_id = booking.workshop_id
@@ -241,6 +243,9 @@ begin
     and manager.auth_user_id = (select auth.uid())
   limit 1
   for update of booking;
+
+  booking_row := authorized.booking_record;
+  manager_id := authorized.manager_id;
 
   if booking_row.id is null or manager_id is null then
     raise exception 'Workshop booking request is unavailable'
