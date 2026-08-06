@@ -2,183 +2,142 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import GoogleDoctorMap from "./GoogleDoctorMap";
 import GoogleAddressSearch, { type GoogleAddressSelection } from "./GoogleAddressSearch";
-import { translate, type Language, type TranslationKey } from "@/app/i18n";
-import { clinicianSpecialtyKey } from "@/app/i18n/admin-values";
+import { type Language } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import { brand } from "@/lib/brand";
 import { distanceInKilometers } from "@/lib/geo";
-import type { PublicDoctor } from "@/lib/dal/public-appointments";
+import type { PublicWorkshop } from "@/lib/dal/public-workshops";
 
 function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
 }
 
+function formatPrice(cents: number | null) {
+  if (cents === null) return "Price confirmed by workshop";
+  return `From €${(cents / 100).toFixed(0)}`;
+}
+
 export default function HomeDiscoveryClient({
-  doctors,
+  workshops,
   date,
 }: {
-  doctors: PublicDoctor[];
+  workshops: PublicWorkshop[];
   date: string;
 }) {
-  const [language, setLanguage, ready] = useLanguage();
-  const t = (key: TranslationKey) => translate(language, key);
+  const [language, setLanguage] = useLanguage();
   const [query, setQuery] = useState("");
-  const [specialty, setSpecialty] = useState("");
+  const [category, setCategory] = useState("");
   const [locationText, setLocationText] = useState("");
   const [locationSelection, setLocationSelection] = useState<GoogleAddressSelection | null>(null);
   const [preferredDate, setPreferredDate] = useState(date);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const specialtyName = (value: string) => {
-    const key = clinicianSpecialtyKey(value);
-    return key === "admin.value.unknown" ? value : t(key);
-  };
-  const specialties = useMemo(
-    () => [...new Set(doctors.map((doctor) => doctor.specialty))].sort(),
-    [doctors],
+  const categories = useMemo(
+    () => [...new Set(workshops.flatMap((workshop) => workshop.serviceCategories))].sort(),
+    [workshops],
   );
-  const filtered = doctors.filter((doctor) => {
-    const haystack = `${doctor.name} ${doctor.specialty} ${specialtyName(doctor.specialty)} ${doctor.clinicName} ${doctor.city ?? ""} ${doctor.practiceAddress ?? ""} ${doctor.clinicCountry}`.toLocaleLowerCase(language);
-    const locationMatches = locationSelection
-      && locationSelection.latitude !== null
-      && locationSelection.longitude !== null
-      ? doctor.latitude !== null && doctor.longitude !== null
+  const filtered = workshops.filter((workshop) => {
+    const haystack = `${workshop.name} ${workshop.description ?? ""} ${workshop.city ?? ""} ${workshop.address ?? ""} ${workshop.serviceCategories.join(" ")}`.toLocaleLowerCase(language);
+    const locationMatches = locationSelection?.latitude != null && locationSelection.longitude != null
+      ? workshop.latitude != null && workshop.longitude != null
         && distanceInKilometers(
           { latitude: locationSelection.latitude, longitude: locationSelection.longitude },
-          { latitude: doctor.latitude, longitude: doctor.longitude },
+          { latitude: workshop.latitude, longitude: workshop.longitude },
         ) <= 50
       : !locationText.trim() || haystack.includes(locationText.trim().toLocaleLowerCase(language));
     return (!query.trim() || haystack.includes(query.trim().toLocaleLowerCase(language)))
-      && (!specialty || doctor.specialty === specialty)
+      && (!category || workshop.serviceCategories.includes(category))
       && locationMatches;
   });
-  const selected = filtered.find((doctor) => doctor.id === selectedId) ?? null;
 
   return <main className="home-shell">
     <header className="home-header">
       <Link href="/" className="home-logo"><span>{brand.mark}</span>{brand.name}</Link>
       <nav>
-        <Link href="/appointments">{ready ? t("home.doctors") : "Doctors"}</Link>
-        <a href="#specialties">{ready ? t("home.specialties") : "Specialties"}</a>
-        <Link href="/patient/appointments">{ready ? t("home.myAppointments") : "My appointments"}</Link>
-        <Link href="/doctor/login">{ready ? t("home.forProfessionals") : "For professionals"}</Link>
+        <Link href="/workshops">Find a workshop</Link>
+        <a href="#services">Services</a>
+        <Link href="/garage">My Garage</Link>
+        <Link href="/clinic-manager/login">For service providers</Link>
       </nav>
-      <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={ready ? t("a11y.languageSelector") : "Language"}>
+      <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label="Language">
         <option value="en">EN</option><option value="de">DE</option>
         <option value="ro">RO</option><option value="hu">HU</option>
       </select>
     </header>
 
-    <section className="home-discovery">
-      <div className="home-map" aria-label={ready ? t("home.mapLabel") : "Doctor locations"}>
-        <GoogleDoctorMap
-          doctors={filtered}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-          labels={{
-            mapLabel: ready ? t("home.mapLabel") : "Doctor locations",
-            noResults: ready ? t("home.noMapResults") : "No matching locations",
-            noPreciseLocations: ready ? t("home.noPreciseLocations") : "Add Doctor coordinates to display precise locations.",
-            previewCoverage: ready ? t("home.mapCoverage") : "Romania · Location preview",
-            unavailable: ready ? t("home.mapUnavailable") : "Google Maps is temporarily unavailable · Preview shown",
-          }}
-        />
-        {selected && <article className="map-doctor-preview">
-          <button type="button" onClick={() => setSelectedId(null)} aria-label={ready ? t("home.closePreview") : "Close"}>×</button>
-          <small>{specialtyName(selected.specialty)}</small>
-          <strong>{selected.name}</strong>
-          <span>{selected.clinicName} · {selected.city || selected.clinicCountry}</span>
-          <Link href={`/doctors/${selected.id}?date=${preferredDate}`}>{ready ? t("home.viewDoctor") : "View Doctor"}</Link>
-        </article>}
-      </div>
-
-      <div className="home-search-panel">
-        <div>
-          <p>{ready ? t("home.kicker") : "Healthcare, made easier"}</p>
-          <h1>{ready ? t("home.title") : "Find the right Doctor near you"}</h1>
-          <span>{ready ? t("home.description") : "Search verified Doctors, compare options and request an appointment online."}</span>
+    <section className="home-discovery automotive-hero">
+      <div className="automotive-hero-copy">
+        <p>Car care, without the guesswork</p>
+        <h1>Find a trusted workshop and request your service online</h1>
+        <span>Compare nearby providers, tell them what your car needs, and receive confirmation by email and SMS.</span>
+        <div className="automotive-trust-row">
+          <span>✓ Request for free</span>
+          <span>✓ Workshop confirmation</span>
+          <span>✓ No card required</span>
         </div>
+      </div>
+      <div className="home-search-panel">
+        <div><p>Start your booking</p><h2>What does your car need?</h2></div>
         <form className="home-filter-form" onSubmit={(event) => event.preventDefault()}>
-          <label><span>{ready ? t("home.searchLabel") : "Doctor or clinic"}</span>
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={ready ? t("home.searchPlaceholder") : "Name, clinic or address"} />
+          <label><span>Workshop or service</span>
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Diagnostics, tyres, brakes…" />
           </label>
           <div>
-            <label><span>{ready ? t("home.specialtyLabel") : "Specialty"}</span>
-              <select value={specialty} onChange={(event) => setSpecialty(event.target.value)}>
-                <option value="">{ready ? t("home.allSpecialties") : "All specialties"}</option>
-                {specialties.map((item) => <option key={item} value={item}>{specialtyName(item)}</option>)}
+            <label><span>Service</span>
+              <select value={category} onChange={(event) => setCategory(event.target.value)}>
+                <option value="">All services</option>
+                {categories.map((item) => <option key={item} value={item}>{item}</option>)}
               </select>
             </label>
-            <GoogleAddressSearch label={ready ? t("home.locationLabel") : "Location"} placeholder={ready ? t("home.addressSearchPlaceholder") : "Search an address or city"} help={ready ? t("home.addressSearchHelp") : "Select a Google address to find Doctors within 50 km."} unavailable={ready ? t("home.addressSearchFallback") : "Google address search is unavailable. Type a city or address."} language={language} formFields={false} onSelection={setLocationSelection} onTextChange={setLocationText} />
+            <GoogleAddressSearch label="Location" placeholder="Search an address or city" help="Choose an address to find workshops within 50 km." unavailable="Address search is unavailable. Type a city or address." language={language} formFields={false} onSelection={setLocationSelection} onTextChange={setLocationText} />
           </div>
-          <label><span>{ready ? t("home.dateLabel") : "Preferred date"}</span>
+          <label><span>Preferred arrival date</span>
             <input type="date" value={preferredDate} min={date} onChange={(event) => setPreferredDate(event.target.value)} />
           </label>
-          <div className="home-search-summary">
-            <strong>{filtered.length}</strong>
-            <span>{ready ? t("home.matches") : "matching Doctors"}</span>
-          </div>
-          <a className="home-results-button" href="#featured-doctors">{ready ? t("home.showDoctors") : "Show Doctors"}</a>
+          <div className="home-search-summary"><strong>{filtered.length}</strong><span>matching workshops</span></div>
+          <a className="home-results-button" href="#featured-workshops">Show workshops</a>
         </form>
-        <small className="home-trust-note">✓ {ready ? t("home.noPayment") : "No payment required to request an appointment"}</small>
+        <small className="home-trust-note">✓ Your request is only booked after the workshop confirms it</small>
       </div>
     </section>
 
-    <section className="home-featured" id="featured-doctors">
+    <section className="home-featured" id="featured-workshops">
       <header>
-        <div><p>{ready ? t("home.featuredKicker") : "Care you can trust"}</p><h2>{ready ? t("home.featuredTitle") : "Doctors available on the platform"}</h2></div>
-        <Link href={`/appointments?date=${preferredDate}`}>{ready ? t("home.viewAll") : "View all Doctors"} →</Link>
+        <div><p>Local service providers</p><h2>Workshops accepting booking requests</h2></div>
+        <Link href={`/workshops?date=${preferredDate}`}>View all workshops →</Link>
       </header>
       <div className="home-doctor-grid">
-        {filtered.slice(0, 6).map((doctor) => <article className="home-doctor-card" key={doctor.id}>
-          <div className="home-doctor-avatar">{initials(doctor.name)}</div>
-          <span className="home-verified">✓ {ready ? t("booking.verifiedDoctor") : "Verified Doctor"}</span>
-          <h3>{doctor.name}</h3>
-          <strong>{specialtyName(doctor.specialty)}</strong>
-          <p>{doctor.clinicName}<br />{doctor.city || doctor.clinicCountry}</p>
-          <div className="home-rating" aria-label={ready ? t("home.noRatings") : "No ratings yet"}><span>☆☆☆☆☆</span> (0)</div>
-          <Link href={`/doctors/${doctor.id}?date=${preferredDate}`}>{ready ? t("home.viewDoctor") : "View Doctor"}</Link>
+        {filtered.slice(0, 6).map((workshop) => <article className="home-doctor-card" key={workshop.id}>
+          <div className="home-doctor-avatar">{initials(workshop.name)}</div>
+          <span className="home-verified">✓ Verified service provider</span>
+          <h3>{workshop.name}</h3>
+          <strong>{workshop.serviceCategories.slice(0, 2).join(" · ") || "General repairs"}</strong>
+          <p>{workshop.city || workshop.countryCode}<br />{workshop.address}</p>
+          <div className="doctor-features">
+            {workshop.offersPickup && <span>✓ Vehicle pickup</span>}
+            {workshop.offersCourtesyCar && <span>✓ Courtesy car</span>}
+          </div>
+          <b>{formatPrice(workshop.priceFromCents)}</b>
+          <Link href={`/workshops/${workshop.id}?date=${preferredDate}`}>View workshop</Link>
         </article>)}
-        {!filtered.length && <div className="booking-empty"><h3>{ready ? t("booking.noDoctors") : "No Doctors found"}</h3><p>{ready ? t("booking.tryAnotherSearch") : "Try another search."}</p></div>}
+        {!filtered.length && <div className="booking-empty"><h3>No workshops found</h3><p>Try another service or location. New providers will appear here after the automotive database migration is applied.</p></div>}
       </div>
     </section>
 
-    <section className="home-specialty-strip" id="specialties">
-      <p>{ready ? t("home.specialtiesKicker") : "Browse by specialty"}</p>
-      <h2>{ready ? t("home.specialtiesTitle") : "Find care for what you need"}</h2>
-      <div>{specialties.slice(0, 12).map((item) => <button type="button" key={item} onClick={() => { setSpecialty(item); document.getElementById("featured-doctors")?.scrollIntoView({ behavior: "smooth" }); }}>{specialtyName(item)}</button>)}</div>
+    <section className="home-specialty-strip" id="services">
+      <p>Browse by service</p><h2>Book the care your vehicle needs</h2>
+      <div>{categories.map((item) => <button type="button" key={item} onClick={() => { setCategory(item); document.getElementById("featured-workshops")?.scrollIntoView({ behavior: "smooth" }); }}>{item}</button>)}</div>
+    </section>
+
+    <section className="provider-offer">
+      <div><p>For workshops</p><h2>Receive and manage customer booking requests</h2><span>One simple plan with the booking workspace and customer SMS notifications included.</span></div>
+      <div><strong>€35</strong><span>per month</span><b>SMS included</b><Link href="/register/clinic-manager">Join as a service provider</Link></div>
     </section>
 
     <footer className="home-footer" id="legal">
-      <div><strong>{ready ? t("footer.platform") : "Platform"}</strong>
-        <Link href="/">{ready ? t("footer.home") : "Home"}</Link>
-        <Link href="/appointments">{ready ? t("footer.doctors") : "Doctors"}</Link>
-        <a href="#specialties">{ready ? t("footer.specialties") : "Specialties"}</a>
-        <Link href="/patient">{ready ? t("footer.patientGuide") : "Patient guide"}</Link>
-        <Link href="/register">{ready ? t("footer.createAccount") : "Create account"}</Link>
-        <Link href="/patient/login">{ready ? t("footer.signIn") : "Sign in"}</Link>
-      </div>
-      <div><strong>{ready ? t("footer.professionals") : "For professionals"}</strong>
-        <Link href="/register/doctor">{ready ? t("footer.joinDoctor") : "Join as a Doctor"}</Link>
-        <Link href="/register/clinic-manager">{ready ? t("footer.clinicOffer") : "Clinic offer"}</Link>
-        <Link href="/doctor/login">{ready ? t("footer.doctorGuide") : "Guide for Doctors and clinics"}</Link>
-        <Link href="/doctor/invoicing">{ready ? t("footer.subscription") : "Doctor subscription"}</Link>
-        <Link href="/doctor/login">{ready ? t("footer.doctorSignIn") : "Doctor sign in"}</Link>
-        <Link href="/register/doctor">{ready ? t("footer.verification") : "Professional verification"}</Link>
-      </div>
-      <div><strong>{ready ? t("footer.legal") : "Legal"}</strong>
-        <a href="#legal">{ready ? t("footer.terms") : "Terms and conditions"}</a>
-        <a href="#legal">{ready ? t("footer.privacy") : "Privacy policy"}</a>
-        <a href="#legal">{ready ? t("footer.cookies") : "Cookie policy"}</a>
-        <a href="#legal">{ready ? t("footer.legalInfo") : "Legal information"}</a>
-        <a href="#legal">{ready ? t("footer.cookiePrivacy") : "Cookie and privacy information"}</a>
-      </div>
-      <div><strong>{ready ? t("footer.contact") : "Contact"}</strong>
-        <a href={`mailto:${brand.supportEmail}`}>{ready ? t("footer.contactLink") : "Contact"}</a>
-        <a href={`mailto:${brand.supportEmail}`}>{ready ? t("footer.support") : "Support"}</a>
-        <a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>{ready ? t("footer.reportProblem") : "Report a problem"}</a>
-      </div>
+      <div><strong>Customers</strong><Link href="/workshops">Find a workshop</Link><Link href="/garage">My Garage</Link><Link href="/patient/login">Sign in</Link></div>
+      <div><strong>Service providers</strong><Link href="/register/clinic-manager">Join the platform</Link><Link href="/clinic-manager/login">Provider sign in</Link><span>€35/month · SMS included</span></div>
+      <div><strong>Legal</strong><a href="#legal">Terms and conditions</a><a href="#legal">Privacy policy</a><a href="#legal">Cookie policy</a></div>
+      <div><strong>Contact</strong><a href={`mailto:${brand.supportEmail}`}>Support</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>Report a problem</a></div>
       <p>© {new Date().getFullYear()} {brand.name}</p>
     </footer>
   </main>;
