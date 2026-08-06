@@ -22,7 +22,7 @@ export default function GarageClient({ vehicles, bookings }: { vehicles: GarageV
           </article>)}
           {!vehicles.length && <div className="booking-empty compact"><h3>Add your first vehicle</h3><p>Your vehicles will appear here and can be reused for future service requests.</p></div>}
         </div>
-        <section className="garage-bookings"><header><p>Bookings and service history</p><h2>Recent requests</h2></header>
+        <section className="garage-bookings"><header><div><p>Bookings and service history</p><h2>Recent requests</h2></div><Link href="/customer/bookings">Manage bookings →</Link></header>
           {bookings.map((booking) => <article key={booking.id}><div><strong>{booking.vehicleMake} {booking.vehicleModel}</strong><span>{booking.vehicleRegistration}</span></div><div><b>{booking.status.replaceAll("_", " ")}</b><span>{new Intl.DateTimeFormat("en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date(booking.confirmedStart || booking.preferredStart))}</span></div></article>)}
           {!bookings.length && <div className="booking-empty compact"><h3>No service requests yet</h3><p>When you request a booking, its confirmation status will appear here.</p></div>}
         </section>

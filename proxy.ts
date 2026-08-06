@@ -13,6 +13,7 @@ export const config = {
     "/workshop-manager/:path*",
     "/staff/:path*",
     "/patient/:path*",
+    "/customer/:path*",
     "/auth/:path*",
     "/register/set-password",
   ],

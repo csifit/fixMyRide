@@ -1,0 +1,94 @@
+"use client";
+
+import Link from "next/link";
+import { useActionState, useMemo, useState } from "react";
+import { formatDateTime, translate, type Language, type TranslationKey } from "@/app/i18n";
+import { useLanguage } from "@/app/i18n/useLanguage";
+import type { CustomerBooking } from "@/lib/dal/customer-bookings";
+import { manageCustomerBookingAction, type CustomerBookingActionState } from "./actions";
+
+type Translate = (key: TranslationKey) => string;
+const idle: CustomerBookingActionState = { status: "idle" };
+
+function DateValue({ value, language }: { value: string | null; language: Language }) {
+  return value ? <time dateTime={value}>{formatDateTime(language, value)}</time> : <span>—</span>;
+}
+
+function CustomerActionForm({ bookingId, actionKind, t }: {
+  bookingId: string;
+  actionKind: "accept_proposal" | "decline_proposal" | "cancel";
+  t: Translate;
+}) {
+  const [state, action, pending] = useActionState(manageCustomerBookingAction, idle);
+  const cancellation = actionKind === "cancel";
+  const optionalNote = actionKind === "decline_proposal";
+  return <form className={`customer-booking-action ${cancellation ? "danger" : ""}`} action={action}>
+    <input type="hidden" name="bookingId" value={bookingId} />
+    <input type="hidden" name="action" value={actionKind} />
+    {(cancellation || optionalNote) && <label>
+      {t(cancellation ? "customerBookings.cancelReason" : "customerBookings.noteOptional")}
+      <textarea name="note" rows={2} maxLength={1000} required={cancellation} />
+    </label>}
+    {!cancellation && !optionalNote && <input type="hidden" name="note" value="" />}
+    {state.status !== "idle" && <p className={["accepted", "declined", "cancelled"].includes(state.status) ? "note-success" : "note-error"} role="status">
+      {t(`customerBookings.result.${state.status}` as TranslationKey)}
+    </p>}
+    <button disabled={pending}>{t(pending ? "customerBookings.saving" : `customerBookings.action.${actionKind}` as TranslationKey)}</button>
+  </form>;
+}
+
+function BookingCard({ booking, language, t }: { booking: CustomerBooking; language: Language; t: Translate }) {
+  const hasProposal = Boolean(booking.proposedStart) && ["requested", "confirmed"].includes(booking.status);
+  const primaryTime = booking.confirmedStart || booking.proposedStart || booking.preferredStart;
+  const location = [booking.workshopAddress, booking.workshopCity].filter(Boolean).join(", ");
+  return <article className={`customer-booking-card status-${booking.status}`}>
+    <header>
+      <div><p>{booking.serviceCategory}</p><h2>{booking.serviceName}</h2><span>{booking.workshopName}</span></div>
+      <div><small>{booking.confirmedStart ? t("customerBookings.confirmedTime") : booking.proposedStart ? t("customerBookings.proposedTime") : t("customerBookings.requestedTime")}</small><DateValue value={primaryTime} language={language} /></div>
+      <em>{t(`workshopBookings.status.${booking.status}` as TranslationKey)}</em>
+    </header>
+    {hasProposal && <section className="customer-proposal">
+      <div><p>{t("customerBookings.proposalEyebrow")}</p><h3>{t("customerBookings.proposalTitle")}</h3><DateValue value={booking.proposedStart} language={language} />{booking.proposalNote && <span>{booking.proposalNote}</span>}</div>
+      <div><CustomerActionForm bookingId={booking.id} actionKind="accept_proposal" t={t} /><CustomerActionForm bookingId={booking.id} actionKind="decline_proposal" t={t} /></div>
+    </section>}
+    <div className="customer-booking-detail">
+      <section>
+        <h3>{t("customerBookings.bookingDetails")}</h3>
+        <dl>
+          <div><dt>{t("customerBookings.vehicle")}</dt><dd>{booking.vehicleMake} {booking.vehicleModel}{booking.vehicleYear ? ` (${booking.vehicleYear})` : ""}<br /><b>{booking.vehicleRegistration}</b></dd></div>
+          <div><dt>{t("customerBookings.preferred")}</dt><dd><DateValue value={booking.preferredStart} language={language} /></dd></div>
+          <div><dt>{t("customerBookings.alternate")}</dt><dd><DateValue value={booking.alternateStart} language={language} /></dd></div>
+          <div><dt>{t("customerBookings.confirmed")}</dt><dd><DateValue value={booking.confirmedStart} language={language} /></dd></div>
+        </dl>
+        {(booking.customerNote || booking.workshopNote) && <div className="customer-booking-notes">{booking.customerNote && <p><b>{t("customerBookings.yourNote")}</b>{booking.customerNote}</p>}{booking.workshopNote && <p><b>{t("customerBookings.workshopNote")}</b>{booking.workshopNote}</p>}</div>}
+      </section>
+      <aside>
+        <h3>{t("customerBookings.workshopDetails")}</h3><strong>{booking.workshopName}</strong>
+        {location && <address>{location}</address>}
+        {booking.workshopPhone && <a href={`tel:${booking.workshopPhone}`}>{booking.workshopPhone}</a>}
+        {booking.workshopEmail && <a href={`mailto:${booking.workshopEmail}`}>{booking.workshopEmail}</a>}
+        {!location && !booking.workshopPhone && !booking.workshopEmail && <p>{t("customerBookings.contactUnavailable")}</p>}
+      </aside>
+    </div>
+    <details className="customer-booking-history"><summary>{t("customerBookings.history")}</summary>
+      <div>{booking.history.map((item, index) => <article key={`${item.createdAt}-${index}`}><span><b>{t(`workshopBookings.history.${item.action}` as TranslationKey)}</b><time>{formatDateTime(language, item.createdAt)}</time></span>{item.note && <p>{item.note}</p>}</article>)}</div>
+    </details>
+    {booking.canCancel && <details className="customer-cancel"><summary>{t("customerBookings.cancelTitle")}</summary><p>{t("customerBookings.cancelDescription")}</p><CustomerActionForm bookingId={booking.id} actionKind="cancel" t={t} /></details>}
+  </article>;
+}
+
+export default function CustomerBookingsClient({ bookings, logoutAction }: { bookings: CustomerBooking[]; logoutAction: () => Promise<void> }) {
+  const [language, setLanguage, ready] = useLanguage();
+  const [filter, setFilter] = useState("all");
+  const t = (key: TranslationKey) => translate(language, key);
+  const visible = useMemo(() => bookings.filter((booking) => filter === "all" || (filter === "open" ? ["requested", "confirmed"].includes(booking.status) : booking.status === filter)), [bookings, filter]);
+  if (!ready) return <main className="registration-shell" aria-busy="true" />;
+  return <main className="settings-shell customer-bookings-shell">
+    <header className="settings-topbar"><Link href="/garage">← {t("customerBookings.back")}</Link><strong>fixMyRide</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
+    <section className="settings-content customer-bookings-content">
+      <p className="registration-kicker">{t("customerBookings.eyebrow")}</p><h1>{t("customerBookings.title")}</h1><p>{t("customerBookings.description")}</p>
+      <div className="booking-inbox-toolbar"><strong>{visible.length} {t("customerBookings.visible")}</strong><label>{t("workshopBookings.filter")}<select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="all">{t("workshopBookings.filter.all")}</option><option value="open">{t("workshopBookings.filter.open")}</option><option value="requested">{t("workshopBookings.status.requested")}</option><option value="confirmed">{t("workshopBookings.status.confirmed")}</option><option value="cancelled">{t("workshopBookings.status.cancelled")}</option></select></label></div>
+      <div className="customer-booking-list">{visible.map((booking) => <BookingCard key={booking.id} booking={booking} language={language} t={t} />)}{!visible.length && <div className="catalogue-empty"><h2>{t("customerBookings.emptyTitle")}</h2><p>{t("customerBookings.emptyDescription")}</p><Link className="organization-action" href="/workshops">{t("customerBookings.bookService")}</Link></div>}</div>
+    </section>
+  </main>;
+}

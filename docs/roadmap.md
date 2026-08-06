@@ -32,6 +32,13 @@
 10. **Production launch** — environment configuration, backups and restoration,
     observability, operational runbooks, beta acceptance, rollback, and release.
 
+## Current progress
+
+- Workshop request inbox: implemented and deployed.
+- Customer booking management: implemented locally; migrations 026 and 027 and
+  the hosted smoke test remain before completion.
+- Next implementation milestone after that: workshop operations settings.
+
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted
 development smoke test succeeds.
