@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:automotive": "node --test tests/automotive-foundation.test.mjs tests/workshop-service-catalogue.test.mjs",
+    "test:automotive": "node --test tests/automotive-foundation.test.mjs tests/workshop-service-catalogue.test.mjs tests/automotive-domain-expansion.test.mjs",
     "test": "npm run build && node --test tests/admin-clinic-activation.test.mjs tests/continuous-platform-access.test.mjs tests/google-address-search.test.mjs tests/phase-4d-admin-patients.test.mjs tests/phase-4c-admin-clinics.test.mjs tests/phase-4b-admin-doctors.test.mjs tests/phase-4a-admin-console.test.mjs tests/admin-security.test.mjs tests/authz.test.mjs tests/brand-colors.test.mjs tests/database-security.test.mjs tests/encoding.test.mjs tests/i18n.test.mjs tests/language-hydration.test.mjs tests/nextjs.test.mjs tests/phase-2c-security.test.mjs tests/phase-2d-security.test.mjs tests/phase-2e-security.test.mjs tests/phase-3-appointments.test.mjs tests/phase-3-booking-experience.test.mjs tests/phase-3c-post-booking.test.mjs tests/phase-3d-patient-appointments.test.mjs tests/phase-3e-homepage.test.mjs tests/phase-3f-doctor-workspaces-billing.test.mjs tests/secrets.test.mjs",
     "lint": "eslint ."
   },

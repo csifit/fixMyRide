@@ -40,5 +40,8 @@ next-env.d.ts
 *.tsbuildinfo
 
 # project documentation
-/docs/
+/docs/*
+!/docs/automotive-domain-migration.md
+!/docs/hosted-integration-testing.md
+!/docs/roadmap.md
 /README.md
