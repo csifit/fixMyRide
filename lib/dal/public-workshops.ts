@@ -31,6 +31,20 @@ export type PublicWorkshopService = {
   requiresDiagnosis: boolean;
 };
 
+export type PublicWorkshopBookingRules = {
+  minimumLeadMinutes: number;
+  bookingHorizonDays: number;
+  slotIntervalMinutes: number;
+  offersPickup: boolean;
+  offersCourtesyCar: boolean;
+  allowsWaitOnSite: boolean;
+  timeZone: string;
+  earliestBookingDate: string;
+  latestBookingDate: string;
+  operatingHours: Array<{ weekday: number; opensAt: string | null; closesAt: string | null; closed: boolean }>;
+  closures: Array<{ startsAt: string; endsAt: string }>;
+};
+
 export async function searchPublicWorkshops(search = ""): Promise<PublicWorkshop[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("search_public_workshops", {
@@ -88,6 +102,24 @@ export async function loadPublicWorkshopServices(
     currency: row.currency as string,
     requiresDiagnosis: Boolean(row.requires_diagnosis),
   }));
+}
+
+export async function loadPublicWorkshopBookingRules(workshopId: string): Promise<PublicWorkshopBookingRules | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_public_workshop_booking_rules", { requested_workshop_id: workshopId }).maybeSingle();
+  if (error) throw new DataAccessError(classifyDatabaseError(error));
+  if (!data) return null;
+  const row = data as Record<string, unknown>;
+  return {
+    minimumLeadMinutes: Number(row.minimum_lead_minutes), bookingHorizonDays: Number(row.booking_horizon_days),
+    slotIntervalMinutes: Number(row.slot_interval_minutes), offersPickup: Boolean(row.offers_pickup),
+    offersCourtesyCar: Boolean(row.offers_courtesy_car), allowsWaitOnSite: Boolean(row.allows_wait_on_site),
+    timeZone: row.time_zone as string,
+    earliestBookingDate: row.earliest_booking_date as string,
+    latestBookingDate: row.latest_booking_date as string,
+    operatingHours: Array.isArray(row.operating_hours) ? row.operating_hours as PublicWorkshopBookingRules["operatingHours"] : [],
+    closures: Array.isArray(row.closures) ? row.closures as PublicWorkshopBookingRules["closures"] : [],
+  };
 }
 
 export async function createPublicServiceBookingRequest(input: {

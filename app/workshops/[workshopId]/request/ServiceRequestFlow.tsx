@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useActionState, useMemo, useState } from "react";
 import PublicBookingHeader from "@/app/appointments/PublicBookingHeader";
 import { useLanguage } from "@/app/i18n/useLanguage";
-import type { PublicWorkshop, PublicWorkshopService } from "@/lib/dal/public-workshops";
+import type { PublicWorkshop, PublicWorkshopBookingRules, PublicWorkshopService } from "@/lib/dal/public-workshops";
 import { requestServiceAction, type ServiceRequestState } from "./actions";
 
 const idle: ServiceRequestState = { status: "idle" };
@@ -15,9 +15,10 @@ function toIso(date: string, time: string) {
   return Number.isNaN(value.getTime()) ? "" : value.toISOString();
 }
 
-export default function ServiceRequestFlow({ workshop, service, initialDate }: {
+export default function ServiceRequestFlow({ workshop, service, rules, initialDate }: {
   workshop: PublicWorkshop;
   service: PublicWorkshopService;
+  rules: PublicWorkshopBookingRules;
   initialDate: string;
 }) {
   const [language] = useLanguage();
@@ -35,8 +36,6 @@ export default function ServiceRequestFlow({ workshop, service, initialDate }: {
     () => alternateDate ? toIso(alternateDate, alternateTime) : "",
     [alternateDate, alternateTime],
   );
-  const today = new Date().toISOString().slice(0, 10);
-
   if (state.status === "success") return <main className="booking-shell">
     <PublicBookingHeader />
     <section className="booking-complete">
@@ -67,12 +66,12 @@ export default function ServiceRequestFlow({ workshop, service, initialDate }: {
               <label>Model<input value={vehicle.model} onChange={(event) => setVehicle({ ...vehicle, model: event.target.value })} required maxLength={100} placeholder="Golf" /></label>
               <label>Year<input value={vehicle.year} onChange={(event) => setVehicle({ ...vehicle, year: event.target.value })} type="number" min="1886" max="2200" inputMode="numeric" /></label>
               <label>Mileage (km)<input value={vehicle.mileage} onChange={(event) => setVehicle({ ...vehicle, mileage: event.target.value })} type="number" min="0" max="5000000" inputMode="numeric" /></label>
-              <label>Preferred date<input type="date" value={date} min={today} onChange={(event) => setDate(event.target.value)} required /></label>
-              <label>Preferred arrival time<input type="time" value={time} onChange={(event) => setTime(event.target.value)} required /></label>
-              <label>Alternative date (optional)<input type="date" value={alternateDate} min={today} onChange={(event) => setAlternateDate(event.target.value)} /></label>
-              <label>Alternative time<input type="time" value={alternateTime} disabled={!alternateDate} onChange={(event) => setAlternateTime(event.target.value)} /></label>
+              <label>Preferred date<input type="date" value={date} min={rules.earliestBookingDate} max={rules.latestBookingDate} onChange={(event) => setDate(event.target.value)} required /></label>
+              <label>Preferred arrival time<input type="time" step={rules.slotIntervalMinutes * 60} value={time} onChange={(event) => setTime(event.target.value)} required /></label>
+              <label>Alternative date (optional)<input type="date" value={alternateDate} min={rules.earliestBookingDate} max={rules.latestBookingDate} onChange={(event) => setAlternateDate(event.target.value)} /></label>
+              <label>Alternative time<input type="time" step={rules.slotIntervalMinutes * 60} value={alternateTime} disabled={!alternateDate} onChange={(event) => setAlternateTime(event.target.value)} /></label>
               <label>What should the workshop know?<textarea value={vehicle.note} onChange={(event) => setVehicle({ ...vehicle, note: event.target.value })} maxLength={2000} placeholder="Describe the issue, warning lights, noises, or work requested." /></label>
-              <label>While the car is in service<select value={vehicle.mobility} onChange={(event) => setVehicle({ ...vehicle, mobility: event.target.value })}><option value="none">No special requirement</option><option value="wait_on_site">Wait on site</option>{workshop.offersPickup && <option value="pickup">Vehicle pickup</option>}{workshop.offersCourtesyCar && <option value="courtesy_car">Courtesy car</option>}</select></label>
+              <label>While the car is in service<select value={vehicle.mobility} onChange={(event) => setVehicle({ ...vehicle, mobility: event.target.value })}><option value="none">No special requirement</option>{rules.allowsWaitOnSite && <option value="wait_on_site">Wait on site</option>}{rules.offersPickup && <option value="pickup">Vehicle pickup</option>}{rules.offersCourtesyCar && <option value="courtesy_car">Courtesy car</option>}</select></label>
               <button type="button" onClick={() => setStep(2)} disabled={!preferredStart || vehicle.registration.trim().length < 2 || !vehicle.make.trim() || !vehicle.model.trim()}>Continue</button>
             </div>
           </> : <>
