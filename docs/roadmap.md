@@ -46,7 +46,9 @@
 - The canonical release gate is `npm test`. Retired medical-product assertions
   remain available under `npm run test:legacy` until the legacy-retirement
   milestone removes their retained code and fixtures.
-- Next implementation milestone after deployment: repair lifecycle.
+- Repair lifecycle is implemented in migrations 030–031 and the workshop/customer
+  interfaces; deployment and hosted smoke testing remain.
+- Next implementation milestone after deployment: notifications.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

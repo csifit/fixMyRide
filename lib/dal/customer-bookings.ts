@@ -3,6 +3,7 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
 import type { BookingHistoryItem, ManagedBookingStatus } from "./workshop-bookings";
+import type { RepairEstimate } from "./repair-workflows";
 
 export type CustomerBooking = {
   id: string;
@@ -29,6 +30,7 @@ export type CustomerBooking = {
   createdAt: string;
   canCancel: boolean;
   history: BookingHistoryItem[];
+  estimate: RepairEstimate | null;
 };
 
 export type ManageCustomerBookingInput = {
@@ -43,10 +45,18 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_my_service_booking_requests");
-  if (error) fail(error);
+  const [bookingsResult, estimatesResult] = await Promise.all([
+    supabase.rpc("get_my_service_booking_requests"),
+    supabase.rpc("get_my_repair_estimates"),
+  ]);
+  if (bookingsResult.error) fail(bookingsResult.error);
+  if (estimatesResult.error) fail(estimatesResult.error);
+  const estimates = new Map(
+    ((estimatesResult.data ?? []) as Record<string, unknown>[])
+      .map((row) => [row.booking_id as string, row.estimate as RepairEstimate]),
+  );
 
-  return ((data ?? []) as Record<string, unknown>[]).map((row) => ({
+  return ((bookingsResult.data ?? []) as Record<string, unknown>[]).map((row) => ({
     id: row.booking_id as string,
     workshopId: row.workshop_id as string,
     workshopName: row.workshop_name as string,
@@ -71,6 +81,7 @@ export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
     createdAt: row.created_at as string,
     canCancel: Boolean(row.can_cancel),
     history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
+    estimate: estimates.get(row.booking_id as string) ?? null,
   }));
 }
 
@@ -79,6 +90,20 @@ export async function manageMyServiceBooking(input: ManageCustomerBookingInput) 
   const { error } = await supabase.rpc("manage_my_service_booking_request", {
     requested_booking_id: input.bookingId,
     requested_action: input.action,
+    requested_note: input.note,
+  });
+  if (error) fail(error);
+}
+
+export async function decideMyRepairEstimate(input: {
+  estimateId: string;
+  decision: "approve" | "decline";
+  note: string | null;
+}) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("decide_my_repair_estimate", {
+    requested_estimate_id: input.estimateId,
+    requested_decision: input.decision,
     requested_note: input.note,
   });
   if (error) fail(error);
