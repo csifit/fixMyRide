@@ -2,13 +2,17 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
+import type { AutomotiveVehicleType, ServiceBookingMode } from "@/lib/automotive-service-catalogue";
 
 export type ManagedWorkshopService = {
   id: string;
+  serviceCode: string | null;
   workshopId: string;
   name: string;
   category: string;
   description: string | null;
+  vehicleType: AutomotiveVehicleType;
+  bookingMode: ServiceBookingMode;
   estimatedDurationMinutes: number | null;
   priceFromCents: number | null;
   currency: string;
@@ -28,10 +32,12 @@ type ServiceInput = {
   name: string;
   category: string;
   description: string | null;
+  serviceCode: string | null;
+  vehicleType: AutomotiveVehicleType;
+  bookingMode: ServiceBookingMode;
   estimatedDurationMinutes: number | null;
   priceFromCents: number | null;
   currency: string;
-  requiresDiagnosis: boolean;
 };
 
 function fail(error: { code?: string; status?: number }): never {
@@ -40,7 +46,7 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCatalogue[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_my_workshop_service_catalogue");
+  const { data, error } = await supabase.rpc("get_my_workshop_service_catalogue_v2");
   if (error) fail(error);
 
   const catalogues = new Map<string, ManagedWorkshopCatalogue>();
@@ -56,10 +62,13 @@ export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCa
     if (row.service_id) {
       catalogue.services.push({
         id: row.service_id as string,
+        serviceCode: row.service_code as string | null,
         workshopId,
         name: row.service_name as string,
         category: row.category as string,
         description: row.description as string | null,
+        vehicleType: row.vehicle_type as AutomotiveVehicleType,
+        bookingMode: row.booking_mode as ServiceBookingMode,
         estimatedDurationMinutes: row.estimated_duration_minutes === null ? null : Number(row.estimated_duration_minutes),
         priceFromCents: row.price_from_cents === null ? null : Number(row.price_from_cents),
         currency: row.currency as string,
@@ -75,31 +84,34 @@ export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCa
 
 export async function createManagedWorkshopService(serviceProviderId: string, input: ServiceInput) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("create_managed_workshop_service", {
+  const { error } = await supabase.rpc("create_managed_workshop_service_v2", {
     // Temporary RPC argument compatibility until the legacy database function retires.
     requested_clinic_id: serviceProviderId,
+    new_service_code: input.serviceCode,
     new_name: input.name,
     new_category: input.category,
     new_description: input.description,
+    new_vehicle_type: input.vehicleType,
+    new_booking_mode: input.bookingMode,
     new_estimated_duration_minutes: input.estimatedDurationMinutes,
     new_price_from_cents: input.priceFromCents,
     new_currency: input.currency,
-    new_requires_diagnosis: input.requiresDiagnosis,
   });
   if (error) fail(error);
 }
 
 export async function updateManagedWorkshopService(input: ServiceInput & { id: string; displayOrder: number }) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("update_managed_workshop_service", {
+  const { error } = await supabase.rpc("update_managed_workshop_service_v2", {
     requested_service_id: input.id,
     new_name: input.name,
     new_category: input.category,
     new_description: input.description,
+    new_vehicle_type: input.vehicleType,
+    new_booking_mode: input.bookingMode,
     new_estimated_duration_minutes: input.estimatedDurationMinutes,
     new_price_from_cents: input.priceFromCents,
     new_currency: input.currency,
-    new_requires_diagnosis: input.requiresDiagnosis,
     new_display_order: input.displayOrder,
   });
   if (error) fail(error);

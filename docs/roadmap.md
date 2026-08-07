@@ -34,6 +34,10 @@
 
 ## Current progress
 
+- Diagnosis-first catalogue: implemented locally with four vehicle-specific
+  service-template groups, a mandatory positive workshop diagnosis fee before
+  publication, direct routine-service booking, and customer fee disclosure;
+  migration 033 remains to be applied.
 - Workshop request inbox: implemented and deployed.
 - Customer booking management: implemented and deployed.
 - Application domain cutover: implemented and deployed with canonical customer

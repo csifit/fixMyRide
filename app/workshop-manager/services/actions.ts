@@ -23,27 +23,33 @@ const price = z.string().trim().refine(
   (value) => value === "" || /^\d+(?:[.,]\d{1,2})?$/.test(value),
 ).transform((value) => value === "" ? null : Math.round(Number(value.replace(",", ".")) * 100));
 const fields = {
+  serviceCode: z.string().trim().max(180).transform((value) => value || null),
   name: z.string().trim().min(2).max(160),
   category: z.string().trim().min(2).max(80),
   description: z.string().trim().max(1000).transform((value) => value || null),
+  vehicleType: z.enum(["car_van", "motorcycle_scooter", "electric_bicycle", "electric_kick_scooter"]),
+  bookingMode: z.enum(["diagnosis", "diagnosis_first", "direct"]),
   estimatedDurationMinutes: optionalInteger(15, 2880),
   priceFromCents: price,
   currency: z.string().trim().length(3).regex(/^[A-Za-z]{3}$/).transform((value) => value.toUpperCase()),
-  requiresDiagnosis: z.boolean(),
 };
-const createSchema = z.object({ serviceProviderId: z.uuid(), ...fields });
+const createSchema = z.object({ serviceProviderId: z.uuid(), ...fields }).refine(
+  (value) => value.bookingMode !== "diagnosis" && value.serviceCode !== "diagnosis",
+);
 const updateSchema = z.object({ serviceId: z.uuid(), displayOrder: z.coerce.number().int().min(0).max(10000), ...fields });
 const activeSchema = z.object({ serviceId: z.uuid(), active: z.enum(["true", "false"]).transform((value) => value === "true") });
 
 function values(formData: FormData) {
   return {
+    serviceCode: formData.get("serviceCode") ?? "",
     name: formData.get("name"),
     category: formData.get("category"),
     description: formData.get("description"),
+    vehicleType: formData.get("vehicleType"),
+    bookingMode: formData.get("bookingMode"),
     estimatedDurationMinutes: formData.get("estimatedDurationMinutes"),
     priceFromCents: formData.get("price"),
     currency: formData.get("currency"),
-    requiresDiagnosis: formData.get("requiresDiagnosis") === "on",
   };
 }
 

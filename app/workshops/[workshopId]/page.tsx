@@ -14,6 +14,11 @@ function price(service: { priceFromCents: number | null; currency: string }) {
   return `From ${new Intl.NumberFormat("en", { style: "currency", currency: service.currency, maximumFractionDigits: 0 }).format(service.priceFromCents / 100)}`;
 }
 
+function diagnosisPrice(service: { diagnosisFeeCents: number | null; diagnosisCurrency: string | null }) {
+  if (service.diagnosisFeeCents === null || !service.diagnosisCurrency) return null;
+  return new Intl.NumberFormat("en", { style: "currency", currency: service.diagnosisCurrency }).format(service.diagnosisFeeCents / 100);
+}
+
 export default async function WorkshopPage({
   params,
   searchParams,
@@ -58,10 +63,13 @@ export default async function WorkshopPage({
       </article>
     </section>
     <section className="workshop-services" id="service-list">
-      <header><p>Request to book</p><h2>Choose the service your vehicle needs</h2><span>No payment is required. The workshop will review and confirm your requested time.</span></header>
+      <header><p>Request to book</p><h2>Choose the service your vehicle needs</h2><span>Fault-based work starts with the workshop&apos;s disclosed diagnosis fee. Routine services can be booked directly.</span></header>
       <div>{services.map((service) => <article key={service.id}>
         <span>{service.category}</span><h3>{service.name}</h3>
         <p>{service.description || "Discuss the exact work with the workshop after requesting."}</p>
+        {service.bookingMode === "diagnosis_first" && <p><strong>Diagnosis first: {diagnosisPrice(service)}</strong><br />This fee remains payable if you decline the later repair estimate.</p>}
+        {service.bookingMode === "diagnosis" && <p><strong>Initial diagnostic assessment</strong><br />Further work requires a separate estimate and your approval.</p>}
+        {service.bookingMode === "direct" && <p><strong>Direct service</strong><br />No separate diagnosis is required unless the workshop finds an additional fault.</p>}
         <div><b>{price(service)}</b>{service.estimatedDurationMinutes && <small>Estimated {service.estimatedDurationMinutes} min</small>}</div>
         <Link href={`/workshops/${workshop.id}/request?service=${service.id}&date=${encodeURIComponent(date ?? "")}`}>Request appointment</Link>
       </article>)}</div>

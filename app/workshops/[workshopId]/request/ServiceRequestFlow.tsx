@@ -36,6 +36,9 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
     () => alternateDate ? toIso(alternateDate, alternateTime) : "",
     [alternateDate, alternateTime],
   );
+  const diagnosisFee = service.diagnosisFeeCents !== null && service.diagnosisCurrency
+    ? new Intl.NumberFormat(language, { style: "currency", currency: service.diagnosisCurrency }).format(service.diagnosisFeeCents / 100)
+    : null;
   if (state.status === "success") return <main className="booking-shell">
     <PublicBookingHeader />
     <section className="booking-complete">
@@ -94,6 +97,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
             <input type="hidden" name="customerNote" value={vehicle.note} />
             <input type="hidden" name="mobilityRequirement" value={vehicle.mobility} />
             <input type="hidden" name="locale" value={language} />
+            {service.bookingMode !== "direct" && <label className="booking-consent"><input type="checkbox" name="diagnosisAccepted" value="yes" required /><span>I understand that the initial diagnosis fee of {diagnosisFee ?? "the displayed amount"} remains payable if I decline further repair work.</span></label>}
             <label className="booking-consent"><input type="checkbox" name="privacyAccepted" value="yes" required /><span>I agree that the workshop may use these details to assess and manage this booking request.</span></label>
             {state.status !== "idle" && <p className="appointment-error">{state.status === "invalid" ? "Please check all details and try again." : "The request could not be saved. Please try again shortly."}</p>}
             <div className="service-request-actions"><button type="button" className="booking-secondary" onClick={() => setStep(1)}>Back</button><button disabled={pending}>{pending ? "Sending request…" : "Send booking request"}</button></div>
@@ -103,7 +107,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
           <span>Your selection</span><h2>{service.name}</h2><p>{service.category}</p><hr />
           <strong>{workshop.name}</strong><small>{workshop.city || workshop.countryCode}</small><hr />
           {date ? <strong>{new Intl.DateTimeFormat(language, { dateStyle: "full" }).format(new Date(`${date}T12:00:00`))} · {time}</strong> : <strong>Choose a preferred time</strong>}
-          <b>✓ Free request · no card required</b><small>The workshop may suggest a different time after reviewing your request.</small>
+          {service.bookingMode === "direct" ? <b>✓ Direct service request · no card required</b> : <b>✓ Diagnosis first · {diagnosisFee} fee disclosed</b>}<small>The workshop may suggest a different time after reviewing your request.</small>
           <Link href={`/workshops/${workshop.id}`}>Choose another service</Link>
         </aside>
       </form>

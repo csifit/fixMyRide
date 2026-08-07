@@ -25,6 +25,7 @@ const schema = z.object({
   mobilityRequirement: z.enum(["none", "pickup", "courtesy_car", "wait_on_site"]),
   locale: z.enum(["en", "de", "ro", "hu"]),
   privacyAccepted: z.literal("yes"),
+  diagnosisAccepted: z.string().optional(),
 });
 
 export async function requestServiceAction(
@@ -38,7 +39,8 @@ export async function requestServiceAction(
       getPublicWorkshop(parsed.data.workshopId),
       loadPublicWorkshopServices(parsed.data.workshopId),
     ]);
-    if (!workshop || !services.some((service) => service.id === parsed.data.serviceId)) {
+    const service = services.find((item) => item.id === parsed.data.serviceId);
+    if (!workshop || !service || (service.bookingMode !== "direct" && parsed.data.diagnosisAccepted !== "yes")) {
       return { status: "invalid" };
     }
     const managementToken = randomBytes(32).toString("base64url");

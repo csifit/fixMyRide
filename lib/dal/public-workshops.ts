@@ -2,6 +2,7 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { DataAccessError, classifyDatabaseError } from "./errors";
+import type { AutomotiveVehicleType, ServiceBookingMode } from "@/lib/automotive-service-catalogue";
 
 export type PublicWorkshop = {
   id: string;
@@ -22,13 +23,18 @@ export type PublicWorkshop = {
 
 export type PublicWorkshopService = {
   id: string;
+  serviceCode: string | null;
   name: string;
   category: string;
   description: string | null;
+  vehicleType: AutomotiveVehicleType;
+  bookingMode: ServiceBookingMode;
   estimatedDurationMinutes: number | null;
   priceFromCents: number | null;
   currency: string;
   requiresDiagnosis: boolean;
+  diagnosisFeeCents: number | null;
+  diagnosisCurrency: string | null;
 };
 
 export type PublicWorkshopBookingRules = {
@@ -83,7 +89,7 @@ export async function loadPublicWorkshopServices(
   workshopId: string,
 ): Promise<PublicWorkshopService[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_public_workshop_services", {
+  const { data, error } = await supabase.rpc("get_public_workshop_services_v2", {
     requested_workshop_id: workshopId,
   });
   if (error) {
@@ -92,15 +98,20 @@ export async function loadPublicWorkshopServices(
   }
   return (data ?? []).map((row: Record<string, unknown>) => ({
     id: row.service_id as string,
+    serviceCode: row.service_code as string | null,
     name: row.name as string,
     category: row.category as string,
     description: typeof row.description === "string" ? row.description : null,
+    vehicleType: row.vehicle_type as AutomotiveVehicleType,
+    bookingMode: row.booking_mode as ServiceBookingMode,
     estimatedDurationMinutes: row.estimated_duration_minutes == null
       ? null
       : Number(row.estimated_duration_minutes),
     priceFromCents: row.price_from_cents == null ? null : Number(row.price_from_cents),
     currency: row.currency as string,
     requiresDiagnosis: Boolean(row.requires_diagnosis),
+    diagnosisFeeCents: row.diagnosis_fee_cents == null ? null : Number(row.diagnosis_fee_cents),
+    diagnosisCurrency: typeof row.diagnosis_currency === "string" ? row.diagnosis_currency : null,
   }));
 }
 
