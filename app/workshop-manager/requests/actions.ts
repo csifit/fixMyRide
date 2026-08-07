@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
 import { createManualWorkshopAppointment, manageWorkshopBooking } from "@/lib/dal/workshop-bookings";
+import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
 
 export type WorkshopBookingActionState = {
   status: "idle" | "confirmed" | "proposed" | "rescheduled" | "declined" | "cancelled" | "invalid" | "unauthorized" | "unavailable";
@@ -70,7 +71,8 @@ export async function createManualAppointmentAction(
   });
   if (!parsed.success) return { status: "invalid" };
   try {
-    await createManualWorkshopAppointment(parsed.data);
+    const bookingId = await createManualWorkshopAppointment(parsed.data);
+    await dispatchDueServiceBookingNotifications(bookingId).catch(() => undefined);
     revalidatePath("/workshop-manager/requests");
     revalidatePath("/workshop-manager/repairs");
     return { status: "created" };
@@ -94,6 +96,9 @@ export async function manageWorkshopBookingAction(
   try {
     const { bookingId, action, requestedStart: start, note } = parsed.data;
     await manageWorkshopBooking({ bookingId, action, start, note });
+    if (action === "confirm" || action === "reschedule") {
+      await dispatchDueServiceBookingNotifications(bookingId).catch(() => undefined);
+    }
     revalidatePath("/workshop-manager/requests");
     revalidatePath("/garage");
     const status = action === "confirm" ? "confirmed"

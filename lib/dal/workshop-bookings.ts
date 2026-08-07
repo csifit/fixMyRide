@@ -130,7 +130,7 @@ export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBook
 
 export async function createManualWorkshopAppointment(input: CreateManualWorkshopAppointmentInput) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("create_managed_service_appointment", {
+  const { data, error } = await supabase.rpc("create_managed_service_appointment", {
     requested_workshop_profile_id: input.workshopProfileId,
     requested_service_id: input.serviceId,
     requested_start: input.start,
@@ -148,6 +148,7 @@ export async function createManualWorkshopAppointment(input: CreateManualWorksho
     requested_locale: input.locale,
   });
   if (error) fail(error);
+  return data as string;
 }
 
 export async function manageWorkshopBooking(input: ManageWorkshopBookingInput) {

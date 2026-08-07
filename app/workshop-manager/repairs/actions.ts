@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
 import { manageRepairWorkflow } from "@/lib/dal/repair-workflows";
+import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
 
 export type RepairActionState = {
   status: "idle" | "saved" | "invalid" | "unauthorized" | "unavailable";
@@ -49,6 +50,7 @@ export async function manageRepairAction(_state: RepairActionState, formData: Fo
   if (!parsed.success) return { status: "invalid" };
   try {
     await manageRepairWorkflow(parsed.data);
+    await dispatchDueServiceBookingNotifications(parsed.data.bookingId).catch(() => undefined);
     revalidatePath("/workshop-manager/repairs");
     revalidatePath("/customer/bookings");
     revalidatePath("/garage");

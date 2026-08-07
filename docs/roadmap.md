@@ -55,8 +55,13 @@
 - Stripe provider subscriptions, invoicing, commercial exports, and automotive
   provider administration are implemented in migration 032 and the provider/admin
   workspaces; deployment and Stripe test-mode smoke testing remain.
-- Next implementation milestone after deployment: notifications, followed by
-  legacy retirement.
+- Workshop calendar and manual appointment entry are implemented and deployed,
+  including role-specific collapsible navigation.
+- The customer SMS lifecycle is implemented locally in migration 035 with
+  exactly five deduplicated event kinds: booking confirmation, 24-hour reminder,
+  repair started, ready for pickup, and review request. Every localized message
+  is capped at 150 characters; deployment and cron scheduling remain.
+- Next implementation milestone after notification deployment: legacy retirement.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted
