@@ -42,7 +42,7 @@ test("attention is the default and obsolete routine navigation is removed", () =
   assert.match(dashboard, /href: "\/admin\/privacy"/);
   assert.doesNotMatch(dashboard, /admin\.nav\.(?:grants|audit)/);
   assert.match(dashboard, /brand\.name/);
-  assert.doesNotMatch(dashboard, />VitaPass</);
+  assert.doesNotMatch(dashboard, />(?:VitaPass|fixMyRide)</);
 });
 
 test("new Admin destinations have translation parity", () => {

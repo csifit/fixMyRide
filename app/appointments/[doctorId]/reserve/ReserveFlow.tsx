@@ -37,7 +37,7 @@ export default function ReserveFlow({
       <article><strong>{doctor.name}</strong><span>{doctor.specialty}</span><b>{formattedDate}</b><small>{doctor.clinicName}</small></article>
       {state.status === "success_email_pending" && <p className="booking-warning">{ready ? t("booking.emailPending") : "The request was saved, but the email could not be sent."}</p>}
       <div><Link className="booking-primary" href={`/appointments/status?token=${encodeURIComponent(state.managementToken ?? "")}`}>{ready ? t("booking.viewRequest") : "View request"}</Link>
-      <Link href={`/register/patient?email=${encodeURIComponent(details.patientEmail)}`}>{ready ? t("booking.createAccount") : "Create VitaPass account"}</Link></div>
+      <Link href={`/register/patient?email=${encodeURIComponent(details.patientEmail)}`}>{ready ? t("booking.createAccount") : "Create pitster account"}</Link></div>
     </section></main>;
   }
 

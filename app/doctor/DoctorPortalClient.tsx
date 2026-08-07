@@ -148,7 +148,7 @@ export default function DoctorPortal({
   return (
     <main className={`dp-shell ${languageReady ? "" : "i18n-pending"}`}>
       <aside className="dp-sidebar">
-        <Link className="dp-brand" href="/" aria-label={t("a11y.patientPortal")}><span className="dp-brand-mark">+</span><span>VitaPass<small>{t("doctor.brand.clinical")}</small></span></Link>
+        <Link className="dp-brand" href="/" aria-label={t("a11y.patientPortal")}><span className="dp-brand-mark">+</span><span>pitster<small>{t("doctor.brand.clinical")}</small></span></Link>
         <div className="dp-workspace"><span>{t("doctor.workspace")}</span><strong>{initialData.clinician.clinicName}</strong><small>{t("doctor.primaryCare")} · {initialData.clinician.clinicCountry}</small><Link href="/doctor/appointments">{t("appointments.title")}</Link><Link href="/doctor/settings">{t("workspace.settings")}</Link>{canEditBilling && <Link href="/doctor/invoicing">{t("invoicing.title")}</Link>}<Link href="/doctor/staff">{t("organization.staff.eyebrow")}</Link></div>
         <Link href="/doctor/availability">{t("availability.title")}</Link>
         <nav aria-label={t("a11y.doctorNavigation")}>{navItems.map((item) => <button key={item.id} className={view === item.id ? "active" : ""} onClick={() => setView(item.id)}><i>{item.mark}</i><span>{t(item.key)}</span>{item.id === "requests" && requests.length > 0 && <b>{requests.length}</b>}</button>)}</nav>

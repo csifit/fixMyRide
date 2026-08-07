@@ -32,7 +32,7 @@ export default function OrganizationPortalClient({
   return (
     <main className="organization-shell">
       <header className="organization-topbar">
-        <strong>VitaPass</strong>
+        <strong>pitster</strong>
         <select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}>
           <option value="en">{t("language.en")}</option><option value="de">{t("language.de")}</option><option value="ro">{t("language.ro")}</option><option value="hu">{t("language.hu")}</option>
         </select>

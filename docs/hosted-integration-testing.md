@@ -25,7 +25,7 @@ at most one resulting application event.
 
 1. Open `/admin/login` and enter the manually provisioned Superadmin
    credentials once.
-2. Confirm VitaPass routes to `/admin/mfa/enroll`; administrative tables must
+2. Confirm pitster routes to `/admin/mfa/enroll`; administrative tables must
    not be visible at AAL1.
 3. Select **Create authenticator setup** once. Confirm the button is disabled
    while factor discovery and enrollment are pending.
@@ -33,7 +33,7 @@ at most one resulting application event.
 5. Confirm the browser reaches `/admin`, shows **MFA verified**, and displays
    the five administration sections.
 6. Confirm the Supabase Auth audit log contains the authoritative
-   authentication activity. The VitaPass `sign_in` event is supplementary.
+   authentication activity. The pitster `sign_in` event is supplementary.
 
 If factor discovery fails, enrollment must stop at the localized security
 error. Use **Try again** or sign out; do not refresh automatically.
@@ -41,7 +41,7 @@ error. Use **Try again** or sign out; do not refresh automatically.
 ## Superadmin login with an existing MFA factor
 
 1. Sign out, return to `/admin/login`, and sign in once.
-2. Confirm VitaPass routes to `/admin/mfa/challenge`, never to enrollment.
+2. Confirm pitster routes to `/admin/mfa/challenge`, never to enrollment.
 3. Enter an incorrect current-format code once. Confirm the invalid-code state.
 4. Enter the current valid code. Confirm `/admin` opens only after AAL2.
 5. Confirm a linked Superadmin identity cannot use doctor profile or edit RPCs
@@ -172,7 +172,7 @@ Supabase defaults can change. The current Supabase documentation describes:
 
 A Supabase Auth HTTP 429 response is **rate limited**, not invalid credentials
 and not account suspension. Wait for the documented window, then retry
-manually. VitaPass must not create an automatic retry loop.
+manually. pitster must not create an automatic retry loop.
 
 The `record_auth_audit` application RPC separately suppresses the same action
 within 30 seconds and accepts at most 20 caller-generated authentication events

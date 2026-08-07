@@ -28,7 +28,7 @@ export default function OrganizationLoginForm({
     <main className={`auth-shell ${ready ? "" : "i18n-pending"}`}>
       <section className="auth-card">
         <header>
-          <Link className="auth-brand" href="/"><span>+</span>VitaPass</Link>
+          <Link className="auth-brand" href="/"><span>+</span>pitster</Link>
           <select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}>
             <option value="en">{t("language.en")}</option><option value="de">{t("language.de")}</option><option value="ro">{t("language.ro")}</option><option value="hu">{t("language.hu")}</option>
           </select>

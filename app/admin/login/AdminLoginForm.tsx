@@ -31,7 +31,7 @@ export default function AdminLoginForm({
       <section className="auth-card">
         <header>
           <Link className="auth-brand" href="/">
-            <span>+</span>VitaPass
+            <span>+</span>pitster
           </Link>
           <label className="language">
             <span aria-hidden="true">◎</span>

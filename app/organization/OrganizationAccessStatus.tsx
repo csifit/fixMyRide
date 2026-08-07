@@ -15,7 +15,7 @@ export default function OrganizationAccessStatus({
   return (
     <main className={`auth-shell ${ready ? "" : "i18n-pending"}`}>
       <section className="auth-card status-card">
-        <header><strong>VitaPass</strong><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}><option value="en">{t("language.en")}</option><option value="de">{t("language.de")}</option><option value="ro">{t("language.ro")}</option><option value="hu">{t("language.hu")}</option></select></header>
+        <header><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}><option value="en">{t("language.en")}</option><option value="de">{t("language.de")}</option><option value="ro">{t("language.ro")}</option><option value="hu">{t("language.hu")}</option></select></header>
         <h1>{t(`organization.${kind}.eyebrow` as TranslationKey)}</h1>
         <p>{t(`organization.access.${status}` as TranslationKey)}</p>
       </section>

@@ -61,8 +61,8 @@ export default function MfaEnrollmentClient({ nextHref = "/admin" }: { nextHref?
       }
       const { data, error: enrollError } = await supabase.auth.mfa.enroll({
         factorType: "totp",
-        friendlyName: "VitaPass privileged account",
-        issuer: "VitaPass",
+        friendlyName: "pitster privileged account",
+        issuer: "pitster",
       });
       if (enrollError) {
         setError(classifyMfaError(enrollError));

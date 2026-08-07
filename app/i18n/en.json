@@ -34,7 +34,7 @@
   "a11y.searchPatients": "Search patients",
   "a11y.notifications": "Notifications",
   "a11y.accountMenu": "Account menu",
-  "a11y.patientPortal": "VitaPass patient portal",
+  "a11y.patientPortal": "pitster patient portal",
   "a11y.closePatientProfile": "Close patient profile",
   "a11y.openPatientProfile": "Open {name}'s profile",
   "patient.nav.profile": "Medical profile",
@@ -132,7 +132,7 @@
   "doctor.nav.activity": "Activity log",
   "doctor.secureSession": "Secure session",
   "doctor.autoLock": "Auto-locks in 26 min",
-  "doctor.search.placeholder": "Search patient name, VitaPass ID, or condition",
+  "doctor.search.placeholder": "Search patient name, pitster ID, or condition",
   "doctor.patientPortal": "Patient portal",
   "doctor.welcome.date": "{date}",
   "doctor.welcome.greeting": "Good morning, {name}.",
@@ -166,7 +166,7 @@
   "doctor.directory.patientCountOne": "1 patient",
   "doctor.directory.needsReview": "Needs review",
   "doctor.directory.noMatchTitle": "No matching patients",
-  "doctor.directory.noMatchDescription": "Try a name, VitaPass ID, or medical condition.",
+  "doctor.directory.noMatchDescription": "Try a name, pitster ID, or medical condition.",
   "doctor.requests.eyebrow": "Secure access",
   "doctor.requests.title": "Access requests",
   "doctor.requests.description": "Review patient-approved requests before opening a medical profile.",
@@ -233,7 +233,7 @@
   "auth.unauthorized.title": "Clinical access unavailable",
   "auth.unauthorized.description": "This account is not authorized to use the clinical portal.",
   "auth.unavailable.title": "Clinical service temporarily unavailable",
-  "auth.unavailable.description": "VitaPass could not verify access because the service did not respond. Your account status was not changed. Try again manually.",
+  "auth.unavailable.description": "pitster could not verify access because the service did not respond. Your account status was not changed. Try again manually.",
   "auth.logout": "Sign out",
   "auth.returnPatient": "Return to patient portal",
   "notice.accessDenied": "Access denied. The medical profile was not opened.",
@@ -313,15 +313,15 @@
   "admin.access.unauthorized.description": "This signed-in account is not an active Superadmin. No administrative or medical data was opened.",
   "admin.access.suspended.title": "Superadmin account suspended",
   "admin.access.suspended.description": "This administrative account is suspended. Contact another trusted Superadmin.",
-  "admin.returnHome": "Return to VitaPass",
-  "register.kicker": "Create your VitaPass account",
+  "admin.returnHome": "Return to pitster",
+  "register.kicker": "Create your pitster account",
   "register.choice.title": "Choose account type",
   "register.choice.description": "Account types are permanent and cannot be combined.",
   "register.patient.choice": "Patient",
   "register.doctor.choice": "Doctor",
   "register.clinic_manager.choice": "Clinic Manager",
   "register.patient.title": "Patient registration",
-  "register.patient.description": "Create your personal VitaPass medical-profile account.",
+  "register.patient.description": "Create your personal pitster medical-profile account.",
   "register.doctor.title": "Doctor registration",
   "register.doctor.description": "Create a clinical account. Professional access remains pending until approval.",
   "register.clinic_manager.title": "Clinic Manager registration",
@@ -351,7 +351,7 @@
   "register.status.unavailable": "Registration is temporarily unavailable. Nothing was created; try again manually.",
   "register.setPassword.kicker": "Email confirmed",
   "register.setPassword.title": "Set your password",
-  "register.setPassword.description": "Create the password you will use to sign in to your VitaPass account.",
+  "register.setPassword.description": "Create the password you will use to sign in to your pitster account.",
   "register.setPassword.submit": "Save password and continue",
   "register.setPassword.submitting": "Saving password…",
   "register.setPassword.status.invalid": "Use at least 8 characters and make sure both passwords match.",
@@ -439,7 +439,7 @@
   "admin.login.submitting": "Signing in…",
   "admin.login.submit": "Continue securely",
   "admin.login.noSignup": "There is no public administrator signup. Bootstrap access is created manually by a trusted operator.",
-  "admin.mfa.brand": "VitaPass secure administration",
+  "admin.mfa.brand": "pitster secure administration",
   "admin.mfa.enroll.title": "Enroll multi-factor authentication",
   "admin.mfa.enroll.description": "Connect an authenticator application before entering the Superadmin console.",
   "admin.mfa.enroll.start": "Create authenticator setup",
@@ -483,7 +483,7 @@
   "admin.table.created": "Created",
   "admin.table.specialty": "Specialty",
   "admin.table.clinic": "Clinic",
-  "admin.table.vitapassId": "VitaPass ID",
+  "admin.table.vitapassId": "pitster ID",
   "admin.table.patient": "Patient",
   "admin.table.doctor": "Doctor",
   "admin.table.permissions": "Permissions",
@@ -500,9 +500,9 @@
   "admin.permission.view": "View",
   "admin.permission.edit": "Edit",
   "admin.access.securityError.title": "Security verification unavailable",
-  "admin.access.securityError.description": "VitaPass could not verify your multi-factor security state. No administrative data was opened. Sign out and try again later.",
+  "admin.access.securityError.description": "pitster could not verify your multi-factor security state. No administrative data was opened. Sign out and try again later.",
   "admin.access.unavailable.title": "Administration temporarily unavailable",
-  "admin.access.unavailable.description": "VitaPass could not load administrative access because the service did not respond. Your account status was not changed. Try again manually.",
+  "admin.access.unavailable.description": "pitster could not load administrative access because the service did not respond. Your account status was not changed. Try again manually.",
   "admin.role.admin": "Administrator",
   "admin.status.active": "Active",
   "admin.status.suspended": "Suspended",
@@ -695,7 +695,7 @@
   "booking.findDoctor": "Find a Doctor",
   "booking.createAccount": "Create account",
   "booking.forProfessionals": "For professionals",
-  "booking.kicker": "VitaPass appointments",
+  "booking.kicker": "pitster appointments",
   "booking.searchTitle": "Find the right Doctor and request an appointment",
   "booking.searchDescription": "Compare verified Doctors, check real-time availability and request an appointment in a few simple steps.",
   "booking.searchLabel": "Doctor, specialty or clinic",
@@ -851,7 +851,7 @@
   "workspace.acceptsPatients": "Accepting new patients",
   "workspace.clinicTitle": "Clinic / workspace",
   "workspace.managedClinic": "Managed by your clinic",
-  "workspace.managedClinicHelp": "Your Clinic Manager controls these details and covers your VitaPass costs.",
+  "workspace.managedClinicHelp": "Your Clinic Manager controls these details and covers your pitster costs.",
   "workspace.clinicName": "Display name",
   "workspace.legalName": "Legal name",
   "workspace.description": "Clinic description",
@@ -1050,9 +1050,9 @@
   ,"admin.patient.noStatusHistory": "No status changes recorded yet."
   ,"admin.patient.medicalPrivacy": "Medical-data privacy"
   ,"admin.patient.medicalPrivacyHelp": "The Medical Profile, Medical Folder and protected identifiers are not available in Administration."
-  ,"patientAppointments.account.suspended": "Your VitaPass account is suspended. Please contact support for assistance."
-  ,"patientAppointments.account.blocked": "Your VitaPass account is blocked. Please contact support for assistance."
-  ,"patientAppointments.account.archived": "This VitaPass account is archived and cannot access Patient services."
+  ,"patientAppointments.account.suspended": "Your pitster account is suspended. Please contact support for assistance."
+  ,"patientAppointments.account.blocked": "Your pitster account is blocked. Please contact support for assistance."
+  ,"patientAppointments.account.archived": "This pitster account is archived and cannot access Patient services."
   ,"home.addressSearchPlaceholder": "Search an address or city"
   ,"home.addressSearchHelp": "Select a Google address to find Doctors within 50 km."
   ,"home.addressSearchFallback": "Google address search is unavailable. Type a city or address."
@@ -1200,7 +1200,7 @@
   ,"register.customer.choice": "Customer"
   ,"register.workshop_manager.choice": "Workshop manager"
   ,"register.customer.title": "Customer registration"
-  ,"register.customer.description": "Create your fixMyRide account to manage vehicles and service bookings."
+  ,"register.customer.description": "Create your pitster account to manage vehicles and service bookings."
   ,"register.workshop_manager.title": "Workshop manager registration"
   ,"register.workshop_manager.description": "Create a service-provider account for your workshop business."
   ,"register.workshop_manager.legalName": "Service provider legal name"
@@ -1330,7 +1330,7 @@
   ,"workshopBookings.history.no_show": "Customer did not arrive"
   ,"providerBilling.eyebrow": "Service provider billing"
   ,"providerBilling.title": "Subscription and invoices"
-  ,"providerBilling.description": "Manage your €35 monthly fixMyRide subscription, billing identity, payment method, and Stripe invoices."
+  ,"providerBilling.description": "Manage your €35 monthly pitster subscription, billing identity, payment method, and Stripe invoices."
   ,"providerBilling.provider": "Service provider"
   ,"providerBilling.checkoutSuccess": "Checkout completed. Stripe is confirming the subscription; this page updates from the signed webhook."
   ,"providerBilling.checkoutCancelled": "Checkout was cancelled. No subscription change was made."

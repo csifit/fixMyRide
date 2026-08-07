@@ -30,10 +30,10 @@ const copy: Record<Locale, {
   statusHint: string;
 }> = {
   en: {
-    confirmedSubject: "Your VitaPass appointment is confirmed",
-    declinedSubject: "Update about your VitaPass appointment request",
-    approvedSubject: "Your VitaPass appointment change was approved",
-    changeDeclinedSubject: "Update about your VitaPass appointment change",
+    confirmedSubject: "Your pitster appointment is confirmed",
+    declinedSubject: "Update about your pitster appointment request",
+    approvedSubject: "Your pitster appointment change was approved",
+    changeDeclinedSubject: "Update about your pitster appointment change",
     greeting: "Hello",
     confirmed: "The clinic confirmed your appointment.",
     declined: "The clinic could not accept the requested appointment time.",
@@ -43,15 +43,15 @@ const copy: Record<Locale, {
     rescheduleDeclined: "The clinic could not approve your rescheduling request. The original appointment remains confirmed.",
     doctor: "Doctor", clinic: "Clinic", date: "Date and time",
     originalDate: "Original appointment",
-    account: "Create VitaPass account",
+    account: "Create pitster account",
     rebook: "Find another appointment",
     statusHint: "You can also use the protected status link from your original request email.",
   },
   de: {
-    confirmedSubject: "Ihr VitaPass-Termin ist bestätigt",
-    declinedSubject: "Aktualisierung Ihrer VitaPass-Terminanfrage",
-    approvedSubject: "Ihre VitaPass-Terminänderung wurde genehmigt",
-    changeDeclinedSubject: "Aktualisierung Ihrer VitaPass-Terminänderung",
+    confirmedSubject: "Ihr pitster-Termin ist bestätigt",
+    declinedSubject: "Aktualisierung Ihrer pitster-Terminanfrage",
+    approvedSubject: "Ihre pitster-Terminänderung wurde genehmigt",
+    changeDeclinedSubject: "Aktualisierung Ihrer pitster-Terminänderung",
     greeting: "Hallo",
     confirmed: "Die Praxis hat Ihren Termin bestätigt.",
     declined: "Die Praxis konnte den gewünschten Termin nicht annehmen.",
@@ -61,15 +61,15 @@ const copy: Record<Locale, {
     rescheduleDeclined: "Die Praxis konnte die Verschiebung nicht genehmigen. Der ursprüngliche Termin bleibt bestätigt.",
     doctor: "Arzt/Ärztin", clinic: "Praxis", date: "Datum und Uhrzeit",
     originalDate: "Ursprünglicher Termin",
-    account: "VitaPass-Konto erstellen",
+    account: "pitster-Konto erstellen",
     rebook: "Anderen Termin finden",
     statusHint: "Sie können auch den geschützten Statuslink aus der ursprünglichen E-Mail verwenden.",
   },
   ro: {
-    confirmedSubject: "Programarea VitaPass este confirmată",
-    declinedSubject: "Actualizare privind solicitarea de programare VitaPass",
-    approvedSubject: "Modificarea programării VitaPass a fost aprobată",
-    changeDeclinedSubject: "Actualizare privind modificarea programării VitaPass",
+    confirmedSubject: "Programarea pitster este confirmată",
+    declinedSubject: "Actualizare privind solicitarea de programare pitster",
+    approvedSubject: "Modificarea programării pitster a fost aprobată",
+    changeDeclinedSubject: "Actualizare privind modificarea programării pitster",
     greeting: "Bună ziua",
     confirmed: "Clinica a confirmat programarea.",
     declined: "Clinica nu a putut accepta ora solicitată.",
@@ -79,15 +79,15 @@ const copy: Record<Locale, {
     rescheduleDeclined: "Clinica nu a putut aproba reprogramarea. Programarea inițială rămâne confirmată.",
     doctor: "Medic", clinic: "Clinică", date: "Data și ora",
     originalDate: "Programarea inițială",
-    account: "Creează cont VitaPass",
+    account: "Creează cont pitster",
     rebook: "Găsește altă programare",
     statusHint: "Puteți folosi și linkul protejat din e-mailul solicitării inițiale.",
   },
   hu: {
-    confirmedSubject: "VitaPass időpontja megerősítve",
-    declinedSubject: "VitaPass időpontkérelem frissítése",
-    approvedSubject: "VitaPass időpontmódosítása jóváhagyva",
-    changeDeclinedSubject: "VitaPass időpontmódosítás frissítése",
+    confirmedSubject: "pitster időpontja megerősítve",
+    declinedSubject: "pitster időpontkérelem frissítése",
+    approvedSubject: "pitster időpontmódosítása jóváhagyva",
+    changeDeclinedSubject: "pitster időpontmódosítás frissítése",
     greeting: "Üdvözöljük",
     confirmed: "A rendelő megerősítette az időpontot.",
     declined: "A rendelő nem tudta elfogadni a kért időpontot.",
@@ -97,7 +97,7 @@ const copy: Record<Locale, {
     rescheduleDeclined: "A rendelő nem tudta jóváhagyni az átütemezést. Az eredeti időpont továbbra is érvényes.",
     doctor: "Orvos", clinic: "Rendelő", date: "Dátum és idő",
     originalDate: "Eredeti időpont",
-    account: "VitaPass-fiók létrehozása",
+    account: "pitster-fiók létrehozása",
     rebook: "Másik időpont keresése",
     statusHint: "Az eredeti kérelem e-mailjében található védett állapothivatkozást is használhatja.",
   },
@@ -117,7 +117,7 @@ function date(locale: Locale, value: string) {
 
 function frame(content: string) {
   return `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#17332f;max-width:620px">
-    <h1 style="color:#006E6E">VitaPass</h1>${content}</div>`;
+    <h1 style="color:#006E6E">pitster</h1>${content}</div>`;
 }
 
 export async function sendAppointmentDecisionEmail(input: {

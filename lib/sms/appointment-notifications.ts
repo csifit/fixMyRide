@@ -31,17 +31,17 @@ function messageFor(row: NotificationRow) {
   const doctor = row.doctor_name.slice(0, 55);
   const messages = {
     en: row.notification_kind === "confirmation"
-      ? `VitaPass: Your appointment with ${doctor} is confirmed for ${date}.`
-      : `VitaPass reminder: Your appointment with ${doctor} is tomorrow at ${date}.`,
+      ? `pitster: Your appointment with ${doctor} is confirmed for ${date}.`
+      : `pitster reminder: Your appointment with ${doctor} is tomorrow at ${date}.`,
     de: row.notification_kind === "confirmation"
-      ? `VitaPass: Ihr Termin bei ${doctor} ist fuer ${date} bestaetigt.`
-      : `VitaPass Erinnerung: Ihr Termin bei ${doctor} ist morgen, ${date}.`,
+      ? `pitster: Ihr Termin bei ${doctor} ist fuer ${date} bestaetigt.`
+      : `pitster Erinnerung: Ihr Termin bei ${doctor} ist morgen, ${date}.`,
     ro: row.notification_kind === "confirmation"
-      ? `VitaPass: Programarea la ${doctor} este confirmata pentru ${date}.`
-      : `VitaPass: Va reamintim programarea de maine la ${doctor}, ${date}.`,
+      ? `pitster: Programarea la ${doctor} este confirmata pentru ${date}.`
+      : `pitster: Va reamintim programarea de maine la ${doctor}, ${date}.`,
     hu: row.notification_kind === "confirmation"
-      ? `VitaPass: Idopontja ${doctor} orvosnal megerositve: ${date}.`
-      : `VitaPass emlekezteto: holnap idopontja van ${doctor} orvosnal: ${date}.`,
+      ? `pitster: Idopontja ${doctor} orvosnal megerositve: ${date}.`
+      : `pitster emlekezteto: holnap idopontja van ${doctor} orvosnal: ${date}.`,
   };
   return messages[row.locale].slice(0, 3200);
 }

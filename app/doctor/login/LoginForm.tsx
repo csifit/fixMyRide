@@ -26,7 +26,7 @@ export default function LoginForm({ configured }: { configured: boolean }) {
     <main className={`auth-shell ${ready ? "" : "i18n-pending"}`}>
       <section className="auth-card">
         <header>
-          <Link className="auth-brand" href="/"><span>+</span>VitaPass</Link>
+          <Link className="auth-brand" href="/"><span>+</span>pitster</Link>
           <label className="language">
             <span aria-hidden="true">◎</span>
             <select

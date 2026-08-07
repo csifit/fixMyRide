@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     const data = await loadCommercialAdmin();
     const output: Array<Array<string | number>> = [["Provider ID", "Legal name", "Display name", "Country", "Provider status", "Subscription status", "Monthly price", "Currency", "Period end", "Invoices", "Last invoice status", "Billing email"]];
     for (const provider of data.providers) output.push([provider.id, provider.legalName, provider.displayName, provider.countryCode, provider.providerStatus, provider.subscriptionStatus, (provider.monthlyPriceCents / 100).toFixed(2), provider.currency, provider.currentPeriodEnd ?? "", provider.invoiceCount, provider.lastInvoiceStatus ?? "", provider.billingEmail ?? ""]);
-    return download(csv(output), `fixmyride-provider-billing-${new Date().toISOString().slice(0, 10)}.csv`);
+    return download(csv(output), `pitster-provider-billing-${new Date().toISOString().slice(0, 10)}.csv`);
   }
   if (!/^\d{4}-\d{2}-01$/.test(month)) return new NextResponse("Invalid month", { status: 400 });
   if (scope === "clinic") {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     const output: Array<Array<string | number>> = [["Month", "Doctor", "Subscription EUR", "SMS sent", "SMS unit EUR", "SMS cost EUR", "Total EUR"]];
     for (const row of rows) output.push([row.month, row.clinicianName, (row.subscriptionCents / 100).toFixed(2), row.smsCount, (row.smsUnitCents / 100).toFixed(2), ((row.smsCount * row.smsUnitCents) / 100).toFixed(2), (row.totalCents / 100).toFixed(2)]);
     output.push(["TOTAL", "", "", rows.reduce((sum, row) => sum + row.smsCount, 0), "", "", (rows.reduce((sum, row) => sum + row.totalCents, 0) / 100).toFixed(2)]);
-    return download(csv(output), `vitapass-clinic-costs-${month.slice(0, 7)}.csv`);
+    return download(csv(output), `pitster-clinic-costs-${month.slice(0, 7)}.csv`);
   }
   if (scope === "platform") {
     const access = await getAccountingAccess();
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     const output: Array<Array<string | number>> = [["Month", "Payer type", "Payer", "Doctors", "SMS sent", "Total EUR"]];
     for (const row of rows) output.push([row.month, row.payerKind, row.payerName, row.doctorCount, row.smsCount, (row.totalCents / 100).toFixed(2)]);
     output.push(["TOTAL", "", "", rows.reduce((sum, row) => sum + row.doctorCount, 0), rows.reduce((sum, row) => sum + row.smsCount, 0), (rows.reduce((sum, row) => sum + row.totalCents, 0) / 100).toFixed(2)]);
-    return download(csv(output), `vitapass-platform-invoicing-${month.slice(0, 7)}.csv`);
+    return download(csv(output), `pitster-platform-invoicing-${month.slice(0, 7)}.csv`);
   }
   return new NextResponse("Invalid scope", { status: 400 });
 }

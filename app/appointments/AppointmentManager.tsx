@@ -446,7 +446,7 @@ export default function AppointmentManager({
 
   return <main className="organization-shell">
     <header className="organization-topbar">
-      <strong>VitaPass</strong>
+      <strong>pitster</strong>
       {kind === "doctor" && <Link href="/doctor/availability">{t("availability.title")}</Link>}
       <Link href={kind === "doctor" ? "/doctor" : "/staff"}>{t("appointments.back")}</Link>
       <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}>

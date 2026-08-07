@@ -62,7 +62,7 @@ test("availability remains simple: one read policy and Doctor-owned RPC writes",
   assert.doesNotMatch(migration, /as restrictive|aal2|mfa/i);
 });
 
-test("appointment email contains details and a prefilled VitaPass registration link", () => {
+test("appointment email contains details and a prefilled pitster registration link", () => {
   assert.match(actions, /sendAppointmentCreatedEmail/i);
   assert.match(email, /\/register\/patient\?email=/i);
   assert.match(email, /scheduledStart|slotDurationMinutes|doctorName/i);

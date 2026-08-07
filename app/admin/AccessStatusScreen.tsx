@@ -24,7 +24,7 @@ export default function AdminAccessStatusScreen({
       <section className="auth-card status-card">
         <header>
           <Link className="auth-brand" href="/">
-            <span>+</span>VitaPass
+            <span>+</span>pitster
           </Link>
           <label className="language">
             <span aria-hidden="true">◎</span>

@@ -1,4 +1,4 @@
-# fixMyRide completion roadmap
+# pitster completion roadmap
 
 ## Current foundation
 

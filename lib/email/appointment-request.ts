@@ -20,7 +20,7 @@ const copy: Record<Locale, {
   accountButton: string;
 }> = {
   en: {
-    subject: "We received your VitaPass appointment request",
+    subject: "We received your pitster appointment request",
     greeting: "Hello",
     received: "Your appointment request has been sent to the clinic.",
     doctor: "Doctor",
@@ -29,12 +29,12 @@ const copy: Record<Locale, {
     status: "Status",
     pending: "Waiting for Doctor or Staff confirmation",
     manage: "Use this protected link to check the request status.",
-    account: "You can also create a VitaPass patient account.",
+    account: "You can also create a pitster patient account.",
     manageButton: "View request",
-    accountButton: "Create VitaPass account",
+    accountButton: "Create pitster account",
   },
   de: {
-    subject: "Ihre VitaPass-Terminanfrage ist eingegangen",
+    subject: "Ihre pitster-Terminanfrage ist eingegangen",
     greeting: "Hallo",
     received: "Ihre Terminanfrage wurde an die Praxis gesendet.",
     doctor: "Arzt/Ärztin",
@@ -43,12 +43,12 @@ const copy: Record<Locale, {
     status: "Status",
     pending: "Wartet auf Bestätigung durch Arzt oder Mitarbeiter",
     manage: "Über diesen geschützten Link können Sie den Status prüfen.",
-    account: "Sie können außerdem ein VitaPass-Patientenkonto erstellen.",
+    account: "Sie können außerdem ein pitster-Patientenkonto erstellen.",
     manageButton: "Anfrage anzeigen",
-    accountButton: "VitaPass-Konto erstellen",
+    accountButton: "pitster-Konto erstellen",
   },
   ro: {
-    subject: "Am primit solicitarea dumneavoastră de programare VitaPass",
+    subject: "Am primit solicitarea dumneavoastră de programare pitster",
     greeting: "Bună ziua",
     received: "Solicitarea de programare a fost trimisă clinicii.",
     doctor: "Medic",
@@ -57,12 +57,12 @@ const copy: Record<Locale, {
     status: "Stare",
     pending: "În așteptarea confirmării medicului sau personalului",
     manage: "Folosiți acest link protejat pentru a verifica starea solicitării.",
-    account: "De asemenea, puteți crea un cont VitaPass de pacient.",
+    account: "De asemenea, puteți crea un cont pitster de pacient.",
     manageButton: "Vezi solicitarea",
-    accountButton: "Creează cont VitaPass",
+    accountButton: "Creează cont pitster",
   },
   hu: {
-    subject: "Megkaptuk VitaPass időpontkérelmét",
+    subject: "Megkaptuk pitster időpontkérelmét",
     greeting: "Üdvözöljük",
     received: "Az időpontkérelmet elküldtük a rendelőnek.",
     doctor: "Orvos",
@@ -71,9 +71,9 @@ const copy: Record<Locale, {
     status: "Állapot",
     pending: "Orvosi vagy munkatársi megerősítésre vár",
     manage: "Ezen a védett hivatkozáson ellenőrizheti a kérelem állapotát.",
-    account: "VitaPass betegfiókot is létrehozhat.",
+    account: "pitster betegfiókot is létrehozhat.",
     manageButton: "Kérelem megtekintése",
-    accountButton: "VitaPass-fiók létrehozása",
+    accountButton: "pitster-fiók létrehozása",
   },
 };
 
@@ -107,7 +107,7 @@ export async function sendAppointmentRequestEmail(input: {
     timeZone: "Europe/Bucharest",
   }).format(new Date(input.scheduledStart));
   const html = `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#17332f;max-width:620px">
-    <h1 style="color:#006E6E">VitaPass</h1>
+    <h1 style="color:#006E6E">pitster</h1>
     <p>${escapeHtml(text.greeting)} ${escapeHtml(input.patientName)},</p>
     <p>${escapeHtml(text.received)}</p>
     <div style="padding:18px;border:1px solid #dbe6e3;border-radius:10px;background:#F8FBFB">

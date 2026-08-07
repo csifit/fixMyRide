@@ -34,7 +34,7 @@
   "a11y.searchPatients": "Patienten suchen",
   "a11y.notifications": "Benachrichtigungen",
   "a11y.accountMenu": "Kontomenü",
-  "a11y.patientPortal": "VitaPass-Patientenportal",
+  "a11y.patientPortal": "pitster-Patientenportal",
   "a11y.closePatientProfile": "Patientenprofil schließen",
   "a11y.openPatientProfile": "Profil von {name} öffnen",
   "patient.nav.profile": "Medizinisches Profil",
@@ -132,7 +132,7 @@
   "doctor.nav.activity": "Aktivitätsprotokoll",
   "doctor.secureSession": "Sichere Sitzung",
   "doctor.autoLock": "Automatische Sperre in 26 Min.",
-  "doctor.search.placeholder": "Nach Name, VitaPass-ID oder Diagnose suchen",
+  "doctor.search.placeholder": "Nach Name, pitster-ID oder Diagnose suchen",
   "doctor.patientPortal": "Patientenportal",
   "doctor.welcome.date": "{date}",
   "doctor.welcome.greeting": "Guten Morgen, {name}.",
@@ -166,7 +166,7 @@
   "doctor.directory.patientCountOne": "1 Patient",
   "doctor.directory.needsReview": "Prüfung erforderlich",
   "doctor.directory.noMatchTitle": "Keine passenden Patienten",
-  "doctor.directory.noMatchDescription": "Suchen Sie nach Name, VitaPass-ID oder Diagnose.",
+  "doctor.directory.noMatchDescription": "Suchen Sie nach Name, pitster-ID oder Diagnose.",
   "doctor.requests.eyebrow": "Sicherer Zugriff",
   "doctor.requests.title": "Zugriffsanfragen",
   "doctor.requests.description": "Prüfen Sie vom Patienten freigegebene Anfragen, bevor Sie ein medizinisches Profil öffnen.",
@@ -233,7 +233,7 @@
   "auth.unauthorized.title": "Klinischer Zugriff nicht verfügbar",
   "auth.unauthorized.description": "Dieses Konto ist nicht zur Nutzung des klinischen Portals berechtigt.",
   "auth.unavailable.title": "Klinischer Dienst vorübergehend nicht verfügbar",
-  "auth.unavailable.description": "VitaPass konnte den Zugriff nicht prüfen, weil der Dienst nicht geantwortet hat. Ihr Kontostatus wurde nicht geändert. Versuchen Sie es manuell erneut.",
+  "auth.unavailable.description": "pitster konnte den Zugriff nicht prüfen, weil der Dienst nicht geantwortet hat. Ihr Kontostatus wurde nicht geändert. Versuchen Sie es manuell erneut.",
   "auth.logout": "Abmelden",
   "auth.returnPatient": "Zum Patientenportal zurückkehren",
   "notice.accessDenied": "Zugriff verweigert. Das medizinische Profil wurde nicht geöffnet.",
@@ -313,15 +313,15 @@
   "admin.access.unauthorized.description": "Dieses angemeldete Konto ist kein aktiver Superadmin. Es wurden keine administrativen oder medizinischen Daten geöffnet.",
   "admin.access.suspended.title": "Superadmin-Konto gesperrt",
   "admin.access.suspended.description": "Dieses Administratorkonto ist gesperrt. Kontaktieren Sie einen anderen vertrauenswürdigen Superadmin.",
-  "admin.returnHome": "Zurück zu VitaPass",
-  "register.kicker": "VitaPass-Konto erstellen",
+  "admin.returnHome": "Zurück zu pitster",
+  "register.kicker": "pitster-Konto erstellen",
   "register.choice.title": "Kontotyp auswählen",
   "register.choice.description": "Kontotypen sind dauerhaft und können nicht kombiniert werden.",
   "register.patient.choice": "Patient",
   "register.doctor.choice": "Arzt",
   "register.clinic_manager.choice": "Klinikmanager",
   "register.patient.title": "Patientenregistrierung",
-  "register.patient.description": "Erstellen Sie Ihr persönliches VitaPass-Konto für das medizinische Profil.",
+  "register.patient.description": "Erstellen Sie Ihr persönliches pitster-Konto für das medizinische Profil.",
   "register.doctor.title": "Arztregistrierung",
   "register.doctor.description": "Erstellen Sie ein klinisches Konto. Der professionelle Zugriff bleibt bis zur Genehmigung ausstehend.",
   "register.clinic_manager.title": "Registrierung als Klinikmanager",
@@ -351,7 +351,7 @@
   "register.status.unavailable": "Die Registrierung ist vorübergehend nicht verfügbar. Es wurde nichts erstellt; versuchen Sie es manuell erneut.",
   "register.setPassword.kicker": "E-Mail bestätigt",
   "register.setPassword.title": "Passwort festlegen",
-  "register.setPassword.description": "Legen Sie das Passwort fest, mit dem Sie sich bei Ihrem VitaPass-Konto anmelden.",
+  "register.setPassword.description": "Legen Sie das Passwort fest, mit dem Sie sich bei Ihrem pitster-Konto anmelden.",
   "register.setPassword.submit": "Passwort speichern und fortfahren",
   "register.setPassword.submitting": "Passwort wird gespeichert…",
   "register.setPassword.status.invalid": "Verwenden Sie mindestens 8 Zeichen und stellen Sie sicher, dass beide Passwörter übereinstimmen.",
@@ -439,7 +439,7 @@
   "admin.login.submitting": "Anmeldung läuft…",
   "admin.login.submit": "Sicher fortfahren",
   "admin.login.noSignup": "Es gibt keine öffentliche Administratorregistrierung. Der Erstzugang wird manuell durch eine vertrauenswürdige Person eingerichtet.",
-  "admin.mfa.brand": "Sichere VitaPass-Administration",
+  "admin.mfa.brand": "Sichere pitster-Administration",
   "admin.mfa.enroll.title": "Mehrfaktor-Authentifizierung einrichten",
   "admin.mfa.enroll.description": "Verbinden Sie eine Authenticator-App, bevor Sie die Superadmin-Konsole öffnen.",
   "admin.mfa.enroll.start": "Authenticator-Einrichtung erstellen",
@@ -483,7 +483,7 @@
   "admin.table.created": "Erstellt",
   "admin.table.specialty": "Fachgebiet",
   "admin.table.clinic": "Klinik",
-  "admin.table.vitapassId": "VitaPass-ID",
+  "admin.table.vitapassId": "pitster-ID",
   "admin.table.patient": "Patient",
   "admin.table.doctor": "Arzt",
   "admin.table.permissions": "Berechtigungen",
@@ -500,9 +500,9 @@
   "admin.permission.view": "Ansehen",
   "admin.permission.edit": "Bearbeiten",
   "admin.access.securityError.title": "Sicherheitsprüfung nicht verfügbar",
-  "admin.access.securityError.description": "VitaPass konnte den MFA-Sicherheitsstatus nicht prüfen. Es wurden keine Administrationsdaten geöffnet. Melden Sie sich ab und versuchen Sie es später erneut.",
+  "admin.access.securityError.description": "pitster konnte den MFA-Sicherheitsstatus nicht prüfen. Es wurden keine Administrationsdaten geöffnet. Melden Sie sich ab und versuchen Sie es später erneut.",
   "admin.access.unavailable.title": "Verwaltung vorübergehend nicht verfügbar",
-  "admin.access.unavailable.description": "VitaPass konnte den Verwaltungszugriff nicht laden, weil der Dienst nicht geantwortet hat. Ihr Kontostatus wurde nicht geändert. Versuchen Sie es manuell erneut.",
+  "admin.access.unavailable.description": "pitster konnte den Verwaltungszugriff nicht laden, weil der Dienst nicht geantwortet hat. Ihr Kontostatus wurde nicht geändert. Versuchen Sie es manuell erneut.",
   "admin.role.admin": "Administrator",
   "admin.status.active": "Aktiv",
   "admin.status.suspended": "Gesperrt",
@@ -695,7 +695,7 @@
   "booking.findDoctor": "Arzt finden",
   "booking.createAccount": "Konto erstellen",
   "booking.forProfessionals": "Für Fachpersonal",
-  "booking.kicker": "VitaPass-Termine",
+  "booking.kicker": "pitster-Termine",
   "booking.searchTitle": "Den passenden Arzt finden und einen Termin anfragen",
   "booking.searchDescription": "Vergleichen Sie geprüfte Ärzte, sehen Sie freie Zeiten und fragen Sie in wenigen Schritten einen Termin an.",
   "booking.searchLabel": "Arzt, Fachgebiet oder Praxis",
@@ -851,7 +851,7 @@
   "workspace.acceptsPatients": "Nimmt neue Patienten auf",
   "workspace.clinicTitle": "Klinik / Arbeitsbereich",
   "workspace.managedClinic": "Von Ihrer Klinik verwaltet",
-  "workspace.managedClinicHelp": "Ihre Klinikleitung verwaltet diese Daten und übernimmt Ihre VitaPass-Kosten.",
+  "workspace.managedClinicHelp": "Ihre Klinikleitung verwaltet diese Daten und übernimmt Ihre pitster-Kosten.",
   "workspace.clinicName": "Anzeigename",
   "workspace.legalName": "Rechtlicher Name",
   "workspace.description": "Klinikbeschreibung",
@@ -1050,9 +1050,9 @@
   ,"admin.patient.noStatusHistory": "Noch keine Statusänderungen erfasst."
   ,"admin.patient.medicalPrivacy": "Datenschutz medizinischer Daten"
   ,"admin.patient.medicalPrivacyHelp": "Medizinisches Profil, Patientenakte und geschützte Kennungen sind in der Administration nicht verfügbar."
-  ,"patientAppointments.account.suspended": "Ihr VitaPass-Konto ist gesperrt. Bitte wenden Sie sich an den Support."
-  ,"patientAppointments.account.blocked": "Ihr VitaPass-Konto ist blockiert. Bitte wenden Sie sich an den Support."
-  ,"patientAppointments.account.archived": "Dieses VitaPass-Konto ist archiviert und kann nicht auf Patientendienste zugreifen."
+  ,"patientAppointments.account.suspended": "Ihr pitster-Konto ist gesperrt. Bitte wenden Sie sich an den Support."
+  ,"patientAppointments.account.blocked": "Ihr pitster-Konto ist blockiert. Bitte wenden Sie sich an den Support."
+  ,"patientAppointments.account.archived": "Dieses pitster-Konto ist archiviert und kann nicht auf Patientendienste zugreifen."
   ,"home.addressSearchPlaceholder": "Adresse oder Ort suchen"
   ,"home.addressSearchHelp": "Wählen Sie eine Google-Adresse, um Ärzte im Umkreis von 50 km zu finden."
   ,"home.addressSearchFallback": "Die Google-Adresssuche ist nicht verfügbar. Geben Sie einen Ort oder eine Adresse ein."
@@ -1200,7 +1200,7 @@
   ,"register.customer.choice": "Kunde"
   ,"register.workshop_manager.choice": "Werkstattmanager"
   ,"register.customer.title": "Kundenregistrierung"
-  ,"register.customer.description": "Erstellen Sie Ihr fixMyRide-Konto für Fahrzeuge und Servicebuchungen."
+  ,"register.customer.description": "Erstellen Sie Ihr pitster-Konto für Fahrzeuge und Servicebuchungen."
   ,"register.workshop_manager.title": "Werkstattmanager-Registrierung"
   ,"register.workshop_manager.description": "Erstellen Sie ein Dienstleisterkonto für Ihren Werkstattbetrieb."
   ,"register.workshop_manager.legalName": "Rechtlicher Name des Dienstleisters"

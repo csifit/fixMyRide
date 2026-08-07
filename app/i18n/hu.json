@@ -34,7 +34,7 @@
   "a11y.searchPatients": "Páciensek keresése",
   "a11y.notifications": "Értesítések",
   "a11y.accountMenu": "Fiókmenü",
-  "a11y.patientPortal": "VitaPass páciensportál",
+  "a11y.patientPortal": "pitster páciensportál",
   "a11y.closePatientProfile": "Páciensprofil bezárása",
   "a11y.openPatientProfile": "{name} profiljának megnyitása",
   "patient.nav.profile": "Orvosi profil",
@@ -132,7 +132,7 @@
   "doctor.nav.activity": "Tevékenységnapló",
   "doctor.secureSession": "Biztonságos munkamenet",
   "doctor.autoLock": "Automatikus zárolás 26 perc múlva",
-  "doctor.search.placeholder": "Keresés név, VitaPass-azonosító vagy kórkép alapján",
+  "doctor.search.placeholder": "Keresés név, pitster-azonosító vagy kórkép alapján",
   "doctor.patientPortal": "Páciensportál",
   "doctor.welcome.date": "{date}",
   "doctor.welcome.greeting": "Jó reggelt, {name}!",
@@ -166,7 +166,7 @@
   "doctor.directory.patientCountOne": "1 páciens",
   "doctor.directory.needsReview": "Ellenőrzést igényel",
   "doctor.directory.noMatchTitle": "Nincs megfelelő páciens",
-  "doctor.directory.noMatchDescription": "Próbáljon nevet, VitaPass-azonosítót vagy kórképet megadni.",
+  "doctor.directory.noMatchDescription": "Próbáljon nevet, pitster-azonosítót vagy kórképet megadni.",
   "doctor.requests.eyebrow": "Biztonságos hozzáférés",
   "doctor.requests.title": "Hozzáférési kérelmek",
   "doctor.requests.description": "Az orvosi profil megnyitása előtt tekintse át a páciens által jóváhagyott kérelmeket.",
@@ -233,7 +233,7 @@
   "auth.unauthorized.title": "A klinikai hozzáférés nem érhető el",
   "auth.unauthorized.description": "Ez a fiók nem jogosult a klinikai portál használatára.",
   "auth.unavailable.title": "A klinikai szolgáltatás átmenetileg nem érhető el",
-  "auth.unavailable.description": "A VitaPass nem tudta ellenőrizni a hozzáférést, mert a szolgáltatás nem válaszolt. A fiók állapota nem változott. Próbálja újra kézzel.",
+  "auth.unavailable.description": "A pitster nem tudta ellenőrizni a hozzáférést, mert a szolgáltatás nem válaszolt. A fiók állapota nem változott. Próbálja újra kézzel.",
   "auth.logout": "Kijelentkezés",
   "auth.returnPatient": "Vissza a páciensportálra",
   "notice.accessDenied": "Hozzáférés megtagadva. Az orvosi profil nem nyílt meg.",
@@ -313,15 +313,15 @@
   "admin.access.unauthorized.description": "A bejelentkezett fiók nem aktív Superadmin. Nem nyíltak meg adminisztrációs vagy egészségügyi adatok.",
   "admin.access.suspended.title": "Felfüggesztett Superadmin-fiók",
   "admin.access.suspended.description": "Ez az adminisztrátori fiók fel van függesztve. Forduljon egy másik megbízható Superadminhoz.",
-  "admin.returnHome": "Vissza a VitaPasshoz",
-  "register.kicker": "VitaPass-fiók létrehozása",
+  "admin.returnHome": "Vissza a pitsterhoz",
+  "register.kicker": "pitster-fiók létrehozása",
   "register.choice.title": "Fióktípus kiválasztása",
   "register.choice.description": "A fióktípusok véglegesek és nem vonhatók össze.",
   "register.patient.choice": "Páciens",
   "register.doctor.choice": "Orvos",
   "register.clinic_manager.choice": "Klinikavezető",
   "register.patient.title": "Páciensregisztráció",
-  "register.patient.description": "Hozza létre személyes VitaPass egészségügyi profilfiókját.",
+  "register.patient.description": "Hozza létre személyes pitster egészségügyi profilfiókját.",
   "register.doctor.title": "Orvosi regisztráció",
   "register.doctor.description": "Hozzon létre klinikai fiókot. A szakmai hozzáférés jóváhagyásig függőben marad.",
   "register.clinic_manager.title": "Klinikavezetői regisztráció",
@@ -351,7 +351,7 @@
   "register.status.unavailable": "A regisztráció átmenetileg nem érhető el. Nem jött létre fiók; próbálja újra kézzel.",
   "register.setPassword.kicker": "E-mail-cím megerősítve",
   "register.setPassword.title": "Jelszó beállítása",
-  "register.setPassword.description": "Hozza létre a VitaPass-fiókba való bejelentkezéshez használt jelszót.",
+  "register.setPassword.description": "Hozza létre a pitster-fiókba való bejelentkezéshez használt jelszót.",
   "register.setPassword.submit": "Jelszó mentése és folytatás",
   "register.setPassword.submitting": "Jelszó mentése…",
   "register.setPassword.status.invalid": "Használjon legalább 8 karaktert, és ellenőrizze, hogy a két jelszó megegyezik.",
@@ -439,7 +439,7 @@
   "admin.login.submitting": "Bejelentkezés…",
   "admin.login.submit": "Biztonságos folytatás",
   "admin.login.noSignup": "Nincs nyilvános adminisztrátori regisztráció. A kezdeti hozzáférést egy megbízható üzemeltető kézzel hozza létre.",
-  "admin.mfa.brand": "VitaPass biztonságos adminisztráció",
+  "admin.mfa.brand": "pitster biztonságos adminisztráció",
   "admin.mfa.enroll.title": "Többtényezős hitelesítés beállítása",
   "admin.mfa.enroll.description": "Csatlakoztasson egy hitelesítő alkalmazást a Superadmin-konzol megnyitása előtt.",
   "admin.mfa.enroll.start": "Hitelesítő beállítás létrehozása",
@@ -483,7 +483,7 @@
   "admin.table.created": "Létrehozva",
   "admin.table.specialty": "Szakterület",
   "admin.table.clinic": "Klinika",
-  "admin.table.vitapassId": "VitaPass-azonosító",
+  "admin.table.vitapassId": "pitster-azonosító",
   "admin.table.patient": "Páciens",
   "admin.table.doctor": "Orvos",
   "admin.table.permissions": "Jogosultságok",
@@ -500,9 +500,9 @@
   "admin.permission.view": "Megtekintés",
   "admin.permission.edit": "Szerkesztés",
   "admin.access.securityError.title": "A biztonsági ellenőrzés nem érhető el",
-  "admin.access.securityError.description": "A VitaPass nem tudta ellenőrizni a többtényezős biztonsági állapotot. Nem nyíltak meg adminisztrációs adatok. Jelentkezzen ki, és próbálja újra később.",
+  "admin.access.securityError.description": "A pitster nem tudta ellenőrizni a többtényezős biztonsági állapotot. Nem nyíltak meg adminisztrációs adatok. Jelentkezzen ki, és próbálja újra később.",
   "admin.access.unavailable.title": "Az adminisztráció átmenetileg nem érhető el",
-  "admin.access.unavailable.description": "A VitaPass nem tudta betölteni az adminisztrátori hozzáférést, mert a szolgáltatás nem válaszolt. A fiók állapota nem változott. Próbálja újra kézzel.",
+  "admin.access.unavailable.description": "A pitster nem tudta betölteni az adminisztrátori hozzáférést, mert a szolgáltatás nem válaszolt. A fiók állapota nem változott. Próbálja újra kézzel.",
   "admin.role.admin": "Adminisztrátor",
   "admin.status.active": "Aktív",
   "admin.status.suspended": "Felfüggesztett",
@@ -695,7 +695,7 @@
   "booking.findDoctor": "Orvos keresése",
   "booking.createAccount": "Fiók létrehozása",
   "booking.forProfessionals": "Szakembereknek",
-  "booking.kicker": "VitaPass időpontok",
+  "booking.kicker": "pitster időpontok",
   "booking.searchTitle": "Találja meg a megfelelő orvost és kérjen időpontot",
   "booking.searchDescription": "Hasonlítsa össze az ellenőrzött orvosokat, nézze meg a valós idejű elérhetőséget, és kérjen időpontot néhány egyszerű lépésben.",
   "booking.searchLabel": "Orvos, szakterület vagy rendelő",
@@ -851,7 +851,7 @@
   "workspace.acceptsPatients": "Új pácienseket fogad",
   "workspace.clinicTitle": "Klinika / munkaterület",
   "workspace.managedClinic": "A klinika kezeli",
-  "workspace.managedClinicHelp": "A klinikavezető kezeli ezeket az adatokat, és fedezi a VitaPass költségeit.",
+  "workspace.managedClinicHelp": "A klinikavezető kezeli ezeket az adatokat, és fedezi a pitster költségeit.",
   "workspace.clinicName": "Megjelenített név",
   "workspace.legalName": "Hivatalos név",
   "workspace.description": "Klinika leírása",
@@ -1050,9 +1050,9 @@
   ,"admin.patient.noStatusHistory": "Még nincs rögzített állapotváltozás."
   ,"admin.patient.medicalPrivacy": "Egészségügyi adatok védelme"
   ,"admin.patient.medicalPrivacyHelp": "Az Orvosi profil, az Orvosi mappa és a védett azonosítók nem érhetők el az Adminisztrációban."
-  ,"patientAppointments.account.suspended": "VitaPass-fiókja fel van függesztve. Kérjen segítséget az ügyfélszolgálattól."
-  ,"patientAppointments.account.blocked": "VitaPass-fiókja le van tiltva. Kérjen segítséget az ügyfélszolgálattól."
-  ,"patientAppointments.account.archived": "Ez a VitaPass-fiók archiválva van, és nem fér hozzá a páciensszolgáltatásokhoz."
+  ,"patientAppointments.account.suspended": "pitster-fiókja fel van függesztve. Kérjen segítséget az ügyfélszolgálattól."
+  ,"patientAppointments.account.blocked": "pitster-fiókja le van tiltva. Kérjen segítséget az ügyfélszolgálattól."
+  ,"patientAppointments.account.archived": "Ez a pitster-fiók archiválva van, és nem fér hozzá a páciensszolgáltatásokhoz."
   ,"home.addressSearchPlaceholder": "Cím vagy település keresése"
   ,"home.addressSearchHelp": "Válasszon Google-címet az 50 km-en belüli orvosok kereséséhez."
   ,"home.addressSearchFallback": "A Google címkereső nem érhető el. Írjon be egy települést vagy címet."
@@ -1200,7 +1200,7 @@
   ,"register.customer.choice": "Ügyfél"
   ,"register.workshop_manager.choice": "Műhelyvezető"
   ,"register.customer.title": "Ügyfél-regisztráció"
-  ,"register.customer.description": "Hozzon létre fixMyRide-fiókot járműveihez és szervizfoglalásaihoz."
+  ,"register.customer.description": "Hozzon létre pitster-fiókot járműveihez és szervizfoglalásaihoz."
   ,"register.workshop_manager.title": "Műhelyvezetői regisztráció"
   ,"register.workshop_manager.description": "Hozzon létre szolgáltatói fiókot műhelyvállalkozásához."
   ,"register.workshop_manager.legalName": "Szolgáltató hivatalos neve"

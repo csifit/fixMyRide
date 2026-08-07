@@ -31,7 +31,7 @@ export default function SetPasswordClient({
     <main className="registration-shell">
       <section className="registration-card">
         <header className="registration-header">
-          <Link href="/" className="registration-brand">VitaPass</Link>
+          <Link href="/" className="registration-brand">pitster</Link>
           <select
             aria-label={t("a11y.languageSelector")}
             value={language}

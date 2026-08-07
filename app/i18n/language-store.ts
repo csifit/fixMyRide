@@ -1,6 +1,7 @@
 import { languages, type Language } from ".";
 
-export const languageStorageKey = "vitapass.language";
+export const languageStorageKey = "pitster.language";
+const legacyLanguageStorageKey = "vitapass.language";
 
 export type LanguageState = {
   language: Language;
@@ -12,7 +13,8 @@ type LanguageStorage = Pick<Storage, "getItem" | "setItem">;
 const initialState: LanguageState = { language: "en", ready: false };
 
 function savedLanguage(storage: Pick<LanguageStorage, "getItem">): Language {
-  const stored = storage.getItem(languageStorageKey);
+  const stored =
+    storage.getItem(languageStorageKey) ?? storage.getItem(legacyLanguageStorageKey);
   return languages.includes(stored as Language) ? (stored as Language) : "en";
 }
 

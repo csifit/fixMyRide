@@ -21,7 +21,7 @@ export default function DoctorSettingsClient({ workspace, logoutAction }: { work
   const t = (key: TranslationKey) => translate(language, key);
   if (!ready) return <main className="registration-shell" aria-busy="true" />;
   return <main className="settings-shell">
-    <header className="settings-topbar"><Link href="/doctor">← {t("workspace.back")}</Link><strong>VitaPass</strong><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
+    <header className="settings-topbar"><Link href="/doctor">← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
     <section className="settings-content">
       <p className="registration-kicker">{t("workspace.eyebrow")}</p><h1>{t("workspace.doctorTitle")}</h1><p>{t("workspace.doctorDescription")}</p>
       <div className="settings-grid">

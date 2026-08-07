@@ -16,44 +16,44 @@ const copy: Record<Locale, {
   button: string;
 }> = {
   en: {
-    subject: "Your VitaPass appointment",
+    subject: "Your pitster appointment",
     greeting: "Hello",
     intro: "Your appointment details are:",
     doctor: "Doctor",
     date: "Date and time",
     status: "Status",
-    register: "Create a VitaPass patient account to keep your medical profile and appointments in one place.",
-    button: "Create VitaPass account",
+    register: "Create a pitster patient account to keep your medical profile and appointments in one place.",
+    button: "Create pitster account",
   },
   de: {
-    subject: "Ihr VitaPass-Termin",
+    subject: "Ihr pitster-Termin",
     greeting: "Hallo",
     intro: "Ihre Termindaten:",
     doctor: "Arzt/Ärztin",
     date: "Datum und Uhrzeit",
     status: "Status",
-    register: "Erstellen Sie ein VitaPass-Patientenkonto, um Ihr medizinisches Profil und Ihre Termine an einem Ort zu verwalten.",
-    button: "VitaPass-Konto erstellen",
+    register: "Erstellen Sie ein pitster-Patientenkonto, um Ihr medizinisches Profil und Ihre Termine an einem Ort zu verwalten.",
+    button: "pitster-Konto erstellen",
   },
   ro: {
-    subject: "Programarea dumneavoastră VitaPass",
+    subject: "Programarea dumneavoastră pitster",
     greeting: "Bună ziua",
     intro: "Detaliile programării sunt:",
     doctor: "Medic",
     date: "Data și ora",
     status: "Stare",
-    register: "Creați un cont VitaPass de pacient pentru a păstra profilul medical și programările într-un singur loc.",
-    button: "Creează cont VitaPass",
+    register: "Creați un cont pitster de pacient pentru a păstra profilul medical și programările într-un singur loc.",
+    button: "Creează cont pitster",
   },
   hu: {
-    subject: "VitaPass időpontja",
+    subject: "pitster időpontja",
     greeting: "Üdvözöljük",
     intro: "Az időpont adatai:",
     doctor: "Orvos",
     date: "Dátum és idő",
     status: "Állapot",
-    register: "Hozzon létre VitaPass betegfiókot, hogy egészségügyi profilját és időpontjait egy helyen kezelhesse.",
-    button: "VitaPass-fiók létrehozása",
+    register: "Hozzon létre pitster betegfiókot, hogy egészségügyi profilját és időpontjait egy helyen kezelhesse.",
+    button: "pitster-fiók létrehozása",
   },
 };
 
@@ -92,7 +92,7 @@ export async function sendAppointmentCreatedEmail(input: {
   }).format(new Date(input.scheduledStart));
   const html = `
     <div style="font-family:Arial,sans-serif;line-height:1.6;color:#17332f;max-width:600px">
-      <h1 style="color:#006E6E">VitaPass</h1>
+      <h1 style="color:#006E6E">pitster</h1>
       <p>${escapeHtml(text.greeting)} ${escapeHtml(input.patientName)},</p>
       <p>${escapeHtml(text.intro)}</p>
       <p><strong>${escapeHtml(text.doctor)}:</strong> ${escapeHtml(input.doctorName)}<br>

@@ -5,7 +5,7 @@ Date: 2026-08-06
 
 ## Objective
 
-Remove medical-domain names from the active fixMyRide product and database while
+Remove medical-domain names from the active pitster product and database while
 preserving identities, workshop data, service catalogues, booking requests, and
 billing history. Historical migrations remain immutable; all changes are made
 through new forward migrations.

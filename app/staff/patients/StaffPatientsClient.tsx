@@ -18,7 +18,7 @@ export default function StaffPatientsClient({
   const list = (label: TranslationKey, values: string[]) => <section className="organization-card"><h3>{t(label)}</h3><p>{values.length ? values.join(" · ") : t("common.noneRecorded")}</p></section>;
   return <main className="organization-shell">
     <header className="organization-topbar">
-      <strong>VitaPass</strong><Link href="/staff">{t("appointments.back")}</Link>
+      <strong>pitster</strong><Link href="/staff">{t("appointments.back")}</Link>
       <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}>
         <option value="en">{t("language.en")}</option><option value="de">{t("language.de")}</option><option value="ro">{t("language.ro")}</option><option value="hu">{t("language.hu")}</option>
       </select>

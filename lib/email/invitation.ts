@@ -12,80 +12,80 @@ const copy: Record<
 > = {
   en: {
     clinic_doctor: {
-      subject: "VitaPass clinic invitation",
-      title: "You have been invited to VitaPass",
+      subject: "pitster clinic invitation",
+      title: "You have been invited to pitster",
       message: "A Clinic Manager invited you to register as a doctor linked to their clinic.",
       action: "Accept doctor invitation",
     },
     doctor_staff: {
-      subject: "VitaPass Staff invitation",
-      title: "You have been invited to VitaPass",
+      subject: "pitster Staff invitation",
+      title: "You have been invited to pitster",
       message: "A doctor invited you to join their appointment-management Staff.",
       action: "Accept Staff invitation",
     },
     platform_doctor: {
-      subject: "VitaPass Doctor invitation",
-      title: "You have been invited to VitaPass",
+      subject: "pitster Doctor invitation",
+      title: "You have been invited to pitster",
       message: "A platform administrator invited you to create a Doctor account.",
       action: "Accept Doctor invitation",
     },
   },
   de: {
     clinic_doctor: {
-      subject: "VitaPass-Klinikeinladung",
-      title: "Sie wurden zu VitaPass eingeladen",
+      subject: "pitster-Klinikeinladung",
+      title: "Sie wurden zu pitster eingeladen",
       message: "Eine Klinikleitung hat Sie eingeladen, sich als Arzt oder Ärztin ihrer Klinik zu registrieren.",
       action: "Arzteinladung annehmen",
     },
     doctor_staff: {
-      subject: "VitaPass-Mitarbeitereinladung",
-      title: "Sie wurden zu VitaPass eingeladen",
+      subject: "pitster-Mitarbeitereinladung",
+      title: "Sie wurden zu pitster eingeladen",
       message: "Ein Arzt oder eine Ärztin hat Sie zur Terminverwaltung eingeladen.",
       action: "Mitarbeitereinladung annehmen",
     },
     platform_doctor: {
-      subject: "VitaPass-Arzteinladung",
-      title: "Sie wurden zu VitaPass eingeladen",
+      subject: "pitster-Arzteinladung",
+      title: "Sie wurden zu pitster eingeladen",
       message: "Ein Plattformadministrator hat Sie eingeladen, ein Arztkonto zu erstellen.",
       action: "Arzteinladung annehmen",
     },
   },
   ro: {
     clinic_doctor: {
-      subject: "Invitație VitaPass din partea clinicii",
-      title: "Ai fost invitat în VitaPass",
+      subject: "Invitație pitster din partea clinicii",
+      title: "Ai fost invitat în pitster",
       message: "Un Manager de clinică te-a invitat să te înregistrezi ca medic afiliat clinicii.",
       action: "Acceptă invitația de medic",
     },
     doctor_staff: {
-      subject: "Invitație VitaPass pentru personal",
-      title: "Ai fost invitat în VitaPass",
+      subject: "Invitație pitster pentru personal",
+      title: "Ai fost invitat în pitster",
       message: "Un medic te-a invitat să faci parte din personalul care gestionează programările.",
       action: "Acceptă invitația pentru personal",
     },
     platform_doctor: {
-      subject: "Invitație VitaPass pentru medic",
-      title: "Ai fost invitat în VitaPass",
+      subject: "Invitație pitster pentru medic",
+      title: "Ai fost invitat în pitster",
       message: "Un administrator al platformei te-a invitat să creezi un cont de medic.",
       action: "Acceptă invitația de medic",
     },
   },
   hu: {
     clinic_doctor: {
-      subject: "VitaPass klinikai meghívó",
-      title: "Meghívást kapott a VitaPass rendszerbe",
+      subject: "pitster klinikai meghívó",
+      title: "Meghívást kapott a pitster rendszerbe",
       message: "Egy klinikavezető meghívta, hogy a klinikához kapcsolt orvosként regisztráljon.",
       action: "Orvosi meghívó elfogadása",
     },
     doctor_staff: {
-      subject: "VitaPass munkatársi meghívó",
-      title: "Meghívást kapott a VitaPass rendszerbe",
+      subject: "pitster munkatársi meghívó",
+      title: "Meghívást kapott a pitster rendszerbe",
       message: "Egy orvos meghívta az időpontokat kezelő munkatársai közé.",
       action: "Munkatársi meghívó elfogadása",
     },
     platform_doctor: {
-      subject: "VitaPass orvosi meghívó",
-      title: "Meghívást kapott a VitaPass rendszerbe",
+      subject: "pitster orvosi meghívó",
+      title: "Meghívást kapott a pitster rendszerbe",
       message: "Egy platformadminisztrátor meghívta egy orvosi fiók létrehozására.",
       action: "Orvosi meghívó elfogadása",
     },
@@ -121,7 +121,7 @@ export async function sendInvitationEmail({
 }) {
   const content = copy[language][kind];
   const safeUrl = escapeHtml(invitationUrl);
-  const branded = (value: string) => value.replaceAll("VitaPass", brand.name);
+  const branded = (value: string) => value.replaceAll("pitster", brand.name);
   return sendMxrouteEmail({
     to,
     subject: branded(content.subject),

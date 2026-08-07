@@ -34,7 +34,7 @@
   "a11y.searchPatients": "Caută pacienți",
   "a11y.notifications": "Notificări",
   "a11y.accountMenu": "Meniu cont",
-  "a11y.patientPortal": "Portalul VitaPass pentru pacienți",
+  "a11y.patientPortal": "Portalul pitster pentru pacienți",
   "a11y.closePatientProfile": "Închide profilul pacientului",
   "a11y.openPatientProfile": "Deschide profilul lui {name}",
   "patient.nav.profile": "Profil medical",
@@ -132,7 +132,7 @@
   "doctor.nav.activity": "Jurnal de activitate",
   "doctor.secureSession": "Sesiune securizată",
   "doctor.autoLock": "Blocare automată în 26 min.",
-  "doctor.search.placeholder": "Caută după nume, ID VitaPass sau afecțiune",
+  "doctor.search.placeholder": "Caută după nume, ID pitster sau afecțiune",
   "doctor.patientPortal": "Portal pacient",
   "doctor.welcome.date": "{date}",
   "doctor.welcome.greeting": "Bună dimineața, {name}.",
@@ -166,7 +166,7 @@
   "doctor.directory.patientCountOne": "1 pacient",
   "doctor.directory.needsReview": "Necesită verificare",
   "doctor.directory.noMatchTitle": "Nu există pacienți corespunzători",
-  "doctor.directory.noMatchDescription": "Încearcă un nume, un ID VitaPass sau o afecțiune.",
+  "doctor.directory.noMatchDescription": "Încearcă un nume, un ID pitster sau o afecțiune.",
   "doctor.requests.eyebrow": "Acces securizat",
   "doctor.requests.title": "Cereri de acces",
   "doctor.requests.description": "Verifică cererile aprobate de pacient înainte de a deschide profilul medical.",
@@ -233,7 +233,7 @@
   "auth.unauthorized.title": "Acces clinic indisponibil",
   "auth.unauthorized.description": "Acest cont nu este autorizat să utilizeze portalul clinic.",
   "auth.unavailable.title": "Serviciul clinic este temporar indisponibil",
-  "auth.unavailable.description": "VitaPass nu a putut verifica accesul deoarece serviciul nu a răspuns. Starea contului nu a fost modificată. Încercați din nou manual.",
+  "auth.unavailable.description": "pitster nu a putut verifica accesul deoarece serviciul nu a răspuns. Starea contului nu a fost modificată. Încercați din nou manual.",
   "auth.logout": "Deconectare",
   "auth.returnPatient": "Înapoi la portalul pacientului",
   "notice.accessDenied": "Acces refuzat. Profilul medical nu a fost deschis.",
@@ -313,15 +313,15 @@
   "admin.access.unauthorized.description": "Contul autentificat nu este un Superadmin activ. Nu au fost deschise date administrative sau medicale.",
   "admin.access.suspended.title": "Cont Superadmin suspendat",
   "admin.access.suspended.description": "Acest cont administrativ este suspendat. Contactați un alt Superadmin de încredere.",
-  "admin.returnHome": "Înapoi la VitaPass",
-  "register.kicker": "Creează contul VitaPass",
+  "admin.returnHome": "Înapoi la pitster",
+  "register.kicker": "Creează contul pitster",
   "register.choice.title": "Alege tipul contului",
   "register.choice.description": "Tipurile de cont sunt permanente și nu pot fi combinate.",
   "register.patient.choice": "Pacient",
   "register.doctor.choice": "Medic",
   "register.clinic_manager.choice": "Manager de clinică",
   "register.patient.title": "Înregistrare pacient",
-  "register.patient.description": "Creează contul personal VitaPass pentru profilul medical.",
+  "register.patient.description": "Creează contul personal pitster pentru profilul medical.",
   "register.doctor.title": "Înregistrare medic",
   "register.doctor.description": "Creează un cont clinic. Accesul profesional rămâne în așteptare până la aprobare.",
   "register.clinic_manager.title": "Înregistrare manager de clinică",
@@ -351,7 +351,7 @@
   "register.status.unavailable": "Înregistrarea este temporar indisponibilă. Nu s-a creat nimic; încearcă din nou manual.",
   "register.setPassword.kicker": "E-mail confirmat",
   "register.setPassword.title": "Setează parola",
-  "register.setPassword.description": "Creează parola pe care o vei folosi pentru autentificarea în contul VitaPass.",
+  "register.setPassword.description": "Creează parola pe care o vei folosi pentru autentificarea în contul pitster.",
   "register.setPassword.submit": "Salvează parola și continuă",
   "register.setPassword.submitting": "Se salvează parola…",
   "register.setPassword.status.invalid": "Folosește cel puțin 8 caractere și verifică dacă parolele coincid.",
@@ -439,7 +439,7 @@
   "admin.login.submitting": "Se autentifică…",
   "admin.login.submit": "Continuă în siguranță",
   "admin.login.noSignup": "Nu există înregistrare publică pentru administratori. Accesul inițial este creat manual de un operator de încredere.",
-  "admin.mfa.brand": "Administrare securizată VitaPass",
+  "admin.mfa.brand": "Administrare securizată pitster",
   "admin.mfa.enroll.title": "Configurați autentificarea multifactor",
   "admin.mfa.enroll.description": "Conectați o aplicație de autentificare înainte de a intra în consola Superadmin.",
   "admin.mfa.enroll.start": "Creează configurarea autentificatorului",
@@ -483,7 +483,7 @@
   "admin.table.created": "Creat",
   "admin.table.specialty": "Specialitate",
   "admin.table.clinic": "Clinică",
-  "admin.table.vitapassId": "ID VitaPass",
+  "admin.table.vitapassId": "ID pitster",
   "admin.table.patient": "Pacient",
   "admin.table.doctor": "Medic",
   "admin.table.permissions": "Permisiuni",
@@ -500,9 +500,9 @@
   "admin.permission.view": "Vizualizare",
   "admin.permission.edit": "Editare",
   "admin.access.securityError.title": "Verificarea de securitate nu este disponibilă",
-  "admin.access.securityError.description": "VitaPass nu a putut verifica starea securității multifactor. Nu au fost deschise date administrative. Deconectați-vă și încercați din nou mai târziu.",
+  "admin.access.securityError.description": "pitster nu a putut verifica starea securității multifactor. Nu au fost deschise date administrative. Deconectați-vă și încercați din nou mai târziu.",
   "admin.access.unavailable.title": "Administrarea este temporar indisponibilă",
-  "admin.access.unavailable.description": "VitaPass nu a putut încărca accesul administrativ deoarece serviciul nu a răspuns. Starea contului nu a fost modificată. Încercați din nou manual.",
+  "admin.access.unavailable.description": "pitster nu a putut încărca accesul administrativ deoarece serviciul nu a răspuns. Starea contului nu a fost modificată. Încercați din nou manual.",
   "admin.role.admin": "Administrator",
   "admin.status.active": "Activ",
   "admin.status.suspended": "Suspendat",
@@ -695,7 +695,7 @@
   "booking.findDoctor": "Găsește un medic",
   "booking.createAccount": "Creează cont",
   "booking.forProfessionals": "Pentru profesioniști",
-  "booking.kicker": "Programări VitaPass",
+  "booking.kicker": "Programări pitster",
   "booking.searchTitle": "Găsiți medicul potrivit și solicitați o programare",
   "booking.searchDescription": "Comparați medici verificați, vedeți disponibilitatea în timp real și solicitați o programare în câțiva pași simpli.",
   "booking.searchLabel": "Medic, specialitate sau clinică",
@@ -851,7 +851,7 @@
   "workspace.acceptsPatients": "Acceptă pacienți noi",
   "workspace.clinicTitle": "Clinică / spațiu de lucru",
   "workspace.managedClinic": "Administrat de clinică",
-  "workspace.managedClinicHelp": "Managerul clinicii controlează aceste detalii și acoperă costurile VitaPass.",
+  "workspace.managedClinicHelp": "Managerul clinicii controlează aceste detalii și acoperă costurile pitster.",
   "workspace.clinicName": "Nume afișat",
   "workspace.legalName": "Denumire juridică",
   "workspace.description": "Descrierea clinicii",
@@ -1050,9 +1050,9 @@
   ,"admin.patient.noStatusHistory": "Nu există încă schimbări de statut."
   ,"admin.patient.medicalPrivacy": "Confidențialitatea datelor medicale"
   ,"admin.patient.medicalPrivacyHelp": "Profilul medical, dosarul medical și identificatorii protejați nu sunt disponibili în Administrare."
-  ,"patientAppointments.account.suspended": "Contul dumneavoastră VitaPass este suspendat. Contactați serviciul de asistență."
-  ,"patientAppointments.account.blocked": "Contul dumneavoastră VitaPass este blocat. Contactați serviciul de asistență."
-  ,"patientAppointments.account.archived": "Acest cont VitaPass este arhivat și nu poate accesa serviciile pentru pacienți."
+  ,"patientAppointments.account.suspended": "Contul dumneavoastră pitster este suspendat. Contactați serviciul de asistență."
+  ,"patientAppointments.account.blocked": "Contul dumneavoastră pitster este blocat. Contactați serviciul de asistență."
+  ,"patientAppointments.account.archived": "Acest cont pitster este arhivat și nu poate accesa serviciile pentru pacienți."
   ,"home.addressSearchPlaceholder": "Caută o adresă sau localitate"
   ,"home.addressSearchHelp": "Selectați o adresă Google pentru a găsi medici pe o rază de 50 km."
   ,"home.addressSearchFallback": "Căutarea adreselor Google nu este disponibilă. Introduceți o localitate sau o adresă."
@@ -1200,7 +1200,7 @@
   ,"register.customer.choice": "Client"
   ,"register.workshop_manager.choice": "Manager de atelier"
   ,"register.customer.title": "Înregistrare client"
-  ,"register.customer.description": "Creează contul fixMyRide pentru vehicule și programări de service."
+  ,"register.customer.description": "Creează contul pitster pentru vehicule și programări de service."
   ,"register.workshop_manager.title": "Înregistrare manager de atelier"
   ,"register.workshop_manager.description": "Creează un cont de furnizor de servicii pentru atelierul tău."
   ,"register.workshop_manager.legalName": "Denumirea legală a furnizorului"

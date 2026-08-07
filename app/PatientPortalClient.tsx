@@ -57,7 +57,7 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
   return (
     <main className={`${emergency ? "app emergency-theme" : "app"} ${languageReady ? "" : "i18n-pending"}`}>
       <aside className="sidebar">
-        <div className="brand"><span className="brand-mark">+</span><span>VitaPass</span></div>
+        <div className="brand"><span className="brand-mark">+</span><span>pitster</span></div>
         <nav aria-label={t("a11y.patientMainNavigation")}>
           {nav.map((item) => <button key={item.id} className={section === item.id ? "active" : ""} onClick={() => setSection(item.id)}><MiniIcon>{item.icon}</MiniIcon>{t(item.key)}</button>)}
         </nav>
@@ -71,7 +71,7 @@ export default function PatientPortal({ data }: { data: PatientPortalData }) {
 
       <section className="content">
         <header className="topbar">
-          <button className="mobile-brand" onClick={() => setSection("profile")}><span className="brand-mark">+</span>VitaPass</button>
+          <button className="mobile-brand" onClick={() => setSection("profile")}><span className="brand-mark">+</span>pitster</button>
           <div className="top-actions">
             <label className="language"><span aria-hidden="true">◎</span><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}>
               <option value="en">{t("language.en")}</option><option value="de">{t("language.de")}</option><option value="ro">{t("language.ro")}</option><option value="hu">{t("language.hu")}</option>

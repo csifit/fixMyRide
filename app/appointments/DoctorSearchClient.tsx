@@ -57,7 +57,7 @@ export default function DoctorSearchClient({
     <PublicBookingHeader />
     <section className="booking-hero">
       <div>
-        <span>{ready ? t("booking.kicker") : "VitaPass appointments"}</span>
+        <span>{ready ? t("booking.kicker") : "pitster appointments"}</span>
         <h1>{ready ? t("booking.searchTitle") : "Find the right Doctor and request an appointment"}</h1>
         <p>{ready ? t("booking.searchDescription") : "Compare Doctors and choose an available time in a few simple steps."}</p>
       </div>

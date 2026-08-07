@@ -49,7 +49,7 @@ export default function AvailabilityClient({ availability }: { availability: Doc
   if (!ready) return <main className="organization-shell" aria-busy="true" />;
   return <main className="organization-shell">
     <header className="organization-topbar">
-      <strong>VitaPass</strong>
+      <strong>pitster</strong>
       <Link href="/doctor/appointments">{t("appointments.title")}</Link>
       <Link href="/doctor">{t("appointments.back")}</Link>
       <select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}>

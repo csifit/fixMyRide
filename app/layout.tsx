@@ -7,32 +7,34 @@ const productionHost =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
+    : process.env.NODE_ENV === "production"
+      ? "https://www.pitster.app"
+      : "http://localhost:3000");
 
 export const metadata: Metadata = {
   metadataBase: new URL(productionHost),
-  title: `${brand.name} — Connected patient and clinical care`,
+  title: `${brand.name} — Find and book trusted vehicle service`,
   description:
-    "A multilingual medical-profile service for patients and healthcare professionals.",
+    "Find trusted workshops, request vehicle service, approve estimates, and follow repairs online.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
   },
   openGraph: {
     title: brand.name,
-    description: "Clinical care, connected.",
+    description: "Vehicle service, without the guesswork.",
     images: [{
-      url: "/og-clinical.png",
+      url: "/og.png",
       width: 1734,
       height: 907,
-      alt: `${brand.name} clinical care portal`,
+      alt: `${brand.name} vehicle service marketplace`,
     }],
   },
   twitter: {
     card: "summary_large_image",
     title: brand.name,
-    description: "Clinical care, connected.",
-    images: ["/og-clinical.png"],
+    description: "Vehicle service, without the guesswork.",
+    images: ["/og.png"],
   },
 };
 
