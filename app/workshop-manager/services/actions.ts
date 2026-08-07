@@ -33,7 +33,7 @@ const fields = {
   priceFromCents: price,
   currency: z.string().trim().length(3).regex(/^[A-Za-z]{3}$/).transform((value) => value.toUpperCase()),
 };
-const createSchema = z.object({ serviceProviderId: z.uuid(), ...fields }).refine(
+const createSchema = z.object({ workshopId: z.uuid(), ...fields }).refine(
   (value) => value.bookingMode !== "diagnosis" && value.serviceCode !== "diagnosis",
 );
 const updateSchema = z.object({ serviceId: z.uuid(), displayOrder: z.coerce.number().int().min(0).max(10000), ...fields });
@@ -69,11 +69,11 @@ function refresh() {
 }
 
 export async function createServiceAction(_state: ServiceCatalogueState, formData: FormData): Promise<ServiceCatalogueState> {
-  const parsed = createSchema.safeParse({ serviceProviderId: formData.get("serviceProviderId"), ...values(formData) });
+  const parsed = createSchema.safeParse({ workshopId: formData.get("workshopId"), ...values(formData) });
   if (!parsed.success) return { status: "invalid" };
   try {
-    const { serviceProviderId, ...input } = parsed.data;
-    await createManagedWorkshopService(serviceProviderId, input);
+    const { workshopId, ...input } = parsed.data;
+    await createManagedWorkshopService(workshopId, input);
     refresh();
     return { status: "created" };
   } catch (error) {

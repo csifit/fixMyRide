@@ -35,7 +35,7 @@ const optionalNumber = (minimum: number, maximum: number) => z.union([
   z.coerce.number().int().min(minimum).max(maximum),
 ]);
 const manualSchema = z.object({
-  workshopProfileId: z.uuid(), serviceId: z.uuid(), start: z.iso.datetime(),
+  workshopId: z.uuid(), serviceId: z.uuid(), start: z.iso.datetime(),
   durationMinutes: z.coerce.number().int().min(15).max(1440),
   source: z.enum(["manager_phone", "manager_walk_in", "manager_other"]),
   customerName: z.string().trim().min(2).max(160),

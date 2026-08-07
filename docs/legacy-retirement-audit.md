@@ -8,15 +8,29 @@
 - Unreachable medical React clients beneath redirect-only routes are removed.
 - Local seed data is automotive-only and contains no medical records.
 
+## Retired in migration 037 release
+
+- `workshop_services.workshop_id` and
+  `service_booking_requests.workshop_id` now reference canonical `workshops`.
+- The migration refuses to proceed if any catalogue or booking row cannot be
+  mapped, or if a booking's selected service belongs to another workshop.
+- Public catalogue and booking creation, manager catalogue/manual appointments,
+  customer and manager booking reads, SMS claims, and admin counts now use the
+  canonical workshop identifier.
+- The application no longer sends service-provider IDs under clinic argument
+  names or canonical workshop IDs under workshop-profile argument names.
+
 ## Temporarily retained
 
 - Redirect-only routes remain for one compatibility window. They contain no
   medical UI or data access.
 - Historical migrations remain immutable. They describe the deployed schema and
   must never be deleted or rewritten.
-- Legacy database tables and synchronization triggers remain because current
-  service catalogue and booking foreign keys still point through
-  `workshop_profiles`, `workshop_services`, and `service_booking_requests`.
+- Legacy database tables and forward synchronization triggers remain for the
+  next comparison window.
+- Nullable `legacy_workshop_profile_id` columns remain on catalogue and booking
+  rows as trigger-maintained rollback references. They have no foreign keys and
+  are not authoritative ownership fields.
 - The old appointment notification dispatcher remains until pending historical
   rows are counted and either delivered, cancelled, or retained by policy.
 - Legacy billing/export functions remain until accounting retention is approved.
@@ -35,11 +49,16 @@ union all select 'pending appointment notifications', count(*)
 union all select 'clinic locations', count(*) from public.clinic_locations
 union all select 'legacy workshop profiles', count(*) from public.workshop_profiles;
 
-select count(*) as bookings_missing_canonical_workshop
+select count(*) as catalogue_rows_with_mismatched_legacy_reference
+from public.workshop_services service
+join public.workshops workshop on workshop.id = service.workshop_id
+where service.legacy_workshop_profile_id is distinct from
+  workshop.legacy_workshop_profile_id;
+
+select count(*) as booking_rows_with_mismatched_ownership
 from public.service_booking_requests booking
-left join public.workshops workshop
-  on workshop.legacy_workshop_profile_id = booking.workshop_id
-where workshop.id is null;
+join public.workshop_services service on service.id = booking.service_id
+where booking.workshop_id <> service.workshop_id;
 
 select count(*) as identities_missing_canonical_role
 from public.account_identities
@@ -48,10 +67,8 @@ where target_account_type is null;
 
 ## Next retirement slice
 
-1. Move service catalogue and booking foreign keys from legacy workshop profiles
-   to canonical workshops.
-2. Stop and remove forward-sync triggers after row-count and checksum comparison.
-3. Apply the approved retention policy to medical records and accounting data.
-4. Remove redirect routes, legacy backend modules, and proxy matchers.
-5. Drop compatibility database objects only in a separately reviewed migration
+1. Stop and remove forward-sync triggers after row-count and checksum comparison.
+2. Apply the approved retention policy to medical records and accounting data.
+3. Remove redirect routes, legacy backend modules, and proxy matchers.
+4. Drop compatibility database objects only in a separately reviewed migration
    with a backup and rollback plan.

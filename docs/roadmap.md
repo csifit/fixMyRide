@@ -64,8 +64,11 @@
 - Legacy retirement is in progress. Migration 036 and the active `/admin`
   workspace now use only canonical providers, workshops, customers, workshop
   managers, bookings, and SMS operations. Medical admin mutation modules have
-  been removed. Redirect routes and compatibility database objects remain until
-  their dependency and data-retention checks are complete.
+  been removed. Migration 037 moves catalogue and booking ownership constraints
+  to canonical workshops, with validated backfill and nullable derived rollback
+  references; it is ready to apply. Redirect routes and the remaining
+  compatibility database objects stay until their comparison and retention
+  checks are complete.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

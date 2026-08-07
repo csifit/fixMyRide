@@ -47,7 +47,7 @@ function ManualAppointmentForm({ catalogues, language, t }: {
     <summary>+ {t("workshopBookings.manual.add")}</summary>
     <form action={action}>
       <div className="manual-appointment-grid">
-        <label>{t("serviceCatalogue.workshop")}<select name="workshopProfileId" value={workshopId} onChange={(event) => setWorkshopId(event.target.value)} required>{catalogues.map((catalogue) => <option key={catalogue.workshopId} value={catalogue.workshopId}>{catalogue.workshopName}</option>)}</select></label>
+        <label>{t("serviceCatalogue.workshop")}<select name="workshopId" value={workshopId} onChange={(event) => setWorkshopId(event.target.value)} required>{catalogues.map((catalogue) => <option key={catalogue.workshopId} value={catalogue.workshopId}>{catalogue.workshopName}</option>)}</select></label>
         <label>{t("serviceCatalogue.name")}<select name="serviceId" key={workshopId} required>{services.map((service) => <option key={service.id} value={service.id}>{service.name}</option>)}</select></label>
         <label>{t("workshopBookings.manual.source")}<select name="source" defaultValue="manager_phone"><option value="manager_phone">{t("workshopBookings.source.manager_phone")}</option><option value="manager_walk_in">{t("workshopBookings.source.manager_walk_in")}</option><option value="manager_other">{t("workshopBookings.source.manager_other")}</option></select></label>
         <label>{t("workshopBookings.action.time")}<input name="start" type="datetime-local" required /></label>

@@ -73,7 +73,7 @@ function WorkshopCatalogue({ catalogue, t }: { catalogue: ManagedWorkshopCatalog
     <details className="settings-accordion catalogue-add">
       <summary><strong>+ {t("serviceCatalogue.addService")}</strong></summary>
       <form className="settings-card" action={action}>
-        <input type="hidden" name="serviceProviderId" value={catalogue.serviceProviderId} />
+        <input type="hidden" name="workshopId" value={catalogue.workshopId} />
         <label>{t("serviceCatalogue.template")}<select value={templateCode} onChange={(event) => setTemplateCode(event.target.value)}><option value="">{t("serviceCatalogue.template.custom")}</option>{standardServiceTemplates.filter((service) => service.code !== "diagnosis").map((service) => <option key={`${service.vehicleType}:${service.code}`} value={`${service.vehicleType}:${service.code}`}>{service.name} · {t(`serviceCatalogue.vehicleType.${service.vehicleType}` as TranslationKey)}</option>)}</select></label>
         <fieldset disabled={pending}><ServiceFields key={templateCode} preset={preset} t={t} /></fieldset>
         <Result state={state} t={t} /><button disabled={pending}>{t(pending ? "serviceCatalogue.adding" : "serviceCatalogue.addService")}</button>

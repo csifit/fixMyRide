@@ -46,7 +46,7 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCatalogue[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_my_workshop_service_catalogue_v2");
+  const { data, error } = await supabase.rpc("get_my_workshop_service_catalogue_v3");
   if (error) fail(error);
 
   const catalogues = new Map<string, ManagedWorkshopCatalogue>();
@@ -55,7 +55,7 @@ export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCa
     const workshopId = row.workshop_id as string;
     const catalogue = catalogues.get(workshopId) ?? {
       workshopId,
-      serviceProviderId: row.clinic_id as string,
+      serviceProviderId: row.service_provider_id as string,
       workshopName: row.workshop_name as string,
       services: [],
     };
@@ -82,11 +82,10 @@ export async function loadManagedWorkshopCatalogues(): Promise<ManagedWorkshopCa
   return [...catalogues.values()];
 }
 
-export async function createManagedWorkshopService(serviceProviderId: string, input: ServiceInput) {
+export async function createManagedWorkshopService(workshopId: string, input: ServiceInput) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("create_managed_workshop_service_v2", {
-    // Temporary RPC argument compatibility until the legacy database function retires.
-    requested_clinic_id: serviceProviderId,
+  const { error } = await supabase.rpc("create_managed_workshop_service_v3", {
+    requested_workshop_id: workshopId,
     new_service_code: input.serviceCode,
     new_name: input.name,
     new_category: input.category,
@@ -102,7 +101,7 @@ export async function createManagedWorkshopService(serviceProviderId: string, in
 
 export async function updateManagedWorkshopService(input: ServiceInput & { id: string; displayOrder: number }) {
   const supabase = await createClient();
-  const { error } = await supabase.rpc("update_managed_workshop_service_v2", {
+  const { error } = await supabase.rpc("update_managed_workshop_service_v3", {
     requested_service_id: input.id,
     new_name: input.name,
     new_category: input.category,
