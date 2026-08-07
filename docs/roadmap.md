@@ -69,6 +69,9 @@
   references; it is ready to apply. Redirect routes and the remaining
   compatibility database objects stay until their comparison and retention
   checks are complete.
+- Migration 038 makes public registration canonical-only, records the structural
+  row-count/checksum comparison, and removes every legacy-to-canonical forward
+  synchronization trigger. It is ready to apply after migration 037.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

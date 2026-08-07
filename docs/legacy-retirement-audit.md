@@ -20,14 +20,27 @@
 - The application no longer sends service-provider IDs under clinic argument
   names or canonical workshop IDs under workshop-profile argument names.
 
+## Retired in migration 038 release
+
+- Public customer and workshop-manager registration writes canonical automotive
+  identities, providers, memberships, workshops, and commercial records directly.
+- The migration validates every legacy-to-canonical structural mapping and stores
+  row counts and deterministic checksums in
+  `private.legacy_sync_retirement_audits` before changing trigger state.
+- All legacy-to-canonical account, customer, provider, manager, membership, and
+  workshop refresh triggers and their private implementation functions are removed.
+- Former synchronization source tables become read-only so privileged legacy
+  RPCs cannot create new divergence after the recorded comparison.
+- `target_account_type` is now supplied explicitly and protected by a database
+  consistency constraint while the legacy `account_type` shadow remains.
+
 ## Temporarily retained
 
 - Redirect-only routes remain for one compatibility window. They contain no
   medical UI or data access.
 - Historical migrations remain immutable. They describe the deployed schema and
   must never be deleted or rewritten.
-- Legacy database tables and forward synchronization triggers remain for the
-  next comparison window.
+- Legacy database tables remain for the retention window.
 - Nullable `legacy_workshop_profile_id` columns remain on catalogue and booking
   rows as trigger-maintained rollback references. They have no foreign keys and
   are not authoritative ownership fields.
@@ -67,8 +80,7 @@ where target_account_type is null;
 
 ## Next retirement slice
 
-1. Stop and remove forward-sync triggers after row-count and checksum comparison.
-2. Apply the approved retention policy to medical records and accounting data.
-3. Remove redirect routes, legacy backend modules, and proxy matchers.
-4. Drop compatibility database objects only in a separately reviewed migration
+1. Apply the approved retention policy to medical records and accounting data.
+2. Remove redirect routes, legacy backend modules, and proxy matchers.
+3. Drop compatibility database objects only in a separately reviewed migration
    with a backup and rollback plan.
