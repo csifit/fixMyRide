@@ -6,11 +6,6 @@ const root = new URL("../", import.meta.url);
 const addressSearch = await readFile(new URL("app/GoogleAddressSearch.tsx", root), "utf8");
 const loader = await readFile(new URL("lib/google-maps-loader.ts", root), "utf8");
 const home = await readFile(new URL("app/HomeDiscoveryClient.tsx", root), "utf8");
-const directory = await readFile(new URL("app/appointments/DoctorSearchClient.tsx", root), "utf8");
-const admin = await readFile(new URL("app/admin/AdminDashboardClient.tsx", root), "utf8");
-const adminActions = await readFile(new URL("app/admin/actions.ts", root), "utf8");
-const doctorSettings = await readFile(new URL("app/doctor/settings/DoctorSettingsClient.tsx", root), "utf8");
-const clinicSettings = await readFile(new URL("app/clinic-manager/clinics/ClinicSettingsClient.tsx", root), "utf8");
 const catalogs = Object.fromEntries(await Promise.all(["en", "de", "ro", "hu"].map(async (language) => [language, JSON.parse(await readFile(new URL(`app/i18n/${language}.json`, root), "utf8"))])));
 
 test("address entry uses Google Places Autocomplete New with a shared loader", () => {
@@ -25,11 +20,7 @@ test("address entry uses Google Places Autocomplete New with a shared loader", (
 test("coordinates are captured as hidden implementation fields and never requested from users", () => {
   assert.match(addressSearch, /ref=\{latitudeField\} type="hidden" name=\{fieldNames\.latitude\}/);
   assert.match(addressSearch, /ref=\{longitudeField\} type="hidden" name=\{fieldNames\.longitude\}/);
-  for (const surface of [admin, doctorSettings, clinicSettings]) {
-    assert.match(surface, /<GoogleAddressSearch/);
-    assert.doesNotMatch(surface, /t\("workspace\.(?:latitude|longitude)"\)/);
-    assert.doesNotMatch(surface, /name="(?:latitude|longitude)" type="number"/);
-  }
+  assert.doesNotMatch(addressSearch, /name="(?:latitude|longitude)" type="number"/);
 });
 
 test("typed Google text is synchronized into submitted FormData", () => {
@@ -42,13 +33,11 @@ test("typed Google text is synchronized into submitted FormData", () => {
   }
 });
 
-test("homepage and Appointment directory use Google address proximity search", () => {
-  for (const surface of [home, directory]) {
-    assert.match(surface, /<GoogleAddressSearch/);
-    assert.match(surface, /distanceInKilometers/);
-    assert.match(surface, /<= 50/);
-    assert.doesNotMatch(surface, /<select value=\{location\}/);
-  }
+test("workshop discovery uses Google address proximity search", () => {
+  assert.match(home, /<GoogleAddressSearch/);
+  assert.match(home, /distanceInKilometers/);
+  assert.match(home, /<= 50/);
+  assert.doesNotMatch(home, /<select value=\{location\}/);
 });
 
 test("keyless and Google error states retain a usable manual address fallback", () => {
@@ -56,13 +45,6 @@ test("keyless and Google error states retain a usable manual address fallback", 
   assert.match(addressSearch, /google-address-fallback/);
   assert.match(addressSearch, /onChange=\{\(event\) => commit/);
   assert.match(addressSearch, /latitude: null, longitude: null/);
-});
-
-test("Admin activation accepts an address even when Google omits map metadata", () => {
-  assert.match(adminActions, /location\.locationStatus !== "active"/);
-  assert.match(adminActions, /Boolean\(location\.address\)/);
-  assert.doesNotMatch(adminActions, /location\.address && location\.city/);
-  assert.doesNotMatch(adminActions, /location\.latitude !== null && location\.longitude !== null/);
 });
 
 test("Google address-search guidance has translation parity", () => {

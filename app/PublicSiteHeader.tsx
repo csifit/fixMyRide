@@ -5,7 +5,7 @@ import { translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import { brand } from "@/lib/brand";
 
-export default function PublicBookingHeader() {
+export default function PublicSiteHeader() {
   const [language, setLanguage, ready] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
   return <header className="booking-header">

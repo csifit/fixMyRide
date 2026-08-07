@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useMemo, useState } from "react";
-import PublicBookingHeader from "@/app/appointments/PublicBookingHeader";
+import PublicSiteHeader from "@/app/PublicSiteHeader";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { PublicWorkshop, PublicWorkshopBookingRules, PublicWorkshopService } from "@/lib/dal/public-workshops";
 import { requestServiceAction, type ServiceRequestState } from "./actions";
@@ -40,7 +40,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
     ? new Intl.NumberFormat(language, { style: "currency", currency: service.diagnosisCurrency }).format(service.diagnosisFeeCents / 100)
     : null;
   if (state.status === "success") return <main className="booking-shell">
-    <PublicBookingHeader />
+    <PublicSiteHeader />
     <section className="booking-complete">
       <span className="booking-complete-mark">✓</span><p className="registration-kicker">Request sent</p>
       <h1>Your service request is waiting for confirmation</h1>
@@ -51,7 +51,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
   </main>;
 
   return <main className="booking-shell">
-    <PublicBookingHeader />
+    <PublicSiteHeader />
     <section className="booking-checkout service-request-checkout">
       <div className="booking-progress">
         <span className="done"><b>1</b>Service</span><i />

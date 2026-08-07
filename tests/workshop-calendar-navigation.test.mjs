@@ -51,7 +51,7 @@ test("each active role workspace has persistent collapsible navigation", () => {
   assert.match(sidebar, /localStorage\.setItem/);
   assert.match(sidebar, /sidebar-collapsed/);
   assert.match(sidebar, /matchMedia\("\(max-width: 760px\)"\)/);
-  assert.match(admin, /navigationCollapsed/);
+  assert.match(admin, /const \[collapsed, setCollapsed\]/);
   assert.match(admin, /admin-navigation-collapsed/);
   assert.match(admin, /pitster\.sidebar\.admin/);
 });

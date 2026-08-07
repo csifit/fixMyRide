@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import PublicBookingHeader from "@/app/appointments/PublicBookingHeader";
+import PublicSiteHeader from "@/app/PublicSiteHeader";
 import type { GarageBooking, GarageVehicle } from "@/lib/dal/garage";
 import { addVehicleAction, type GarageActionState } from "./actions";
 
@@ -11,7 +11,7 @@ const idle: GarageActionState = { status: "idle" };
 export default function GarageClient({ vehicles, bookings }: { vehicles: GarageVehicle[]; bookings: GarageBooking[] }) {
   const [state, action, pending] = useActionState(addVehicleAction, idle);
   return <main className="booking-shell garage-page">
-    <PublicBookingHeader />
+    <PublicSiteHeader />
     <section className="garage-intro"><div><p>Customer account</p><h1>My Garage</h1><span>Keep your vehicles, booking requests, and service history together.</span></div><Link href="/workshops">Book a service</Link></section>
     <section className="garage-grid">
       <div className="garage-main">

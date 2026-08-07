@@ -8,8 +8,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const sections = new Set<AdminSection>([
-  "doctors", "clinics", "patients", "organizations", "managers",
-  "specialties", "reviews", "sms", "contracts", "privacy", "security",
+  "providers", "workshops", "customers", "managers", "sms", "security",
 ]);
 
 export default async function AdminSectionPage({ params }: { params: Promise<{ section: string }> }) {

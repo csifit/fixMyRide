@@ -47,9 +47,9 @@
   weekly hours, exceptional closures, lead time, horizon, daily capacity,
   mobility options, and database-enforced booking availability; migration 029
   and hosted smoke tests remain.
-- The canonical release gate is `npm test`. Retired medical-product assertions
-  remain available under `npm run test:legacy` until the legacy-retirement
-  milestone removes their retained code and fixtures.
+- The canonical release gate is `npm test`. The obsolete medical-product test
+  command has been retired; retained database compatibility is covered only by
+  targeted migration and security regression tests.
 - Repair lifecycle is implemented in migrations 030–031 and the workshop/customer
   interfaces; deployment and hosted smoke testing remain.
 - Stripe provider subscriptions, invoicing, commercial exports, and automotive
@@ -61,7 +61,11 @@
   exactly five deduplicated event kinds: booking confirmation, 24-hour reminder,
   repair started, ready for pickup, and review request. Every localized message
   is capped at 150 characters; deployment and cron scheduling remain.
-- Next implementation milestone after notification deployment: legacy retirement.
+- Legacy retirement is in progress. Migration 036 and the active `/admin`
+  workspace now use only canonical providers, workshops, customers, workshop
+  managers, bookings, and SMS operations. Medical admin mutation modules have
+  been removed. Redirect routes and compatibility database objects remain until
+  their dependency and data-retention checks are complete.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

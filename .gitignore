@@ -43,5 +43,6 @@ next-env.d.ts
 /docs/*
 !/docs/automotive-domain-migration.md
 !/docs/hosted-integration-testing.md
+!/docs/legacy-retirement-audit.md
 !/docs/roadmap.md
 /README.md

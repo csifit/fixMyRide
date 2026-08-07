@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import PublicBookingHeader from "@/app/appointments/PublicBookingHeader";
+import PublicSiteHeader from "@/app/PublicSiteHeader";
 import { getPublicWorkshop, loadPublicWorkshopServices } from "@/lib/dal/public-workshops";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +32,7 @@ export default async function WorkshopPage({
   if (!workshop) notFound();
   const services = await loadPublicWorkshopServices(workshopId);
   return <main className="booking-shell doctor-public-page">
-    <PublicBookingHeader />
+      <PublicSiteHeader />
     <section className="doctor-public-hero workshop-public-hero">
       <div className="doctor-public-avatar">{initials(workshop.name)}</div>
       <div>
