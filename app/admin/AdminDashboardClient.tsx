@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { formatDate, formatDateTime, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import {
@@ -44,6 +44,18 @@ export default function AdminDashboard({
   section?: AdminSection;
 }) {
   const [language, setLanguage, ready] = useLanguage();
+  const [navigationCollapsed, setNavigationCollapsed] = useState(false);
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setNavigationCollapsed(localStorage.getItem("pitster.sidebar.admin") === "collapsed");
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+  const toggleNavigation = () => setNavigationCollapsed((current) => {
+    const next = !current;
+    localStorage.setItem("pitster.sidebar.admin", next ? "collapsed" : "expanded");
+    return next;
+  });
   const t = (key: TranslationKey) => translate(language, key);
   const nav: NavItem[] = [
     { id: "attention", href: "/admin", key: "admin.nav.attention", count: data.counts.attention },
@@ -62,11 +74,12 @@ export default function AdminDashboard({
   ];
 
   return (
-    <main className={`admin-shell ${ready ? "" : "i18n-pending"}`}>
+    <main className={`admin-shell ${navigationCollapsed ? "admin-navigation-collapsed " : ""}${ready ? "" : "i18n-pending"}`}>
       <aside className="admin-sidebar">
         <Link href="/" className="admin-brand">
           <span>+</span><strong>{brand.name}</strong>
         </Link>
+        <button className="admin-navigation-toggle" type="button" onClick={toggleNavigation} aria-label={navigationCollapsed ? "Expand navigation" : "Collapse navigation"}>{navigationCollapsed ? "›" : "‹"}</button>
         <p>{t("admin.brand.console")}</p>
         <nav aria-label={t("admin.nav.label")}>
           {nav.map((item) => (

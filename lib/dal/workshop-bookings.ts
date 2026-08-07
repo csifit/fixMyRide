@@ -35,8 +35,8 @@ export type ManagedWorkshopBooking = {
   serviceCategory: string;
   status: ManagedBookingStatus;
   customerName: string;
-  customerPhone: string;
-  customerEmail: string;
+  customerPhone: string | null;
+  customerEmail: string | null;
   vehicleRegistration: string;
   vehicleMake: string;
   vehicleModel: string;
@@ -51,6 +51,8 @@ export type ManagedWorkshopBooking = {
   workshopNote: string | null;
   mobilityRequirement: string | null;
   locale: string;
+  source: "public_request" | "manager_phone" | "manager_walk_in" | "manager_other";
+  durationMinutes: number;
   createdAt: string;
   history: BookingHistoryItem[];
 };
@@ -62,13 +64,31 @@ export type ManageWorkshopBookingInput = {
   note: string | null;
 };
 
+export type CreateManualWorkshopAppointmentInput = {
+  workshopProfileId: string;
+  serviceId: string;
+  start: string;
+  durationMinutes: number;
+  source: "manager_phone" | "manager_walk_in" | "manager_other";
+  customerName: string;
+  customerPhone: string | null;
+  customerEmail: string | null;
+  vehicleRegistration: string;
+  vehicleMake: string;
+  vehicleModel: string;
+  vehicleYear: number | null;
+  mileageKm: number | null;
+  customerStates: string | null;
+  locale: string;
+};
+
 function fail(error: { code?: string; status?: number }): never {
   throw new DataAccessError(classifyDatabaseError(error));
 }
 
 export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBooking[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_managed_service_booking_requests", {
+  const { data, error } = await supabase.rpc("get_managed_service_booking_requests_v2", {
     requested_status: null,
   });
   if (error) fail(error);
@@ -84,8 +104,8 @@ export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBook
       serviceCategory: row.service_category as string,
       status: row.booking_status as ManagedBookingStatus,
       customerName: row.customer_name as string,
-      customerPhone: row.customer_phone as string,
-      customerEmail: row.customer_email as string,
+      customerPhone: row.customer_phone as string | null,
+      customerEmail: row.customer_email as string | null,
       vehicleRegistration: row.vehicle_registration as string,
       vehicleMake: row.vehicle_make as string,
       vehicleModel: row.vehicle_model as string,
@@ -100,10 +120,34 @@ export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBook
       workshopNote: row.workshop_note as string | null,
       mobilityRequirement: row.mobility_requirement as string | null,
       locale: row.locale as string,
+      source: row.booking_source as ManagedWorkshopBooking["source"],
+      durationMinutes: Number(row.duration_minutes),
       createdAt: row.created_at as string,
       history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
     };
   });
+}
+
+export async function createManualWorkshopAppointment(input: CreateManualWorkshopAppointmentInput) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("create_managed_service_appointment", {
+    requested_workshop_profile_id: input.workshopProfileId,
+    requested_service_id: input.serviceId,
+    requested_start: input.start,
+    requested_duration_minutes: input.durationMinutes,
+    requested_source: input.source,
+    requested_customer_name: input.customerName,
+    requested_customer_phone: input.customerPhone,
+    requested_customer_email: input.customerEmail,
+    requested_vehicle_registration: input.vehicleRegistration,
+    requested_vehicle_make: input.vehicleMake,
+    requested_vehicle_model: input.vehicleModel,
+    requested_vehicle_year: input.vehicleYear,
+    requested_mileage_km: input.mileageKm,
+    requested_note: input.customerStates,
+    requested_locale: input.locale,
+  });
+  if (error) fail(error);
 }
 
 export async function manageWorkshopBooking(input: ManageWorkshopBookingInput) {
