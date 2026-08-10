@@ -103,6 +103,13 @@
   of grace, and location Checkout defers its first charge to the grace deadline.
   Legacy subscription webhooks and invoices remain compatible while owner and
   admin billing surfaces report canonical location subscriptions.
+- Migration 043 completes automatic public-location eligibility and the real
+  Google workshop map. Publication is derived from geocoded details, a current
+  primary manager/account, and location billing coverage, independently from
+  accepting online requests. Every workshop operational RPC now requires an
+  active assignment to the exact canonical location; booking and repair
+  management no longer authorize through organisation-wide membership or
+  legacy workshop-profile identifiers.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

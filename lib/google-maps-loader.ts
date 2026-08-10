@@ -6,6 +6,10 @@ export function googleMapsApiKey() {
   return process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.trim() ?? "";
 }
 
+export function googleMapsMapId() {
+  return process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID?.trim() || "DEMO_MAP_ID";
+}
+
 export function configureGoogleMapsLoader(apiKey = googleMapsApiKey()) {
   if (!apiKey) return false;
   if (!configured) {

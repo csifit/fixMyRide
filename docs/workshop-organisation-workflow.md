@@ -44,11 +44,16 @@ carry a workshop reference; legacy provider invoices retain a null reference.
 
 ## Publication eligibility
 
-The expansion migration does not change public discovery. A later cutover will
-derive location publication from active organisation and account states, an
-active primary manager, complete geocoded public details, and active, trialing,
-or explicitly granted grace coverage. Accepting online booking requests will be
-independent from map visibility.
+Migration 043 makes publication automatic and derived. A workshop appears on
+the real Google map when its organisation is active, its location is not
+suspended or rejected, its public name/address/city and coordinates are
+complete, it has a current active primary manager with an active account, and
+its location subscription is active, trialing, or inside explicit migration
+grace. There is no separate administrator approval queue.
+
+Map visibility is independent from `accepts_booking_requests`. A published
+workshop may temporarily stop online requests without disappearing from public
+discovery; service, scheduling, and booking RPCs continue to enforce that flag.
 
 ## Account controls
 
@@ -109,3 +114,18 @@ workshop reference.
 The owner billing page, platform commercial dashboard, and CSV export now report
 per location. This cutover changes billing authority only; public map eligibility
 remains a separate workflow milestone.
+
+## Step 5 publication and operational access
+
+Migration 043 makes the canonical workshop location the security boundary.
+Organisation membership alone no longer grants access to every location:
+catalogue, settings, hours, closures, calendar, booking management, manual
+appointments, and repair lifecycle operations all resolve through a current
+assignment to the exact workshop. Suspended assignments, expired assignments,
+inactive manager profiles, blocked accounts, inactive organisations, and
+suspended locations fail at the shared authorization boundary.
+
+Booking and repair mutation RPCs now authorize from the booking's canonical
+`workshop_id`; repair reads no longer use the retired legacy workshop-profile
+mapping. This prevents a manager assigned to one location from viewing or
+changing another location's customers, appointments, estimates, or repairs.

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import GoogleAddressSearch, { type GoogleAddressSelection } from "./GoogleAddressSearch";
+import PublicWorkshopMap from "./PublicWorkshopMap";
 import { type Language } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import { brand } from "@/lib/brand";
@@ -100,9 +101,18 @@ export default function HomeDiscoveryClient({
       </div>
     </section>
 
+    <section className="home-map-section" aria-labelledby="workshop-map-title">
+      <header>
+        <p>Workshop map</p>
+        <h2 id="workshop-map-title">Published service locations</h2>
+        <span>Locations appear automatically after their address, manager assignment and subscription coverage are ready.</span>
+      </header>
+      <PublicWorkshopMap workshops={filtered} preferredDate={preferredDate} />
+    </section>
+
     <section className="home-featured" id="featured-workshops">
       <header>
-        <div><p>Local service providers</p><h2>Workshops accepting booking requests</h2></div>
+        <div><p>Local service providers</p><h2>Published workshops</h2></div>
         <Link href={`/workshops?date=${preferredDate}`}>View all workshops →</Link>
       </header>
       <div className="home-workshop-grid">
