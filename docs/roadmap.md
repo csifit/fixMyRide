@@ -97,6 +97,12 @@
   hashed location-manager invitations scoped to their own organisation. This
   dashboard remains read-only with respect to Stripe; location-level charging
   is still a separate commercial cutover.
+- Migration 042 completes the commercial cutover to one Stripe subscription per
+  workshop location while retaining one customer and billing identity per
+  service organisation. Existing covered organisations receive at least 30 days
+  of grace, and location Checkout defers its first charge to the grace deadline.
+  Legacy subscription webhooks and invoices remain compatible while owner and
+  admin billing surfaces report canonical location subscriptions.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

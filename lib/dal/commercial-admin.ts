@@ -4,8 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
 
 export type CommercialAdminData = {
-  counts: { providers: number; activeSubscriptions: number; attention: number; monthlyRecurringCents: number };
-  providers: Array<{ id: string; legalName: string; displayName: string; countryCode: string; providerStatus: string; subscriptionStatus: string; monthlyPriceCents: number; currency: string; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; billingEmail: string | null; invoiceCount: number; lastInvoiceStatus: string | null }>;
+  counts: { providers: number; locations: number; activeSubscriptions: number; attention: number; monthlyRecurringCents: number };
+  locations: Array<{ id: string; providerId: string; providerName: string; providerStatus: string; displayName: string; city: string | null; workshopStatus: string; subscriptionStatus: string; coverageGraceEndsAt: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; monthlyPriceCents: number; currency: string; invoiceCount: number; lastInvoiceStatus: string | null }>;
 };
 
 function fail(error: { code?: string; status?: number }): never {

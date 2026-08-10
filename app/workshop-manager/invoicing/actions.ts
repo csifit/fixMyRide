@@ -11,6 +11,7 @@ import { getStripe, getStripeStandardPriceId } from "@/lib/stripe/server";
 export type ProviderBillingActionState = { status: "idle" | "saved" | "invalid" | "unauthorized" | "configuration" | "unavailable" };
 
 const providerSchema = z.object({ providerId: z.uuid() });
+const checkoutSchema = providerSchema.extend({ workshopId: z.uuid() });
 const profileSchema = providerSchema.extend({
   billingEmail: z.union([z.literal(""), z.email().max(320)]),
   billingContact: z.string().trim().max(160), taxIdentifier: z.string().trim().max(80),
@@ -45,12 +46,14 @@ export async function updateProviderBillingProfileAction(_state: ProviderBilling
 }
 
 export async function startStripeCheckoutAction(formData: FormData) {
-  const parsed = providerSchema.safeParse(Object.fromEntries(formData));
+  const parsed = checkoutSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) redirect("/workshop-manager/invoicing?billingError=invalid");
   let checkoutUrl: string;
   try {
     const billing = await loadProviderBilling(parsed.data.providerId);
-    if (billing.subscription.stripeSubscriptionId && ["active", "trialing", "past_due", "unpaid", "paused"].includes(billing.subscription.status)) {
+    const location = billing.locations.find((item) => item.workshopId === parsed.data.workshopId);
+    if (!location || (location.stripeSubscriptionId
+      && !["incomplete_expired", "canceled"].includes(location.subscriptionStatus))) {
       throw new DataAccessError("conflict");
     }
     const stripe = getStripe();
@@ -61,7 +64,7 @@ export async function startStripeCheckoutAction(formData: FormData) {
       || price.recurring?.interval !== "month" || price.recurring.interval_count !== 1) {
       throw new Error("stripe_price_does_not_match_standard_plan");
     }
-    let customerId = billing.subscription.stripeCustomerId;
+    let customerId = billing.stripeCustomerId;
     if (!customerId) {
       const customer = await stripe.customers.create({
         name: billing.legalName, email: billing.billingProfile.billingEmail ?? undefined,
@@ -78,16 +81,29 @@ export async function startStripeCheckoutAction(formData: FormData) {
       await attachProviderStripeCustomer(billing.providerId, customerId);
     }
     const siteUrl = getSiteUrl();
+    const graceEndsAt = location.coverageGraceEndsAt
+      ? Math.floor(new Date(location.coverageGraceEndsAt).getTime() / 1000)
+      : null;
+    const safeTrialEnd = graceEndsAt && graceEndsAt > Math.floor(Date.now() / 1000) + 172_800
+      ? graceEndsAt
+      : undefined;
     const session = await stripe.checkout.sessions.create({
       mode: "subscription", customer: customerId,
+      payment_method_collection: "always",
       line_items: [{ price: priceId, quantity: 1 }],
       billing_address_collection: "required", tax_id_collection: { enabled: true },
       customer_update: { address: "auto", name: "auto" },
-      client_reference_id: billing.providerId,
-      metadata: { service_provider_id: billing.providerId },
-      subscription_data: { metadata: { service_provider_id: billing.providerId } },
-      success_url: `${siteUrl}/workshop-manager/invoicing?providerId=${billing.providerId}&checkout=success`,
-      cancel_url: `${siteUrl}/workshop-manager/invoicing?providerId=${billing.providerId}&checkout=cancelled`,
+      client_reference_id: location.workshopId,
+      metadata: { service_provider_id: billing.providerId, workshop_id: location.workshopId },
+      subscription_data: {
+        metadata: { service_provider_id: billing.providerId, workshop_id: location.workshopId },
+        trial_end: safeTrialEnd,
+        trial_settings: safeTrialEnd
+          ? { end_behavior: { missing_payment_method: "cancel" } }
+          : undefined,
+      },
+      success_url: `${siteUrl}/workshop-manager/invoicing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=success`,
+      cancel_url: `${siteUrl}/workshop-manager/invoicing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=cancelled`,
     });
     if (!session.url) throw new Error("stripe_checkout_url_missing");
     checkoutUrl = session.url;
@@ -104,9 +120,9 @@ export async function openStripePortalAction(formData: FormData) {
   let portalUrl: string;
   try {
     const billing = await loadProviderBilling(parsed.data.providerId);
-    if (!billing.subscription.stripeCustomerId) throw new Error("stripe_customer_missing");
+    if (!billing.stripeCustomerId) throw new Error("stripe_customer_missing");
     const session = await getStripe().billingPortal.sessions.create({
-      customer: billing.subscription.stripeCustomerId,
+      customer: billing.stripeCustomerId,
       return_url: `${getSiteUrl()}/workshop-manager/invoicing?providerId=${billing.providerId}`,
     });
     portalUrl = session.url;

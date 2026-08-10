@@ -28,7 +28,7 @@ test("only owners can initiate provider billing and payment never directly chang
   assert.match(actions, /mode: "subscription"/i);
   assert.match(actions, /price\.unit_amount !== billing\.plan\.monthlyPriceCents/i);
   assert.match(actions, /price\.recurring\?\.interval !== "month"/i);
-  assert.match(actions, /subscription_data: \{ metadata: \{ service_provider_id/i);
+  assert.match(actions, /subscription_data: \{[\s\S]+metadata: \{ service_provider_id: billing\.providerId, workshop_id: location\.workshopId \}/i);
   assert.match(migration, /grant execute on function public\.attach_provider_stripe_customer\(uuid, text\) to service_role/i);
   assert.doesNotMatch(migration, /grant execute on function public\.attach_provider_stripe_customer[^;]+authenticated/i);
   const subscriptionFunction = migration.match(/create function public\.apply_stripe_subscription_event[\s\S]+?\n\$\$;/i)?.[0] ?? "";

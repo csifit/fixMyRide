@@ -30,9 +30,9 @@ export async function GET(request: NextRequest) {
     const access = await getAccountingAccess();
     if (access.state !== "authorized") return new NextResponse("Unauthorized", { status: 401 });
     const data = await loadCommercialAdmin();
-    const output: Array<Array<string | number>> = [["Provider ID", "Legal name", "Display name", "Country", "Provider status", "Subscription status", "Monthly price", "Currency", "Period end", "Invoices", "Last invoice status", "Billing email"]];
-    for (const provider of data.providers) output.push([provider.id, provider.legalName, provider.displayName, provider.countryCode, provider.providerStatus, provider.subscriptionStatus, (provider.monthlyPriceCents / 100).toFixed(2), provider.currency, provider.currentPeriodEnd ?? "", provider.invoiceCount, provider.lastInvoiceStatus ?? "", provider.billingEmail ?? ""]);
-    return download(csv(output), `pitster-provider-billing-${new Date().toISOString().slice(0, 10)}.csv`);
+    const output: Array<Array<string | number>> = [["Provider ID", "Provider", "Location ID", "Location", "City", "Provider status", "Workshop status", "Subscription status", "Monthly price", "Currency", "Period end", "Grace end", "Invoices", "Last invoice status"]];
+    for (const location of data.locations) output.push([location.providerId, location.providerName, location.id, location.displayName, location.city ?? "", location.providerStatus, location.workshopStatus, location.subscriptionStatus, (location.monthlyPriceCents / 100).toFixed(2), location.currency, location.currentPeriodEnd ?? "", location.coverageGraceEndsAt ?? "", location.invoiceCount, location.lastInvoiceStatus ?? ""]);
+    return download(csv(output), `pitster-location-billing-${new Date().toISOString().slice(0, 10)}.csv`);
   }
   if (!/^\d{4}-\d{2}-01$/.test(month)) return new NextResponse("Invalid month", { status: 400 });
   if (scope === "clinic") {

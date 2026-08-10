@@ -32,15 +32,15 @@ the existing password-setup flow.
 
 ## Location coverage
 
-Every workshop has a shadow `workshop_subscriptions` record. The existing
-provider subscription remains authoritative during the expansion release. The
-future billing cutover will use one Stripe customer per organisation and one
-subscription per workshop at EUR 35 monthly.
+Every workshop has a canonical `workshop_subscriptions` record. The organisation
+owns one Stripe customer and billing identity, while every workshop owns one EUR
+35 monthly subscription. Legacy provider subscriptions remain readable only for
+the controlled migration period.
 
-An optional coverage grace timestamp supports a controlled migration for
-existing multi-location organisations. It never initiates a charge. Existing
-provider invoices keep a nullable workshop reference until the location billing
-cutover starts writing location-owned invoices.
+A coverage grace timestamp protects existing multi-location organisations while
+they move to location subscriptions. Starting Checkout during grace creates a
+trial through the grace deadline instead of an overlapping charge. New invoices
+carry a workshop reference; legacy provider invoices retain a null reference.
 
 ## Publication eligibility
 
@@ -74,7 +74,7 @@ billing activation remain separate controlled cutovers.
 
 Active organisation owners have an owner-scoped coverage dashboard at
 `/workshop-manager/organisation`. It shows each location, its primary manager,
-shadow subscription and grace state, the EUR 35 unit price, and the total
+canonical subscription and grace state, the EUR 35 unit price, and the total
 required monthly coverage for all organisation locations. The total is a
 projection only: this milestone does not create, modify, or multiply Stripe
 subscriptions.
@@ -86,3 +86,26 @@ issue a replacement. Registration continues through the shared invitation,
 email-confirmation, and password-setup workflow introduced in Step 2. Existing
 accounts still require direct administrator assignment, preventing an owner from
 silently attaching an unrelated platform user by email.
+
+## Step 4 location billing cutover
+
+Migration 042 makes `workshop_subscriptions` the canonical Stripe subscription
+state. The service organisation remains the single Stripe customer and billing
+identity, while every workshop location starts an independent EUR 35 monthly
+subscription. New Checkout sessions and subscription metadata carry both the
+organisation and workshop identifiers; signed webhooks persist subscription and
+invoice state against the workshop.
+
+Existing active or trialing organisation subscriptions are retained as legacy
+records and are never copied to a location. Each of their locations receives
+grace through the later of 30 days after migration or the organisation's current
+paid period end. Starting a location subscription during grace passes that
+deadline to Stripe as `trial_end`, avoiding an overlapping location charge.
+Owners must use the shared Stripe portal to retire the legacy organisation
+subscription before grace ends. Legacy webhook events and invoices remain
+supported throughout this transition, with legacy invoices retaining a null
+workshop reference.
+
+The owner billing page, platform commercial dashboard, and CSV export now report
+per location. This cutover changes billing authority only; public map eligibility
+remains a separate workflow milestone.

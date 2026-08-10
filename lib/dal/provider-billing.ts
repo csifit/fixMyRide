@@ -11,10 +11,12 @@ export type ProviderBilling = {
   legalName: string;
   displayName: string;
   providerStatus: string;
+  stripeCustomerId: string | null;
   billingProfile: { billingEmail: string | null; billingContact: string | null; taxIdentifier: string | null; addressLine1: string | null; addressLine2: string | null; city: string | null; postalCode: string | null; countryCode: string };
   plan: { id: string; name: string; monthlyPriceCents: number; currency: string; smsIncluded: boolean };
-  subscription: { status: ProviderSubscriptionStatus; stripeCustomerId: string | null; stripeSubscriptionId: string | null; currentPeriodStart: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; canceledAt: string | null };
-  invoices: Array<{ id: string; number: string | null; status: string; currency: string; amountDueCents: number; amountPaidCents: number; hostedInvoiceUrl: string | null; invoicePdfUrl: string | null; periodStart: string | null; periodEnd: string | null; dueAt: string | null; paidAt: string | null }>;
+  legacySubscription: { status: ProviderSubscriptionStatus; stripeSubscriptionId: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean };
+  locations: Array<{ workshopId: string; displayName: string; city: string | null; workshopStatus: string; subscriptionStatus: ProviderSubscriptionStatus; stripeSubscriptionId: string | null; coverageGraceEndsAt: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; coverageState: "covered" | "grace" | "attention" | "uncovered" }>;
+  invoices: Array<{ id: string; workshopId: string | null; workshopName: string | null; number: string | null; status: string; currency: string; amountDueCents: number; amountPaidCents: number; hostedInvoiceUrl: string | null; invoicePdfUrl: string | null; periodStart: string | null; periodEnd: string | null; dueAt: string | null; paidAt: string | null }>;
 };
 
 function fail(error: { code?: string; status?: number }): never {

@@ -11,9 +11,17 @@ const identifier = (value: string | { id: string } | null | undefined) => typeof
 
 async function applyCheckout(event: Stripe.Event, session: Stripe.Checkout.Session) {
   const providerId = session.metadata?.service_provider_id ?? session.client_reference_id;
+  const workshopId = session.metadata?.workshop_id;
   const customerId = identifier(session.customer);
   const subscriptionId = identifier(session.subscription);
   if (!providerId || !customerId || !subscriptionId) throw new Error("stripe_checkout_metadata_missing");
+  if (workshopId) return createServiceClient().rpc("apply_stripe_location_checkout_event", {
+    requested_event_id: event.id, requested_event_type: event.type,
+    requested_event_created_at: timestamp(event.created), requested_livemode: event.livemode,
+    requested_api_version: event.api_version, requested_provider_id: providerId,
+    requested_workshop_id: workshopId, requested_customer_id: customerId,
+    requested_subscription_id: subscriptionId,
+  });
   return createServiceClient().rpc("apply_stripe_checkout_event", {
     requested_event_id: event.id, requested_event_type: event.type,
     requested_event_created_at: timestamp(event.created), requested_livemode: event.livemode,
@@ -24,6 +32,20 @@ async function applyCheckout(event: Stripe.Event, session: Stripe.Checkout.Sessi
 
 async function applySubscription(event: Stripe.Event, subscription: Stripe.Subscription) {
   const item = subscription.items.data[0];
+  const workshopId = subscription.metadata.workshop_id || null;
+  if (workshopId) return createServiceClient().rpc("apply_stripe_location_subscription_event", {
+    requested_event_id: event.id, requested_event_type: event.type,
+    requested_event_created_at: timestamp(event.created), requested_livemode: event.livemode,
+    requested_api_version: event.api_version,
+    requested_provider_id: subscription.metadata.service_provider_id || null,
+    requested_workshop_id: workshopId,
+    requested_customer_id: identifier(subscription.customer), requested_subscription_id: subscription.id,
+    requested_price_id: item?.price.id ?? null, requested_status: subscription.status,
+    requested_period_start: timestamp(item?.current_period_start),
+    requested_period_end: timestamp(item?.current_period_end),
+    requested_cancel_at_period_end: subscription.cancel_at_period_end,
+    requested_canceled_at: timestamp(subscription.canceled_at),
+  });
   return createServiceClient().rpc("apply_stripe_subscription_event", {
     requested_event_id: event.id, requested_event_type: event.type,
     requested_event_created_at: timestamp(event.created), requested_livemode: event.livemode,
