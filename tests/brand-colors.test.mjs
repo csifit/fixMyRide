@@ -4,11 +4,6 @@ import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 const css = await readFile(new URL("app/globals.css", root), "utf8");
-const emails = await Promise.all([
-  "lib/email/invitation.ts",
-  "lib/email/appointment.ts",
-  "lib/email/appointment-request.ts",
-].map((file) => readFile(new URL(file, root), "utf8")));
 const brandSource = await readFile(new URL("lib/brand.ts", root), "utf8");
 const layoutSource = await readFile(new URL("app/layout.tsx", root), "utf8");
 const stripeGuide = await readFile(new URL("docs/stripe-billing.md", root), "utf8");
@@ -17,13 +12,6 @@ test("pitster uses the approved teal as its primary brand colour", () => {
   assert.match(css, /--green:#006E6E/i);
   assert.ok((css.match(/#006E6E/gi) ?? []).length >= 25);
   assert.doesNotMatch(css, /#087b69|#176f63|#176f60|#0d7564|#137663/i);
-});
-
-test("transactional email branding uses the same approved teal", () => {
-  for (const email of emails) {
-    assert.match(email, /#006E6E/i);
-    assert.doesNotMatch(email, /#176f63|#176f60|#0d7564/i);
-  }
 });
 
 test("pitster is the default product brand and production Stripe origin", () => {

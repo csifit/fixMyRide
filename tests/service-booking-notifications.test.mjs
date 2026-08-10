@@ -9,7 +9,7 @@ const messages = await read("lib/sms/service-booking-message.ts");
 const dispatcher = await read("lib/sms/service-booking-notifications.ts");
 const requestActions = await read("app/workshop-manager/requests/actions.ts");
 const repairActions = await read("app/workshop-manager/repairs/actions.ts");
-const cron = await read("app/api/cron/appointment-reminders/route.ts");
+const cron = await read("app/api/cron/service-booking-notifications/route.ts");
 const { serviceBookingMessage, SERVICE_BOOKING_SMS_MAX_LENGTH } = await import("../lib/sms/service-booking-message.ts");
 
 const expectedKinds = [
@@ -72,7 +72,7 @@ test("notification operations are service-role only, retryable, and lifecycle aw
 test("immediate actions and the protected cron dispatch queued booking messages", () => {
   assert.match(requestActions, /dispatchDueServiceBookingNotifications/);
   assert.match(repairActions, /dispatchDueServiceBookingNotifications/);
-  assert.match(cron, /dispatchDueAppointmentNotifications/);
   assert.match(cron, /dispatchDueServiceBookingNotifications/);
+  assert.doesNotMatch(cron, /Appointment|appointment/);
   assert.match(cron, /authorization/);
 });

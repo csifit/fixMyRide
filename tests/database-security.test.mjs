@@ -6,10 +6,6 @@ const migration = await readFile(
   new URL("../supabase/migrations/202607290001_phase_2b1_foundation.sql", import.meta.url),
   "utf8",
 );
-const doctorDal = await readFile(
-  new URL("../lib/dal/doctor.ts", import.meta.url),
-  "utf8",
-);
 
 test("RLS is enabled on every application table", () => {
   const tables = [
@@ -85,11 +81,4 @@ test("denied profile reads commit an audit event instead of raising a rollback",
   assert.match(deniedBranch, /'access_denied'/i);
   assert.match(deniedBranch, /return null/i);
   assert.doesNotMatch(deniedBranch, /raise/i);
-});
-
-test("dashboard medical reads go through the audited profile function", () => {
-  assert.match(doctorDal, /rpc\("get_patient_profile"/);
-  for (const table of ["patients", "chronic_conditions", "allergies", "medications"]) {
-    assert.doesNotMatch(doctorDal, new RegExp(`\\.from\\("${table}"\\)`), table);
-  }
 });

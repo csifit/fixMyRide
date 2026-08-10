@@ -71,7 +71,12 @@
   checks are complete.
 - Migration 038 makes public registration canonical-only, records the structural
   row-count/checksum comparison, and removes every legacy-to-canonical forward
-  synchronization trigger. It is ready to apply after migration 037.
+  synchronization trigger.
+- The post-038 application cleanup removes all medical redirect routes,
+  unreachable medical UI/DAL/email modules, legacy proxy matchers, and the old
+  appointment notification dispatcher. Historical migrations and retained
+  database records remain unchanged. Deployment scheduling must call
+  `/api/cron/service-booking-notifications` with the existing cron secret.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

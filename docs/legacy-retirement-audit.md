@@ -36,17 +36,27 @@
 
 ## Temporarily retained
 
-- Redirect-only routes remain for one compatibility window. They contain no
-  medical UI or data access.
 - Historical migrations remain immutable. They describe the deployed schema and
   must never be deleted or rewritten.
 - Legacy database tables remain for the retention window.
 - Nullable `legacy_workshop_profile_id` columns remain on catalogue and booking
   rows as trigger-maintained rollback references. They have no foreign keys and
   are not authoritative ownership fields.
-- The old appointment notification dispatcher remains until pending historical
-  rows are counted and either delivered, cancelled, or retained by policy.
 - Legacy billing/export functions remain until accounting retention is approved.
+
+## Retired in the post-migration-038 application release
+
+- Redirect-only patient, doctor, staff, clinic-manager, appointment, and legacy
+  registration routes are removed; these URLs now return the normal 404 response.
+- Unreachable medical UI, DAL, invitation/email, demo-data, and authorization
+  modules are removed together with their obsolete test suites.
+- The cron endpoint is now `/api/cron/service-booking-notifications` and dispatches
+  only the five approved automotive SMS lifecycle events.
+- Proxy matchers now cover canonical customer, workshop-manager,
+  service-provider, workshop-staff, administrator, authentication, and password
+  setup routes only.
+- Unused MXroute configuration is removed from the application environment
+  template. Retained medical database records are not changed by this release.
 
 ## Read-only production checks before database retirement
 
@@ -81,6 +91,6 @@ where target_account_type is null;
 ## Next retirement slice
 
 1. Apply the approved retention policy to medical records and accounting data.
-2. Remove redirect routes, legacy backend modules, and proxy matchers.
+2. Remove unused medical translation keys and CSS after a canonical UI key audit.
 3. Drop compatibility database objects only in a separately reviewed migration
    with a backup and rollback plan.

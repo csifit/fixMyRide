@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access as fileAccess, readFile } from "node:fs/promises";
 import test from "node:test";
 
 const root = new URL("../", import.meta.url);
@@ -37,21 +37,22 @@ test("active navigation and middleware use canonical routes", () => {
   for (const route of ["/customer/:path*", "/workshop-manager/:path*", "/service-provider/:path*", "/workshop-staff/:path*"]) {
     assert.ok(proxy.includes(route), route);
   }
+  assert.doesNotMatch(proxy, /doctor|clinic-manager|patient|"\/staff/i);
 });
 
-test("legacy entry routes are one-release redirects", async () => {
-  const redirects = [
-    ["app/patient/page.tsx", "/customer"],
-    ["app/patient/login/page.tsx", "/customer/login"],
-    ["app/clinic-manager/page.tsx", "/workshop-manager"],
-    ["app/clinic-manager/login/page.tsx", "/workshop-manager/login"],
-    ["app/doctor/page.tsx", "/service-provider"],
-    ["app/staff/page.tsx", "/workshop-staff"],
-    ["app/appointments/page.tsx", "/bookings"],
+test("legacy medical routes and application modules are retired", async () => {
+  const retired = [
+    "app/patient/page.tsx",
+    "app/clinic-manager/page.tsx",
+    "app/doctor/page.tsx",
+    "app/staff/page.tsx",
+    "app/appointments/page.tsx",
+    "app/doctors/[doctorId]/page.tsx",
+    "app/PatientPortalClient.tsx",
+    "app/GoogleDoctorMap.tsx",
+    "lib/dal/doctor.ts",
+    "lib/dal/public-appointments.ts",
+    "lib/sms/appointment-notifications.ts",
   ];
-  for (const [path, destination] of redirects) {
-    const source = await read(path);
-    assert.match(source, /redirect\(/, path);
-    assert.ok(source.includes(destination), `${path} -> ${destination}`);
-  }
+  for (const path of retired) await assert.rejects(fileAccess(new URL(path, root)), path);
 });

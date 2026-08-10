@@ -8,7 +8,7 @@ const migration = await read("supabase/migrations/202608060025_workshop_booking_
 const dal = await read("lib/dal/workshop-bookings.ts");
 const actions = await read("app/workshop-manager/requests/actions.ts");
 const client = await read("app/workshop-manager/requests/WorkshopBookingInboxClient.tsx");
-const portal = await read("app/organization/OrganizationPortalClient.tsx");
+const workspace = await read("app/RoleWorkspaceShell.tsx");
 
 test("booking inbox RPCs authorize active workshop managers through the automotive model", () => {
   assert.match(migration, /join public\.workshop_manager_memberships/i);
@@ -43,7 +43,7 @@ test("booking history is append-only and proposals are not confirmations", () =>
 });
 
 test("workshop managers can reach and operate the localized inbox", () => {
-  assert.match(portal, /href="\/workshop-manager\/requests"/i);
+  assert.match(workspace, /href: "\/workshop-manager\/requests"/i);
   assert.match(dal, /get_managed_service_booking_requests/i);
   assert.match(actions, /z\.object/i);
   assert.match(client, /useLanguage/i);
