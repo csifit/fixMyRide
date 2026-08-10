@@ -37,61 +37,6 @@
   "a11y.patientPortal": "pitster patient portal",
   "a11y.closePatientProfile": "Close patient profile",
   "a11y.openPatientProfile": "Open {name}'s profile",
-  "patient.nav.profile": "Medical profile",
-  "patient.nav.share": "Share safely",
-  "patient.nav.access": "Access history",
-  "patient.identityVerified": "Identity verified",
-  "patient.readOnly": "Patient view · Read only",
-  "patient.clinicianEditMode": "Clinician edit mode",
-  "patient.dateOfBirth": "Date of birth",
-  "patient.bloodGroup": "Blood group",
-  "patient.sex": "Sex",
-  "patient.organDonor": "Organ donor",
-  "patient.allergies": "Allergies",
-  "patient.chronicConditions": "Chronic conditions",
-  "patient.previousProcedures": "Previous procedures",
-  "patient.emergencyContact": "Emergency contact",
-  "patient.familyDoctor": "Family doctor",
-  "patient.lastUpdated": "Last updated",
-  "patient.emergencyMode": "Emergency mode",
-  "patient.doctorAccess": "Doctor access",
-  "patient.signedInAsPatient": "Signed in as patient",
-  "patient.critical.title": "Critical information",
-  "patient.critical.help": "Essential details for emergency care",
-  "patient.section.personal": "Personal details",
-  "patient.section.medications": "Current medications",
-  "patient.section.conditions": "Conditions and history",
-  "patient.section.devices": "Implants and devices",
-  "patient.section.contacts": "Care contacts",
-  "patient.action.saveSignedUpdate": "Save signed update",
-  "patient.action.add": "Add",
-  "patient.action.editable": "Editable",
-  "patient.medications.none": "No medications recorded",
-  "patient.implants.none": "No implants or medical devices recorded",
-  "patient.share.title": "Share your profile",
-  "patient.share.description": "Choose a secure way to give a healthcare professional temporary access.",
-  "patient.share.scan": "Scan to view",
-  "patient.share.qrHelp": "Valid for 15 minutes · View only",
-  "patient.share.nfc": "Share via NFC",
-  "patient.share.nfcHelp": "Hold near another device",
-  "patient.share.email": "Send secure email",
-  "patient.share.emailHelp": "Create an expiring link",
-  "patient.share.download": "Download emergency card",
-  "patient.share.downloadHelp": "Offline access · PDF",
-  "patient.share.privacy": "Privacy controls",
-  "patient.share.expiry": "Link expiry",
-  "patient.share.minutes": "15 minutes",
-  "patient.share.noActiveLinks": "No active share links",
-  "patient.share.revoke": "Revoke all active links",
-  "patient.share.sensitiveExcluded": "CNP, insurance number and national health-card details are never included in QR, NFC, email links or the emergency card.",
-  "patient.access.title": "Who viewed your profile",
-  "patient.access.description": "Every access is recorded for your safety.",
-  "patient.access.emptyTitle": "No access events",
-  "patient.access.emptyDescription": "Authorized profile activity will appear here.",
-  "patient.modal.title": "Clinical portal access",
-  "patient.modal.description": "Open the clinical workspace to review patient profiles and access requests in this prototype.",
-  "patient.modal.continue": "Continue to clinical portal",
-  "patient.modal.note": "Prototype only · Authentication and persistence are not implemented yet.",
   "notice.demoSession": "The demo session remains on this device",
   "notice.recordSaved": "Medical record saved and signed",
   "notice.nfcReady": "NFC sharing is ready — hold the devices close",
@@ -103,116 +48,6 @@
   "notice.noteOpened": "Clinical note draft opened",
   "notice.profileReviewed": "{name}'s profile was marked as reviewed",
   "notice.requestDecision": "{name}'s request was {decision}",
-  "medical.sex.female": "Female",
-  "medical.sex.male": "Male",
-  "medical.relationship.husband": "Husband",
-  "medical.relationship.other": "Other",
-  "medical.allergy.penicillin": "Penicillin",
-  "medical.allergy.latex": "Latex",
-  "medical.allergy.ibuprofen": "Ibuprofen",
-  "medical.allergy.noneKnown": "No known allergies",
-  "medical.condition.type2Diabetes": "Type 2 diabetes mellitus",
-  "medical.condition.hypertension": "Hypertension",
-  "medical.condition.atrialFibrillation": "Atrial fibrillation",
-  "medical.condition.asthma": "Asthma",
-  "medical.condition.hyperlipidemia": "Hyperlipidaemia",
-  "medical.condition.hypothyroidism": "Hypothyroidism",
-  "medical.schedule.twiceDaily": "Twice daily",
-  "medical.schedule.everyMorning": "Every morning",
-  "medical.schedule.asPrescribed": "As prescribed",
-  "medical.procedure.appendectomy": "Appendectomy",
-  "medical.implant.none": "No implants or medical devices",
-  "medical.specialty.familyMedicine": "Family medicine",
-  "doctor.brand.clinical": "Clinical",
-  "doctor.workspace": "Workspace",
-  "doctor.primaryCare": "Primary care",
-  "doctor.nav.overview": "Overview",
-  "doctor.nav.patients": "Patients",
-  "doctor.nav.requests": "Access requests",
-  "doctor.nav.activity": "Activity log",
-  "doctor.secureSession": "Secure session",
-  "doctor.autoLock": "Auto-locks in 26 min",
-  "doctor.search.placeholder": "Search patient name, pitster ID, or condition",
-  "doctor.patientPortal": "Patient portal",
-  "doctor.welcome.date": "{date}",
-  "doctor.welcome.greeting": "Good morning, {name}.",
-  "doctor.welcome.description": "Here is what needs your attention today.",
-  "doctor.findPatient": "Find a patient",
-  "doctor.metrics.patients": "Patients in your care",
-  "doctor.metrics.activeGrants": "Active grants",
-  "doctor.metrics.requests": "Access requests",
-  "doctor.metrics.urgent": "{count} urgent",
-  "doctor.metrics.reviewed": "Records reviewed",
-  "doctor.metrics.last30Days": "Last 30 days",
-  "doctor.review.title": "Needs review",
-  "doctor.review.description": "Updates and records awaiting your attention",
-  "doctor.viewAll": "View all",
-  "doctor.years": "{count} years",
-  "doctor.review.noneTitle": "Nothing needs review",
-  "doctor.review.noneDescription": "New patient updates will appear here.",
-  "doctor.requests.previewDescription": "Patient-approved profile access",
-  "doctor.requests.reviewCount": "Review {count} requests",
-  "doctor.recent.title": "Recent patients",
-  "doctor.recent.description": "Your most recently accessed profiles",
-  "doctor.patientDirectory": "Patient directory",
-  "doctor.noGrants.title": "No patient grants",
-  "doctor.noGrants.description": "Approved access grants will appear here.",
-  "doctor.directory.eyebrow": "Patient directory",
-  "doctor.directory.results": "Results for “{query}”",
-  "doctor.directory.title": "Patients in your care",
-  "doctor.directory.description": "Review profiles shared with your clinical workspace.",
-  "doctor.directory.invite": "Invite patient",
-  "doctor.directory.patientCount": "{count} patients",
-  "doctor.directory.patientCountOne": "1 patient",
-  "doctor.directory.needsReview": "Needs review",
-  "doctor.directory.noMatchTitle": "No matching patients",
-  "doctor.directory.noMatchDescription": "Try a name, pitster ID, or medical condition.",
-  "doctor.requests.eyebrow": "Secure access",
-  "doctor.requests.title": "Access requests",
-  "doctor.requests.description": "Review patient-approved requests before opening a medical profile.",
-  "doctor.requests.received": "Received {time} · Identity verified",
-  "doctor.requests.decline": "Decline",
-  "doctor.requests.approve": "Approve access",
-  "doctor.requests.emptyTitle": "No pending requests",
-  "doctor.requests.emptyDescription": "New patient access requests will appear here.",
-  "doctor.activity.eyebrow": "Audit trail",
-  "doctor.activity.title": "Clinical activity",
-  "doctor.activity.description": "Every profile access and signed action is recorded.",
-  "doctor.activity.export": "Export log",
-  "doctor.activity.emptyTitle": "No clinical activity",
-  "doctor.activity.emptyDescription": "Authorized actions will appear here.",
-  "doctor.table.patient": "Patient",
-  "doctor.table.conditions": "Conditions",
-  "doctor.table.lastReviewed": "Last reviewed",
-  "doctor.table.status": "Status",
-  "doctor.status.upToDate": "Up to date",
-  "doctor.status.reviewDue": "Review due",
-  "doctor.status.newUpdate": "New update",
-  "doctor.access.authorized": "Authorized access",
-  "doctor.access.familyCareTeam": "Family care team",
-  "doctor.access.temporary": "Temporary access · {days} days left",
-  "doctor.allergyAlert": "Allergy alert",
-  "doctor.currentMedications": "Current medications",
-  "doctor.lastClinicalReview": "Last clinical review",
-  "doctor.addClinicalNote": "Add clinical note",
-  "doctor.markReviewed": "Mark as reviewed",
-  "doctor.auditNote": "Prototype activity is stored only for the current browser session.",
-  "doctor.reason.medicationReconciliation": "Medication reconciliation",
-  "doctor.reason.newPatientConsultation": "New patient consultation",
-  "doctor.reason.followUpCare": "Follow-up care",
-  "doctor.activity.reviewedUpdate": "Reviewed a patient-submitted profile update",
-  "doctor.activity.requestReceived": "Access request received",
-  "doctor.activity.openedProfile": "Opened the medical profile for consultation",
-  "doctor.activity.signedMedicationUpdate": "Signed a medication update",
-  "doctor.activity.type.clinicalReview": "Clinical review",
-  "doctor.activity.type.access": "Access",
-  "doctor.activity.type.profileView": "Profile view",
-  "doctor.activity.type.signedUpdate": "Signed update",
-  "doctor.time.today": "Today",
-  "doctor.time.yesterday": "Yesterday",
-  "patient.access.context.clinicQr": "Bucharest Family Clinic · QR access",
-  "patient.access.context.clinicianNfc": "Verified clinician · NFC access",
-  "patient.access.context.personalSession": "Personal device · Secure session",
   "auth.login.title": "Clinical portal sign in",
   "auth.login.description": "Use your administratively issued clinician account.",
   "auth.login.email": "Email address",
@@ -238,75 +73,6 @@
   "auth.returnPatient": "Return to patient portal",
   "notice.accessDenied": "Access denied. The medical profile was not opened.",
   "notice.serviceUnavailable": "The service is temporarily unavailable. Nothing was changed. Try again manually.",
-  "doctor.conditionNote.label": "Clinical condition note",
-  "doctor.conditionNote.help": "Only this note field will be updated and audited.",
-  "doctor.conditionNote.save": "Save signed note",
-  "doctor.conditionNote.saving": "Saving…",
-  "doctor.conditionNote.saved": "The clinical note was saved and audited.",
-  "doctor.conditionNote.error": "The note could not be saved.",
-  "doctor.conditionNote.unauthorized": "The note was not saved because edit access is not authorized.",
-  "doctor.conditionNote.unavailable": "The note was not saved because the service is temporarily unavailable. Try again manually.",
-  "doctor.health.identity.title": "Health-card identity",
-  "doctor.health.familyName": "Family name",
-  "doctor.health.givenNames": "Given names",
-  "doctor.health.insurance.title": "Insurance verification",
-  "doctor.health.insurance.status": "Insurance status",
-  "doctor.health.insurance.status.unknown": "Unknown",
-  "doctor.health.insurance.status.insured": "Insured",
-  "doctor.health.insurance.status.uninsured": "Not insured",
-  "doctor.health.insurance.status.verification_pending": "Verification pending",
-  "doctor.health.insurance.source": "Verification source",
-  "doctor.health.insurance.source.not_verified": "Not verified",
-  "doctor.health.insurance.source.cnas_manual_check": "Manual CNAS check performed by the clinician",
-  "doctor.health.insurance.source.health_card": "National health card",
-  "doctor.health.insurance.source.supporting_document": "Supporting document",
-  "doctor.health.insurance.source.clinician_attestation": "Clinician attestation",
-  "doctor.health.insurance.house": "Insurance house / CAS",
-  "doctor.health.insurance.houseCode": "CAS code",
-  "doctor.health.insurance.houseName": "Insurance house name",
-  "doctor.health.verifiedAt": "Verified at",
-  "doctor.health.lifeThreatening.title": "Life-threatening diagnoses",
-  "doctor.health.lifeThreatening.none": "No life-threatening diagnosis is recorded.",
-  "doctor.health.codeSystem.icd10": "ICD-10",
-  "doctor.health.codeSystem.snomed_ct": "SNOMED CT",
-  "doctor.health.codeSystem.other": "Other coding system",
-  "doctor.health.verifiedBy": "Verified by {name} ({code}) on {date}",
-  "doctor.health.familyDoctor.title": "Family doctor",
-  "doctor.health.familyDoctor.name": "Name",
-  "doctor.health.familyDoctor.code": "Professional code",
-  "doctor.health.familyDoctor.telephone": "Telephone",
-  "doctor.health.emergencyContacts.title": "Emergency contacts",
-  "doctor.health.emergencyContacts.number": "Contact {number}",
-  "doctor.health.profileVerification.title": "Clinician-certified profile",
-  "doctor.health.sensitive.title": "Sensitive identifiers",
-  "doctor.health.sensitive.description": "Protected identifiers are masked by default. Revealing them requires current editable access and creates an audit event.",
-  "doctor.health.sensitive.cnp": "CNP",
-  "doctor.health.sensitive.insuranceNumber": "Insurance number",
-  "doctor.health.sensitive.cardNumber": "National health-card number",
-  "doctor.health.sensitive.cardExpires": "Health-card expiration",
-  "doctor.health.sensitive.reveal": "Reveal sensitive identifiers",
-  "doctor.health.sensitive.hide": "Hide and discard revealed values",
-  "doctor.health.sensitive.loading": "Authorizing…",
-  "doctor.health.sensitive.unauthorized": "Current authorization does not allow access to these identifiers.",
-  "doctor.health.sensitive.unavailable": "Sensitive identifiers are temporarily unavailable. Try again manually.",
-  "doctor.health.form.profileTitle": "Update health-card information",
-  "doctor.health.form.save": "Save verified information",
-  "doctor.health.form.saving": "Saving…",
-  "doctor.health.form.saved": "The verified information was saved and audited.",
-  "doctor.health.form.invalid": "Check the fields and ensure the verification details are coherent.",
-  "doctor.health.form.duplicate": "An active diagnosis with this coding system and code already exists.",
-  "doctor.health.form.unauthorized": "Current authorization does not permit this update.",
-  "doctor.health.form.unavailable": "The update service is temporarily unavailable. Try again manually.",
-  "doctor.health.diagnosis.name": "Diagnosis",
-  "doctor.health.diagnosis.codeSystem": "Coding system",
-  "doctor.health.diagnosis.code": "Diagnosis code",
-  "doctor.health.diagnosis.otherSystem": "Other coding-system name",
-  "doctor.health.diagnosis.add": "Add life-threatening diagnosis",
-  "doctor.health.diagnosis.deactivate": "Deactivate diagnosis",
-  "doctor.health.diagnosis.deactivateConfirmation": "I confirm this diagnosis should move out of the active warning list.",
-  "doctor.health.diagnosis.reactivate": "Reactivate diagnosis",
-  "doctor.health.diagnosis.historyTitle": "Inactive diagnosis history",
-  "doctor.health.diagnosis.historyDescription": "Inactive diagnoses are excluded from the active clinical warning list and can be reviewed or reactivated here.",
   "admin.access.configuration.title": "Administration is not configured",
   "admin.access.configuration.description": "Add the public Supabase project settings to the local environment before using the administration console.",
   "admin.access.unauthorized.title": "Administration access denied",
@@ -360,56 +126,6 @@
   "register.setPassword.status.unavailable": "The password could not be saved temporarily. Try again manually.",
   "register.setPassword.requestNewLink": "Return to registration to request a new confirmation email.",
   "register.setPassword.back": "Return to registration",
-  "organization.clinic_manager.loginTitle": "Clinic Manager sign in",
-  "organization.clinic_manager.loginDescription": "Manage your approved clinic organization and sponsored doctors.",
-  "organization.staff.loginTitle": "Staff sign in",
-  "organization.staff.loginDescription": "Open the appointment workspace for your assigned doctors.",
-  "organization.clinic_manager.eyebrow": "Clinic management",
-  "organization.staff.eyebrow": "Doctor-assigned staff",
-  "organization.clinic_manager.securityNote": "Clinic management never grants access to patient medical profiles.",
-  "organization.staff.securityNote": "Staff access is limited to appointments for assigned doctors and never includes medical profiles.",
-  "organization.welcome": "Welcome, {name}",
-  "organization.membershipRole": "Membership role",
-  "organization.billingStatus": "Invoicing details",
-  "organization.doctors": "Sponsored and member doctors",
-  "organization.doctorsEmpty": "No doctors are linked to this clinic yet.",
-  "organization.clinicsEmpty": "No active clinic membership is available.",
-  "organization.assignmentsEmpty": "No doctor assignment is currently active.",
-  "organization.status.pending": "Pending approval",
-  "organization.status.active": "Active",
-  "organization.status.suspended": "Suspended",
-  "organization.status.rejected": "Rejected",
-  "organization.role.owner": "Owner",
-  "organization.role.manager": "Manager",
-  "organization.billing.incomplete": "Incomplete",
-  "organization.billing.active": "Active",
-  "organization.billing.suspended": "Suspended",
-  "organization.membership.invited": "Invited",
-  "organization.membership.active": "Active",
-  "organization.membership.suspended": "Suspended",
-  "organization.membership.ended": "Ended",
-  "organization.access.configuration": "The organization service is not configured.",
-  "organization.access.unavailable": "The organization service is temporarily unavailable. Your account status was not changed.",
-  "organization.access.unauthorized": "This account is not authorized for this portal.",
-  "organization.access.pending": "Your account or organization is awaiting approval.",
-  "organization.access.suspended": "This organization access is suspended.",
-  "organization.access.rejected": "This organization registration was not approved.",
-  "organization.staffManagement.title": "Staff invitations and assignments",
-  "organization.invite.email": "Invitation email",
-  "organization.invite.clinic_doctor": "Create doctor invitation",
-  "organization.invite.doctor_staff": "Create Staff invitation",
-  "organization.invite.creating": "Creating invitation…",
-  "organization.invite.status.created": "Invitation created and emailed to the intended recipient.",
-  "organization.invite.status.created_email_failed": "Invitation created, but the email could not be sent. Copy and send the protected link manually.",
-  "organization.invite.status.invalid": "Check the email address and invitation details.",
-  "organization.invite.status.duplicate": "A pending invitation already exists for this email address.",
-  "organization.invite.status.unauthorized": "Current authorization does not permit this invitation.",
-  "organization.invite.status.unavailable": "Invitations are temporarily unavailable. Try again manually.",
-  "organization.membership.action.active": "Reactivate",
-  "organization.membership.action.suspended": "Suspend",
-  "organization.membership.result.invalid": "The requested membership change is invalid.",
-  "organization.membership.result.unauthorized": "You are not authorized to change this membership.",
-  "organization.membership.result.unavailable": "Membership changes are temporarily unavailable.",
   "invoicing.eyebrow": "Billing profile",
   "invoicing.title": "Invoicing details",
   "invoicing.description": "These details identify the legal payer. Closed billing periods will retain their own historical snapshot.",
@@ -455,165 +171,10 @@
   "admin.mfa.challenge.title": "Confirm your second factor",
   "admin.mfa.challenge.description": "Enter the current code from your authenticator application.",
   "admin.mfa.challenge.verify": "Verify identity",
-  "admin.brand.console": "Secure administration console",
-  "admin.nav.label": "Administration sections",
-  "admin.nav.users": "Users",
-  "admin.nav.doctors": "Doctors",
-  "admin.nav.patients": "Patients",
-  "admin.nav.grants": "Access grants",
-  "admin.nav.audit": "Audit history",
-  "admin.role.superadmin": "Superadmin",
-  "admin.security.session": "Session assurance",
-  "admin.security.aal2": "MFA verified",
-  "admin.dashboard.eyebrow": "System governance",
-  "admin.dashboard.generated": "Refreshed",
-  "admin.section.users.title": "Administrative users",
-  "admin.section.users.description": "Review administrator roles and account status.",
-  "admin.section.doctors.title": "Doctors",
-  "admin.section.doctors.description": "Review clinician identity and verification status.",
-  "admin.section.patients.title": "Patients",
-  "admin.section.patients.description": "Review patient records and archival state.",
-  "admin.section.grants.title": "Access grants",
-  "admin.section.grants.description": "Review clinician permissions, status and scope.",
-  "admin.section.audit.title": "Audit history",
-  "admin.section.audit.description": "Read the immutable security and administration event trail.",
-  "admin.table.name": "Name",
-  "admin.table.role": "Role",
-  "admin.table.status": "Status",
-  "admin.table.created": "Created",
-  "admin.table.specialty": "Specialty",
-  "admin.table.clinic": "Clinic",
-  "admin.table.vitapassId": "pitster ID",
-  "admin.table.patient": "Patient",
-  "admin.table.doctor": "Doctor",
-  "admin.table.permissions": "Permissions",
-  "admin.table.time": "Time",
-  "admin.table.action": "Action",
-  "admin.table.resource": "Resource",
-  "admin.empty.users": "No administrative users are visible.",
-  "admin.empty.doctors": "No doctors are visible.",
-  "admin.empty.patients": "No patients are visible.",
-  "admin.empty.grants": "No access grants are visible.",
-  "admin.empty.audit": "No audit events are visible.",
-  "admin.status.archived": "Archived",
-  "admin.status.current": "Current",
-  "admin.permission.view": "View",
-  "admin.permission.edit": "Edit",
   "admin.access.securityError.title": "Security verification unavailable",
   "admin.access.securityError.description": "pitster could not verify your multi-factor security state. No administrative data was opened. Sign out and try again later.",
   "admin.access.unavailable.title": "Administration temporarily unavailable",
   "admin.access.unavailable.description": "pitster could not load administrative access because the service did not respond. Your account status was not changed. Try again manually.",
-  "admin.role.admin": "Administrator",
-  "admin.status.active": "Active",
-  "admin.status.suspended": "Suspended",
-  "admin.status.pending": "Pending",
-  "admin.status.approved": "Approved",
-  "admin.status.rejected": "Rejected",
-  "admin.status.revoked": "Revoked",
-  "admin.status.expired": "Expired",
-  "admin.value.unknown": "Unknown",
-  "admin.audit.action.signIn": "Signed in",
-  "admin.audit.action.signOut": "Signed out",
-  "admin.audit.action.accessDenied": "Access denied",
-  "admin.audit.action.patientProfileViewed": "Patient profile viewed",
-  "admin.audit.action.patientProfileUpdated": "Patient profile updated",
-  "admin.audit.action.accessGrantCreated": "Access grant created",
-  "admin.audit.action.accessGrantApproved": "Access grant approved",
-  "admin.audit.action.accessGrantRevoked": "Access grant revoked",
-  "admin.audit.action.accessGrantUpdated": "Access grant updated",
-  "admin.audit.action.administratorCreated": "Administrator created",
-  "admin.audit.action.administratorUpdated": "Administrator updated",
-  "admin.audit.action.administratorSuspended": "Administrator suspended",
-  "admin.audit.action.clinicianCreated": "Doctor created",
-  "admin.audit.action.clinicianUpdated": "Doctor updated",
-  "admin.audit.action.clinicianApproved": "Doctor approved",
-  "admin.audit.action.clinicianSuspended": "Doctor suspended",
-  "admin.audit.action.patientCreated": "Patient created",
-  "admin.audit.action.patientUpdated": "Patient updated",
-  "admin.audit.action.patientArchived": "Patient archived",
-  "admin.audit.action.medicalRecordCreated": "Medical record created",
-  "admin.audit.action.medicalRecordUpdated": "Medical record updated",
-  "admin.audit.action.sensitiveIdentifiersViewed": "Sensitive identifiers revealed",
-  "admin.audit.action.sensitiveIdentifiersUpdated": "Sensitive identifiers updated",
-  "admin.audit.resource.authSession": "Authentication session",
-  "admin.audit.resource.patientProfile": "Patient profile",
-  "admin.audit.resource.accessGrant": "Access grant",
-  "admin.audit.resource.chronicCondition": "Chronic condition",
-  "admin.audit.resource.administrators": "Administrators",
-  "admin.audit.resource.clinicians": "Doctors",
-  "admin.audit.resource.patients": "Patients",
-  "admin.audit.resource.allergies": "Allergies",
-  "admin.audit.resource.medications": "Medications",
-  "admin.audit.resource.chronicConditions": "Chronic conditions",
-  "admin.audit.resource.surgeries": "Surgeries",
-  "admin.audit.resource.implants": "Implants and devices",
-  "admin.audit.resource.emergencyContacts": "Emergency contacts",
-  "admin.audit.resource.accessGrants": "Access grants",
-  "admin.audit.resource.sensitiveIdentifiers": "Sensitive identifiers",
-  "admin.audit.resource.lifeThreateningDiagnoses": "Life-threatening diagnoses",
-  "admin.audit.resource.healthCardProfile": "Health-card profile",
-  "appointments.eyebrow": "Scheduling",
-  "appointments.title": "Appointments",
-  "appointments.description": "Doctors and assigned Staff can add, confirm and manage appointments. Confirmation sends an SMS; confirmed appointments also receive a reminder 24 hours beforehand.",
-  "appointments.staffScope": "You have the same appointment information and actions as each assigned doctor. Access is limited to your active doctor assignments.",
-  "appointments.back": "Back to portal",
-  "appointments.doctor": "Doctor",
-  "appointments.patientName": "Patient name",
-  "appointments.patientPhone": "Patient mobile number",
-  "appointments.patientEmail": "Patient email",
-  "appointments.source": "Booking source",
-  "appointments.source.phone": "Telephone",
-  "appointments.source.walk_in": "Walk-in",
-  "appointments.source.online": "Online",
-  "appointments.source.email": "Email",
-  "appointments.source.other": "Other",
-  "appointments.start": "Start",
-  "appointments.end": "End",
-  "appointments.date": "Date",
-  "appointments.slot": "Available time slot",
-  "appointments.chooseSlot": "Choose a time",
-  "appointments.noSlots": "No available slots for this day",
-  "appointments.initialStatus": "Initial status",
-  "appointments.note": "Operational note (no medical information)",
-  "appointments.create": "Create appointment",
-  "appointments.saving": "Saving…",
-  "appointments.apply": "Apply",
-  "appointments.list": "Scheduled appointments",
-  "appointments.empty": "No appointments recorded.",
-  "appointments.status.pending": "Pending",
-  "appointments.status.confirmed": "Confirmed",
-  "appointments.status.rescheduled": "Rescheduled",
-  "appointments.status.cancelled": "Cancelled",
-  "appointments.status.completed": "Completed",
-  "appointments.status.no_show": "No-show",
-  "appointments.feedback.saved": "Appointment saved.",
-  "appointments.feedback.saved_sms_pending": "Appointment saved. SMS delivery is pending; check SMSLink configuration.",
-  "appointments.feedback.saved_email_pending": "Appointment saved, but the email could not be sent. Check MXroute configuration.",
-  "appointments.feedback.saved_notifications_pending": "Appointment saved, but email and SMS delivery are pending.",
-  "appointments.feedback.invalid": "Check the appointment information.",
-  "appointments.feedback.conflict": "This doctor already has a confirmed appointment at that time.",
-  "appointments.feedback.unauthorized": "You are not authorized to manage this doctor's appointments.",
-  "appointments.feedback.unavailable": "The appointment service is temporarily unavailable.",
-  "availability.eyebrow": "Working schedule",
-  "availability.title": "Availability",
-  "availability.description": "Set your weekly working hours and choose 15, 30 or 45-minute appointment slots. Assigned Staff can book only these slots.",
-  "availability.active": "Available",
-  "availability.start": "Starts",
-  "availability.end": "Ends",
-  "availability.duration": "Slot duration",
-  "availability.minutes": "minutes",
-  "availability.save": "Save day",
-  "availability.feedback.saved": "Availability saved.",
-  "availability.feedback.invalid": "Check the working hours and slot duration.",
-  "availability.feedback.unauthorized": "Only the Doctor can change availability.",
-  "availability.feedback.unavailable": "Availability is temporarily unavailable.",
-  "availability.day.sunday": "Sunday",
-  "availability.day.monday": "Monday",
-  "availability.day.tuesday": "Tuesday",
-  "availability.day.wednesday": "Wednesday",
-  "availability.day.thursday": "Thursday",
-  "availability.day.friday": "Friday",
-  "availability.day.saturday": "Saturday",
   "calendar.title": "Appointment calendar",
   "calendar.previous": "Previous period",
   "calendar.next": "Next period",
@@ -631,12 +192,6 @@
   "calendar.selectAppointment": "Select an appointment to see its summary and available actions.",
   "calendar.closeDetails": "Close appointment summary",
   "calendar.duration": "Duration",
-  "appointments.requestedOnline": "Online request",
-  "appointments.decline": "Decline",
-  "appointments.confirm": "Confirm appointment",
-  "appointments.requestQueue": "Appointment requests",
-  "appointments.requestQueueHelp": "Review patient requests before they appear as confirmed appointments.",
-  "appointments.noPendingRequests": "No appointment requests are waiting.",
   "home.doctors": "Doctors",
   "home.specialties": "Specialties",
   "home.myAppointments": "My appointments",
@@ -784,693 +339,429 @@
   "booking.managementFeedback.invalid": "Check the selected option and confirmation.",
   "booking.managementFeedback.conflict": "That time is no longer available. Choose another slot.",
   "booking.managementFeedback.unavailable": "Appointment management is temporarily unavailable. Try again manually.",
-  "appointments.changeQueue": "Cancellation and rescheduling requests",
-  "appointments.changeQueueHelp": "Review patient requests. The appointment changes only when you approve.",
-  "appointments.noPendingChanges": "No cancellation or rescheduling requests are waiting.",
-  "appointments.change.cancel": "Cancellation request",
-  "appointments.change.reschedule": "Rescheduling request",
-  "appointments.currentTime": "Current appointment",
-  "appointments.requestedTime": "Requested time",
-  "appointments.approve": "Approve request",
-  "appointments.quickAdd": "Telephone and walk-in",
-  "appointments.quickAddTitle": "Add an appointment for a patient",
-  "appointments.quickAddHelp": "Use this form when a patient calls, emails or arrives at the clinic.",
-  "appointments.chooseAction": "Appointment action",
-  "appointments.saveAction": "Save appointment action",
-  "patientAppointments.eyebrow": "Your care schedule",
-  "patientAppointments.title": "My appointments",
-  "patientAppointments.welcome": "Welcome, {name}. Your guest and account bookings are kept together here.",
-  "patientAppointments.bookNew": "Book a new appointment",
-  "patientAppointments.medicalFolder": "Medical folder",
-  "patientAppointments.signOut": "Sign out",
-  "patientAppointments.upcoming": "Upcoming",
-  "patientAppointments.history": "Previous appointments",
-  "patientAppointments.noneUpcoming": "No upcoming appointments.",
-  "patientAppointments.empty": "No appointments yet",
-  "patientAppointments.emptyHelp": "Bookings made with your verified email will appear here automatically.",
-  "patientAppointments.unavailable": "Your appointments are temporarily unavailable.",
-  "patientAppointments.feedback.saved": "Your request was saved. The clinic will review it.",
-  "patientAppointments.feedback.invalid": "Check the selected option and confirmation.",
-  "patientAppointments.feedback.conflict": "That time is no longer available. Choose another slot.",
-  "patientAppointments.feedback.unauthorized": "This appointment does not belong to your patient account.",
-  "patientAppointments.feedback.unavailable": "Appointment management is temporarily unavailable.",
-  "patientAppointments.login.title": "Patient sign in",
-  "patientAppointments.login.description": "Open your medical folder and manage all appointments linked to your verified email.",
-  "patientAppointments.login.configuration": "Patient sign-in is not configured.",
-  "patientAppointments.login.invalid_credentials": "The email address or password is incorrect, or this is not a Patient account.",
-  "patientAppointments.login.rate_limited": "Too many sign-in attempts. Wait a moment and try again manually.",
-  "patientAppointments.login.unavailable": "Patient sign-in is temporarily unavailable.",
-  "patientAppointments.login.noAccount": "New to the platform?",
-  "staffPatients.title": "Medical profiles",
-  "staffPatients.readOnly": "View-only access is limited to patients shared with your assigned doctors. Protected identifiers remain hidden and every opened profile is audited.",
-  "staffPatients.empty": "No shared patient profiles are available.",
-  "doctorProfile.appointmentHint": "Choose a suitable time online",
-  "doctorProfile.book": "Check availability",
-  "doctorProfile.about": "About",
-  "doctorProfile.aboutEmpty": "Professional information will be added soon.",
-  "doctorProfile.practice": "Practice information",
-  "doctorProfile.clinic": "Clinic",
-  "doctorProfile.address": "Address",
-  "doctorProfile.phone": "Phone",
-  "doctorProfile.email": "Email",
-  "doctorProfile.experience": "Experience",
-  "doctorProfile.years": "years",
-  "doctorProfile.languages": "Languages",
-  "workspace.settings": "Profile & workspace settings",
   "workspace.back": "Back",
-  "workspace.eyebrow": "Profile and workspace",
-  "workspace.doctorTitle": "Doctor settings",
-  "workspace.doctorDescription": "Keep your public professional profile and practice information up to date.",
-  "workspace.profileTitle": "Professional profile",
-  "workspace.profileHelp": "This information appears on your dedicated Doctor page.",
-  "workspace.bio": "Professional introduction",
-  "workspace.phone": "Public phone",
-  "workspace.email": "Public email",
-  "workspace.experience": "Years of experience",
-  "workspace.languages": "Languages, separated by commas",
-  "workspace.acceptsPatients": "Accepting new patients",
-  "workspace.clinicTitle": "Clinic / workspace",
-  "workspace.managedClinic": "Managed by your clinic",
-  "workspace.managedClinicHelp": "Your Clinic Manager controls these details and covers your pitster costs.",
-  "workspace.clinicName": "Display name",
-  "workspace.legalName": "Legal name",
-  "workspace.description": "Clinic description",
-  "workspace.country": "Country code",
-  "workspace.city": "City",
-  "workspace.address": "Address",
-  "workspace.latitude": "Latitude",
-  "workspace.longitude": "Longitude",
-  "workspace.clinicsTitle": "Clinic settings",
-  "workspace.clinicsDescription": "Add and manage clinic locations, then invite Doctors from the appropriate clinic card.",
-  "workspace.addClinic": "Add another clinic",
-  "workspace.createClinic": "Create clinic",
   "workspace.save": "Save changes",
   "workspace.saving": "Saving…",
-  "workspace.status.saved": "Changes saved.",
-  "workspace.status.created": "Clinic created.",
-  "workspace.status.invalid": "Check the highlighted information.",
-  "workspace.status.unauthorized": "You do not have permission for this workspace.",
-  "workspace.status.unavailable": "The workspace is temporarily unavailable.",
-  "billing.details": "Invoicing details",
-  "billing.eyebrow": "Sponsored Doctor costs",
-  "billing.clinicTitle": "Clinic invoicing overview",
-  "billing.clinicDescription": "Subscription and sent-SMS costs are itemized for every sponsored Doctor, for the current month and the previous five months.",
-  "billing.sponsoredDoctors": "Doctors covered",
-  "billing.smsSent": "SMS sent",
-  "billing.currentTotal": "Current total",
-  "billing.closed": "Closed month",
-  "billing.open": "Current open month",
-  "billing.doctor": "Doctor",
-  "billing.subscription": "Subscription",
-  "billing.smsCost": "SMS cost",
-  "billing.total": "Total",
   "billing.downloadCsv": "Download CSV",
-  "billing.accountingEyebrow": "Platform accounting",
-  "billing.platformTitle": "Amounts to invoice",
-  "billing.platformDescription": "Compact monthly totals for independent Doctors and clinic organizations.",
-  "billing.allPayers": "All payers",
-  "billing.clinics": "Clinics",
-  "billing.independentDoctors": "Independent Doctors",
-  "billing.payer": "Payer",
-  "billing.payerType": "Type",
-  "billing.clinic": "Clinic organization",
-  "billing.independentDoctor": "Independent Doctor",
-  "billing.pricing": "Upcoming pricing",
-  "billing.pricingHelp": "Changes apply from the first day of next month.",
-  "billing.nextSubscription": "Doctor subscription (EUR)",
-  "billing.nextSms": "SMS unit price (EUR)",
-  "billing.rateStatus.saved": "Next month's pricing was saved.",
-  "billing.rateStatus.invalid": "Check the prices.",
-  "billing.rateStatus.unavailable": "Pricing is temporarily unavailable.",
-  "admin.role.manager": "Platform Manager",
-  "billing.accountingAccess": "Accounting access",
-  "billing.accountingAccessHelp": "Grant selected Platform Managers access only to the protected invoicing overview.",
-  "billing.accessEnabled": "Enabled",
-  "billing.accessDisabled": "Not enabled",
-  "billing.grantAccess": "Grant access",
-  "billing.removeAccess": "Remove access",
-  "admin.nav.attention": "Needs attention",
-  "admin.nav.clinics": "Clinics",
-  "admin.nav.organizations": "Clinic organizations",
-  "admin.nav.managers": "Managers",
-  "admin.nav.specialties": "Specialties",
-  "admin.nav.reviews": "Reviews",
-  "admin.nav.sms": "SMS",
-  "admin.nav.contracts": "Contracts",
-  "admin.nav.privacy": "Privacy",
   "admin.nav.invoicing": "Invoicing",
-  "admin.nav.security": "Account security",
-  "admin.section.attention.title": "Needs attention",
-  "admin.section.attention.description": "Start with approvals and incomplete setup that can block normal work.",
-  "admin.section.clinics.title": "Clinic locations",
-  "admin.section.clinics.description": "Review clinic locations and their linked doctors and managers.",
-  "admin.section.organizations.title": "Clinic organizations",
-  "admin.section.organizations.description": "Review clinic managers, organization status and location coverage.",
-  "admin.section.managers.title": "Platform managers",
-  "admin.section.managers.description": "Review protected platform accounts and delegated accounting access.",
-  "admin.section.specialties.title": "Medical specialties",
-  "admin.section.specialties.description": "Manage the specialty catalogue used by doctor profiles and search.",
-  "admin.section.reviews.title": "Doctor reviews",
-  "admin.section.reviews.description": "Moderate reported or inappropriate public reviews.",
-  "admin.section.sms.title": "SMS service",
-  "admin.section.sms.description": "Review SMS usage and service availability for doctors and clinics.",
-  "admin.section.contracts.title": "Contracts and pricing",
-  "admin.section.contracts.description": "Prepare client contracts, addendums and individual service prices.",
-  "admin.section.privacy.title": "Privacy and legal documents",
-  "admin.section.privacy.description": "Maintain the public legal pages and first-visit privacy notice.",
-  "admin.section.security.title": "Account security",
-  "admin.section.security.description": "Reserved for platform account and security operations.",
-  "admin.table.identifier": "Professional ID",
-  "admin.table.location": "Location",
-  "admin.table.doctors": "Doctors",
-  "admin.table.clinics": "Clinics",
-  "admin.table.accounting": "Accounting",
-  "admin.empty.clinics": "No clinic locations are visible.",
-  "admin.empty.organizations": "No clinic organizations are visible.",
-  "admin.attention.title": "Tasks requiring action",
-  "admin.attention.description": "Oldest pending items are shown first.",
-  "admin.attention.open": "Open",
-  "admin.attention.empty": "Nothing needs attention right now.",
-  "admin.task.doctor_approval": "Doctor approval",
-  "admin.task.clinic_approval": "Clinic approval",
-  "admin.task.clinic_manager_approval": "Clinic-manager approval",
-  "admin.task.billing_profile": "Incomplete invoicing details",
-  "admin.planned.title": "Workspace prepared",
-  "admin.planned.description": "This destination is on the approved roadmap. Its management controls will be added in the next focused phase.",
-  "admin.doctor.invite.title": "Invite a Doctor",
-  "admin.doctor.invite.description": "Send a protected registration link and optionally waive the subscription for 3, 6 or 12 months.",
-  "admin.doctor.invite.email": "Doctor email",
-  "admin.doctor.invite.freeAccess": "Free subscription period",
-  "admin.doctor.invite.language": "Invitation language",
-  "admin.doctor.invite.submit": "Create and send invitation",
-  "admin.doctor.invite.sending": "Creating invitation…",
-  "admin.doctor.invite.history": "Recent Administrator invitations",
-  "admin.doctor.invite.status.created": "Invitation created and email sent.",
-  "admin.doctor.invite.status.created_email_failed": "Invitation created, but the email could not be sent. Copy the protected link manually.",
-  "admin.doctor.invite.status.invalid": "Check the email and free-access selection.",
-  "admin.doctor.invite.status.duplicate": "A pending invitation already exists for this email.",
-  "admin.doctor.invite.status.unauthorized": "You are not authorized to invite Doctors.",
-  "admin.doctor.invite.status.unavailable": "Doctor invitations are temporarily unavailable.",
-  "admin.doctor.invitationStatus.pending": "Pending",
-  "admin.doctor.invitationStatus.accepted": "Accepted",
-  "admin.doctor.invitationStatus.revoked": "Revoked",
-  "admin.doctor.invitationStatus.expired": "Expired",
-  "admin.doctor.free.none": "No free access",
-  "admin.doctor.free.3": "3 months free",
-  "admin.doctor.free.6": "6 months free",
-  "admin.doctor.free.12": "12 months free",
-  "admin.doctor.noEmail": "No linked login email",
-  "admin.doctor.statusReason": "Status-change reason",
-  "admin.doctor.statusReasonHelp": "Recommended when suspending, rejecting or reactivating an account.",
-  "admin.doctor.save": "Save Doctor",
-  "admin.doctor.saving": "Saving…",
-  "admin.doctor.update.saved": "Doctor details and status were saved.",
-  "admin.doctor.update.invalid": "Check the Doctor details.",
-  "admin.doctor.update.duplicate": "The professional identifier is already used by another Doctor.",
-  "admin.doctor.update.unauthorized": "You are not authorized to update this Doctor.",
-  "admin.doctor.update.unavailable": "The Doctor could not be updated right now.",
-  "admin.doctor.clinicAssociations": "Clinic associations",
-  "admin.doctor.noClinicAssociations": "No clinic associations.",
-  "admin.doctor.freeAccess": "Free-access history",
-  "admin.doctor.free.noneActive": "No free-access period.",
-  "admin.doctor.statusHistory": "Status history",
-  "admin.doctor.noStatusHistory": "No status changes recorded yet.",
-  "admin.clinic.add.title": "Add clinic location",
-  "admin.clinic.add.description": "Create a physical location under an existing clinic organization.",
-  "admin.clinic.organization": "Clinic organization",
-  "admin.clinic.selectOrganization": "Select organization",
-  "admin.clinic.locationName": "Location name",
-  "admin.clinic.add.submit": "Add location",
-  "admin.clinic.save": "Save location",
-  "admin.clinic.saving": "Saving…",
-  "admin.clinic.addressMissing": "Address not completed",
-  "admin.clinic.statusReason": "Status-change reason",
-  "admin.clinic.assign.title": "Doctor assignment",
-  "admin.clinic.assign.description": "Assign an approved Doctor to this location. Payment sponsorship remains separate.",
-  "admin.clinic.assign.selectDoctor": "Select approved Doctor",
-  "admin.clinic.assign.submit": "Save assignment",
-  "admin.clinic.assignedDoctors": "Assigned Doctors",
-  "admin.clinic.noAssignedDoctors": "No Doctors assigned to this location.",
-  "admin.clinic.statusHistory": "Location status history",
-  "admin.clinic.noStatusHistory": "No location status changes recorded yet.",
-  "admin.clinic.assignment.active": "Active",
-  "admin.clinic.assignment.invited": "Invited",
-  "admin.clinic.assignment.suspended": "Suspended",
-  "admin.clinic.assignment.ended": "Ended",
-  "admin.clinic.result.created": "Clinic location created.",
-  "admin.clinic.result.saved": "Clinic location changes saved.",
-  "admin.clinic.result.invalid": "Enter the required location details. An address is required for an active location.",
-  "admin.clinic.result.unauthorized": "You are not authorized to manage clinic locations.",
-  "admin.clinic.result.unavailable": "Clinic location management is temporarily unavailable."
-  ,"admin.patient.status.active": "Active"
-  ,"admin.patient.status.suspended": "Suspended"
-  ,"admin.patient.status.blocked": "Blocked"
-  ,"admin.patient.status.archived": "Archived"
-  ,"admin.patient.noEmail": "No linked login email"
-  ,"admin.patient.neverSignedIn": "Never signed in"
-  ,"admin.patient.lastSignIn": "Last sign-in"
-  ,"admin.patient.familyName": "Family name"
-  ,"admin.patient.givenNames": "Given names"
-  ,"admin.patient.phone": "Account telephone"
-  ,"admin.patient.language": "Preferred language"
-  ,"admin.patient.statusReason": "Status-change reason"
-  ,"admin.patient.statusReasonHelp": "Optional context for suspension, blocking or reactivation."
-  ,"admin.patient.save": "Save Patient"
-  ,"admin.patient.saving": "Saving…"
-  ,"admin.patient.result.saved": "Patient account details and status were saved."
-  ,"admin.patient.result.invalid": "Check the Patient account details."
-  ,"admin.patient.result.unauthorized": "You are not authorized to manage Patient accounts."
-  ,"admin.patient.result.unavailable": "Patient account management is temporarily unavailable."
-  ,"admin.patient.archivedHelp": "This account is archived. Its history is preserved and it cannot be reactivated from this page."
-  ,"admin.patient.accountDetails": "Account details"
-  ,"admin.patient.emailConfirmed": "Email confirmed"
-  ,"admin.patient.emailNotConfirmed": "Email not confirmed"
-  ,"admin.patient.created": "Account created"
-  ,"admin.patient.statusHistory": "Account status history"
-  ,"admin.patient.noStatusHistory": "No status changes recorded yet."
-  ,"admin.patient.medicalPrivacy": "Medical-data privacy"
-  ,"admin.patient.medicalPrivacyHelp": "The Medical Profile, Medical Folder and protected identifiers are not available in Administration."
-  ,"patientAppointments.account.suspended": "Your pitster account is suspended. Please contact support for assistance."
-  ,"patientAppointments.account.blocked": "Your pitster account is blocked. Please contact support for assistance."
-  ,"patientAppointments.account.archived": "This pitster account is archived and cannot access Patient services."
-  ,"home.addressSearchPlaceholder": "Search an address or city"
-  ,"home.addressSearchHelp": "Select a Google address to find Doctors within 50 km."
-  ,"home.addressSearchFallback": "Google address search is unavailable. Type a city or address."
-  ,"workspace.addressSearchHelp": "Choose the address from Google so the clinic is placed correctly on the map."
-  ,"workspace.addressSearchFallback": "Google address search is unavailable. Enter the address, city and country manually."
-  ,"serviceCatalogue.title": "Service catalogue"
-  ,"serviceCatalogue.eyebrow": "Workshop management"
-  ,"serviceCatalogue.description": "Create and publish the services customers can request. Archived services remain attached to existing bookings but disappear from the public workshop page."
-  ,"serviceCatalogue.workshop": "Workshop"
-  ,"serviceCatalogue.publishedCount": "published"
-  ,"serviceCatalogue.emptyTitle": "No services yet"
-  ,"serviceCatalogue.emptyDescription": "Add the first bookable service for this workshop."
-  ,"serviceCatalogue.addService": "Add service"
-  ,"serviceCatalogue.adding": "Adding…"
-  ,"serviceCatalogue.name": "Service name"
-  ,"serviceCatalogue.category": "Category"
-  ,"serviceCatalogue.serviceDescription": "Description"
-  ,"serviceCatalogue.duration": "Duration (minutes)"
-  ,"serviceCatalogue.priceFrom": "Price from"
-  ,"serviceCatalogue.currency": "Currency"
-  ,"serviceCatalogue.displayOrder": "Display order"
-  ,"serviceCatalogue.requiresDiagnosis": "Final price requires diagnosis"
-  ,"serviceCatalogue.priceReview": "Price after inspection"
-  ,"serviceCatalogue.published": "Published"
-  ,"serviceCatalogue.archived": "Archived"
-  ,"serviceCatalogue.archiveAction": "Archive service"
-  ,"serviceCatalogue.publishAction": "Publish service"
-  ,"serviceCatalogue.noWorkshopTitle": "No workshop available"
-  ,"serviceCatalogue.noWorkshopDescription": "Create a workshop location before adding services."
-  ,"serviceCatalogue.manageWorkshops": "Manage workshops"
-  ,"serviceCatalogue.status.saved": "Service updated."
-  ,"serviceCatalogue.status.created": "Service added."
-  ,"serviceCatalogue.status.published": "Service published."
-  ,"serviceCatalogue.status.archived": "Service archived."
-  ,"serviceCatalogue.status.invalid": "Check the service details."
-  ,"serviceCatalogue.status.unauthorized": "You do not have permission to manage this workshop."
-  ,"serviceCatalogue.status.conflict": "A service with this name already exists."
-  ,"serviceCatalogue.status.unavailable": "The catalogue could not be updated. Please try again."
-  ,"workshopBookings.eyebrow": "Workshop operations"
-  ,"workshopBookings.title": "Booking requests"
-  ,"workshopBookings.description": "Review incoming service requests, agree a time with the customer, and keep every decision traceable. A proposed time is not confirmed until you confirm it."
-  ,"workshopBookings.visible": "requests shown"
-  ,"workshopBookings.filter": "Filter"
-  ,"workshopBookings.filter.open": "Open requests"
-  ,"workshopBookings.filter.all": "All requests"
-  ,"workshopBookings.emptyTitle": "No matching requests"
-  ,"workshopBookings.emptyDescription": "New customer service requests will appear here."
-  ,"workshopBookings.status.requested": "Requested"
-  ,"workshopBookings.status.confirmed": "Confirmed"
-  ,"workshopBookings.status.checked_in": "Checked in"
-  ,"workshopBookings.status.diagnosing": "Diagnosing"
-  ,"workshopBookings.status.awaiting_approval": "Awaiting approval"
-  ,"workshopBookings.status.in_service": "In service"
-  ,"workshopBookings.status.ready_for_collection": "Ready for collection"
-  ,"workshopBookings.status.completed": "Completed"
-  ,"workshopBookings.status.declined": "Declined"
-  ,"workshopBookings.status.cancelled": "Cancelled"
-  ,"workshopBookings.status.no_show": "No show"
-  ,"workshopBookings.customerVehicle": "Customer and vehicle"
-  ,"workshopBookings.customer": "Customer"
-  ,"workshopBookings.contact": "Contact"
-  ,"workshopBookings.vehicle": "Vehicle"
-  ,"workshopBookings.mileage": "Mileage"
-  ,"workshopBookings.mobility": "Mobility request"
-  ,"workshopBookings.language": "Customer language"
-  ,"workshopBookings.requestedTimes": "Booking times"
-  ,"workshopBookings.preferred": "Preferred"
-  ,"workshopBookings.alternate": "Alternative"
-  ,"workshopBookings.confirmed": "Confirmed"
-  ,"workshopBookings.proposed": "Workshop proposal"
-  ,"workshopBookings.notes": "Customer note"
-  ,"workshopBookings.noCustomerNote": "No customer note was provided."
-  ,"workshopBookings.workshopNote": "Workshop note"
-  ,"workshopBookings.manage": "Manage request"
-  ,"workshopBookings.noActions": "No booking actions are available for this status."
-  ,"workshopBookings.history": "Lifecycle history"
-  ,"workshopBookings.mobility.none": "No special requirement"
-  ,"workshopBookings.mobility.pickup": "Vehicle pickup"
-  ,"workshopBookings.mobility.courtesy_car": "Courtesy car"
-  ,"workshopBookings.mobility.wait_on_site": "Wait on site"
-  ,"workshopBookings.action.time": "Date and time"
-  ,"workshopBookings.action.reason": "Reason"
-  ,"workshopBookings.action.note": "Note (optional)"
-  ,"workshopBookings.action.saving": "Saving…"
-  ,"workshopBookings.action.confirm": "Confirm booking"
-  ,"workshopBookings.action.propose_time": "Propose another time"
-  ,"workshopBookings.action.reschedule": "Reschedule booking"
-  ,"workshopBookings.action.decline": "Decline request"
-  ,"workshopBookings.action.cancel": "Cancel booking"
-  ,"workshopBookings.result.confirmed": "The booking was confirmed."
-  ,"workshopBookings.result.proposed": "The alternative time was recorded."
-  ,"workshopBookings.result.rescheduled": "The booking was rescheduled."
-  ,"workshopBookings.result.declined": "The request was declined."
-  ,"workshopBookings.result.cancelled": "The booking was cancelled."
-  ,"workshopBookings.result.invalid": "Check the requested time and required reason."
-  ,"workshopBookings.result.unauthorized": "You cannot manage this workshop request."
-  ,"workshopBookings.result.unavailable": "The request could not be updated. Try again."
-  ,"workshopBookings.history.request_received": "Request received"
-  ,"workshopBookings.history.migration_snapshot": "Initial status"
-  ,"workshopBookings.history.confirmed": "Booking confirmed"
-  ,"workshopBookings.history.time_proposed": "Alternative time proposed"
-  ,"workshopBookings.history.rescheduled": "Booking rescheduled"
-  ,"workshopBookings.history.declined": "Request declined"
-  ,"workshopBookings.history.cancelled": "Booking cancelled"
-  ,"workshopBookings.history.proposal_accepted": "Proposed time accepted"
-  ,"workshopBookings.history.proposal_declined": "Proposed time declined"
-  ,"workshopBookings.history.customer_cancelled": "Cancelled by customer"
-  ,"customerBookings.back": "My Garage"
-  ,"customerBookings.eyebrow": "Customer bookings"
-  ,"customerBookings.title": "My service bookings"
-  ,"customerBookings.description": "Track requests, respond to workshop proposals, and keep confirmed workshop details close at hand."
-  ,"customerBookings.visible": "bookings shown"
-  ,"customerBookings.requestedTime": "Requested time"
-  ,"customerBookings.proposedTime": "Proposed time"
-  ,"customerBookings.confirmedTime": "Confirmed time"
-  ,"customerBookings.proposalEyebrow": "Action needed"
-  ,"customerBookings.proposalTitle": "The workshop proposed another time"
-  ,"customerBookings.bookingDetails": "Booking details"
-  ,"customerBookings.vehicle": "Vehicle"
-  ,"customerBookings.preferred": "Preferred"
-  ,"customerBookings.alternate": "Alternative"
-  ,"customerBookings.confirmed": "Confirmed"
-  ,"customerBookings.yourNote": "Your note"
-  ,"customerBookings.workshopNote": "Workshop note"
-  ,"customerBookings.workshopDetails": "Workshop details"
-  ,"customerBookings.contactUnavailable": "Contact details are not available yet."
-  ,"customerBookings.history": "Booking history"
-  ,"customerBookings.cancelTitle": "Cancel this booking"
-  ,"customerBookings.cancelDescription": "Cancellation is final. Tell the workshop why you need to cancel."
-  ,"customerBookings.cancelReason": "Cancellation reason"
-  ,"customerBookings.noteOptional": "Note (optional)"
-  ,"customerBookings.saving": "Saving…"
-  ,"customerBookings.action.accept_proposal": "Accept proposed time"
-  ,"customerBookings.action.decline_proposal": "Decline proposed time"
-  ,"customerBookings.action.cancel": "Cancel booking"
-  ,"customerBookings.result.accepted": "The proposed time is confirmed."
-  ,"customerBookings.result.declined": "The workshop proposal was declined."
-  ,"customerBookings.result.cancelled": "The booking was cancelled."
-  ,"customerBookings.result.invalid": "This action is no longer valid. Refresh and try again."
-  ,"customerBookings.result.unauthorized": "You cannot manage this booking."
-  ,"customerBookings.result.unavailable": "The booking could not be updated. Try again."
-  ,"customerBookings.emptyTitle": "No matching bookings"
-  ,"customerBookings.emptyDescription": "Your service requests will appear here after you book with a workshop."
-  ,"customerBookings.bookService": "Book a service"
-  ,"register.customer.choice": "Customer"
-  ,"register.workshop_manager.choice": "Workshop manager"
-  ,"register.customer.title": "Customer registration"
-  ,"register.customer.description": "Create your pitster account to manage vehicles and service bookings."
-  ,"register.workshop_manager.title": "Workshop manager registration"
-  ,"register.workshop_manager.description": "Create a service-provider account for your workshop business."
-  ,"register.workshop_manager.legalName": "Service provider legal name"
-  ,"register.workshop_manager.displayName": "Service provider display name"
-  ,"platformLogin.customer.title": "Customer sign in"
-  ,"platformLogin.customer.description": "Access your garage and service bookings."
-  ,"platformLogin.workshop_manager.title": "Workshop manager sign in"
-  ,"platformLogin.workshop_manager.description": "Manage workshop requests, services, and locations."
-  ,"platformLogin.noAccount": "No account yet?"
-  ,"platformLogin.register": "Create one"
-  ,"managerPortal.eyebrow": "Workshop management"
-  ,"managerPortal.welcome": "Welcome, {name}"
-  ,"managerPortal.description": "Manage your service providers, workshops, catalogue, and booking requests."
-  ,"managerPortal.workshops": "Workshops"
-  ,"managerPortal.role": "Membership role"
-  ,"managerPortal.empty": "No active service-provider membership is available."
-  ,"workshopOperations.eyebrow": "Workshop operations"
-  ,"workshopOperations.title": "Workshop settings"
-  ,"workshopOperations.description": "Control the public profile, booking rules, opening hours, mobility options, and exceptional closures for each workshop."
-  ,"workshopOperations.publicProfile": "Public profile"
-  ,"workshopOperations.displayName": "Workshop name"
-  ,"workshopOperations.descriptionLabel": "Description"
-  ,"workshopOperations.phone": "Public phone"
-  ,"workshopOperations.email": "Public email"
-  ,"workshopOperations.address": "Workshop address"
-  ,"workshopOperations.bookingRules": "Booking rules"
-  ,"workshopOperations.leadTime": "Minimum lead time (minutes)"
-  ,"workshopOperations.horizon": "Booking horizon (days)"
-  ,"workshopOperations.capacity": "Daily request capacity"
-  ,"workshopOperations.interval": "Slot interval (minutes)"
-  ,"workshopOperations.timeZone": "Time zone"
-  ,"workshopOperations.acceptsRequests": "Accept public booking requests"
-  ,"workshopOperations.pickup": "Offer vehicle pickup"
-  ,"workshopOperations.courtesyCar": "Offer a courtesy car"
-  ,"workshopOperations.waitOnSite": "Allow waiting on site"
-  ,"workshopOperations.hours": "Weekly opening hours"
-  ,"workshopOperations.closed": "Closed"
-  ,"workshopOperations.opens": "Opens"
-  ,"workshopOperations.closes": "Closes"
-  ,"workshopOperations.weekday.0": "Sunday"
-  ,"workshopOperations.weekday.1": "Monday"
-  ,"workshopOperations.weekday.2": "Tuesday"
-  ,"workshopOperations.weekday.3": "Wednesday"
-  ,"workshopOperations.weekday.4": "Thursday"
-  ,"workshopOperations.weekday.5": "Friday"
-  ,"workshopOperations.weekday.6": "Saturday"
-  ,"workshopOperations.save": "Save workshop settings"
-  ,"workshopOperations.saving": "Saving…"
-  ,"workshopOperations.closures": "Exceptional closures"
-  ,"workshopOperations.closuresDescription": "Closures override the normal weekly schedule and block new requests during the selected period."
-  ,"workshopOperations.closure.starts": "Starts"
-  ,"workshopOperations.closure.ends": "Ends"
-  ,"workshopOperations.closure.reason": "Reason (optional)"
-  ,"workshopOperations.closure.add": "Add closure"
-  ,"workshopOperations.closure.remove": "Remove"
-  ,"workshopOperations.closure.defaultReason": "Workshop closed"
-  ,"workshopOperations.closure.empty": "No upcoming closures."
-  ,"workshopOperations.emptyTitle": "No workshops available"
-  ,"workshopOperations.emptyDescription": "An active workshop membership is required before operations can be configured."
-  ,"workshopOperations.result.saved": "Workshop settings were saved."
-  ,"workshopOperations.result.created": "The closure was added."
-  ,"workshopOperations.result.removed": "The closure was removed."
-  ,"workshopOperations.result.invalid": "Check the settings and opening times."
-  ,"workshopOperations.result.unauthorized": "You cannot manage this workshop."
-  ,"workshopOperations.result.unavailable": "The workshop could not be updated. Try again."
-  ,"repairLifecycle.eyebrow": "Workshop operations"
-  ,"repairLifecycle.title": "Repair lifecycle"
-  ,"repairLifecycle.description": "Move confirmed jobs from arrival through diagnosis, customer approval, repair, and collection."
-  ,"repairLifecycle.visible": "repairs shown"
-  ,"repairLifecycle.filter.active": "Active repairs"
-  ,"repairLifecycle.note": "Workshop note (optional)"
-  ,"repairLifecycle.saving": "Saving…"
-  ,"repairLifecycle.result.saved": "The repair was updated."
-  ,"repairLifecycle.result.invalid": "This transition is no longer valid. Refresh and try again."
-  ,"repairLifecycle.result.unauthorized": "You cannot manage this repair."
-  ,"repairLifecycle.result.unavailable": "The repair could not be updated."
-  ,"repairLifecycle.action.check_in": "Check in vehicle"
-  ,"repairLifecycle.action.start_diagnosis": "Start diagnosis"
-  ,"repairLifecycle.action.start_work": "Start approved work"
-  ,"repairLifecycle.action.ready_for_collection": "Mark ready for collection"
-  ,"repairLifecycle.action.complete": "Complete repair"
-  ,"repairLifecycle.action.mark_no_show": "Mark as no-show"
-  ,"repairLifecycle.diagnosis": "Diagnosis"
-  ,"repairLifecycle.items": "Estimate items"
-  ,"repairLifecycle.addItem": "Add item"
-  ,"repairLifecycle.itemType": "Item type"
-  ,"repairLifecycle.itemDescription": "Description"
-  ,"repairLifecycle.quantity": "Quantity"
-  ,"repairLifecycle.unitPrice": "Unit price"
-  ,"repairLifecycle.removeItem": "Remove item"
-  ,"repairLifecycle.currency": "Currency"
-  ,"repairLifecycle.customerNote": "Message to customer (optional)"
-  ,"repairLifecycle.sendEstimate": "Send estimate for approval"
-  ,"repairLifecycle.estimate": "Estimate"
-  ,"repairLifecycle.estimateStatus.awaiting_customer": "Awaiting customer"
-  ,"repairLifecycle.estimateStatus.approved": "Approved"
-  ,"repairLifecycle.estimateStatus.declined": "Declined"
-  ,"repairLifecycle.estimateStatus.superseded": "Superseded"
-  ,"repairLifecycle.type.labor": "Labour"
-  ,"repairLifecycle.type.part": "Part"
-  ,"repairLifecycle.type.other": "Other"
-  ,"repairLifecycle.total": "Total"
-  ,"repairLifecycle.customerDecisionNote": "Customer note"
-  ,"repairLifecycle.appointment": "Appointment"
-  ,"repairLifecycle.jobDetails": "Job details"
-  ,"repairLifecycle.nextAction": "Next action"
-  ,"repairLifecycle.waitingCustomer": "Waiting for the customer to approve or decline the estimate."
-  ,"repairLifecycle.noActions": "This repair is closed."
-  ,"repairLifecycle.emptyTitle": "No matching repairs"
-  ,"repairLifecycle.emptyDescription": "Confirmed bookings enter the repair workflow here."
-  ,"repairLifecycle.customerAction.approve": "Approve estimate"
-  ,"repairLifecycle.customerAction.decline": "Decline estimate"
-  ,"repairLifecycle.customerResult.approved": "The estimate was approved. The workshop can now start work."
-  ,"repairLifecycle.customerResult.estimate_declined": "The estimate was declined and returned for revision."
-  ,"repairLifecycle.customerResult.invalid": "This estimate is no longer awaiting a decision."
-  ,"repairLifecycle.customerResult.unauthorized": "You cannot decide this estimate."
-  ,"repairLifecycle.customerResult.unavailable": "The estimate could not be updated."
-  ,"repairLifecycle.approvedWaiting": "Approved — waiting for the workshop to start work."
-  ,"workshopBookings.history.checked_in": "Vehicle checked in"
-  ,"workshopBookings.history.diagnosis_recorded": "Diagnosis started"
-  ,"workshopBookings.history.estimate_sent": "Estimate sent"
-  ,"workshopBookings.history.estimate_approved": "Estimate approved"
-  ,"workshopBookings.history.estimate_declined": "Estimate declined"
-  ,"workshopBookings.history.work_started": "Work started"
-  ,"workshopBookings.history.ready_for_collection": "Ready for collection"
-  ,"workshopBookings.history.completed": "Repair completed"
-  ,"workshopBookings.history.no_show": "Customer did not arrive"
-  ,"providerBilling.eyebrow": "Service provider billing"
-  ,"providerBilling.title": "Subscription and invoices"
-  ,"providerBilling.description": "Manage your €35 monthly pitster subscription, billing identity, payment method, and Stripe invoices."
-  ,"providerBilling.provider": "Service provider"
-  ,"providerBilling.checkoutSuccess": "Checkout completed. Stripe is confirming the subscription; this page updates from the signed webhook."
-  ,"providerBilling.checkoutCancelled": "Checkout was cancelled. No subscription change was made."
-  ,"providerBilling.error": "The billing operation could not be completed."
-  ,"providerBilling.plan": "Current plan"
-  ,"providerBilling.month": "month"
-  ,"providerBilling.smsIncluded": "SMS included"
-  ,"providerBilling.status": "Status"
-  ,"providerBilling.renews": "Current period ends"
-  ,"providerBilling.cancelsAtPeriodEnd": "Cancellation scheduled at period end"
-  ,"providerBilling.subscribe": "Subscribe with Stripe"
-  ,"providerBilling.portal": "Manage billing in Stripe"
-  ,"providerBilling.notConfigured": "Stripe environment settings are not configured."
-  ,"providerBilling.profileTitle": "Billing identity"
-  ,"providerBilling.profileDescription": "These details identify the paying service provider. Stripe securely collects payment details."
-  ,"providerBilling.billingEmail": "Billing email"
-  ,"providerBilling.billingContact": "Billing contact"
-  ,"providerBilling.taxIdentifier": "Tax identifier"
-  ,"providerBilling.addressLine1": "Address line 1"
-  ,"providerBilling.addressLine2": "Address line 2"
-  ,"providerBilling.city": "City"
-  ,"providerBilling.postalCode": "Postal code"
-  ,"providerBilling.country": "Country code"
-  ,"providerBilling.result.saved": "Billing details were saved."
-  ,"providerBilling.result.invalid": "Check the billing details."
-  ,"providerBilling.result.unauthorized": "Only an active provider owner can manage billing."
-  ,"providerBilling.result.configuration": "Stripe is not configured."
-  ,"providerBilling.result.unavailable": "Billing details could not be updated."
-  ,"providerBilling.invoices": "Stripe invoices"
-  ,"providerBilling.invoice": "Invoice"
-  ,"providerBilling.period": "Period"
-  ,"providerBilling.amount": "Amount"
-  ,"providerBilling.documents": "Documents"
-  ,"providerBilling.view": "View"
-  ,"providerBilling.noInvoices": "Invoices will appear here after Stripe creates them."
-  ,"providerBilling.subscription.not_started": "Not subscribed"
-  ,"providerBilling.subscription.incomplete": "Checkout incomplete"
-  ,"providerBilling.subscription.incomplete_expired": "Checkout expired"
-  ,"providerBilling.subscription.trialing": "Trialing"
-  ,"providerBilling.subscription.active": "Active"
-  ,"providerBilling.subscription.past_due": "Payment past due"
-  ,"providerBilling.subscription.canceled": "Canceled"
-  ,"providerBilling.subscription.unpaid": "Unpaid"
-  ,"providerBilling.subscription.paused": "Paused"
-  ,"commercialAdmin.eyebrow": "Commercial operations"
-  ,"commercialAdmin.title": "Provider subscriptions and operations"
-  ,"commercialAdmin.description": "Monitor Stripe-backed subscriptions, export accounting data, and manage provider operational status separately from payment state."
-  ,"commercialAdmin.providers": "Providers"
-  ,"commercialAdmin.activeSubscriptions": "Active subscriptions"
-  ,"commercialAdmin.attention": "Payment attention"
-  ,"commercialAdmin.mrr": "Monthly recurring revenue"
-  ,"commercialAdmin.provider": "Provider"
-  ,"commercialAdmin.providerStatus": "Operational status"
-  ,"commercialAdmin.subscription": "Subscription"
-  ,"commercialAdmin.renewal": "Period end"
-  ,"commercialAdmin.invoices": "Invoices"
-  ,"commercialAdmin.operation": "Admin operation"
-  ,"commercialAdmin.reason": "Required reason"
-  ,"commercialAdmin.providerStatus.pending": "Pending"
-  ,"commercialAdmin.providerStatus.active": "Active"
-  ,"commercialAdmin.providerStatus.suspended": "Suspended"
-  ,"commercialAdmin.providerStatus.rejected": "Rejected"
-  ,"commercialAdmin.result.saved": "Provider status was updated."
-  ,"commercialAdmin.result.invalid": "Choose a different valid status and give a reason."
-  ,"commercialAdmin.result.unauthorized": "Platform administrator access is required."
-  ,"commercialAdmin.result.unavailable": "Provider status could not be updated."
-  ,"serviceCatalogue.vehicleType": "Vehicle type"
-  ,"serviceCatalogue.vehicleType.car_van": "Car / van"
-  ,"serviceCatalogue.vehicleType.motorcycle_scooter": "Motorcycle / petrol scooter"
-  ,"serviceCatalogue.vehicleType.electric_bicycle": "Electric bicycle"
-  ,"serviceCatalogue.vehicleType.electric_kick_scooter": "Electric kick scooter"
-  ,"serviceCatalogue.bookingMode": "Booking path"
-  ,"serviceCatalogue.bookingMode.direct": "Direct service"
-  ,"serviceCatalogue.bookingMode.diagnosis_first": "Diagnosis first"
-  ,"serviceCatalogue.bookingMode.diagnosis": "Initial diagnosis"
-  ,"serviceCatalogue.diagnosisFeeHelp": "Set a positive diagnosis fee before publishing. The fee remains payable if the customer declines further repair work."
-  ,"serviceCatalogue.setupRequired": "Fee setup required"
-  ,"serviceCatalogue.template": "Standard service template"
-  ,"serviceCatalogue.template.custom": "Custom service"
-  ,"workshopBookings.calendar.title": "Workshop calendar"
-  ,"workshopBookings.calendarStatus.proposed": "Time proposed"
-  ,"workshopBookings.calendarStatus.rescheduled": "Rescheduled"
-  ,"workshopBookings.manual.add": "Add appointment"
-  ,"workshopBookings.manual.source": "Booking source"
-  ,"workshopBookings.manual.phone": "Customer phone (optional)"
-  ,"workshopBookings.manual.email": "Customer email (optional)"
-  ,"workshopBookings.manual.registration": "Registration number"
-  ,"workshopBookings.manual.make": "Vehicle make"
-  ,"workshopBookings.manual.model": "Vehicle model"
-  ,"workshopBookings.manual.year": "Production year"
-  ,"workshopBookings.customerStates": "Customer states"
-  ,"workshopBookings.customerStatesHelp": "Record the symptoms and facts exactly as described by the customer."
-  ,"workshopBookings.manual.create": "Create appointment"
-  ,"workshopBookings.manual.result.created": "The appointment was added to the calendar."
-  ,"workshopBookings.manual.result.invalid": "Check the appointment, customer, and vehicle details."
-  ,"workshopBookings.manual.result.unauthorized": "You cannot add appointments for this workshop."
-  ,"workshopBookings.manual.result.unavailable": "The appointment could not be created."
-  ,"workshopBookings.source.public_request": "Online request"
-  ,"workshopBookings.source.manager_phone": "Phone call"
-  ,"workshopBookings.source.manager_walk_in": "Walk-in"
-  ,"workshopBookings.source.manager_other": "Other manager entry"
-  ,"workshopBookings.history.manager_created": "Appointment created by workshop"
-  ,"automotiveAdmin.console": "Platform operations"
-  ,"automotiveAdmin.navigation": "Automotive administration"
-  ,"automotiveAdmin.nav.overview": "Overview"
-  ,"automotiveAdmin.nav.providers": "Service providers"
-  ,"automotiveAdmin.nav.workshops": "Workshops"
-  ,"automotiveAdmin.nav.customers": "Customers"
-  ,"automotiveAdmin.nav.managers": "Workshop managers"
-  ,"automotiveAdmin.nav.sms": "SMS delivery"
-  ,"automotiveAdmin.nav.security": "Security"
-  ,"automotiveAdmin.openBookings": "Open bookings"
-  ,"automotiveAdmin.smsAttention": "SMS needing attention"
-  ,"automotiveAdmin.recentProviders": "Recent service providers"
-  ,"automotiveAdmin.provider": "Service provider"
-  ,"automotiveAdmin.providers": "Service providers"
-  ,"automotiveAdmin.workshop": "Workshop"
-  ,"automotiveAdmin.workshops": "Workshops"
-  ,"automotiveAdmin.customer": "Customer"
-  ,"automotiveAdmin.manager": "Workshop manager"
-  ,"automotiveAdmin.managers": "Managers"
-  ,"automotiveAdmin.legalName": "Legal name"
-  ,"automotiveAdmin.location": "Location"
-  ,"automotiveAdmin.phone": "Phone"
-  ,"automotiveAdmin.vehicles": "Vehicles"
-  ,"automotiveAdmin.bookings": "Bookings"
-  ,"automotiveAdmin.created": "Created"
-  ,"automotiveAdmin.smsEvent": "SMS event"
-  ,"automotiveAdmin.pending": "Pending"
-  ,"automotiveAdmin.sent": "Sent"
-  ,"automotiveAdmin.failed": "Failed"
-  ,"automotiveAdmin.empty": "No records in this section."
-  ,"automotiveAdmin.securityTitle": "Administrative session security"
-  ,"automotiveAdmin.securityDescription": "Administrative access requires an active account and multi-factor authentication."
-  ,"automotiveAdmin.role": "Role"
-  ,"automotiveAdmin.session": "Session assurance"
-  ,"automotiveAdmin.generated": "Snapshot generated"
-  ,"automotiveAdmin.sms.booking_confirmed": "Booking confirmed"
-  ,"automotiveAdmin.sms.reminder_24h": "24-hour reminder"
-  ,"automotiveAdmin.sms.repair_started": "Repair started"
-  ,"automotiveAdmin.sms.ready_for_pickup": "Ready for pickup"
-  ,"automotiveAdmin.sms.review_request": "Review request"
+  "home.addressSearchPlaceholder": "Search an address or city",
+  "home.addressSearchHelp": "Select a Google address to find Doctors within 50 km.",
+  "home.addressSearchFallback": "Google address search is unavailable. Type a city or address.",
+  "workspace.addressSearchHelp": "Choose the address from Google so the clinic is placed correctly on the map.",
+  "workspace.addressSearchFallback": "Google address search is unavailable. Enter the address, city and country manually.",
+  "serviceCatalogue.title": "Service catalogue",
+  "serviceCatalogue.eyebrow": "Workshop management",
+  "serviceCatalogue.description": "Create and publish the services customers can request. Archived services remain attached to existing bookings but disappear from the public workshop page.",
+  "serviceCatalogue.workshop": "Workshop",
+  "serviceCatalogue.publishedCount": "published",
+  "serviceCatalogue.emptyTitle": "No services yet",
+  "serviceCatalogue.emptyDescription": "Add the first bookable service for this workshop.",
+  "serviceCatalogue.addService": "Add service",
+  "serviceCatalogue.adding": "Adding…",
+  "serviceCatalogue.name": "Service name",
+  "serviceCatalogue.category": "Category",
+  "serviceCatalogue.serviceDescription": "Description",
+  "serviceCatalogue.duration": "Duration (minutes)",
+  "serviceCatalogue.priceFrom": "Price from",
+  "serviceCatalogue.currency": "Currency",
+  "serviceCatalogue.displayOrder": "Display order",
+  "serviceCatalogue.requiresDiagnosis": "Final price requires diagnosis",
+  "serviceCatalogue.priceReview": "Price after inspection",
+  "serviceCatalogue.published": "Published",
+  "serviceCatalogue.archived": "Archived",
+  "serviceCatalogue.archiveAction": "Archive service",
+  "serviceCatalogue.publishAction": "Publish service",
+  "serviceCatalogue.noWorkshopTitle": "No workshop available",
+  "serviceCatalogue.noWorkshopDescription": "Create a workshop location before adding services.",
+  "serviceCatalogue.manageWorkshops": "Manage workshops",
+  "serviceCatalogue.status.saved": "Service updated.",
+  "serviceCatalogue.status.created": "Service added.",
+  "serviceCatalogue.status.published": "Service published.",
+  "serviceCatalogue.status.archived": "Service archived.",
+  "serviceCatalogue.status.invalid": "Check the service details.",
+  "serviceCatalogue.status.unauthorized": "You do not have permission to manage this workshop.",
+  "serviceCatalogue.status.conflict": "A service with this name already exists.",
+  "serviceCatalogue.status.unavailable": "The catalogue could not be updated. Please try again.",
+  "workshopBookings.eyebrow": "Workshop operations",
+  "workshopBookings.title": "Booking requests",
+  "workshopBookings.description": "Review incoming service requests, agree a time with the customer, and keep every decision traceable. A proposed time is not confirmed until you confirm it.",
+  "workshopBookings.visible": "requests shown",
+  "workshopBookings.filter": "Filter",
+  "workshopBookings.filter.open": "Open requests",
+  "workshopBookings.filter.all": "All requests",
+  "workshopBookings.emptyTitle": "No matching requests",
+  "workshopBookings.emptyDescription": "New customer service requests will appear here.",
+  "workshopBookings.status.requested": "Requested",
+  "workshopBookings.status.confirmed": "Confirmed",
+  "workshopBookings.status.checked_in": "Checked in",
+  "workshopBookings.status.diagnosing": "Diagnosing",
+  "workshopBookings.status.awaiting_approval": "Awaiting approval",
+  "workshopBookings.status.in_service": "In service",
+  "workshopBookings.status.ready_for_collection": "Ready for collection",
+  "workshopBookings.status.completed": "Completed",
+  "workshopBookings.status.declined": "Declined",
+  "workshopBookings.status.cancelled": "Cancelled",
+  "workshopBookings.status.no_show": "No show",
+  "workshopBookings.customerVehicle": "Customer and vehicle",
+  "workshopBookings.customer": "Customer",
+  "workshopBookings.contact": "Contact",
+  "workshopBookings.vehicle": "Vehicle",
+  "workshopBookings.mileage": "Mileage",
+  "workshopBookings.mobility": "Mobility request",
+  "workshopBookings.language": "Customer language",
+  "workshopBookings.requestedTimes": "Booking times",
+  "workshopBookings.preferred": "Preferred",
+  "workshopBookings.alternate": "Alternative",
+  "workshopBookings.confirmed": "Confirmed",
+  "workshopBookings.proposed": "Workshop proposal",
+  "workshopBookings.notes": "Customer note",
+  "workshopBookings.noCustomerNote": "No customer note was provided.",
+  "workshopBookings.workshopNote": "Workshop note",
+  "workshopBookings.manage": "Manage request",
+  "workshopBookings.noActions": "No booking actions are available for this status.",
+  "workshopBookings.history": "Lifecycle history",
+  "workshopBookings.mobility.none": "No special requirement",
+  "workshopBookings.mobility.pickup": "Vehicle pickup",
+  "workshopBookings.mobility.courtesy_car": "Courtesy car",
+  "workshopBookings.mobility.wait_on_site": "Wait on site",
+  "workshopBookings.action.time": "Date and time",
+  "workshopBookings.action.reason": "Reason",
+  "workshopBookings.action.note": "Note (optional)",
+  "workshopBookings.action.saving": "Saving…",
+  "workshopBookings.action.confirm": "Confirm booking",
+  "workshopBookings.action.propose_time": "Propose another time",
+  "workshopBookings.action.reschedule": "Reschedule booking",
+  "workshopBookings.action.decline": "Decline request",
+  "workshopBookings.action.cancel": "Cancel booking",
+  "workshopBookings.result.confirmed": "The booking was confirmed.",
+  "workshopBookings.result.proposed": "The alternative time was recorded.",
+  "workshopBookings.result.rescheduled": "The booking was rescheduled.",
+  "workshopBookings.result.declined": "The request was declined.",
+  "workshopBookings.result.cancelled": "The booking was cancelled.",
+  "workshopBookings.result.invalid": "Check the requested time and required reason.",
+  "workshopBookings.result.unauthorized": "You cannot manage this workshop request.",
+  "workshopBookings.result.unavailable": "The request could not be updated. Try again.",
+  "workshopBookings.history.request_received": "Request received",
+  "workshopBookings.history.migration_snapshot": "Initial status",
+  "workshopBookings.history.confirmed": "Booking confirmed",
+  "workshopBookings.history.time_proposed": "Alternative time proposed",
+  "workshopBookings.history.rescheduled": "Booking rescheduled",
+  "workshopBookings.history.declined": "Request declined",
+  "workshopBookings.history.cancelled": "Booking cancelled",
+  "workshopBookings.history.proposal_accepted": "Proposed time accepted",
+  "workshopBookings.history.proposal_declined": "Proposed time declined",
+  "workshopBookings.history.customer_cancelled": "Cancelled by customer",
+  "customerBookings.back": "My Garage",
+  "customerBookings.eyebrow": "Customer bookings",
+  "customerBookings.title": "My service bookings",
+  "customerBookings.description": "Track requests, respond to workshop proposals, and keep confirmed workshop details close at hand.",
+  "customerBookings.visible": "bookings shown",
+  "customerBookings.requestedTime": "Requested time",
+  "customerBookings.proposedTime": "Proposed time",
+  "customerBookings.confirmedTime": "Confirmed time",
+  "customerBookings.proposalEyebrow": "Action needed",
+  "customerBookings.proposalTitle": "The workshop proposed another time",
+  "customerBookings.bookingDetails": "Booking details",
+  "customerBookings.vehicle": "Vehicle",
+  "customerBookings.preferred": "Preferred",
+  "customerBookings.alternate": "Alternative",
+  "customerBookings.confirmed": "Confirmed",
+  "customerBookings.yourNote": "Your note",
+  "customerBookings.workshopNote": "Workshop note",
+  "customerBookings.workshopDetails": "Workshop details",
+  "customerBookings.contactUnavailable": "Contact details are not available yet.",
+  "customerBookings.history": "Booking history",
+  "customerBookings.cancelTitle": "Cancel this booking",
+  "customerBookings.cancelDescription": "Cancellation is final. Tell the workshop why you need to cancel.",
+  "customerBookings.cancelReason": "Cancellation reason",
+  "customerBookings.noteOptional": "Note (optional)",
+  "customerBookings.saving": "Saving…",
+  "customerBookings.action.accept_proposal": "Accept proposed time",
+  "customerBookings.action.decline_proposal": "Decline proposed time",
+  "customerBookings.action.cancel": "Cancel booking",
+  "customerBookings.result.accepted": "The proposed time is confirmed.",
+  "customerBookings.result.declined": "The workshop proposal was declined.",
+  "customerBookings.result.cancelled": "The booking was cancelled.",
+  "customerBookings.result.invalid": "This action is no longer valid. Refresh and try again.",
+  "customerBookings.result.unauthorized": "You cannot manage this booking.",
+  "customerBookings.result.unavailable": "The booking could not be updated. Try again.",
+  "customerBookings.emptyTitle": "No matching bookings",
+  "customerBookings.emptyDescription": "Your service requests will appear here after you book with a workshop.",
+  "customerBookings.bookService": "Book a service",
+  "register.customer.choice": "Customer",
+  "register.workshop_manager.choice": "Workshop manager",
+  "register.customer.title": "Customer registration",
+  "register.customer.description": "Create your pitster account to manage vehicles and service bookings.",
+  "register.workshop_manager.title": "Workshop manager registration",
+  "register.workshop_manager.description": "Create a service-provider account for your workshop business.",
+  "register.workshop_manager.legalName": "Service provider legal name",
+  "register.workshop_manager.displayName": "Service provider display name",
+  "platformLogin.customer.title": "Customer sign in",
+  "platformLogin.customer.description": "Access your garage and service bookings.",
+  "platformLogin.workshop_manager.title": "Workshop manager sign in",
+  "platformLogin.workshop_manager.description": "Manage workshop requests, services, and locations.",
+  "platformLogin.noAccount": "No account yet?",
+  "platformLogin.register": "Create one",
+  "managerPortal.eyebrow": "Workshop management",
+  "managerPortal.welcome": "Welcome, {name}",
+  "managerPortal.description": "Manage your service providers, workshops, catalogue, and booking requests.",
+  "managerPortal.workshops": "Workshops",
+  "managerPortal.role": "Membership role",
+  "managerPortal.empty": "No active service-provider membership is available.",
+  "workshopOperations.eyebrow": "Workshop operations",
+  "workshopOperations.title": "Workshop settings",
+  "workshopOperations.description": "Control the public profile, booking rules, opening hours, mobility options, and exceptional closures for each workshop.",
+  "workshopOperations.publicProfile": "Public profile",
+  "workshopOperations.displayName": "Workshop name",
+  "workshopOperations.descriptionLabel": "Description",
+  "workshopOperations.phone": "Public phone",
+  "workshopOperations.email": "Public email",
+  "workshopOperations.address": "Workshop address",
+  "workshopOperations.bookingRules": "Booking rules",
+  "workshopOperations.leadTime": "Minimum lead time (minutes)",
+  "workshopOperations.horizon": "Booking horizon (days)",
+  "workshopOperations.capacity": "Daily request capacity",
+  "workshopOperations.interval": "Slot interval (minutes)",
+  "workshopOperations.timeZone": "Time zone",
+  "workshopOperations.acceptsRequests": "Accept public booking requests",
+  "workshopOperations.pickup": "Offer vehicle pickup",
+  "workshopOperations.courtesyCar": "Offer a courtesy car",
+  "workshopOperations.waitOnSite": "Allow waiting on site",
+  "workshopOperations.hours": "Weekly opening hours",
+  "workshopOperations.closed": "Closed",
+  "workshopOperations.opens": "Opens",
+  "workshopOperations.closes": "Closes",
+  "workshopOperations.weekday.0": "Sunday",
+  "workshopOperations.weekday.1": "Monday",
+  "workshopOperations.weekday.2": "Tuesday",
+  "workshopOperations.weekday.3": "Wednesday",
+  "workshopOperations.weekday.4": "Thursday",
+  "workshopOperations.weekday.5": "Friday",
+  "workshopOperations.weekday.6": "Saturday",
+  "workshopOperations.save": "Save workshop settings",
+  "workshopOperations.saving": "Saving…",
+  "workshopOperations.closures": "Exceptional closures",
+  "workshopOperations.closuresDescription": "Closures override the normal weekly schedule and block new requests during the selected period.",
+  "workshopOperations.closure.starts": "Starts",
+  "workshopOperations.closure.ends": "Ends",
+  "workshopOperations.closure.reason": "Reason (optional)",
+  "workshopOperations.closure.add": "Add closure",
+  "workshopOperations.closure.remove": "Remove",
+  "workshopOperations.closure.defaultReason": "Workshop closed",
+  "workshopOperations.closure.empty": "No upcoming closures.",
+  "workshopOperations.emptyTitle": "No workshops available",
+  "workshopOperations.emptyDescription": "An active workshop membership is required before operations can be configured.",
+  "workshopOperations.result.saved": "Workshop settings were saved.",
+  "workshopOperations.result.created": "The closure was added.",
+  "workshopOperations.result.removed": "The closure was removed.",
+  "workshopOperations.result.invalid": "Check the settings and opening times.",
+  "workshopOperations.result.unauthorized": "You cannot manage this workshop.",
+  "workshopOperations.result.unavailable": "The workshop could not be updated. Try again.",
+  "repairLifecycle.eyebrow": "Workshop operations",
+  "repairLifecycle.title": "Repair lifecycle",
+  "repairLifecycle.description": "Move confirmed jobs from arrival through diagnosis, customer approval, repair, and collection.",
+  "repairLifecycle.visible": "repairs shown",
+  "repairLifecycle.filter.active": "Active repairs",
+  "repairLifecycle.note": "Workshop note (optional)",
+  "repairLifecycle.saving": "Saving…",
+  "repairLifecycle.result.saved": "The repair was updated.",
+  "repairLifecycle.result.invalid": "This transition is no longer valid. Refresh and try again.",
+  "repairLifecycle.result.unauthorized": "You cannot manage this repair.",
+  "repairLifecycle.result.unavailable": "The repair could not be updated.",
+  "repairLifecycle.action.check_in": "Check in vehicle",
+  "repairLifecycle.action.start_diagnosis": "Start diagnosis",
+  "repairLifecycle.action.start_work": "Start approved work",
+  "repairLifecycle.action.ready_for_collection": "Mark ready for collection",
+  "repairLifecycle.action.complete": "Complete repair",
+  "repairLifecycle.action.mark_no_show": "Mark as no-show",
+  "repairLifecycle.diagnosis": "Diagnosis",
+  "repairLifecycle.items": "Estimate items",
+  "repairLifecycle.addItem": "Add item",
+  "repairLifecycle.itemType": "Item type",
+  "repairLifecycle.itemDescription": "Description",
+  "repairLifecycle.quantity": "Quantity",
+  "repairLifecycle.unitPrice": "Unit price",
+  "repairLifecycle.removeItem": "Remove item",
+  "repairLifecycle.currency": "Currency",
+  "repairLifecycle.customerNote": "Message to customer (optional)",
+  "repairLifecycle.sendEstimate": "Send estimate for approval",
+  "repairLifecycle.estimate": "Estimate",
+  "repairLifecycle.estimateStatus.awaiting_customer": "Awaiting customer",
+  "repairLifecycle.estimateStatus.approved": "Approved",
+  "repairLifecycle.estimateStatus.declined": "Declined",
+  "repairLifecycle.estimateStatus.superseded": "Superseded",
+  "repairLifecycle.type.labor": "Labour",
+  "repairLifecycle.type.part": "Part",
+  "repairLifecycle.type.other": "Other",
+  "repairLifecycle.total": "Total",
+  "repairLifecycle.customerDecisionNote": "Customer note",
+  "repairLifecycle.appointment": "Appointment",
+  "repairLifecycle.jobDetails": "Job details",
+  "repairLifecycle.nextAction": "Next action",
+  "repairLifecycle.waitingCustomer": "Waiting for the customer to approve or decline the estimate.",
+  "repairLifecycle.noActions": "This repair is closed.",
+  "repairLifecycle.emptyTitle": "No matching repairs",
+  "repairLifecycle.emptyDescription": "Confirmed bookings enter the repair workflow here.",
+  "repairLifecycle.customerAction.approve": "Approve estimate",
+  "repairLifecycle.customerAction.decline": "Decline estimate",
+  "repairLifecycle.customerResult.approved": "The estimate was approved. The workshop can now start work.",
+  "repairLifecycle.customerResult.estimate_declined": "The estimate was declined and returned for revision.",
+  "repairLifecycle.customerResult.invalid": "This estimate is no longer awaiting a decision.",
+  "repairLifecycle.customerResult.unauthorized": "You cannot decide this estimate.",
+  "repairLifecycle.customerResult.unavailable": "The estimate could not be updated.",
+  "repairLifecycle.approvedWaiting": "Approved — waiting for the workshop to start work.",
+  "workshopBookings.history.checked_in": "Vehicle checked in",
+  "workshopBookings.history.diagnosis_recorded": "Diagnosis started",
+  "workshopBookings.history.estimate_sent": "Estimate sent",
+  "workshopBookings.history.estimate_approved": "Estimate approved",
+  "workshopBookings.history.estimate_declined": "Estimate declined",
+  "workshopBookings.history.work_started": "Work started",
+  "workshopBookings.history.ready_for_collection": "Ready for collection",
+  "workshopBookings.history.completed": "Repair completed",
+  "workshopBookings.history.no_show": "Customer did not arrive",
+  "providerBilling.eyebrow": "Service provider billing",
+  "providerBilling.title": "Subscription and invoices",
+  "providerBilling.description": "Manage your €35 monthly pitster subscription, billing identity, payment method, and Stripe invoices.",
+  "providerBilling.provider": "Service provider",
+  "providerBilling.checkoutSuccess": "Checkout completed. Stripe is confirming the subscription; this page updates from the signed webhook.",
+  "providerBilling.checkoutCancelled": "Checkout was cancelled. No subscription change was made.",
+  "providerBilling.error": "The billing operation could not be completed.",
+  "providerBilling.plan": "Current plan",
+  "providerBilling.month": "month",
+  "providerBilling.smsIncluded": "SMS included",
+  "providerBilling.status": "Status",
+  "providerBilling.renews": "Current period ends",
+  "providerBilling.cancelsAtPeriodEnd": "Cancellation scheduled at period end",
+  "providerBilling.subscribe": "Subscribe with Stripe",
+  "providerBilling.portal": "Manage billing in Stripe",
+  "providerBilling.notConfigured": "Stripe environment settings are not configured.",
+  "providerBilling.profileTitle": "Billing identity",
+  "providerBilling.profileDescription": "These details identify the paying service provider. Stripe securely collects payment details.",
+  "providerBilling.billingEmail": "Billing email",
+  "providerBilling.billingContact": "Billing contact",
+  "providerBilling.taxIdentifier": "Tax identifier",
+  "providerBilling.addressLine1": "Address line 1",
+  "providerBilling.addressLine2": "Address line 2",
+  "providerBilling.city": "City",
+  "providerBilling.postalCode": "Postal code",
+  "providerBilling.country": "Country code",
+  "providerBilling.result.saved": "Billing details were saved.",
+  "providerBilling.result.invalid": "Check the billing details.",
+  "providerBilling.result.unauthorized": "Only an active provider owner can manage billing.",
+  "providerBilling.result.configuration": "Stripe is not configured.",
+  "providerBilling.result.unavailable": "Billing details could not be updated.",
+  "providerBilling.invoices": "Stripe invoices",
+  "providerBilling.invoice": "Invoice",
+  "providerBilling.period": "Period",
+  "providerBilling.amount": "Amount",
+  "providerBilling.documents": "Documents",
+  "providerBilling.view": "View",
+  "providerBilling.noInvoices": "Invoices will appear here after Stripe creates them.",
+  "providerBilling.subscription.not_started": "Not subscribed",
+  "providerBilling.subscription.incomplete": "Checkout incomplete",
+  "providerBilling.subscription.incomplete_expired": "Checkout expired",
+  "providerBilling.subscription.trialing": "Trialing",
+  "providerBilling.subscription.active": "Active",
+  "providerBilling.subscription.past_due": "Payment past due",
+  "providerBilling.subscription.canceled": "Canceled",
+  "providerBilling.subscription.unpaid": "Unpaid",
+  "providerBilling.subscription.paused": "Paused",
+  "commercialAdmin.eyebrow": "Commercial operations",
+  "commercialAdmin.title": "Provider subscriptions and operations",
+  "commercialAdmin.description": "Monitor Stripe-backed subscriptions, export accounting data, and manage provider operational status separately from payment state.",
+  "commercialAdmin.providers": "Providers",
+  "commercialAdmin.activeSubscriptions": "Active subscriptions",
+  "commercialAdmin.attention": "Payment attention",
+  "commercialAdmin.mrr": "Monthly recurring revenue",
+  "commercialAdmin.provider": "Provider",
+  "commercialAdmin.providerStatus": "Operational status",
+  "commercialAdmin.subscription": "Subscription",
+  "commercialAdmin.renewal": "Period end",
+  "commercialAdmin.invoices": "Invoices",
+  "commercialAdmin.operation": "Admin operation",
+  "commercialAdmin.reason": "Required reason",
+  "commercialAdmin.providerStatus.pending": "Pending",
+  "commercialAdmin.providerStatus.active": "Active",
+  "commercialAdmin.providerStatus.suspended": "Suspended",
+  "commercialAdmin.providerStatus.rejected": "Rejected",
+  "commercialAdmin.result.saved": "Provider status was updated.",
+  "commercialAdmin.result.invalid": "Choose a different valid status and give a reason.",
+  "commercialAdmin.result.unauthorized": "Platform administrator access is required.",
+  "commercialAdmin.result.unavailable": "Provider status could not be updated.",
+  "serviceCatalogue.vehicleType": "Vehicle type",
+  "serviceCatalogue.vehicleType.car_van": "Car / van",
+  "serviceCatalogue.vehicleType.motorcycle_scooter": "Motorcycle / petrol scooter",
+  "serviceCatalogue.vehicleType.electric_bicycle": "Electric bicycle",
+  "serviceCatalogue.vehicleType.electric_kick_scooter": "Electric kick scooter",
+  "serviceCatalogue.bookingMode": "Booking path",
+  "serviceCatalogue.bookingMode.direct": "Direct service",
+  "serviceCatalogue.bookingMode.diagnosis_first": "Diagnosis first",
+  "serviceCatalogue.bookingMode.diagnosis": "Initial diagnosis",
+  "serviceCatalogue.diagnosisFeeHelp": "Set a positive diagnosis fee before publishing. The fee remains payable if the customer declines further repair work.",
+  "serviceCatalogue.setupRequired": "Fee setup required",
+  "serviceCatalogue.template": "Standard service template",
+  "serviceCatalogue.template.custom": "Custom service",
+  "workshopBookings.calendar.title": "Workshop calendar",
+  "workshopBookings.calendarStatus.proposed": "Time proposed",
+  "workshopBookings.calendarStatus.rescheduled": "Rescheduled",
+  "workshopBookings.manual.add": "Add appointment",
+  "workshopBookings.manual.source": "Booking source",
+  "workshopBookings.manual.phone": "Customer phone (optional)",
+  "workshopBookings.manual.email": "Customer email (optional)",
+  "workshopBookings.manual.registration": "Registration number",
+  "workshopBookings.manual.make": "Vehicle make",
+  "workshopBookings.manual.model": "Vehicle model",
+  "workshopBookings.manual.year": "Production year",
+  "workshopBookings.customerStates": "Customer states",
+  "workshopBookings.customerStatesHelp": "Record the symptoms and facts exactly as described by the customer.",
+  "workshopBookings.manual.create": "Create appointment",
+  "workshopBookings.manual.result.created": "The appointment was added to the calendar.",
+  "workshopBookings.manual.result.invalid": "Check the appointment, customer, and vehicle details.",
+  "workshopBookings.manual.result.unauthorized": "You cannot add appointments for this workshop.",
+  "workshopBookings.manual.result.unavailable": "The appointment could not be created.",
+  "workshopBookings.source.public_request": "Online request",
+  "workshopBookings.source.manager_phone": "Phone call",
+  "workshopBookings.source.manager_walk_in": "Walk-in",
+  "workshopBookings.source.manager_other": "Other manager entry",
+  "workshopBookings.history.manager_created": "Appointment created by workshop",
+  "automotiveAdmin.console": "Platform operations",
+  "automotiveAdmin.navigation": "Automotive administration",
+  "automotiveAdmin.nav.overview": "Overview",
+  "automotiveAdmin.nav.providers": "Service providers",
+  "automotiveAdmin.nav.workshops": "Workshops",
+  "automotiveAdmin.nav.customers": "Customers",
+  "automotiveAdmin.nav.managers": "Workshop managers",
+  "automotiveAdmin.nav.sms": "SMS delivery",
+  "automotiveAdmin.nav.security": "Security",
+  "automotiveAdmin.openBookings": "Open bookings",
+  "automotiveAdmin.smsAttention": "SMS needing attention",
+  "automotiveAdmin.recentProviders": "Recent service providers",
+  "automotiveAdmin.provider": "Service provider",
+  "automotiveAdmin.providers": "Service providers",
+  "automotiveAdmin.workshop": "Workshop",
+  "automotiveAdmin.workshops": "Workshops",
+  "automotiveAdmin.customer": "Customer",
+  "automotiveAdmin.manager": "Workshop manager",
+  "automotiveAdmin.managers": "Managers",
+  "automotiveAdmin.legalName": "Legal name",
+  "automotiveAdmin.location": "Location",
+  "automotiveAdmin.phone": "Phone",
+  "automotiveAdmin.vehicles": "Vehicles",
+  "automotiveAdmin.bookings": "Bookings",
+  "automotiveAdmin.created": "Created",
+  "automotiveAdmin.smsEvent": "SMS event",
+  "automotiveAdmin.pending": "Pending",
+  "automotiveAdmin.sent": "Sent",
+  "automotiveAdmin.failed": "Failed",
+  "automotiveAdmin.empty": "No records in this section.",
+  "automotiveAdmin.securityTitle": "Administrative session security",
+  "automotiveAdmin.securityDescription": "Administrative access requires an active account and multi-factor authentication.",
+  "automotiveAdmin.role": "Role",
+  "automotiveAdmin.session": "Session assurance",
+  "automotiveAdmin.generated": "Snapshot generated",
+  "automotiveAdmin.sms.booking_confirmed": "Booking confirmed",
+  "automotiveAdmin.sms.reminder_24h": "24-hour reminder",
+  "automotiveAdmin.sms.repair_started": "Repair started",
+  "automotiveAdmin.sms.ready_for_pickup": "Ready for pickup",
+  "automotiveAdmin.sms.review_request": "Review request"
 }

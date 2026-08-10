@@ -37,61 +37,6 @@
   "a11y.patientPortal": "Portalul pitster pentru pacienți",
   "a11y.closePatientProfile": "Închide profilul pacientului",
   "a11y.openPatientProfile": "Deschide profilul lui {name}",
-  "patient.nav.profile": "Profil medical",
-  "patient.nav.share": "Partajare sigură",
-  "patient.nav.access": "Istoric acces",
-  "patient.identityVerified": "Identitate verificată",
-  "patient.readOnly": "Vizualizare pacient · Doar citire",
-  "patient.clinicianEditMode": "Mod de editare medicală",
-  "patient.dateOfBirth": "Data nașterii",
-  "patient.bloodGroup": "Grupa sanguină",
-  "patient.sex": "Sex",
-  "patient.organDonor": "Donator de organe",
-  "patient.allergies": "Alergii",
-  "patient.chronicConditions": "Afecțiuni cronice",
-  "patient.previousProcedures": "Intervenții anterioare",
-  "patient.emergencyContact": "Contact de urgență",
-  "patient.familyDoctor": "Medic de familie",
-  "patient.lastUpdated": "Ultima actualizare",
-  "patient.emergencyMode": "Mod urgență",
-  "patient.doctorAccess": "Portal medical",
-  "patient.signedInAsPatient": "Conectat ca pacient",
-  "patient.critical.title": "Informații critice",
-  "patient.critical.help": "Date esențiale pentru asistența medicală de urgență",
-  "patient.section.personal": "Date personale",
-  "patient.section.medications": "Medicație curentă",
-  "patient.section.conditions": "Afecțiuni și antecedente",
-  "patient.section.devices": "Implanturi și dispozitive medicale",
-  "patient.section.contacts": "Contacte medicale",
-  "patient.action.saveSignedUpdate": "Salvează actualizarea semnată",
-  "patient.action.add": "Adaugă",
-  "patient.action.editable": "Editabil",
-  "patient.medications.none": "Nu este înregistrată nicio medicație",
-  "patient.implants.none": "Nu sunt înregistrate implanturi sau dispozitive medicale",
-  "patient.share.title": "Partajează profilul",
-  "patient.share.description": "Alege o metodă sigură prin care un cadru medical poate primi acces temporar.",
-  "patient.share.scan": "Scanează pentru vizualizare",
-  "patient.share.qrHelp": "Valabil 15 minute · Doar citire",
-  "patient.share.nfc": "Partajează prin NFC",
-  "patient.share.nfcHelp": "Apropie de celălalt dispozitiv",
-  "patient.share.email": "Trimite e-mail securizat",
-  "patient.share.emailHelp": "Creează un link cu expirare",
-  "patient.share.download": "Descarcă fișa de urgență",
-  "patient.share.downloadHelp": "Acces offline · PDF",
-  "patient.share.privacy": "Setări de confidențialitate",
-  "patient.share.expiry": "Expirarea linkului",
-  "patient.share.minutes": "15 minute",
-  "patient.share.noActiveLinks": "Nu există linkuri de partajare active",
-  "patient.share.revoke": "Revocă toate linkurile active",
-  "patient.share.sensitiveExcluded": "CNP-ul, numărul de asigurat și datele cardului național de sănătate nu sunt incluse niciodată în coduri QR, NFC, linkuri prin e-mail sau fișa de urgență.",
-  "patient.access.title": "Cine a accesat profilul",
-  "patient.access.description": "Fiecare acces este înregistrat pentru siguranța ta.",
-  "patient.access.emptyTitle": "Nu există accesări",
-  "patient.access.emptyDescription": "Activitatea autorizată a profilului va apărea aici.",
-  "patient.modal.title": "Acces la portalul medical",
-  "patient.modal.description": "Deschide spațiul clinic pentru a consulta profiluri și cereri de acces în acest prototip.",
-  "patient.modal.continue": "Continuă către portalul medical",
-  "patient.modal.note": "Doar prototip · Autentificarea și stocarea persistentă nu sunt încă implementate.",
   "notice.demoSession": "Sesiunea demonstrativă rămâne activă pe acest dispozitiv",
   "notice.recordSaved": "Actualizarea medicală a fost salvată și semnată",
   "notice.nfcReady": "Partajarea NFC este pregătită — apropie dispozitivele",
@@ -103,116 +48,6 @@
   "notice.noteOpened": "Ciorna notei clinice a fost deschisă",
   "notice.profileReviewed": "Profilul lui {name} a fost marcat ca verificat",
   "notice.requestDecision": "Cererea lui {name} a fost {decision}",
-  "medical.sex.female": "Feminin",
-  "medical.sex.male": "Masculin",
-  "medical.relationship.husband": "Soț",
-  "medical.relationship.other": "Altă relație",
-  "medical.allergy.penicillin": "Penicilină",
-  "medical.allergy.latex": "Latex",
-  "medical.allergy.ibuprofen": "Ibuprofen",
-  "medical.allergy.noneKnown": "Fără alergii cunoscute",
-  "medical.condition.type2Diabetes": "Diabet zaharat de tip 2",
-  "medical.condition.hypertension": "Hipertensiune arterială",
-  "medical.condition.atrialFibrillation": "Fibrilație atrială",
-  "medical.condition.asthma": "Astm bronșic",
-  "medical.condition.hyperlipidemia": "Dislipidemie",
-  "medical.condition.hypothyroidism": "Hipotiroidism",
-  "medical.schedule.twiceDaily": "De două ori pe zi",
-  "medical.schedule.everyMorning": "În fiecare dimineață",
-  "medical.schedule.asPrescribed": "Conform prescripției",
-  "medical.procedure.appendectomy": "Apendicectomie",
-  "medical.implant.none": "Fără implanturi sau dispozitive medicale",
-  "medical.specialty.familyMedicine": "Medicină de familie",
-  "doctor.brand.clinical": "Clinic",
-  "doctor.workspace": "Spațiu de lucru",
-  "doctor.primaryCare": "Asistență medicală primară",
-  "doctor.nav.overview": "Prezentare generală",
-  "doctor.nav.patients": "Pacienți",
-  "doctor.nav.requests": "Cereri de acces",
-  "doctor.nav.activity": "Jurnal de activitate",
-  "doctor.secureSession": "Sesiune securizată",
-  "doctor.autoLock": "Blocare automată în 26 min.",
-  "doctor.search.placeholder": "Caută după nume, ID pitster sau afecțiune",
-  "doctor.patientPortal": "Portal pacient",
-  "doctor.welcome.date": "{date}",
-  "doctor.welcome.greeting": "Bună dimineața, {name}.",
-  "doctor.welcome.description": "Aceste elemente necesită atenția ta astăzi.",
-  "doctor.findPatient": "Caută un pacient",
-  "doctor.metrics.patients": "Pacienți aflați în îngrijire",
-  "doctor.metrics.activeGrants": "Accesuri active",
-  "doctor.metrics.requests": "Cereri de acces",
-  "doctor.metrics.urgent": "{count} urgentă",
-  "doctor.metrics.reviewed": "Fișe verificate",
-  "doctor.metrics.last30Days": "Ultimele 30 de zile",
-  "doctor.review.title": "Necesită verificare",
-  "doctor.review.description": "Actualizări și fișe care așteaptă evaluarea medicală",
-  "doctor.viewAll": "Vezi toate",
-  "doctor.years": "{count} ani",
-  "doctor.review.noneTitle": "Nimic de verificat",
-  "doctor.review.noneDescription": "Actualizările pacienților vor apărea aici.",
-  "doctor.requests.previewDescription": "Acces la profil aprobat de pacient",
-  "doctor.requests.reviewCount": "Verifică {count} cereri",
-  "doctor.recent.title": "Pacienți consultați recent",
-  "doctor.recent.description": "Profilurile accesate cel mai recent",
-  "doctor.patientDirectory": "Registru pacienți",
-  "doctor.noGrants.title": "Nu există acces la pacienți",
-  "doctor.noGrants.description": "Accesurile aprobate vor apărea aici.",
-  "doctor.directory.eyebrow": "Registru pacienți",
-  "doctor.directory.results": "Rezultate pentru „{query}”",
-  "doctor.directory.title": "Pacienți aflați în îngrijire",
-  "doctor.directory.description": "Consultă profilurile partajate cu spațiul clinic.",
-  "doctor.directory.invite": "Invită pacient",
-  "doctor.directory.patientCount": "{count} pacienți",
-  "doctor.directory.patientCountOne": "1 pacient",
-  "doctor.directory.needsReview": "Necesită verificare",
-  "doctor.directory.noMatchTitle": "Nu există pacienți corespunzători",
-  "doctor.directory.noMatchDescription": "Încearcă un nume, un ID pitster sau o afecțiune.",
-  "doctor.requests.eyebrow": "Acces securizat",
-  "doctor.requests.title": "Cereri de acces",
-  "doctor.requests.description": "Verifică cererile aprobate de pacient înainte de a deschide profilul medical.",
-  "doctor.requests.received": "Primită {time} · Identitate verificată",
-  "doctor.requests.decline": "Respinge",
-  "doctor.requests.approve": "Aprobă accesul",
-  "doctor.requests.emptyTitle": "Nu există cereri în așteptare",
-  "doctor.requests.emptyDescription": "Cererile noi de acces vor apărea aici.",
-  "doctor.activity.eyebrow": "Jurnal de audit",
-  "doctor.activity.title": "Activitate clinică",
-  "doctor.activity.description": "Fiecare acces și fiecare acțiune semnată sunt înregistrate.",
-  "doctor.activity.export": "Exportă jurnalul",
-  "doctor.activity.emptyTitle": "Nu există activitate clinică",
-  "doctor.activity.emptyDescription": "Acțiunile autorizate vor apărea aici.",
-  "doctor.table.patient": "Pacient",
-  "doctor.table.conditions": "Afecțiuni",
-  "doctor.table.lastReviewed": "Ultima verificare",
-  "doctor.table.status": "Stare",
-  "doctor.status.upToDate": "Actualizat",
-  "doctor.status.reviewDue": "Verificare necesară",
-  "doctor.status.newUpdate": "Actualizare nouă",
-  "doctor.access.authorized": "Acces autorizat",
-  "doctor.access.familyCareTeam": "Echipa de medicină de familie",
-  "doctor.access.temporary": "Acces temporar · încă {days} zile",
-  "doctor.allergyAlert": "Avertizare privind alergiile",
-  "doctor.currentMedications": "Medicație curentă",
-  "doctor.lastClinicalReview": "Ultima evaluare clinică",
-  "doctor.addClinicalNote": "Adaugă notă clinică",
-  "doctor.markReviewed": "Marchează ca verificat",
-  "doctor.auditNote": "Activitatea prototipului este păstrată doar pe durata sesiunii curente.",
-  "doctor.reason.medicationReconciliation": "Reconcilierea medicației",
-  "doctor.reason.newPatientConsultation": "Consultație inițială",
-  "doctor.reason.followUpCare": "Consultație de monitorizare",
-  "doctor.activity.reviewedUpdate": "Actualizare trimisă de pacient și verificată",
-  "doctor.activity.requestReceived": "Cerere de acces primită",
-  "doctor.activity.openedProfile": "Profil medical deschis pentru consultație",
-  "doctor.activity.signedMedicationUpdate": "Actualizare a medicației semnată",
-  "doctor.activity.type.clinicalReview": "Evaluare clinică",
-  "doctor.activity.type.access": "Acces",
-  "doctor.activity.type.profileView": "Vizualizare profil",
-  "doctor.activity.type.signedUpdate": "Actualizare semnată",
-  "doctor.time.today": "Astăzi",
-  "doctor.time.yesterday": "Ieri",
-  "patient.access.context.clinicQr": "Bucharest Family Clinic · Acces QR",
-  "patient.access.context.clinicianNfc": "Cadru medical verificat · Acces NFC",
-  "patient.access.context.personalSession": "Dispozitiv personal · Sesiune securizată",
   "auth.login.title": "Autentificare în portalul clinic",
   "auth.login.description": "Folosiți contul de clinician creat administrativ.",
   "auth.login.email": "Adresă de e-mail",
@@ -238,75 +73,6 @@
   "auth.returnPatient": "Înapoi la portalul pacientului",
   "notice.accessDenied": "Acces refuzat. Profilul medical nu a fost deschis.",
   "notice.serviceUnavailable": "Serviciul este temporar indisponibil. Nu s-a modificat nimic. Încercați din nou manual.",
-  "doctor.conditionNote.label": "Notă clinică privind afecțiunea",
-  "doctor.conditionNote.help": "Va fi actualizat și auditat numai acest câmp de notă.",
-  "doctor.conditionNote.save": "Salvează nota semnată",
-  "doctor.conditionNote.saving": "Se salvează…",
-  "doctor.conditionNote.saved": "Nota clinică a fost salvată și auditată.",
-  "doctor.conditionNote.error": "Nota nu a putut fi salvată.",
-  "doctor.conditionNote.unauthorized": "Nota nu a fost salvată deoarece accesul pentru editare nu este autorizat.",
-  "doctor.conditionNote.unavailable": "Nota nu a fost salvată deoarece serviciul este temporar indisponibil. Încercați din nou manual.",
-  "doctor.health.identity.title": "Identitate compatibilă cu cardul de sănătate",
-  "doctor.health.familyName": "Nume de familie",
-  "doctor.health.givenNames": "Prenume",
-  "doctor.health.insurance.title": "Verificarea calității de asigurat",
-  "doctor.health.insurance.status": "Statut de asigurat",
-  "doctor.health.insurance.status.unknown": "Necunoscut",
-  "doctor.health.insurance.status.insured": "Asigurat",
-  "doctor.health.insurance.status.uninsured": "Neasigurat",
-  "doctor.health.insurance.status.verification_pending": "Verificare în așteptare",
-  "doctor.health.insurance.source": "Sursa verificării",
-  "doctor.health.insurance.source.not_verified": "Neverificat",
-  "doctor.health.insurance.source.cnas_manual_check": "Verificare manuală CNAS efectuată de clinician",
-  "doctor.health.insurance.source.health_card": "Card național de sănătate",
-  "doctor.health.insurance.source.supporting_document": "Document justificativ",
-  "doctor.health.insurance.source.clinician_attestation": "Atestare medicală",
-  "doctor.health.insurance.house": "Casa de asigurări / CAS",
-  "doctor.health.insurance.houseCode": "Cod CAS",
-  "doctor.health.insurance.houseName": "Denumirea casei de asigurări",
-  "doctor.health.verifiedAt": "Verificat la",
-  "doctor.health.lifeThreatening.title": "Diagnostice cu risc vital",
-  "doctor.health.lifeThreatening.none": "Nu este înregistrat niciun diagnostic cu risc vital.",
-  "doctor.health.codeSystem.icd10": "ICD-10",
-  "doctor.health.codeSystem.snomed_ct": "SNOMED CT",
-  "doctor.health.codeSystem.other": "Alt sistem de codificare",
-  "doctor.health.verifiedBy": "Verificat de {name} ({code}) la {date}",
-  "doctor.health.familyDoctor.title": "Medic de familie",
-  "doctor.health.familyDoctor.name": "Nume",
-  "doctor.health.familyDoctor.code": "Cod profesional",
-  "doctor.health.familyDoctor.telephone": "Telefon",
-  "doctor.health.emergencyContacts.title": "Contacte de urgență",
-  "doctor.health.emergencyContacts.number": "Contact {number}",
-  "doctor.health.profileVerification.title": "Profil certificat de medic",
-  "doctor.health.sensitive.title": "Identificatori sensibili",
-  "doctor.health.sensitive.description": "Identificatorii protejați sunt mascați implicit. Afișarea necesită acces curent de editare și generează un eveniment de audit.",
-  "doctor.health.sensitive.cnp": "CNP",
-  "doctor.health.sensitive.insuranceNumber": "Număr de asigurat",
-  "doctor.health.sensitive.cardNumber": "Numărul cardului național de sănătate",
-  "doctor.health.sensitive.cardExpires": "Data expirării cardului",
-  "doctor.health.sensitive.reveal": "Afișează identificatorii sensibili",
-  "doctor.health.sensitive.hide": "Ascunde și elimină valorile afișate",
-  "doctor.health.sensitive.loading": "Se autorizează…",
-  "doctor.health.sensitive.unauthorized": "Autorizarea curentă nu permite accesul la acești identificatori.",
-  "doctor.health.sensitive.unavailable": "Identificatorii sensibili sunt temporar indisponibili. Încercați din nou manual.",
-  "doctor.health.form.profileTitle": "Actualizează informațiile cardului de sănătate",
-  "doctor.health.form.save": "Salvează informațiile verificate",
-  "doctor.health.form.saving": "Se salvează…",
-  "doctor.health.form.saved": "Informațiile verificate au fost salvate și auditate.",
-  "doctor.health.form.invalid": "Verificați câmpurile și coerența detaliilor de verificare.",
-  "doctor.health.form.duplicate": "Există deja un diagnostic activ cu acest sistem de codificare și cod.",
-  "doctor.health.form.unauthorized": "Autorizarea curentă nu permite această actualizare.",
-  "doctor.health.form.unavailable": "Serviciul de actualizare este temporar indisponibil. Încercați din nou manual.",
-  "doctor.health.diagnosis.name": "Diagnostic",
-  "doctor.health.diagnosis.codeSystem": "Sistem de codificare",
-  "doctor.health.diagnosis.code": "Cod diagnostic",
-  "doctor.health.diagnosis.otherSystem": "Denumirea altui sistem de codificare",
-  "doctor.health.diagnosis.add": "Adaugă diagnostic cu risc vital",
-  "doctor.health.diagnosis.deactivate": "Dezactivează diagnosticul",
-  "doctor.health.diagnosis.deactivateConfirmation": "Confirm că acest diagnostic trebuie eliminat din lista avertizărilor active.",
-  "doctor.health.diagnosis.reactivate": "Reactivează diagnosticul",
-  "doctor.health.diagnosis.historyTitle": "Istoricul diagnosticelor inactive",
-  "doctor.health.diagnosis.historyDescription": "Diagnosticele inactive sunt excluse din lista avertizărilor clinice active și pot fi revizuite sau reactivate aici.",
   "admin.access.configuration.title": "Administrarea nu este configurată",
   "admin.access.configuration.description": "Adăugați setările publice ale proiectului Supabase în mediul local înainte de a utiliza consola de administrare.",
   "admin.access.unauthorized.title": "Acces administrativ refuzat",
@@ -360,56 +126,6 @@
   "register.setPassword.status.unavailable": "Parola nu a putut fi salvată momentan. Încearcă din nou manual.",
   "register.setPassword.requestNewLink": "Revino la înregistrare pentru a solicita un nou e-mail de confirmare.",
   "register.setPassword.back": "Înapoi la înregistrare",
-  "organization.clinic_manager.loginTitle": "Autentificare Manager de clinică",
-  "organization.clinic_manager.loginDescription": "Administrează organizația clinicii aprobate și medicii sponsorizați.",
-  "organization.staff.loginTitle": "Autentificare personal",
-  "organization.staff.loginDescription": "Deschide spațiul de programări pentru medicii atribuiți.",
-  "organization.clinic_manager.eyebrow": "Administrarea clinicii",
-  "organization.staff.eyebrow": "Personal atribuit de medic",
-  "organization.clinic_manager.securityNote": "Administrarea clinicii nu acordă niciodată acces la profilurile medicale ale pacienților.",
-  "organization.staff.securityNote": "Accesul personalului este limitat la programările medicilor atribuiți și nu include profiluri medicale.",
-  "organization.welcome": "Bun venit, {name}",
-  "organization.membershipRole": "Rol în organizație",
-  "organization.billingStatus": "Date de facturare",
-  "organization.doctors": "Medici sponsorizați și membri",
-  "organization.doctorsEmpty": "Nu există încă medici asociați acestei clinici.",
-  "organization.clinicsEmpty": "Nu este disponibilă nicio asociere activă cu o clinică.",
-  "organization.assignmentsEmpty": "Nu este activă momentan nicio atribuire la un medic.",
-  "organization.status.pending": "În așteptarea aprobării",
-  "organization.status.active": "Activ",
-  "organization.status.suspended": "Suspendat",
-  "organization.status.rejected": "Respins",
-  "organization.role.owner": "Proprietar",
-  "organization.role.manager": "Manager",
-  "organization.billing.incomplete": "Incomplet",
-  "organization.billing.active": "Activ",
-  "organization.billing.suspended": "Suspendat",
-  "organization.membership.invited": "Invitat",
-  "organization.membership.active": "Activ",
-  "organization.membership.suspended": "Suspendat",
-  "organization.membership.ended": "Încheiat",
-  "organization.access.configuration": "Serviciul organizațional nu este configurat.",
-  "organization.access.unavailable": "Serviciul organizațional este temporar indisponibil. Starea contului nu a fost modificată.",
-  "organization.access.unauthorized": "Acest cont nu este autorizat pentru acest portal.",
-  "organization.access.pending": "Contul sau organizația așteaptă aprobarea.",
-  "organization.access.suspended": "Acest acces organizațional este suspendat.",
-  "organization.access.rejected": "Această înregistrare organizațională nu a fost aprobată.",
-  "organization.staffManagement.title": "Invitații și atribuiri pentru personal",
-  "organization.invite.email": "E-mail pentru invitație",
-  "organization.invite.clinic_doctor": "Creează invitația pentru medic",
-  "organization.invite.doctor_staff": "Creează invitația pentru personal",
-  "organization.invite.creating": "Se creează invitația…",
-  "organization.invite.status.created": "Invitația a fost creată și trimisă prin e-mail destinatarului.",
-  "organization.invite.status.created_email_failed": "Invitația a fost creată, dar e-mailul nu a putut fi trimis. Copiază și trimite manual linkul protejat.",
-  "organization.invite.status.invalid": "Verifică adresa de e-mail și detaliile invitației.",
-  "organization.invite.status.duplicate": "Există deja o invitație în așteptare pentru această adresă de e-mail.",
-  "organization.invite.status.unauthorized": "Autorizarea curentă nu permite această invitație.",
-  "organization.invite.status.unavailable": "Invitațiile sunt temporar indisponibile. Încearcă din nou manual.",
-  "organization.membership.action.active": "Reactivează",
-  "organization.membership.action.suspended": "Suspendă",
-  "organization.membership.result.invalid": "Modificarea solicitată pentru asociere este invalidă.",
-  "organization.membership.result.unauthorized": "Nu ești autorizat să modifici această asociere.",
-  "organization.membership.result.unavailable": "Modificările asocierilor sunt temporar indisponibile.",
   "invoicing.eyebrow": "Profil de facturare",
   "invoicing.title": "Date de facturare",
   "invoicing.description": "Aceste date identifică plătitorul legal. Perioadele de facturare închise își vor păstra instantaneul istoric.",
@@ -455,165 +171,10 @@
   "admin.mfa.challenge.title": "Confirmați al doilea factor",
   "admin.mfa.challenge.description": "Introduceți codul curent din aplicația de autentificare.",
   "admin.mfa.challenge.verify": "Verifică identitatea",
-  "admin.brand.console": "Consolă de administrare securizată",
-  "admin.nav.label": "Secțiuni de administrare",
-  "admin.nav.users": "Utilizatori",
-  "admin.nav.doctors": "Medici",
-  "admin.nav.patients": "Pacienți",
-  "admin.nav.grants": "Drepturi de acces",
-  "admin.nav.audit": "Istoric audit",
-  "admin.role.superadmin": "Superadmin",
-  "admin.security.session": "Nivelul sesiunii",
-  "admin.security.aal2": "MFA verificat",
-  "admin.dashboard.eyebrow": "Guvernanța sistemului",
-  "admin.dashboard.generated": "Actualizat",
-  "admin.section.users.title": "Utilizatori administrativi",
-  "admin.section.users.description": "Consultați rolurile administratorilor și starea conturilor.",
-  "admin.section.doctors.title": "Medici",
-  "admin.section.doctors.description": "Consultați identitatea și starea verificării medicilor.",
-  "admin.section.patients.title": "Pacienți",
-  "admin.section.patients.description": "Consultați dosarele pacienților și starea arhivării.",
-  "admin.section.grants.title": "Drepturi de acces",
-  "admin.section.grants.description": "Consultați permisiunile, starea și domeniul accesului medicilor.",
-  "admin.section.audit.title": "Istoric audit",
-  "admin.section.audit.description": "Consultați istoricul imuabil al evenimentelor de securitate și administrare.",
-  "admin.table.name": "Nume",
-  "admin.table.role": "Rol",
-  "admin.table.status": "Stare",
-  "admin.table.created": "Creat",
-  "admin.table.specialty": "Specialitate",
-  "admin.table.clinic": "Clinică",
-  "admin.table.vitapassId": "ID pitster",
-  "admin.table.patient": "Pacient",
-  "admin.table.doctor": "Medic",
-  "admin.table.permissions": "Permisiuni",
-  "admin.table.time": "Ora",
-  "admin.table.action": "Acțiune",
-  "admin.table.resource": "Resursă",
-  "admin.empty.users": "Nu sunt vizibili utilizatori administrativi.",
-  "admin.empty.doctors": "Nu sunt vizibili medici.",
-  "admin.empty.patients": "Nu sunt vizibili pacienți.",
-  "admin.empty.grants": "Nu sunt vizibile drepturi de acces.",
-  "admin.empty.audit": "Nu sunt vizibile evenimente de audit.",
-  "admin.status.archived": "Arhivat",
-  "admin.status.current": "Curent",
-  "admin.permission.view": "Vizualizare",
-  "admin.permission.edit": "Editare",
   "admin.access.securityError.title": "Verificarea de securitate nu este disponibilă",
   "admin.access.securityError.description": "pitster nu a putut verifica starea securității multifactor. Nu au fost deschise date administrative. Deconectați-vă și încercați din nou mai târziu.",
   "admin.access.unavailable.title": "Administrarea este temporar indisponibilă",
   "admin.access.unavailable.description": "pitster nu a putut încărca accesul administrativ deoarece serviciul nu a răspuns. Starea contului nu a fost modificată. Încercați din nou manual.",
-  "admin.role.admin": "Administrator",
-  "admin.status.active": "Activ",
-  "admin.status.suspended": "Suspendat",
-  "admin.status.pending": "În așteptare",
-  "admin.status.approved": "Aprobat",
-  "admin.status.rejected": "Respins",
-  "admin.status.revoked": "Revocat",
-  "admin.status.expired": "Expirat",
-  "admin.value.unknown": "Necunoscut",
-  "admin.audit.action.signIn": "Autentificare",
-  "admin.audit.action.signOut": "Deconectare",
-  "admin.audit.action.accessDenied": "Acces refuzat",
-  "admin.audit.action.patientProfileViewed": "Profil pacient vizualizat",
-  "admin.audit.action.patientProfileUpdated": "Profil pacient actualizat",
-  "admin.audit.action.accessGrantCreated": "Drept de acces creat",
-  "admin.audit.action.accessGrantApproved": "Drept de acces aprobat",
-  "admin.audit.action.accessGrantRevoked": "Drept de acces revocat",
-  "admin.audit.action.accessGrantUpdated": "Drept de acces actualizat",
-  "admin.audit.action.administratorCreated": "Administrator creat",
-  "admin.audit.action.administratorUpdated": "Administrator actualizat",
-  "admin.audit.action.administratorSuspended": "Administrator suspendat",
-  "admin.audit.action.clinicianCreated": "Medic creat",
-  "admin.audit.action.clinicianUpdated": "Medic actualizat",
-  "admin.audit.action.clinicianApproved": "Medic aprobat",
-  "admin.audit.action.clinicianSuspended": "Medic suspendat",
-  "admin.audit.action.patientCreated": "Pacient creat",
-  "admin.audit.action.patientUpdated": "Pacient actualizat",
-  "admin.audit.action.patientArchived": "Pacient arhivat",
-  "admin.audit.action.medicalRecordCreated": "Înregistrare medicală creată",
-  "admin.audit.action.medicalRecordUpdated": "Înregistrare medicală actualizată",
-  "admin.audit.action.sensitiveIdentifiersViewed": "Identificatori sensibili afișați",
-  "admin.audit.action.sensitiveIdentifiersUpdated": "Identificatori sensibili actualizați",
-  "admin.audit.resource.authSession": "Sesiune de autentificare",
-  "admin.audit.resource.patientProfile": "Profil pacient",
-  "admin.audit.resource.accessGrant": "Drept de acces",
-  "admin.audit.resource.chronicCondition": "Afecțiune cronică",
-  "admin.audit.resource.administrators": "Administratori",
-  "admin.audit.resource.clinicians": "Medici",
-  "admin.audit.resource.patients": "Pacienți",
-  "admin.audit.resource.allergies": "Alergii",
-  "admin.audit.resource.medications": "Medicamente",
-  "admin.audit.resource.chronicConditions": "Afecțiuni cronice",
-  "admin.audit.resource.surgeries": "Intervenții chirurgicale",
-  "admin.audit.resource.implants": "Implanturi și dispozitive",
-  "admin.audit.resource.emergencyContacts": "Contacte de urgență",
-  "admin.audit.resource.accessGrants": "Drepturi de acces",
-  "admin.audit.resource.sensitiveIdentifiers": "Identificatori sensibili",
-  "admin.audit.resource.lifeThreateningDiagnoses": "Diagnostice cu risc vital",
-  "admin.audit.resource.healthCardProfile": "Profil compatibil cu cardul de sănătate",
-  "appointments.eyebrow": "Programări",
-  "appointments.title": "Programări",
-  "appointments.description": "Medicii și personalul alocat pot adăuga, confirma și gestiona programări. Confirmarea trimite un SMS, iar programările confirmate primesc o reamintire cu 24 de ore înainte.",
-  "appointments.staffScope": "Aveți aceleași informații și acțiuni pentru programări ca fiecare medic alocat. Accesul este limitat la alocările active către medici.",
-  "appointments.back": "Înapoi la portal",
-  "appointments.doctor": "Medic",
-  "appointments.patientName": "Numele pacientului",
-  "appointments.patientPhone": "Numărul mobil al pacientului",
-  "appointments.patientEmail": "E-mailul pacientului",
-  "appointments.source": "Sursa programării",
-  "appointments.source.phone": "Telefon",
-  "appointments.source.walk_in": "Prezentare directă",
-  "appointments.source.online": "Online",
-  "appointments.source.email": "E-mail",
-  "appointments.source.other": "Alta",
-  "appointments.start": "Început",
-  "appointments.end": "Sfârșit",
-  "appointments.date": "Data",
-  "appointments.slot": "Interval orar disponibil",
-  "appointments.chooseSlot": "Alegeți ora",
-  "appointments.noSlots": "Nu există intervale disponibile în această zi",
-  "appointments.initialStatus": "Stare inițială",
-  "appointments.note": "Notă operațională (fără informații medicale)",
-  "appointments.create": "Creează programarea",
-  "appointments.saving": "Se salvează…",
-  "appointments.apply": "Aplică",
-  "appointments.list": "Programări planificate",
-  "appointments.empty": "Nu există programări.",
-  "appointments.status.pending": "În așteptare",
-  "appointments.status.confirmed": "Confirmată",
-  "appointments.status.rescheduled": "Reprogramată",
-  "appointments.status.cancelled": "Anulată",
-  "appointments.status.completed": "Finalizată",
-  "appointments.status.no_show": "Neprezentat",
-  "appointments.feedback.saved": "Programarea a fost salvată.",
-  "appointments.feedback.saved_sms_pending": "Programarea a fost salvată. Trimiterea SMS este în așteptare; verificați configurarea SMSLink.",
-  "appointments.feedback.saved_email_pending": "Programarea a fost salvată, dar e-mailul nu a putut fi trimis. Verificați configurarea MXroute.",
-  "appointments.feedback.saved_notifications_pending": "Programarea a fost salvată, dar trimiterea e-mailului și a SMS-ului este în așteptare.",
-  "appointments.feedback.invalid": "Verificați informațiile programării.",
-  "appointments.feedback.conflict": "Medicul are deja o programare confirmată în acest interval.",
-  "appointments.feedback.unauthorized": "Nu aveți permisiunea să gestionați programările acestui medic.",
-  "appointments.feedback.unavailable": "Serviciul de programări este temporar indisponibil.",
-  "availability.eyebrow": "Program de lucru",
-  "availability.title": "Disponibilitate",
-  "availability.description": "Stabiliți programul săptămânal și intervale de 15, 30 sau 45 de minute. Personalul alocat poate programa numai în aceste intervale.",
-  "availability.active": "Disponibil",
-  "availability.start": "Începe",
-  "availability.end": "Se termină",
-  "availability.duration": "Durata intervalului",
-  "availability.minutes": "minute",
-  "availability.save": "Salvează ziua",
-  "availability.feedback.saved": "Disponibilitatea a fost salvată.",
-  "availability.feedback.invalid": "Verificați programul și durata intervalului.",
-  "availability.feedback.unauthorized": "Numai medicul poate modifica disponibilitatea.",
-  "availability.feedback.unavailable": "Disponibilitatea este temporar indisponibilă.",
-  "availability.day.sunday": "Duminică",
-  "availability.day.monday": "Luni",
-  "availability.day.tuesday": "Marți",
-  "availability.day.wednesday": "Miercuri",
-  "availability.day.thursday": "Joi",
-  "availability.day.friday": "Vineri",
-  "availability.day.saturday": "Sâmbătă",
   "calendar.title": "Calendar programări",
   "calendar.previous": "Perioada anterioară",
   "calendar.next": "Perioada următoare",
@@ -631,12 +192,6 @@
   "calendar.selectAppointment": "Selectați o programare pentru a vedea rezumatul și acțiunile disponibile.",
   "calendar.closeDetails": "Închide rezumatul programării",
   "calendar.duration": "Durată",
-  "appointments.requestedOnline": "Solicitare online",
-  "appointments.decline": "Refuză",
-  "appointments.confirm": "Confirmă programarea",
-  "appointments.requestQueue": "Solicitări de programare",
-  "appointments.requestQueueHelp": "Verificați solicitările pacienților înainte ca acestea să apară ca programări confirmate.",
-  "appointments.noPendingRequests": "Nu există solicitări de programare în așteptare.",
   "home.doctors": "Medici",
   "home.specialties": "Specialități",
   "home.myAppointments": "Programările mele",
@@ -784,693 +339,429 @@
   "booking.managementFeedback.invalid": "Verifică opțiunea selectată și confirmarea.",
   "booking.managementFeedback.conflict": "Ora nu mai este disponibilă. Alege alt interval.",
   "booking.managementFeedback.unavailable": "Administrarea programării este temporar indisponibilă. Încearcă din nou manual.",
-  "appointments.changeQueue": "Solicitări de anulare și reprogramare",
-  "appointments.changeQueueHelp": "Verifică solicitările pacienților. Programarea se modifică numai după aprobare.",
-  "appointments.noPendingChanges": "Nu există solicitări de anulare sau reprogramare în așteptare.",
-  "appointments.change.cancel": "Solicitare de anulare",
-  "appointments.change.reschedule": "Solicitare de reprogramare",
-  "appointments.currentTime": "Programarea actuală",
-  "appointments.requestedTime": "Ora solicitată",
-  "appointments.approve": "Aprobă solicitarea",
-  "appointments.quickAdd": "Telefon și prezentare directă",
-  "appointments.quickAddTitle": "Adaugă o programare pentru pacient",
-  "appointments.quickAddHelp": "Folosește formularul când pacientul sună, trimite e-mail sau vine direct la clinică.",
-  "appointments.chooseAction": "Acțiune pentru programare",
-  "appointments.saveAction": "Salvează acțiunea",
-  "patientAppointments.eyebrow": "Programul îngrijirii tale",
-  "patientAppointments.title": "Programările mele",
-  "patientAppointments.welcome": "Bun venit, {name}. Programările ca vizitator și cele din cont sunt păstrate împreună aici.",
-  "patientAppointments.bookNew": "Programează o consultație",
-  "patientAppointments.medicalFolder": "Dosar medical",
-  "patientAppointments.signOut": "Deconectare",
-  "patientAppointments.upcoming": "Programări viitoare",
-  "patientAppointments.history": "Programări anterioare",
-  "patientAppointments.noneUpcoming": "Nu ai programări viitoare.",
-  "patientAppointments.empty": "Nu există încă programări",
-  "patientAppointments.emptyHelp": "Programările făcute cu adresa de e-mail verificată vor apărea automat aici.",
-  "patientAppointments.unavailable": "Programările tale sunt temporar indisponibile.",
-  "patientAppointments.feedback.saved": "Solicitarea a fost salvată. Clinica o va verifica.",
-  "patientAppointments.feedback.invalid": "Verifică opțiunea selectată și confirmarea.",
-  "patientAppointments.feedback.conflict": "Ora nu mai este disponibilă. Alege alt interval.",
-  "patientAppointments.feedback.unauthorized": "Această programare nu aparține contului tău de pacient.",
-  "patientAppointments.feedback.unavailable": "Administrarea programărilor este temporar indisponibilă.",
-  "patientAppointments.login.title": "Autentificare pacient",
-  "patientAppointments.login.description": "Deschide dosarul medical și administrează toate programările asociate e-mailului verificat.",
-  "patientAppointments.login.configuration": "Autentificarea pacienților nu este configurată.",
-  "patientAppointments.login.invalid_credentials": "E-mailul sau parola este incorectă ori contul nu este un cont de Pacient.",
-  "patientAppointments.login.rate_limited": "Prea multe încercări. Așteaptă puțin și încearcă din nou manual.",
-  "patientAppointments.login.unavailable": "Autentificarea pacienților este temporar indisponibilă.",
-  "patientAppointments.login.noAccount": "Ești nou pe platformă?",
-  "staffPatients.title": "Profile medicale",
-  "staffPatients.readOnly": "Accesul doar pentru vizualizare este limitat la pacienții partajați cu medicii alocați. Identificatorii protejați rămân ascunși, iar fiecare profil deschis este auditat.",
-  "staffPatients.empty": "Nu sunt disponibile profile de pacienți partajate.",
-  "doctorProfile.appointmentHint": "Alege online un interval potrivit",
-  "doctorProfile.book": "Verifică disponibilitatea",
-  "doctorProfile.about": "Despre medic",
-  "doctorProfile.aboutEmpty": "Informațiile profesionale vor fi adăugate în curând.",
-  "doctorProfile.practice": "Informații despre cabinet",
-  "doctorProfile.clinic": "Clinică",
-  "doctorProfile.address": "Adresă",
-  "doctorProfile.phone": "Telefon",
-  "doctorProfile.email": "E-mail",
-  "doctorProfile.experience": "Experiență",
-  "doctorProfile.years": "ani",
-  "doctorProfile.languages": "Limbi vorbite",
-  "workspace.settings": "Setări profil și spațiu de lucru",
   "workspace.back": "Înapoi",
-  "workspace.eyebrow": "Profil și spațiu de lucru",
-  "workspace.doctorTitle": "Setările medicului",
-  "workspace.doctorDescription": "Menține actualizate profilul profesional public și informațiile cabinetului.",
-  "workspace.profileTitle": "Profil profesional",
-  "workspace.profileHelp": "Aceste informații apar pe pagina dedicată medicului.",
-  "workspace.bio": "Prezentare profesională",
-  "workspace.phone": "Telefon public",
-  "workspace.email": "E-mail public",
-  "workspace.experience": "Ani de experiență",
-  "workspace.languages": "Limbi, separate prin virgulă",
-  "workspace.acceptsPatients": "Acceptă pacienți noi",
-  "workspace.clinicTitle": "Clinică / spațiu de lucru",
-  "workspace.managedClinic": "Administrat de clinică",
-  "workspace.managedClinicHelp": "Managerul clinicii controlează aceste detalii și acoperă costurile pitster.",
-  "workspace.clinicName": "Nume afișat",
-  "workspace.legalName": "Denumire juridică",
-  "workspace.description": "Descrierea clinicii",
-  "workspace.country": "Cod țară",
-  "workspace.city": "Localitate",
-  "workspace.address": "Adresă",
-  "workspace.latitude": "Latitudine",
-  "workspace.longitude": "Longitudine",
-  "workspace.clinicsTitle": "Setările clinicilor",
-  "workspace.clinicsDescription": "Adaugă și administrează locațiile clinicilor, apoi invită medicii din cardul clinicii potrivite.",
-  "workspace.addClinic": "Adaugă altă clinică",
-  "workspace.createClinic": "Creează clinica",
   "workspace.save": "Salvează modificările",
   "workspace.saving": "Se salvează…",
-  "workspace.status.saved": "Modificările au fost salvate.",
-  "workspace.status.created": "Clinica a fost creată.",
-  "workspace.status.invalid": "Verifică informațiile introduse.",
-  "workspace.status.unauthorized": "Nu ai permisiune pentru acest spațiu de lucru.",
-  "workspace.status.unavailable": "Spațiul de lucru este temporar indisponibil.",
-  "billing.details": "Date de facturare",
-  "billing.eyebrow": "Costurile medicilor sponsorizați",
-  "billing.clinicTitle": "Situația facturării clinicii",
-  "billing.clinicDescription": "Abonamentul și SMS-urile trimise sunt detaliate pentru fiecare medic sponsorizat, pentru luna curentă și cele cinci luni anterioare.",
-  "billing.sponsoredDoctors": "Medici acoperiți",
-  "billing.smsSent": "SMS-uri trimise",
-  "billing.currentTotal": "Total curent",
-  "billing.closed": "Lună închisă",
-  "billing.open": "Lună curentă deschisă",
-  "billing.doctor": "Medic",
-  "billing.subscription": "Abonament",
-  "billing.smsCost": "Cost SMS",
-  "billing.total": "Total",
   "billing.downloadCsv": "Descarcă CSV",
-  "billing.accountingEyebrow": "Contabilitatea platformei",
-  "billing.platformTitle": "Sume de facturat",
-  "billing.platformDescription": "Totaluri lunare compacte pentru medicii independenți și organizațiile de clinici.",
-  "billing.allPayers": "Toți plătitorii",
-  "billing.clinics": "Clinici",
-  "billing.independentDoctors": "Medici independenți",
-  "billing.payer": "Plătitor",
-  "billing.payerType": "Tip",
-  "billing.clinic": "Organizație clinică",
-  "billing.independentDoctor": "Medic independent",
-  "billing.pricing": "Tarife viitoare",
-  "billing.pricingHelp": "Modificările se aplică din prima zi a lunii următoare.",
-  "billing.nextSubscription": "Abonament medic (EUR)",
-  "billing.nextSms": "Preț unitar SMS (EUR)",
-  "billing.rateStatus.saved": "Tarifele pentru luna următoare au fost salvate.",
-  "billing.rateStatus.invalid": "Verifică tarifele.",
-  "billing.rateStatus.unavailable": "Administrarea tarifelor este temporar indisponibilă.",
-  "admin.role.manager": "Manager de platformă",
-  "billing.accountingAccess": "Acces contabilitate",
-  "billing.accountingAccessHelp": "Acordă anumitor Manageri de platformă acces doar la situația protejată de facturare.",
-  "billing.accessEnabled": "Activat",
-  "billing.accessDisabled": "Neactivat",
-  "billing.grantAccess": "Acordă acces",
-  "billing.removeAccess": "Elimină accesul",
-  "admin.nav.attention": "Necesită atenție",
-  "admin.nav.clinics": "Clinici",
-  "admin.nav.organizations": "Organizații clinice",
-  "admin.nav.managers": "Manageri",
-  "admin.nav.specialties": "Specialități",
-  "admin.nav.reviews": "Recenzii",
-  "admin.nav.sms": "SMS",
-  "admin.nav.contracts": "Contracte",
-  "admin.nav.privacy": "Confidențialitate",
   "admin.nav.invoicing": "Facturare",
-  "admin.nav.security": "Securitatea conturilor",
-  "admin.section.attention.title": "Necesită atenție",
-  "admin.section.attention.description": "Începeți cu aprobările și configurările incomplete care pot bloca activitatea normală.",
-  "admin.section.clinics.title": "Locații clinice",
-  "admin.section.clinics.description": "Verificați locațiile și medicii sau managerii asociați.",
-  "admin.section.organizations.title": "Organizații clinice",
-  "admin.section.organizations.description": "Verificați managerii, statutul organizației și acoperirea locațiilor.",
-  "admin.section.managers.title": "Manageri de platformă",
-  "admin.section.managers.description": "Verificați conturile protejate și accesul delegat la contabilitate.",
-  "admin.section.specialties.title": "Specialități medicale",
-  "admin.section.specialties.description": "Administrați catalogul folosit în profilurile medicilor și la căutare.",
-  "admin.section.reviews.title": "Recenziile medicilor",
-  "admin.section.reviews.description": "Moderați recenziile publice raportate sau neadecvate.",
-  "admin.section.sms.title": "Serviciul SMS",
-  "admin.section.sms.description": "Verificați utilizarea și disponibilitatea SMS pentru medici și clinici.",
-  "admin.section.contracts.title": "Contracte și tarife",
-  "admin.section.contracts.description": "Pregătiți contracte, acte adiționale și tarife individuale.",
-  "admin.section.privacy.title": "Confidențialitate și documente legale",
-  "admin.section.privacy.description": "Administrați paginile legale și informarea afișată la prima vizită.",
-  "admin.section.security.title": "Securitatea conturilor",
-  "admin.section.security.description": "Rezervat operațiunilor de securitate și conturilor platformei.",
-  "admin.table.identifier": "Cod profesional",
-  "admin.table.location": "Locație",
-  "admin.table.doctors": "Medici",
-  "admin.table.clinics": "Clinici",
-  "admin.table.accounting": "Contabilitate",
-  "admin.empty.clinics": "Nu există locații clinice vizibile.",
-  "admin.empty.organizations": "Nu există organizații clinice vizibile.",
-  "admin.attention.title": "Sarcini care necesită acțiune",
-  "admin.attention.description": "Elementele în așteptare cele mai vechi apar primele.",
-  "admin.attention.open": "Deschide",
-  "admin.attention.empty": "Momentan nimic nu necesită atenție.",
-  "admin.task.doctor_approval": "Aprobarea medicului",
-  "admin.task.clinic_approval": "Aprobarea clinicii",
-  "admin.task.clinic_manager_approval": "Aprobarea managerului clinicii",
-  "admin.task.billing_profile": "Date de facturare incomplete",
-  "admin.planned.title": "Spațiu de lucru pregătit",
-  "admin.planned.description": "Această secțiune se află în roadmap-ul aprobat. Controalele de administrare vor fi adăugate în următoarea etapă dedicată.",
-  "admin.doctor.invite.title": "Invită un medic",
-  "admin.doctor.invite.description": "Trimite un link protejat de înregistrare și oferă opțional 3, 6 sau 12 luni fără abonament.",
-  "admin.doctor.invite.email": "E-mailul medicului",
-  "admin.doctor.invite.freeAccess": "Perioadă fără abonament",
-  "admin.doctor.invite.language": "Limba invitației",
-  "admin.doctor.invite.submit": "Creează și trimite invitația",
-  "admin.doctor.invite.sending": "Se creează invitația…",
-  "admin.doctor.invite.history": "Invitații recente de la Administratori",
-  "admin.doctor.invite.status.created": "Invitația a fost creată și e-mailul a fost trimis.",
-  "admin.doctor.invite.status.created_email_failed": "Invitația a fost creată, dar e-mailul nu a putut fi trimis. Copiază manual linkul protejat.",
-  "admin.doctor.invite.status.invalid": "Verifică e-mailul și perioada gratuită.",
-  "admin.doctor.invite.status.duplicate": "Există deja o invitație în așteptare pentru acest e-mail.",
-  "admin.doctor.invite.status.unauthorized": "Nu ai permisiunea să inviți medici.",
-  "admin.doctor.invite.status.unavailable": "Invitațiile pentru medici sunt temporar indisponibile.",
-  "admin.doctor.invitationStatus.pending": "În așteptare",
-  "admin.doctor.invitationStatus.accepted": "Acceptată",
-  "admin.doctor.invitationStatus.revoked": "Revocată",
-  "admin.doctor.invitationStatus.expired": "Expirată",
-  "admin.doctor.free.none": "Fără perioadă gratuită",
-  "admin.doctor.free.3": "3 luni gratuite",
-  "admin.doctor.free.6": "6 luni gratuite",
-  "admin.doctor.free.12": "12 luni gratuite",
-  "admin.doctor.noEmail": "Fără e-mail de autentificare asociat",
-  "admin.doctor.statusReason": "Motivul schimbării statutului",
-  "admin.doctor.statusReasonHelp": "Recomandat la suspendarea, respingerea sau reactivarea unui cont.",
-  "admin.doctor.save": "Salvează medicul",
-  "admin.doctor.saving": "Se salvează…",
-  "admin.doctor.update.saved": "Datele și statutul medicului au fost salvate.",
-  "admin.doctor.update.invalid": "Verifică datele medicului.",
-  "admin.doctor.update.duplicate": "Codul profesional este deja folosit de alt medic.",
-  "admin.doctor.update.unauthorized": "Nu ai permisiunea să modifici acest medic.",
-  "admin.doctor.update.unavailable": "Medicul nu a putut fi actualizat momentan.",
-  "admin.doctor.clinicAssociations": "Asocieri cu clinici",
-  "admin.doctor.noClinicAssociations": "Nu există asocieri cu clinici.",
-  "admin.doctor.freeAccess": "Istoric perioade gratuite",
-  "admin.doctor.free.noneActive": "Nu există perioadă gratuită.",
-  "admin.doctor.statusHistory": "Istoric statut",
-  "admin.doctor.noStatusHistory": "Nu există încă schimbări de statut.",
-  "admin.clinic.add.title": "Adaugă locație clinică",
-  "admin.clinic.add.description": "Creează o locație fizică în cadrul unei organizații clinice existente.",
-  "admin.clinic.organization": "Organizație clinică",
-  "admin.clinic.selectOrganization": "Selectează organizația",
-  "admin.clinic.locationName": "Numele locației",
-  "admin.clinic.add.submit": "Adaugă locația",
-  "admin.clinic.save": "Salvează locația",
-  "admin.clinic.saving": "Se salvează…",
-  "admin.clinic.addressMissing": "Adresa nu este completată",
-  "admin.clinic.statusReason": "Motivul schimbării statutului",
-  "admin.clinic.assign.title": "Asociere medic",
-  "admin.clinic.assign.description": "Asociază un medic aprobat acestei locații. Responsabilitatea plății rămâne separată.",
-  "admin.clinic.assign.selectDoctor": "Selectează medicul aprobat",
-  "admin.clinic.assign.submit": "Salvează asocierea",
-  "admin.clinic.assignedDoctors": "Medici asociați",
-  "admin.clinic.noAssignedDoctors": "Nu există medici asociați acestei locații.",
-  "admin.clinic.statusHistory": "Istoricul statutului locației",
-  "admin.clinic.noStatusHistory": "Nu există încă schimbări ale statutului locației.",
-  "admin.clinic.assignment.active": "Activă",
-  "admin.clinic.assignment.invited": "Invitat",
-  "admin.clinic.assignment.suspended": "Suspendată",
-  "admin.clinic.assignment.ended": "Încheiată",
-  "admin.clinic.result.created": "Locația clinică a fost creată.",
-  "admin.clinic.result.saved": "Modificările locației au fost salvate.",
-  "admin.clinic.result.invalid": "Completați informațiile obligatorii ale locației. Pentru o locație activă este necesară o adresă.",
-  "admin.clinic.result.unauthorized": "Nu ai permisiunea să administrezi locațiile clinicilor.",
-  "admin.clinic.result.unavailable": "Administrarea locațiilor este temporar indisponibilă."
-  ,"admin.patient.status.active": "Activ"
-  ,"admin.patient.status.suspended": "Suspendat"
-  ,"admin.patient.status.blocked": "Blocat"
-  ,"admin.patient.status.archived": "Arhivat"
-  ,"admin.patient.noEmail": "Niciun e-mail de autentificare asociat"
-  ,"admin.patient.neverSignedIn": "Nu s-a autentificat niciodată"
-  ,"admin.patient.lastSignIn": "Ultima autentificare"
-  ,"admin.patient.familyName": "Nume de familie"
-  ,"admin.patient.givenNames": "Prenume"
-  ,"admin.patient.phone": "Telefonul contului"
-  ,"admin.patient.language": "Limba preferată"
-  ,"admin.patient.statusReason": "Motivul schimbării statutului"
-  ,"admin.patient.statusReasonHelp": "Context opțional pentru suspendare, blocare sau reactivare."
-  ,"admin.patient.save": "Salvează pacientul"
-  ,"admin.patient.saving": "Se salvează…"
-  ,"admin.patient.result.saved": "Datele și statutul contului pacientului au fost salvate."
-  ,"admin.patient.result.invalid": "Verificați datele contului pacientului."
-  ,"admin.patient.result.unauthorized": "Nu aveți permisiunea de a administra conturile pacienților."
-  ,"admin.patient.result.unavailable": "Administrarea conturilor pacienților este temporar indisponibilă."
-  ,"admin.patient.archivedHelp": "Acest cont este arhivat. Istoricul este păstrat și contul nu poate fi reactivat din această pagină."
-  ,"admin.patient.accountDetails": "Detalii cont"
-  ,"admin.patient.emailConfirmed": "E-mail confirmat"
-  ,"admin.patient.emailNotConfirmed": "E-mail neconfirmat"
-  ,"admin.patient.created": "Cont creat"
-  ,"admin.patient.statusHistory": "Istoricul statutului contului"
-  ,"admin.patient.noStatusHistory": "Nu există încă schimbări de statut."
-  ,"admin.patient.medicalPrivacy": "Confidențialitatea datelor medicale"
-  ,"admin.patient.medicalPrivacyHelp": "Profilul medical, dosarul medical și identificatorii protejați nu sunt disponibili în Administrare."
-  ,"patientAppointments.account.suspended": "Contul dumneavoastră pitster este suspendat. Contactați serviciul de asistență."
-  ,"patientAppointments.account.blocked": "Contul dumneavoastră pitster este blocat. Contactați serviciul de asistență."
-  ,"patientAppointments.account.archived": "Acest cont pitster este arhivat și nu poate accesa serviciile pentru pacienți."
-  ,"home.addressSearchPlaceholder": "Caută o adresă sau localitate"
-  ,"home.addressSearchHelp": "Selectați o adresă Google pentru a găsi medici pe o rază de 50 km."
-  ,"home.addressSearchFallback": "Căutarea adreselor Google nu este disponibilă. Introduceți o localitate sau o adresă."
-  ,"workspace.addressSearchHelp": "Alegeți adresa din Google pentru ca locația clinicii să apară corect pe hartă."
-  ,"workspace.addressSearchFallback": "Căutarea adreselor Google nu este disponibilă. Introduceți manual adresa, localitatea și țara."
-  ,"serviceCatalogue.title": "Catalog de servicii"
-  ,"serviceCatalogue.eyebrow": "Administrarea atelierului"
-  ,"serviceCatalogue.description": "Creați și publicați serviciile pe care clienții le pot solicita. Serviciile arhivate rămân asociate programărilor existente, dar dispar de pe pagina publică a atelierului."
-  ,"serviceCatalogue.workshop": "Atelier"
-  ,"serviceCatalogue.publishedCount": "publicate"
-  ,"serviceCatalogue.emptyTitle": "Nu există servicii"
-  ,"serviceCatalogue.emptyDescription": "Adăugați primul serviciu disponibil pentru programare la acest atelier."
-  ,"serviceCatalogue.addService": "Adăugați serviciu"
-  ,"serviceCatalogue.adding": "Se adaugă…"
-  ,"serviceCatalogue.name": "Denumirea serviciului"
-  ,"serviceCatalogue.category": "Categorie"
-  ,"serviceCatalogue.serviceDescription": "Descriere"
-  ,"serviceCatalogue.duration": "Durată (minute)"
-  ,"serviceCatalogue.priceFrom": "Preț de la"
-  ,"serviceCatalogue.currency": "Monedă"
-  ,"serviceCatalogue.displayOrder": "Ordinea afișării"
-  ,"serviceCatalogue.requiresDiagnosis": "Prețul final necesită diagnosticare"
-  ,"serviceCatalogue.priceReview": "Preț după inspecție"
-  ,"serviceCatalogue.published": "Publicat"
-  ,"serviceCatalogue.archived": "Arhivat"
-  ,"serviceCatalogue.archiveAction": "Arhivați serviciul"
-  ,"serviceCatalogue.publishAction": "Publicați serviciul"
-  ,"serviceCatalogue.noWorkshopTitle": "Niciun atelier disponibil"
-  ,"serviceCatalogue.noWorkshopDescription": "Creați o locație de atelier înainte de a adăuga servicii."
-  ,"serviceCatalogue.manageWorkshops": "Administrați atelierele"
-  ,"serviceCatalogue.status.saved": "Serviciul a fost actualizat."
-  ,"serviceCatalogue.status.created": "Serviciul a fost adăugat."
-  ,"serviceCatalogue.status.published": "Serviciul a fost publicat."
-  ,"serviceCatalogue.status.archived": "Serviciul a fost arhivat."
-  ,"serviceCatalogue.status.invalid": "Verificați detaliile serviciului."
-  ,"serviceCatalogue.status.unauthorized": "Nu aveți permisiunea de a administra acest atelier."
-  ,"serviceCatalogue.status.conflict": "Există deja un serviciu cu această denumire."
-  ,"serviceCatalogue.status.unavailable": "Catalogul nu a putut fi actualizat. Încercați din nou."
-  ,"workshopBookings.eyebrow": "Operațiunile atelierului"
-  ,"workshopBookings.title": "Cereri de programare"
-  ,"workshopBookings.description": "Analizați cererile de service, stabiliți ora împreună cu clientul și păstrați fiecare decizie în istoric. Ora propusă nu este confirmată până când nu o confirmați."
-  ,"workshopBookings.visible": "cereri afișate"
-  ,"workshopBookings.filter": "Filtru"
-  ,"workshopBookings.filter.open": "Cereri deschise"
-  ,"workshopBookings.filter.all": "Toate cererile"
-  ,"workshopBookings.emptyTitle": "Nu există cereri corespunzătoare"
-  ,"workshopBookings.emptyDescription": "Noile cereri de service ale clienților vor apărea aici."
-  ,"workshopBookings.status.requested": "Solicitată"
-  ,"workshopBookings.status.confirmed": "Confirmată"
-  ,"workshopBookings.status.checked_in": "Vehicul primit"
-  ,"workshopBookings.status.diagnosing": "În diagnosticare"
-  ,"workshopBookings.status.awaiting_approval": "Așteaptă aprobarea"
-  ,"workshopBookings.status.in_service": "În service"
-  ,"workshopBookings.status.ready_for_collection": "Gata de ridicare"
-  ,"workshopBookings.status.completed": "Finalizată"
-  ,"workshopBookings.status.declined": "Refuzată"
-  ,"workshopBookings.status.cancelled": "Anulată"
-  ,"workshopBookings.status.no_show": "Client absent"
-  ,"workshopBookings.customerVehicle": "Client și vehicul"
-  ,"workshopBookings.customer": "Client"
-  ,"workshopBookings.contact": "Contact"
-  ,"workshopBookings.vehicle": "Vehicul"
-  ,"workshopBookings.mileage": "Kilometraj"
-  ,"workshopBookings.mobility": "Solicitare de mobilitate"
-  ,"workshopBookings.language": "Limba clientului"
-  ,"workshopBookings.requestedTimes": "Orele programării"
-  ,"workshopBookings.preferred": "Preferată"
-  ,"workshopBookings.alternate": "Alternativă"
-  ,"workshopBookings.confirmed": "Confirmată"
-  ,"workshopBookings.proposed": "Propunerea atelierului"
-  ,"workshopBookings.notes": "Nota clientului"
-  ,"workshopBookings.noCustomerNote": "Clientul nu a adăugat nicio notă."
-  ,"workshopBookings.workshopNote": "Nota atelierului"
-  ,"workshopBookings.manage": "Administrați cererea"
-  ,"workshopBookings.noActions": "Nu sunt disponibile acțiuni pentru acest statut."
-  ,"workshopBookings.history": "Istoricul ciclului"
-  ,"workshopBookings.mobility.none": "Fără cerințe speciale"
-  ,"workshopBookings.mobility.pickup": "Preluarea vehiculului"
-  ,"workshopBookings.mobility.courtesy_car": "Mașină de înlocuire"
-  ,"workshopBookings.mobility.wait_on_site": "Așteptare la atelier"
-  ,"workshopBookings.action.time": "Data și ora"
-  ,"workshopBookings.action.reason": "Motiv"
-  ,"workshopBookings.action.note": "Notă (opțional)"
-  ,"workshopBookings.action.saving": "Se salvează…"
-  ,"workshopBookings.action.confirm": "Confirmați programarea"
-  ,"workshopBookings.action.propose_time": "Propuneți altă oră"
-  ,"workshopBookings.action.reschedule": "Reprogramați"
-  ,"workshopBookings.action.decline": "Refuzați cererea"
-  ,"workshopBookings.action.cancel": "Anulați programarea"
-  ,"workshopBookings.result.confirmed": "Programarea a fost confirmată."
-  ,"workshopBookings.result.proposed": "Ora alternativă a fost înregistrată."
-  ,"workshopBookings.result.rescheduled": "Programarea a fost modificată."
-  ,"workshopBookings.result.declined": "Cererea a fost refuzată."
-  ,"workshopBookings.result.cancelled": "Programarea a fost anulată."
-  ,"workshopBookings.result.invalid": "Verificați ora solicitată și motivul obligatoriu."
-  ,"workshopBookings.result.unauthorized": "Nu puteți administra această cerere."
-  ,"workshopBookings.result.unavailable": "Cererea nu a putut fi actualizată. Încercați din nou."
-  ,"workshopBookings.history.request_received": "Cerere primită"
-  ,"workshopBookings.history.migration_snapshot": "Statut inițial"
-  ,"workshopBookings.history.confirmed": "Programare confirmată"
-  ,"workshopBookings.history.time_proposed": "Oră alternativă propusă"
-  ,"workshopBookings.history.rescheduled": "Programare modificată"
-  ,"workshopBookings.history.declined": "Cerere refuzată"
-  ,"workshopBookings.history.cancelled": "Programare anulată"
-  ,"workshopBookings.history.proposal_accepted": "Ora propusă a fost acceptată"
-  ,"workshopBookings.history.proposal_declined": "Ora propusă a fost refuzată"
-  ,"workshopBookings.history.customer_cancelled": "Anulată de client"
-  ,"customerBookings.back": "Garajul meu"
-  ,"customerBookings.eyebrow": "Programări client"
-  ,"customerBookings.title": "Programările mele de service"
-  ,"customerBookings.description": "Urmărește cererile, răspunde propunerilor atelierului și vezi detaliile confirmate."
-  ,"customerBookings.visible": "programări afișate"
-  ,"customerBookings.requestedTime": "Ora solicitată"
-  ,"customerBookings.proposedTime": "Ora propusă"
-  ,"customerBookings.confirmedTime": "Ora confirmată"
-  ,"customerBookings.proposalEyebrow": "Acțiune necesară"
-  ,"customerBookings.proposalTitle": "Atelierul a propus o altă oră"
-  ,"customerBookings.bookingDetails": "Detaliile programării"
-  ,"customerBookings.vehicle": "Vehicul"
-  ,"customerBookings.preferred": "Preferată"
-  ,"customerBookings.alternate": "Alternativă"
-  ,"customerBookings.confirmed": "Confirmată"
-  ,"customerBookings.yourNote": "Nota ta"
-  ,"customerBookings.workshopNote": "Nota atelierului"
-  ,"customerBookings.workshopDetails": "Detaliile atelierului"
-  ,"customerBookings.contactUnavailable": "Datele de contact nu sunt disponibile încă."
-  ,"customerBookings.history": "Istoricul programării"
-  ,"customerBookings.cancelTitle": "Anulează această programare"
-  ,"customerBookings.cancelDescription": "Anularea este definitivă. Spune atelierului motivul."
-  ,"customerBookings.cancelReason": "Motivul anulării"
-  ,"customerBookings.noteOptional": "Notă (opțional)"
-  ,"customerBookings.saving": "Se salvează…"
-  ,"customerBookings.action.accept_proposal": "Acceptă ora propusă"
-  ,"customerBookings.action.decline_proposal": "Refuză ora propusă"
-  ,"customerBookings.action.cancel": "Anulează programarea"
-  ,"customerBookings.result.accepted": "Ora propusă este confirmată."
-  ,"customerBookings.result.declined": "Propunerea atelierului a fost refuzată."
-  ,"customerBookings.result.cancelled": "Programarea a fost anulată."
-  ,"customerBookings.result.invalid": "Această acțiune nu mai este validă. Reîncarcă pagina."
-  ,"customerBookings.result.unauthorized": "Nu poți administra această programare."
-  ,"customerBookings.result.unavailable": "Programarea nu a putut fi actualizată."
-  ,"customerBookings.emptyTitle": "Nicio programare potrivită"
-  ,"customerBookings.emptyDescription": "Cererile tale de service vor apărea aici după rezervare."
-  ,"customerBookings.bookService": "Programează un service"
-  ,"register.customer.choice": "Client"
-  ,"register.workshop_manager.choice": "Manager de atelier"
-  ,"register.customer.title": "Înregistrare client"
-  ,"register.customer.description": "Creează contul pitster pentru vehicule și programări de service."
-  ,"register.workshop_manager.title": "Înregistrare manager de atelier"
-  ,"register.workshop_manager.description": "Creează un cont de furnizor de servicii pentru atelierul tău."
-  ,"register.workshop_manager.legalName": "Denumirea legală a furnizorului"
-  ,"register.workshop_manager.displayName": "Numele public al furnizorului"
-  ,"platformLogin.customer.title": "Autentificare client"
-  ,"platformLogin.customer.description": "Accesează garajul și programările tale de service."
-  ,"platformLogin.workshop_manager.title": "Autentificare manager de atelier"
-  ,"platformLogin.workshop_manager.description": "Administrează cererile, serviciile și atelierele."
-  ,"platformLogin.noAccount": "Nu ai cont?"
-  ,"platformLogin.register": "Creează unul"
-  ,"managerPortal.eyebrow": "Administrarea atelierului"
-  ,"managerPortal.welcome": "Bun venit, {name}"
-  ,"managerPortal.description": "Administrează furnizorii, atelierele, catalogul și cererile de programare."
-  ,"managerPortal.workshops": "Ateliere"
-  ,"managerPortal.role": "Rolul de membru"
-  ,"managerPortal.empty": "Nu există un abonament activ la un furnizor de servicii."
-  ,"workshopOperations.eyebrow": "Operațiunile atelierului"
-  ,"workshopOperations.title": "Setările atelierului"
-  ,"workshopOperations.description": "Administrează profilul public, regulile de programare, orarul, opțiunile de mobilitate și închiderile excepționale."
-  ,"workshopOperations.publicProfile": "Profil public"
-  ,"workshopOperations.displayName": "Numele atelierului"
-  ,"workshopOperations.descriptionLabel": "Descriere"
-  ,"workshopOperations.phone": "Telefon public"
-  ,"workshopOperations.email": "E-mail public"
-  ,"workshopOperations.address": "Adresa atelierului"
-  ,"workshopOperations.bookingRules": "Reguli de programare"
-  ,"workshopOperations.leadTime": "Timp minim în avans (minute)"
-  ,"workshopOperations.horizon": "Orizont de programare (zile)"
-  ,"workshopOperations.capacity": "Capacitate zilnică de cereri"
-  ,"workshopOperations.interval": "Interval orar (minute)"
-  ,"workshopOperations.timeZone": "Fus orar"
-  ,"workshopOperations.acceptsRequests": "Acceptă cereri publice de programare"
-  ,"workshopOperations.pickup": "Oferă preluarea vehiculului"
-  ,"workshopOperations.courtesyCar": "Oferă mașină de înlocuire"
-  ,"workshopOperations.waitOnSite": "Permite așteptarea la atelier"
-  ,"workshopOperations.hours": "Program săptămânal"
-  ,"workshopOperations.closed": "Închis"
-  ,"workshopOperations.opens": "Deschide"
-  ,"workshopOperations.closes": "Închide"
-  ,"workshopOperations.weekday.0": "Duminică"
-  ,"workshopOperations.weekday.1": "Luni"
-  ,"workshopOperations.weekday.2": "Marți"
-  ,"workshopOperations.weekday.3": "Miercuri"
-  ,"workshopOperations.weekday.4": "Joi"
-  ,"workshopOperations.weekday.5": "Vineri"
-  ,"workshopOperations.weekday.6": "Sâmbătă"
-  ,"workshopOperations.save": "Salvează setările atelierului"
-  ,"workshopOperations.saving": "Se salvează…"
-  ,"workshopOperations.closures": "Închideri excepționale"
-  ,"workshopOperations.closuresDescription": "Închiderile suprascriu programul săptămânal și blochează cererile noi."
-  ,"workshopOperations.closure.starts": "Începe"
-  ,"workshopOperations.closure.ends": "Se termină"
-  ,"workshopOperations.closure.reason": "Motiv (opțional)"
-  ,"workshopOperations.closure.add": "Adaugă închidere"
-  ,"workshopOperations.closure.remove": "Elimină"
-  ,"workshopOperations.closure.defaultReason": "Atelier închis"
-  ,"workshopOperations.closure.empty": "Nu există închideri viitoare."
-  ,"workshopOperations.emptyTitle": "Niciun atelier disponibil"
-  ,"workshopOperations.emptyDescription": "Este necesar un abonament activ la atelier pentru configurare."
-  ,"workshopOperations.result.saved": "Setările atelierului au fost salvate."
-  ,"workshopOperations.result.created": "Închiderea a fost adăugată."
-  ,"workshopOperations.result.removed": "Închiderea a fost eliminată."
-  ,"workshopOperations.result.invalid": "Verifică setările și programul."
-  ,"workshopOperations.result.unauthorized": "Nu poți administra acest atelier."
-  ,"workshopOperations.result.unavailable": "Atelierul nu a putut fi actualizat."
-  ,"repairLifecycle.eyebrow": "Operațiuni atelier"
-  ,"repairLifecycle.title": "Ciclul reparației"
-  ,"repairLifecycle.description": "Gestionează lucrările de la recepție până la aprobare și predare."
-  ,"repairLifecycle.visible": "reparații afișate"
-  ,"repairLifecycle.filter.active": "Reparații active"
-  ,"repairLifecycle.note": "Notă atelier (opțional)"
-  ,"repairLifecycle.saving": "Se salvează…"
-  ,"repairLifecycle.result.saved": "Reparația a fost actualizată."
-  ,"repairLifecycle.result.invalid": "Această tranziție nu mai este validă."
-  ,"repairLifecycle.result.unauthorized": "Nu poți administra această reparație."
-  ,"repairLifecycle.result.unavailable": "Reparația nu a putut fi actualizată."
-  ,"repairLifecycle.action.check_in": "Recepționează vehiculul"
-  ,"repairLifecycle.action.start_diagnosis": "Începe diagnosticarea"
-  ,"repairLifecycle.action.start_work": "Începe lucrarea aprobată"
-  ,"repairLifecycle.action.ready_for_collection": "Marchează gata de preluare"
-  ,"repairLifecycle.action.complete": "Finalizează reparația"
-  ,"repairLifecycle.action.mark_no_show": "Marchează neprezentarea"
-  ,"repairLifecycle.diagnosis": "Diagnostic"
-  ,"repairLifecycle.items": "Poziții deviz"
-  ,"repairLifecycle.addItem": "Adaugă poziție"
-  ,"repairLifecycle.itemType": "Tip poziție"
-  ,"repairLifecycle.itemDescription": "Descriere"
-  ,"repairLifecycle.quantity": "Cantitate"
-  ,"repairLifecycle.unitPrice": "Preț unitar"
-  ,"repairLifecycle.removeItem": "Elimină poziția"
-  ,"repairLifecycle.currency": "Monedă"
-  ,"repairLifecycle.customerNote": "Mesaj pentru client (opțional)"
-  ,"repairLifecycle.sendEstimate": "Trimite devizul spre aprobare"
-  ,"repairLifecycle.estimate": "Deviz"
-  ,"repairLifecycle.estimateStatus.awaiting_customer": "Așteaptă clientul"
-  ,"repairLifecycle.estimateStatus.approved": "Aprobat"
-  ,"repairLifecycle.estimateStatus.declined": "Respins"
-  ,"repairLifecycle.estimateStatus.superseded": "Înlocuit"
-  ,"repairLifecycle.type.labor": "Manoperă"
-  ,"repairLifecycle.type.part": "Piesă"
-  ,"repairLifecycle.type.other": "Altele"
-  ,"repairLifecycle.total": "Total"
-  ,"repairLifecycle.customerDecisionNote": "Nota clientului"
-  ,"repairLifecycle.appointment": "Programare"
-  ,"repairLifecycle.jobDetails": "Detaliile lucrării"
-  ,"repairLifecycle.nextAction": "Următoarea acțiune"
-  ,"repairLifecycle.waitingCustomer": "Se așteaptă decizia clientului."
-  ,"repairLifecycle.noActions": "Această reparație este închisă."
-  ,"repairLifecycle.emptyTitle": "Nicio reparație potrivită"
-  ,"repairLifecycle.emptyDescription": "Programările confirmate apar aici."
-  ,"repairLifecycle.customerAction.approve": "Aprobă devizul"
-  ,"repairLifecycle.customerAction.decline": "Respinge devizul"
-  ,"repairLifecycle.customerResult.approved": "Devizul a fost aprobat."
-  ,"repairLifecycle.customerResult.estimate_declined": "Devizul a fost trimis spre revizuire."
-  ,"repairLifecycle.customerResult.invalid": "Acest deviz nu mai așteaptă o decizie."
-  ,"repairLifecycle.customerResult.unauthorized": "Nu poți decide asupra acestui deviz."
-  ,"repairLifecycle.customerResult.unavailable": "Devizul nu a putut fi actualizat."
-  ,"repairLifecycle.approvedWaiting": "Aprobat — atelierul poate începe lucrarea."
-  ,"workshopBookings.history.checked_in": "Vehicul recepționat"
-  ,"workshopBookings.history.diagnosis_recorded": "Diagnosticare începută"
-  ,"workshopBookings.history.estimate_sent": "Deviz trimis"
-  ,"workshopBookings.history.estimate_approved": "Deviz aprobat"
-  ,"workshopBookings.history.estimate_declined": "Deviz respins"
-  ,"workshopBookings.history.work_started": "Lucrare începută"
-  ,"workshopBookings.history.ready_for_collection": "Gata de preluare"
-  ,"workshopBookings.history.completed": "Reparație finalizată"
-  ,"workshopBookings.history.no_show": "Client neprezentat"
-  ,"providerBilling.eyebrow": "Facturare furnizor"
-  ,"providerBilling.title": "Abonament și facturi"
-  ,"providerBilling.description": "Administrează abonamentul lunar de 35 €, identitatea de facturare, plata și facturile Stripe."
-  ,"providerBilling.provider": "Furnizor de servicii"
-  ,"providerBilling.checkoutSuccess": "Plata a fost finalizată. Stripe confirmă abonamentul prin webhook-ul semnat."
-  ,"providerBilling.checkoutCancelled": "Plata a fost anulată. Abonamentul nu a fost modificat."
-  ,"providerBilling.error": "Operațiunea de facturare nu a putut fi finalizată."
-  ,"providerBilling.plan": "Plan curent"
-  ,"providerBilling.month": "lună"
-  ,"providerBilling.smsIncluded": "SMS inclus"
-  ,"providerBilling.status": "Stare"
-  ,"providerBilling.renews": "Perioada curentă se încheie"
-  ,"providerBilling.cancelsAtPeriodEnd": "Anulare programată la sfârșitul perioadei"
-  ,"providerBilling.subscribe": "Abonează-te cu Stripe"
-  ,"providerBilling.portal": "Administrează plata în Stripe"
-  ,"providerBilling.notConfigured": "Mediul Stripe nu este configurat."
-  ,"providerBilling.profileTitle": "Identitate de facturare"
-  ,"providerBilling.profileDescription": "Aceste date identifică furnizorul plătitor. Stripe colectează securizat datele de plată."
-  ,"providerBilling.billingEmail": "E-mail de facturare"
-  ,"providerBilling.billingContact": "Contact de facturare"
-  ,"providerBilling.taxIdentifier": "Cod fiscal"
-  ,"providerBilling.addressLine1": "Adresă, rândul 1"
-  ,"providerBilling.addressLine2": "Adresă, rândul 2"
-  ,"providerBilling.city": "Localitate"
-  ,"providerBilling.postalCode": "Cod poștal"
-  ,"providerBilling.country": "Cod țară"
-  ,"providerBilling.result.saved": "Datele de facturare au fost salvate."
-  ,"providerBilling.result.invalid": "Verifică datele de facturare."
-  ,"providerBilling.result.unauthorized": "Doar un proprietar activ poate administra facturarea."
-  ,"providerBilling.result.configuration": "Stripe nu este configurat."
-  ,"providerBilling.result.unavailable": "Datele de facturare nu au putut fi actualizate."
-  ,"providerBilling.invoices": "Facturi Stripe"
-  ,"providerBilling.invoice": "Factură"
-  ,"providerBilling.period": "Perioadă"
-  ,"providerBilling.amount": "Sumă"
-  ,"providerBilling.documents": "Documente"
-  ,"providerBilling.view": "Vezi"
-  ,"providerBilling.noInvoices": "Facturile vor apărea după ce sunt create de Stripe."
-  ,"providerBilling.subscription.not_started": "Neabonat"
-  ,"providerBilling.subscription.incomplete": "Plată incompletă"
-  ,"providerBilling.subscription.incomplete_expired": "Plată expirată"
-  ,"providerBilling.subscription.trialing": "Perioadă de probă"
-  ,"providerBilling.subscription.active": "Activ"
-  ,"providerBilling.subscription.past_due": "Plată restantă"
-  ,"providerBilling.subscription.canceled": "Anulat"
-  ,"providerBilling.subscription.unpaid": "Neplătit"
-  ,"providerBilling.subscription.paused": "În pauză"
-  ,"commercialAdmin.eyebrow": "Operațiuni comerciale"
-  ,"commercialAdmin.title": "Abonamente și operațiuni furnizori"
-  ,"commercialAdmin.description": "Monitorizează abonamentele Stripe, exportă datele contabile și gestionează starea operațională separat de plată."
-  ,"commercialAdmin.providers": "Furnizori"
-  ,"commercialAdmin.activeSubscriptions": "Abonamente active"
-  ,"commercialAdmin.attention": "Plăți de verificat"
-  ,"commercialAdmin.mrr": "Venit recurent lunar"
-  ,"commercialAdmin.provider": "Furnizor"
-  ,"commercialAdmin.providerStatus": "Stare operațională"
-  ,"commercialAdmin.subscription": "Abonament"
-  ,"commercialAdmin.renewal": "Sfârșitul perioadei"
-  ,"commercialAdmin.invoices": "Facturi"
-  ,"commercialAdmin.operation": "Operațiune admin"
-  ,"commercialAdmin.reason": "Motiv obligatoriu"
-  ,"commercialAdmin.providerStatus.pending": "În așteptare"
-  ,"commercialAdmin.providerStatus.active": "Activ"
-  ,"commercialAdmin.providerStatus.suspended": "Suspendat"
-  ,"commercialAdmin.providerStatus.rejected": "Respins"
-  ,"commercialAdmin.result.saved": "Starea furnizorului a fost actualizată."
-  ,"commercialAdmin.result.invalid": "Alege altă stare validă și precizează motivul."
-  ,"commercialAdmin.result.unauthorized": "Este necesar accesul de administrator al platformei."
-  ,"commercialAdmin.result.unavailable": "Starea furnizorului nu a putut fi actualizată."
-  ,"serviceCatalogue.vehicleType": "Tip vehicul"
-  ,"serviceCatalogue.vehicleType.car_van": "Autoturism / autoutilitară"
-  ,"serviceCatalogue.vehicleType.motorcycle_scooter": "Motocicletă / scuter pe benzină"
-  ,"serviceCatalogue.vehicleType.electric_bicycle": "Bicicletă electrică"
-  ,"serviceCatalogue.vehicleType.electric_kick_scooter": "Trotinetă electrică"
-  ,"serviceCatalogue.bookingMode": "Flux de programare"
-  ,"serviceCatalogue.bookingMode.direct": "Serviciu direct"
-  ,"serviceCatalogue.bookingMode.diagnosis_first": "Mai întâi diagnosticare"
-  ,"serviceCatalogue.bookingMode.diagnosis": "Diagnosticare inițială"
-  ,"serviceCatalogue.diagnosisFeeHelp": "Setați un tarif de diagnosticare pozitiv înainte de publicare. Tariful rămâne datorat dacă clientul refuză reparațiile ulterioare."
-  ,"serviceCatalogue.setupRequired": "Tarif necesar"
-  ,"serviceCatalogue.template": "Șablon standard de serviciu"
-  ,"serviceCatalogue.template.custom": "Serviciu personalizat"
-  ,"workshopBookings.calendar.title": "Calendarul atelierului"
-  ,"workshopBookings.calendarStatus.proposed": "Oră propusă"
-  ,"workshopBookings.calendarStatus.rescheduled": "Reprogramat"
-  ,"workshopBookings.manual.add": "Adăugați programare"
-  ,"workshopBookings.manual.source": "Sursa programării"
-  ,"workshopBookings.manual.phone": "Telefon client (opțional)"
-  ,"workshopBookings.manual.email": "E-mail client (opțional)"
-  ,"workshopBookings.manual.registration": "Număr de înmatriculare"
-  ,"workshopBookings.manual.make": "Marca vehiculului"
-  ,"workshopBookings.manual.model": "Modelul vehiculului"
-  ,"workshopBookings.manual.year": "Anul fabricației"
-  ,"workshopBookings.customerStates": "Clientul declară"
-  ,"workshopBookings.customerStatesHelp": "Notați simptomele și faptele exact așa cum sunt descrise de client."
-  ,"workshopBookings.manual.create": "Creați programarea"
-  ,"workshopBookings.manual.result.created": "Programarea a fost adăugată în calendar."
-  ,"workshopBookings.manual.result.invalid": "Verificați datele programării, clientului și vehiculului."
-  ,"workshopBookings.manual.result.unauthorized": "Nu puteți adăuga programări pentru acest atelier."
-  ,"workshopBookings.manual.result.unavailable": "Programarea nu a putut fi creată."
-  ,"workshopBookings.source.public_request": "Cerere online"
-  ,"workshopBookings.source.manager_phone": "Apel telefonic"
-  ,"workshopBookings.source.manager_walk_in": "Client fără programare"
-  ,"workshopBookings.source.manager_other": "Altă înregistrare a atelierului"
-  ,"workshopBookings.history.manager_created": "Programare creată de atelier"
-  ,"automotiveAdmin.console": "Operațiuni platformă"
-  ,"automotiveAdmin.navigation": "Administrare auto"
-  ,"automotiveAdmin.nav.overview": "Prezentare generală"
-  ,"automotiveAdmin.nav.providers": "Furnizori de servicii"
-  ,"automotiveAdmin.nav.workshops": "Ateliere"
-  ,"automotiveAdmin.nav.customers": "Clienți"
-  ,"automotiveAdmin.nav.managers": "Manageri de atelier"
-  ,"automotiveAdmin.nav.sms": "Livrare SMS"
-  ,"automotiveAdmin.nav.security": "Securitate"
-  ,"automotiveAdmin.openBookings": "Rezervări deschise"
-  ,"automotiveAdmin.smsAttention": "SMS-uri care necesită atenție"
-  ,"automotiveAdmin.recentProviders": "Furnizori recenți"
-  ,"automotiveAdmin.provider": "Furnizor de servicii"
-  ,"automotiveAdmin.providers": "Furnizori de servicii"
-  ,"automotiveAdmin.workshop": "Atelier"
-  ,"automotiveAdmin.workshops": "Ateliere"
-  ,"automotiveAdmin.customer": "Client"
-  ,"automotiveAdmin.manager": "Manager de atelier"
-  ,"automotiveAdmin.managers": "Manageri"
-  ,"automotiveAdmin.legalName": "Denumire juridică"
-  ,"automotiveAdmin.location": "Locație"
-  ,"automotiveAdmin.phone": "Telefon"
-  ,"automotiveAdmin.vehicles": "Vehicule"
-  ,"automotiveAdmin.bookings": "Rezervări"
-  ,"automotiveAdmin.created": "Creat"
-  ,"automotiveAdmin.smsEvent": "Eveniment SMS"
-  ,"automotiveAdmin.pending": "În așteptare"
-  ,"automotiveAdmin.sent": "Trimis"
-  ,"automotiveAdmin.failed": "Eșuat"
-  ,"automotiveAdmin.empty": "Nu există înregistrări în această secțiune."
-  ,"automotiveAdmin.securityTitle": "Securitatea sesiunii administrative"
-  ,"automotiveAdmin.securityDescription": "Accesul administrativ necesită un cont activ și autentificare multifactor."
-  ,"automotiveAdmin.role": "Rol"
-  ,"automotiveAdmin.session": "Nivelul sesiunii"
-  ,"automotiveAdmin.generated": "Instantaneu generat"
-  ,"automotiveAdmin.sms.booking_confirmed": "Rezervare confirmată"
-  ,"automotiveAdmin.sms.reminder_24h": "Memento de 24 de ore"
-  ,"automotiveAdmin.sms.repair_started": "Reparație începută"
-  ,"automotiveAdmin.sms.ready_for_pickup": "Gata de ridicare"
-  ,"automotiveAdmin.sms.review_request": "Solicitare recenzie"
+  "home.addressSearchPlaceholder": "Caută o adresă sau localitate",
+  "home.addressSearchHelp": "Selectați o adresă Google pentru a găsi medici pe o rază de 50 km.",
+  "home.addressSearchFallback": "Căutarea adreselor Google nu este disponibilă. Introduceți o localitate sau o adresă.",
+  "workspace.addressSearchHelp": "Alegeți adresa din Google pentru ca locația clinicii să apară corect pe hartă.",
+  "workspace.addressSearchFallback": "Căutarea adreselor Google nu este disponibilă. Introduceți manual adresa, localitatea și țara.",
+  "serviceCatalogue.title": "Catalog de servicii",
+  "serviceCatalogue.eyebrow": "Administrarea atelierului",
+  "serviceCatalogue.description": "Creați și publicați serviciile pe care clienții le pot solicita. Serviciile arhivate rămân asociate programărilor existente, dar dispar de pe pagina publică a atelierului.",
+  "serviceCatalogue.workshop": "Atelier",
+  "serviceCatalogue.publishedCount": "publicate",
+  "serviceCatalogue.emptyTitle": "Nu există servicii",
+  "serviceCatalogue.emptyDescription": "Adăugați primul serviciu disponibil pentru programare la acest atelier.",
+  "serviceCatalogue.addService": "Adăugați serviciu",
+  "serviceCatalogue.adding": "Se adaugă…",
+  "serviceCatalogue.name": "Denumirea serviciului",
+  "serviceCatalogue.category": "Categorie",
+  "serviceCatalogue.serviceDescription": "Descriere",
+  "serviceCatalogue.duration": "Durată (minute)",
+  "serviceCatalogue.priceFrom": "Preț de la",
+  "serviceCatalogue.currency": "Monedă",
+  "serviceCatalogue.displayOrder": "Ordinea afișării",
+  "serviceCatalogue.requiresDiagnosis": "Prețul final necesită diagnosticare",
+  "serviceCatalogue.priceReview": "Preț după inspecție",
+  "serviceCatalogue.published": "Publicat",
+  "serviceCatalogue.archived": "Arhivat",
+  "serviceCatalogue.archiveAction": "Arhivați serviciul",
+  "serviceCatalogue.publishAction": "Publicați serviciul",
+  "serviceCatalogue.noWorkshopTitle": "Niciun atelier disponibil",
+  "serviceCatalogue.noWorkshopDescription": "Creați o locație de atelier înainte de a adăuga servicii.",
+  "serviceCatalogue.manageWorkshops": "Administrați atelierele",
+  "serviceCatalogue.status.saved": "Serviciul a fost actualizat.",
+  "serviceCatalogue.status.created": "Serviciul a fost adăugat.",
+  "serviceCatalogue.status.published": "Serviciul a fost publicat.",
+  "serviceCatalogue.status.archived": "Serviciul a fost arhivat.",
+  "serviceCatalogue.status.invalid": "Verificați detaliile serviciului.",
+  "serviceCatalogue.status.unauthorized": "Nu aveți permisiunea de a administra acest atelier.",
+  "serviceCatalogue.status.conflict": "Există deja un serviciu cu această denumire.",
+  "serviceCatalogue.status.unavailable": "Catalogul nu a putut fi actualizat. Încercați din nou.",
+  "workshopBookings.eyebrow": "Operațiunile atelierului",
+  "workshopBookings.title": "Cereri de programare",
+  "workshopBookings.description": "Analizați cererile de service, stabiliți ora împreună cu clientul și păstrați fiecare decizie în istoric. Ora propusă nu este confirmată până când nu o confirmați.",
+  "workshopBookings.visible": "cereri afișate",
+  "workshopBookings.filter": "Filtru",
+  "workshopBookings.filter.open": "Cereri deschise",
+  "workshopBookings.filter.all": "Toate cererile",
+  "workshopBookings.emptyTitle": "Nu există cereri corespunzătoare",
+  "workshopBookings.emptyDescription": "Noile cereri de service ale clienților vor apărea aici.",
+  "workshopBookings.status.requested": "Solicitată",
+  "workshopBookings.status.confirmed": "Confirmată",
+  "workshopBookings.status.checked_in": "Vehicul primit",
+  "workshopBookings.status.diagnosing": "În diagnosticare",
+  "workshopBookings.status.awaiting_approval": "Așteaptă aprobarea",
+  "workshopBookings.status.in_service": "În service",
+  "workshopBookings.status.ready_for_collection": "Gata de ridicare",
+  "workshopBookings.status.completed": "Finalizată",
+  "workshopBookings.status.declined": "Refuzată",
+  "workshopBookings.status.cancelled": "Anulată",
+  "workshopBookings.status.no_show": "Client absent",
+  "workshopBookings.customerVehicle": "Client și vehicul",
+  "workshopBookings.customer": "Client",
+  "workshopBookings.contact": "Contact",
+  "workshopBookings.vehicle": "Vehicul",
+  "workshopBookings.mileage": "Kilometraj",
+  "workshopBookings.mobility": "Solicitare de mobilitate",
+  "workshopBookings.language": "Limba clientului",
+  "workshopBookings.requestedTimes": "Orele programării",
+  "workshopBookings.preferred": "Preferată",
+  "workshopBookings.alternate": "Alternativă",
+  "workshopBookings.confirmed": "Confirmată",
+  "workshopBookings.proposed": "Propunerea atelierului",
+  "workshopBookings.notes": "Nota clientului",
+  "workshopBookings.noCustomerNote": "Clientul nu a adăugat nicio notă.",
+  "workshopBookings.workshopNote": "Nota atelierului",
+  "workshopBookings.manage": "Administrați cererea",
+  "workshopBookings.noActions": "Nu sunt disponibile acțiuni pentru acest statut.",
+  "workshopBookings.history": "Istoricul ciclului",
+  "workshopBookings.mobility.none": "Fără cerințe speciale",
+  "workshopBookings.mobility.pickup": "Preluarea vehiculului",
+  "workshopBookings.mobility.courtesy_car": "Mașină de înlocuire",
+  "workshopBookings.mobility.wait_on_site": "Așteptare la atelier",
+  "workshopBookings.action.time": "Data și ora",
+  "workshopBookings.action.reason": "Motiv",
+  "workshopBookings.action.note": "Notă (opțional)",
+  "workshopBookings.action.saving": "Se salvează…",
+  "workshopBookings.action.confirm": "Confirmați programarea",
+  "workshopBookings.action.propose_time": "Propuneți altă oră",
+  "workshopBookings.action.reschedule": "Reprogramați",
+  "workshopBookings.action.decline": "Refuzați cererea",
+  "workshopBookings.action.cancel": "Anulați programarea",
+  "workshopBookings.result.confirmed": "Programarea a fost confirmată.",
+  "workshopBookings.result.proposed": "Ora alternativă a fost înregistrată.",
+  "workshopBookings.result.rescheduled": "Programarea a fost modificată.",
+  "workshopBookings.result.declined": "Cererea a fost refuzată.",
+  "workshopBookings.result.cancelled": "Programarea a fost anulată.",
+  "workshopBookings.result.invalid": "Verificați ora solicitată și motivul obligatoriu.",
+  "workshopBookings.result.unauthorized": "Nu puteți administra această cerere.",
+  "workshopBookings.result.unavailable": "Cererea nu a putut fi actualizată. Încercați din nou.",
+  "workshopBookings.history.request_received": "Cerere primită",
+  "workshopBookings.history.migration_snapshot": "Statut inițial",
+  "workshopBookings.history.confirmed": "Programare confirmată",
+  "workshopBookings.history.time_proposed": "Oră alternativă propusă",
+  "workshopBookings.history.rescheduled": "Programare modificată",
+  "workshopBookings.history.declined": "Cerere refuzată",
+  "workshopBookings.history.cancelled": "Programare anulată",
+  "workshopBookings.history.proposal_accepted": "Ora propusă a fost acceptată",
+  "workshopBookings.history.proposal_declined": "Ora propusă a fost refuzată",
+  "workshopBookings.history.customer_cancelled": "Anulată de client",
+  "customerBookings.back": "Garajul meu",
+  "customerBookings.eyebrow": "Programări client",
+  "customerBookings.title": "Programările mele de service",
+  "customerBookings.description": "Urmărește cererile, răspunde propunerilor atelierului și vezi detaliile confirmate.",
+  "customerBookings.visible": "programări afișate",
+  "customerBookings.requestedTime": "Ora solicitată",
+  "customerBookings.proposedTime": "Ora propusă",
+  "customerBookings.confirmedTime": "Ora confirmată",
+  "customerBookings.proposalEyebrow": "Acțiune necesară",
+  "customerBookings.proposalTitle": "Atelierul a propus o altă oră",
+  "customerBookings.bookingDetails": "Detaliile programării",
+  "customerBookings.vehicle": "Vehicul",
+  "customerBookings.preferred": "Preferată",
+  "customerBookings.alternate": "Alternativă",
+  "customerBookings.confirmed": "Confirmată",
+  "customerBookings.yourNote": "Nota ta",
+  "customerBookings.workshopNote": "Nota atelierului",
+  "customerBookings.workshopDetails": "Detaliile atelierului",
+  "customerBookings.contactUnavailable": "Datele de contact nu sunt disponibile încă.",
+  "customerBookings.history": "Istoricul programării",
+  "customerBookings.cancelTitle": "Anulează această programare",
+  "customerBookings.cancelDescription": "Anularea este definitivă. Spune atelierului motivul.",
+  "customerBookings.cancelReason": "Motivul anulării",
+  "customerBookings.noteOptional": "Notă (opțional)",
+  "customerBookings.saving": "Se salvează…",
+  "customerBookings.action.accept_proposal": "Acceptă ora propusă",
+  "customerBookings.action.decline_proposal": "Refuză ora propusă",
+  "customerBookings.action.cancel": "Anulează programarea",
+  "customerBookings.result.accepted": "Ora propusă este confirmată.",
+  "customerBookings.result.declined": "Propunerea atelierului a fost refuzată.",
+  "customerBookings.result.cancelled": "Programarea a fost anulată.",
+  "customerBookings.result.invalid": "Această acțiune nu mai este validă. Reîncarcă pagina.",
+  "customerBookings.result.unauthorized": "Nu poți administra această programare.",
+  "customerBookings.result.unavailable": "Programarea nu a putut fi actualizată.",
+  "customerBookings.emptyTitle": "Nicio programare potrivită",
+  "customerBookings.emptyDescription": "Cererile tale de service vor apărea aici după rezervare.",
+  "customerBookings.bookService": "Programează un service",
+  "register.customer.choice": "Client",
+  "register.workshop_manager.choice": "Manager de atelier",
+  "register.customer.title": "Înregistrare client",
+  "register.customer.description": "Creează contul pitster pentru vehicule și programări de service.",
+  "register.workshop_manager.title": "Înregistrare manager de atelier",
+  "register.workshop_manager.description": "Creează un cont de furnizor de servicii pentru atelierul tău.",
+  "register.workshop_manager.legalName": "Denumirea legală a furnizorului",
+  "register.workshop_manager.displayName": "Numele public al furnizorului",
+  "platformLogin.customer.title": "Autentificare client",
+  "platformLogin.customer.description": "Accesează garajul și programările tale de service.",
+  "platformLogin.workshop_manager.title": "Autentificare manager de atelier",
+  "platformLogin.workshop_manager.description": "Administrează cererile, serviciile și atelierele.",
+  "platformLogin.noAccount": "Nu ai cont?",
+  "platformLogin.register": "Creează unul",
+  "managerPortal.eyebrow": "Administrarea atelierului",
+  "managerPortal.welcome": "Bun venit, {name}",
+  "managerPortal.description": "Administrează furnizorii, atelierele, catalogul și cererile de programare.",
+  "managerPortal.workshops": "Ateliere",
+  "managerPortal.role": "Rolul de membru",
+  "managerPortal.empty": "Nu există un abonament activ la un furnizor de servicii.",
+  "workshopOperations.eyebrow": "Operațiunile atelierului",
+  "workshopOperations.title": "Setările atelierului",
+  "workshopOperations.description": "Administrează profilul public, regulile de programare, orarul, opțiunile de mobilitate și închiderile excepționale.",
+  "workshopOperations.publicProfile": "Profil public",
+  "workshopOperations.displayName": "Numele atelierului",
+  "workshopOperations.descriptionLabel": "Descriere",
+  "workshopOperations.phone": "Telefon public",
+  "workshopOperations.email": "E-mail public",
+  "workshopOperations.address": "Adresa atelierului",
+  "workshopOperations.bookingRules": "Reguli de programare",
+  "workshopOperations.leadTime": "Timp minim în avans (minute)",
+  "workshopOperations.horizon": "Orizont de programare (zile)",
+  "workshopOperations.capacity": "Capacitate zilnică de cereri",
+  "workshopOperations.interval": "Interval orar (minute)",
+  "workshopOperations.timeZone": "Fus orar",
+  "workshopOperations.acceptsRequests": "Acceptă cereri publice de programare",
+  "workshopOperations.pickup": "Oferă preluarea vehiculului",
+  "workshopOperations.courtesyCar": "Oferă mașină de înlocuire",
+  "workshopOperations.waitOnSite": "Permite așteptarea la atelier",
+  "workshopOperations.hours": "Program săptămânal",
+  "workshopOperations.closed": "Închis",
+  "workshopOperations.opens": "Deschide",
+  "workshopOperations.closes": "Închide",
+  "workshopOperations.weekday.0": "Duminică",
+  "workshopOperations.weekday.1": "Luni",
+  "workshopOperations.weekday.2": "Marți",
+  "workshopOperations.weekday.3": "Miercuri",
+  "workshopOperations.weekday.4": "Joi",
+  "workshopOperations.weekday.5": "Vineri",
+  "workshopOperations.weekday.6": "Sâmbătă",
+  "workshopOperations.save": "Salvează setările atelierului",
+  "workshopOperations.saving": "Se salvează…",
+  "workshopOperations.closures": "Închideri excepționale",
+  "workshopOperations.closuresDescription": "Închiderile suprascriu programul săptămânal și blochează cererile noi.",
+  "workshopOperations.closure.starts": "Începe",
+  "workshopOperations.closure.ends": "Se termină",
+  "workshopOperations.closure.reason": "Motiv (opțional)",
+  "workshopOperations.closure.add": "Adaugă închidere",
+  "workshopOperations.closure.remove": "Elimină",
+  "workshopOperations.closure.defaultReason": "Atelier închis",
+  "workshopOperations.closure.empty": "Nu există închideri viitoare.",
+  "workshopOperations.emptyTitle": "Niciun atelier disponibil",
+  "workshopOperations.emptyDescription": "Este necesar un abonament activ la atelier pentru configurare.",
+  "workshopOperations.result.saved": "Setările atelierului au fost salvate.",
+  "workshopOperations.result.created": "Închiderea a fost adăugată.",
+  "workshopOperations.result.removed": "Închiderea a fost eliminată.",
+  "workshopOperations.result.invalid": "Verifică setările și programul.",
+  "workshopOperations.result.unauthorized": "Nu poți administra acest atelier.",
+  "workshopOperations.result.unavailable": "Atelierul nu a putut fi actualizat.",
+  "repairLifecycle.eyebrow": "Operațiuni atelier",
+  "repairLifecycle.title": "Ciclul reparației",
+  "repairLifecycle.description": "Gestionează lucrările de la recepție până la aprobare și predare.",
+  "repairLifecycle.visible": "reparații afișate",
+  "repairLifecycle.filter.active": "Reparații active",
+  "repairLifecycle.note": "Notă atelier (opțional)",
+  "repairLifecycle.saving": "Se salvează…",
+  "repairLifecycle.result.saved": "Reparația a fost actualizată.",
+  "repairLifecycle.result.invalid": "Această tranziție nu mai este validă.",
+  "repairLifecycle.result.unauthorized": "Nu poți administra această reparație.",
+  "repairLifecycle.result.unavailable": "Reparația nu a putut fi actualizată.",
+  "repairLifecycle.action.check_in": "Recepționează vehiculul",
+  "repairLifecycle.action.start_diagnosis": "Începe diagnosticarea",
+  "repairLifecycle.action.start_work": "Începe lucrarea aprobată",
+  "repairLifecycle.action.ready_for_collection": "Marchează gata de preluare",
+  "repairLifecycle.action.complete": "Finalizează reparația",
+  "repairLifecycle.action.mark_no_show": "Marchează neprezentarea",
+  "repairLifecycle.diagnosis": "Diagnostic",
+  "repairLifecycle.items": "Poziții deviz",
+  "repairLifecycle.addItem": "Adaugă poziție",
+  "repairLifecycle.itemType": "Tip poziție",
+  "repairLifecycle.itemDescription": "Descriere",
+  "repairLifecycle.quantity": "Cantitate",
+  "repairLifecycle.unitPrice": "Preț unitar",
+  "repairLifecycle.removeItem": "Elimină poziția",
+  "repairLifecycle.currency": "Monedă",
+  "repairLifecycle.customerNote": "Mesaj pentru client (opțional)",
+  "repairLifecycle.sendEstimate": "Trimite devizul spre aprobare",
+  "repairLifecycle.estimate": "Deviz",
+  "repairLifecycle.estimateStatus.awaiting_customer": "Așteaptă clientul",
+  "repairLifecycle.estimateStatus.approved": "Aprobat",
+  "repairLifecycle.estimateStatus.declined": "Respins",
+  "repairLifecycle.estimateStatus.superseded": "Înlocuit",
+  "repairLifecycle.type.labor": "Manoperă",
+  "repairLifecycle.type.part": "Piesă",
+  "repairLifecycle.type.other": "Altele",
+  "repairLifecycle.total": "Total",
+  "repairLifecycle.customerDecisionNote": "Nota clientului",
+  "repairLifecycle.appointment": "Programare",
+  "repairLifecycle.jobDetails": "Detaliile lucrării",
+  "repairLifecycle.nextAction": "Următoarea acțiune",
+  "repairLifecycle.waitingCustomer": "Se așteaptă decizia clientului.",
+  "repairLifecycle.noActions": "Această reparație este închisă.",
+  "repairLifecycle.emptyTitle": "Nicio reparație potrivită",
+  "repairLifecycle.emptyDescription": "Programările confirmate apar aici.",
+  "repairLifecycle.customerAction.approve": "Aprobă devizul",
+  "repairLifecycle.customerAction.decline": "Respinge devizul",
+  "repairLifecycle.customerResult.approved": "Devizul a fost aprobat.",
+  "repairLifecycle.customerResult.estimate_declined": "Devizul a fost trimis spre revizuire.",
+  "repairLifecycle.customerResult.invalid": "Acest deviz nu mai așteaptă o decizie.",
+  "repairLifecycle.customerResult.unauthorized": "Nu poți decide asupra acestui deviz.",
+  "repairLifecycle.customerResult.unavailable": "Devizul nu a putut fi actualizat.",
+  "repairLifecycle.approvedWaiting": "Aprobat — atelierul poate începe lucrarea.",
+  "workshopBookings.history.checked_in": "Vehicul recepționat",
+  "workshopBookings.history.diagnosis_recorded": "Diagnosticare începută",
+  "workshopBookings.history.estimate_sent": "Deviz trimis",
+  "workshopBookings.history.estimate_approved": "Deviz aprobat",
+  "workshopBookings.history.estimate_declined": "Deviz respins",
+  "workshopBookings.history.work_started": "Lucrare începută",
+  "workshopBookings.history.ready_for_collection": "Gata de preluare",
+  "workshopBookings.history.completed": "Reparație finalizată",
+  "workshopBookings.history.no_show": "Client neprezentat",
+  "providerBilling.eyebrow": "Facturare furnizor",
+  "providerBilling.title": "Abonament și facturi",
+  "providerBilling.description": "Administrează abonamentul lunar de 35 €, identitatea de facturare, plata și facturile Stripe.",
+  "providerBilling.provider": "Furnizor de servicii",
+  "providerBilling.checkoutSuccess": "Plata a fost finalizată. Stripe confirmă abonamentul prin webhook-ul semnat.",
+  "providerBilling.checkoutCancelled": "Plata a fost anulată. Abonamentul nu a fost modificat.",
+  "providerBilling.error": "Operațiunea de facturare nu a putut fi finalizată.",
+  "providerBilling.plan": "Plan curent",
+  "providerBilling.month": "lună",
+  "providerBilling.smsIncluded": "SMS inclus",
+  "providerBilling.status": "Stare",
+  "providerBilling.renews": "Perioada curentă se încheie",
+  "providerBilling.cancelsAtPeriodEnd": "Anulare programată la sfârșitul perioadei",
+  "providerBilling.subscribe": "Abonează-te cu Stripe",
+  "providerBilling.portal": "Administrează plata în Stripe",
+  "providerBilling.notConfigured": "Mediul Stripe nu este configurat.",
+  "providerBilling.profileTitle": "Identitate de facturare",
+  "providerBilling.profileDescription": "Aceste date identifică furnizorul plătitor. Stripe colectează securizat datele de plată.",
+  "providerBilling.billingEmail": "E-mail de facturare",
+  "providerBilling.billingContact": "Contact de facturare",
+  "providerBilling.taxIdentifier": "Cod fiscal",
+  "providerBilling.addressLine1": "Adresă, rândul 1",
+  "providerBilling.addressLine2": "Adresă, rândul 2",
+  "providerBilling.city": "Localitate",
+  "providerBilling.postalCode": "Cod poștal",
+  "providerBilling.country": "Cod țară",
+  "providerBilling.result.saved": "Datele de facturare au fost salvate.",
+  "providerBilling.result.invalid": "Verifică datele de facturare.",
+  "providerBilling.result.unauthorized": "Doar un proprietar activ poate administra facturarea.",
+  "providerBilling.result.configuration": "Stripe nu este configurat.",
+  "providerBilling.result.unavailable": "Datele de facturare nu au putut fi actualizate.",
+  "providerBilling.invoices": "Facturi Stripe",
+  "providerBilling.invoice": "Factură",
+  "providerBilling.period": "Perioadă",
+  "providerBilling.amount": "Sumă",
+  "providerBilling.documents": "Documente",
+  "providerBilling.view": "Vezi",
+  "providerBilling.noInvoices": "Facturile vor apărea după ce sunt create de Stripe.",
+  "providerBilling.subscription.not_started": "Neabonat",
+  "providerBilling.subscription.incomplete": "Plată incompletă",
+  "providerBilling.subscription.incomplete_expired": "Plată expirată",
+  "providerBilling.subscription.trialing": "Perioadă de probă",
+  "providerBilling.subscription.active": "Activ",
+  "providerBilling.subscription.past_due": "Plată restantă",
+  "providerBilling.subscription.canceled": "Anulat",
+  "providerBilling.subscription.unpaid": "Neplătit",
+  "providerBilling.subscription.paused": "În pauză",
+  "commercialAdmin.eyebrow": "Operațiuni comerciale",
+  "commercialAdmin.title": "Abonamente și operațiuni furnizori",
+  "commercialAdmin.description": "Monitorizează abonamentele Stripe, exportă datele contabile și gestionează starea operațională separat de plată.",
+  "commercialAdmin.providers": "Furnizori",
+  "commercialAdmin.activeSubscriptions": "Abonamente active",
+  "commercialAdmin.attention": "Plăți de verificat",
+  "commercialAdmin.mrr": "Venit recurent lunar",
+  "commercialAdmin.provider": "Furnizor",
+  "commercialAdmin.providerStatus": "Stare operațională",
+  "commercialAdmin.subscription": "Abonament",
+  "commercialAdmin.renewal": "Sfârșitul perioadei",
+  "commercialAdmin.invoices": "Facturi",
+  "commercialAdmin.operation": "Operațiune admin",
+  "commercialAdmin.reason": "Motiv obligatoriu",
+  "commercialAdmin.providerStatus.pending": "În așteptare",
+  "commercialAdmin.providerStatus.active": "Activ",
+  "commercialAdmin.providerStatus.suspended": "Suspendat",
+  "commercialAdmin.providerStatus.rejected": "Respins",
+  "commercialAdmin.result.saved": "Starea furnizorului a fost actualizată.",
+  "commercialAdmin.result.invalid": "Alege altă stare validă și precizează motivul.",
+  "commercialAdmin.result.unauthorized": "Este necesar accesul de administrator al platformei.",
+  "commercialAdmin.result.unavailable": "Starea furnizorului nu a putut fi actualizată.",
+  "serviceCatalogue.vehicleType": "Tip vehicul",
+  "serviceCatalogue.vehicleType.car_van": "Autoturism / autoutilitară",
+  "serviceCatalogue.vehicleType.motorcycle_scooter": "Motocicletă / scuter pe benzină",
+  "serviceCatalogue.vehicleType.electric_bicycle": "Bicicletă electrică",
+  "serviceCatalogue.vehicleType.electric_kick_scooter": "Trotinetă electrică",
+  "serviceCatalogue.bookingMode": "Flux de programare",
+  "serviceCatalogue.bookingMode.direct": "Serviciu direct",
+  "serviceCatalogue.bookingMode.diagnosis_first": "Mai întâi diagnosticare",
+  "serviceCatalogue.bookingMode.diagnosis": "Diagnosticare inițială",
+  "serviceCatalogue.diagnosisFeeHelp": "Setați un tarif de diagnosticare pozitiv înainte de publicare. Tariful rămâne datorat dacă clientul refuză reparațiile ulterioare.",
+  "serviceCatalogue.setupRequired": "Tarif necesar",
+  "serviceCatalogue.template": "Șablon standard de serviciu",
+  "serviceCatalogue.template.custom": "Serviciu personalizat",
+  "workshopBookings.calendar.title": "Calendarul atelierului",
+  "workshopBookings.calendarStatus.proposed": "Oră propusă",
+  "workshopBookings.calendarStatus.rescheduled": "Reprogramat",
+  "workshopBookings.manual.add": "Adăugați programare",
+  "workshopBookings.manual.source": "Sursa programării",
+  "workshopBookings.manual.phone": "Telefon client (opțional)",
+  "workshopBookings.manual.email": "E-mail client (opțional)",
+  "workshopBookings.manual.registration": "Număr de înmatriculare",
+  "workshopBookings.manual.make": "Marca vehiculului",
+  "workshopBookings.manual.model": "Modelul vehiculului",
+  "workshopBookings.manual.year": "Anul fabricației",
+  "workshopBookings.customerStates": "Clientul declară",
+  "workshopBookings.customerStatesHelp": "Notați simptomele și faptele exact așa cum sunt descrise de client.",
+  "workshopBookings.manual.create": "Creați programarea",
+  "workshopBookings.manual.result.created": "Programarea a fost adăugată în calendar.",
+  "workshopBookings.manual.result.invalid": "Verificați datele programării, clientului și vehiculului.",
+  "workshopBookings.manual.result.unauthorized": "Nu puteți adăuga programări pentru acest atelier.",
+  "workshopBookings.manual.result.unavailable": "Programarea nu a putut fi creată.",
+  "workshopBookings.source.public_request": "Cerere online",
+  "workshopBookings.source.manager_phone": "Apel telefonic",
+  "workshopBookings.source.manager_walk_in": "Client fără programare",
+  "workshopBookings.source.manager_other": "Altă înregistrare a atelierului",
+  "workshopBookings.history.manager_created": "Programare creată de atelier",
+  "automotiveAdmin.console": "Operațiuni platformă",
+  "automotiveAdmin.navigation": "Administrare auto",
+  "automotiveAdmin.nav.overview": "Prezentare generală",
+  "automotiveAdmin.nav.providers": "Furnizori de servicii",
+  "automotiveAdmin.nav.workshops": "Ateliere",
+  "automotiveAdmin.nav.customers": "Clienți",
+  "automotiveAdmin.nav.managers": "Manageri de atelier",
+  "automotiveAdmin.nav.sms": "Livrare SMS",
+  "automotiveAdmin.nav.security": "Securitate",
+  "automotiveAdmin.openBookings": "Rezervări deschise",
+  "automotiveAdmin.smsAttention": "SMS-uri care necesită atenție",
+  "automotiveAdmin.recentProviders": "Furnizori recenți",
+  "automotiveAdmin.provider": "Furnizor de servicii",
+  "automotiveAdmin.providers": "Furnizori de servicii",
+  "automotiveAdmin.workshop": "Atelier",
+  "automotiveAdmin.workshops": "Ateliere",
+  "automotiveAdmin.customer": "Client",
+  "automotiveAdmin.manager": "Manager de atelier",
+  "automotiveAdmin.managers": "Manageri",
+  "automotiveAdmin.legalName": "Denumire juridică",
+  "automotiveAdmin.location": "Locație",
+  "automotiveAdmin.phone": "Telefon",
+  "automotiveAdmin.vehicles": "Vehicule",
+  "automotiveAdmin.bookings": "Rezervări",
+  "automotiveAdmin.created": "Creat",
+  "automotiveAdmin.smsEvent": "Eveniment SMS",
+  "automotiveAdmin.pending": "În așteptare",
+  "automotiveAdmin.sent": "Trimis",
+  "automotiveAdmin.failed": "Eșuat",
+  "automotiveAdmin.empty": "Nu există înregistrări în această secțiune.",
+  "automotiveAdmin.securityTitle": "Securitatea sesiunii administrative",
+  "automotiveAdmin.securityDescription": "Accesul administrativ necesită un cont activ și autentificare multifactor.",
+  "automotiveAdmin.role": "Rol",
+  "automotiveAdmin.session": "Nivelul sesiunii",
+  "automotiveAdmin.generated": "Instantaneu generat",
+  "automotiveAdmin.sms.booking_confirmed": "Rezervare confirmată",
+  "automotiveAdmin.sms.reminder_24h": "Memento de 24 de ore",
+  "automotiveAdmin.sms.repair_started": "Reparație începută",
+  "automotiveAdmin.sms.ready_for_pickup": "Gata de ridicare",
+  "automotiveAdmin.sms.review_request": "Solicitare recenzie"
 }

@@ -77,6 +77,9 @@
   appointment notification dispatcher. Historical migrations and retained
   database records remain unchanged. Deployment scheduling must call
   `/api/cron/service-booking-notifications` with the existing cron secret.
+- The canonical UI audit removes medical-only translation namespaces and dead
+  clinic-era styles in all four languages while retaining shared authentication,
+  workshop workspace, address-search, and commercial export labels.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

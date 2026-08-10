@@ -37,61 +37,6 @@
   "a11y.patientPortal": "pitster páciensportál",
   "a11y.closePatientProfile": "Páciensprofil bezárása",
   "a11y.openPatientProfile": "{name} profiljának megnyitása",
-  "patient.nav.profile": "Orvosi profil",
-  "patient.nav.share": "Biztonságos megosztás",
-  "patient.nav.access": "Hozzáférési előzmények",
-  "patient.identityVerified": "Ellenőrzött személyazonosság",
-  "patient.readOnly": "Páciensnézet · Csak olvasható",
-  "patient.clinicianEditMode": "Orvosi szerkesztési mód",
-  "patient.dateOfBirth": "Születési dátum",
-  "patient.bloodGroup": "Vércsoport",
-  "patient.sex": "Nem",
-  "patient.organDonor": "Szervdonor",
-  "patient.allergies": "Allergiák",
-  "patient.chronicConditions": "Krónikus betegségek",
-  "patient.previousProcedures": "Korábbi beavatkozások",
-  "patient.emergencyContact": "Vészhelyzeti kapcsolat",
-  "patient.familyDoctor": "Háziorvos",
-  "patient.lastUpdated": "Utolsó frissítés",
-  "patient.emergencyMode": "Vészhelyzeti mód",
-  "patient.doctorAccess": "Orvosi portál",
-  "patient.signedInAsPatient": "Bejelentkezve páciensként",
-  "patient.critical.title": "Kritikus információk",
-  "patient.critical.help": "A sürgősségi ellátáshoz szükséges alapvető adatok",
-  "patient.section.personal": "Személyes adatok",
-  "patient.section.medications": "Jelenlegi gyógyszerek",
-  "patient.section.conditions": "Kórképek és kórelőzmény",
-  "patient.section.devices": "Implantátumok és orvostechnikai eszközök",
-  "patient.section.contacts": "Ellátási kapcsolatok",
-  "patient.action.saveSignedUpdate": "Aláírt módosítás mentése",
-  "patient.action.add": "Hozzáadás",
-  "patient.action.editable": "Szerkeszthető",
-  "patient.medications.none": "Nincs rögzített gyógyszer",
-  "patient.implants.none": "Nincs rögzített implantátum vagy orvostechnikai eszköz",
-  "patient.share.title": "Profil megosztása",
-  "patient.share.description": "Válasszon biztonságos módot az egészségügyi szakember ideiglenes hozzáféréséhez.",
-  "patient.share.scan": "Beolvasás a megtekintéshez",
-  "patient.share.qrHelp": "15 percig érvényes · Csak olvasható",
-  "patient.share.nfc": "Megosztás NFC-vel",
-  "patient.share.nfcHelp": "Tartsa a másik eszköz közelébe",
-  "patient.share.email": "Biztonságos e-mail küldése",
-  "patient.share.emailHelp": "Lejáró hivatkozás létrehozása",
-  "patient.share.download": "Sürgősségi adatlap letöltése",
-  "patient.share.downloadHelp": "Offline hozzáférés · PDF",
-  "patient.share.privacy": "Adatvédelmi beállítások",
-  "patient.share.expiry": "Hivatkozás lejárata",
-  "patient.share.minutes": "15 perc",
-  "patient.share.noActiveLinks": "Nincs aktív megosztási hivatkozás",
-  "patient.share.revoke": "Minden aktív hivatkozás visszavonása",
-  "patient.share.sensitiveExcluded": "A CNP, a biztosítási szám és a nemzeti egészségügyi kártya adatai soha nem kerülnek QR-, NFC-, e-mailes megosztásba vagy a sürgősségi kártyára.",
-  "patient.access.title": "Ki tekintette meg a profilját",
-  "patient.access.description": "Biztonsága érdekében minden hozzáférést naplózunk.",
-  "patient.access.emptyTitle": "Nincs hozzáférési esemény",
-  "patient.access.emptyDescription": "Az engedélyezett profiltevékenység itt jelenik meg.",
-  "patient.modal.title": "Hozzáférés az orvosi portálhoz",
-  "patient.modal.description": "Nyissa meg a klinikai munkaterületet a páciensprofilok és hozzáférési kérelmek áttekintéséhez ebben a prototípusban.",
-  "patient.modal.continue": "Tovább az orvosi portálra",
-  "patient.modal.note": "Csak prototípus · A hitelesítés és a tartós tárolás még nincs megvalósítva.",
   "notice.demoSession": "A demómunkamenet ezen az eszközön aktív marad",
   "notice.recordSaved": "Az orvosi módosítás mentése és aláírása megtörtént",
   "notice.nfcReady": "Az NFC-megosztás készen áll — tartsa közel az eszközöket",
@@ -103,116 +48,6 @@
   "notice.noteOpened": "A klinikai jegyzet piszkozata megnyílt",
   "notice.profileReviewed": "{name} profilját ellenőrzöttként jelöltük",
   "notice.requestDecision": "{name} kérelme: {decision}",
-  "medical.sex.female": "Nő",
-  "medical.sex.male": "Férfi",
-  "medical.relationship.husband": "Férj",
-  "medical.relationship.other": "Egyéb kapcsolat",
-  "medical.allergy.penicillin": "Penicillin",
-  "medical.allergy.latex": "Latex",
-  "medical.allergy.ibuprofen": "Ibuprofen",
-  "medical.allergy.noneKnown": "Nincs ismert allergia",
-  "medical.condition.type2Diabetes": "2-es típusú cukorbetegség",
-  "medical.condition.hypertension": "Magasvérnyomás-betegség",
-  "medical.condition.atrialFibrillation": "Pitvarfibrilláció",
-  "medical.condition.asthma": "Asztma",
-  "medical.condition.hyperlipidemia": "Hyperlipidaemia",
-  "medical.condition.hypothyroidism": "Pajzsmirigy-alulműködés",
-  "medical.schedule.twiceDaily": "Naponta kétszer",
-  "medical.schedule.everyMorning": "Minden reggel",
-  "medical.schedule.asPrescribed": "Az előírás szerint",
-  "medical.procedure.appendectomy": "Vakbélműtét",
-  "medical.implant.none": "Nincs implantátum vagy orvostechnikai eszköz",
-  "medical.specialty.familyMedicine": "Háziorvostan",
-  "doctor.brand.clinical": "Klinikai",
-  "doctor.workspace": "Munkaterület",
-  "doctor.primaryCare": "Alapellátás",
-  "doctor.nav.overview": "Áttekintés",
-  "doctor.nav.patients": "Páciensek",
-  "doctor.nav.requests": "Hozzáférési kérelmek",
-  "doctor.nav.activity": "Tevékenységnapló",
-  "doctor.secureSession": "Biztonságos munkamenet",
-  "doctor.autoLock": "Automatikus zárolás 26 perc múlva",
-  "doctor.search.placeholder": "Keresés név, pitster-azonosító vagy kórkép alapján",
-  "doctor.patientPortal": "Páciensportál",
-  "doctor.welcome.date": "{date}",
-  "doctor.welcome.greeting": "Jó reggelt, {name}!",
-  "doctor.welcome.description": "A következő feladatok igényelnek ma figyelmet.",
-  "doctor.findPatient": "Páciens keresése",
-  "doctor.metrics.patients": "Gondozott páciensek",
-  "doctor.metrics.activeGrants": "Aktív jogosultságok",
-  "doctor.metrics.requests": "Hozzáférési kérelmek",
-  "doctor.metrics.urgent": "{count} sürgős",
-  "doctor.metrics.reviewed": "Ellenőrzött dokumentációk",
-  "doctor.metrics.last30Days": "Elmúlt 30 nap",
-  "doctor.review.title": "Ellenőrzést igényel",
-  "doctor.review.description": "Áttekintésre váró frissítések és dokumentációk",
-  "doctor.viewAll": "Összes megtekintése",
-  "doctor.years": "{count} éves",
-  "doctor.review.noneTitle": "Nincs ellenőrizendő elem",
-  "doctor.review.noneDescription": "Az új páciensfrissítések itt jelennek meg.",
-  "doctor.requests.previewDescription": "Páciens által jóváhagyott profilhozzáférés",
-  "doctor.requests.reviewCount": "{count} kérelem áttekintése",
-  "doctor.recent.title": "Legutóbbi páciensek",
-  "doctor.recent.description": "A legutóbb megnyitott páciensprofilok",
-  "doctor.patientDirectory": "Páciensnyilvántartás",
-  "doctor.noGrants.title": "Nincs pácienshozzáférés",
-  "doctor.noGrants.description": "A jóváhagyott hozzáférések itt jelennek meg.",
-  "doctor.directory.eyebrow": "Páciensnyilvántartás",
-  "doctor.directory.results": "Találatok erre: „{query}”",
-  "doctor.directory.title": "Gondozott páciensek",
-  "doctor.directory.description": "Tekintse át a klinikai munkaterülettel megosztott profilokat.",
-  "doctor.directory.invite": "Páciens meghívása",
-  "doctor.directory.patientCount": "{count} páciens",
-  "doctor.directory.patientCountOne": "1 páciens",
-  "doctor.directory.needsReview": "Ellenőrzést igényel",
-  "doctor.directory.noMatchTitle": "Nincs megfelelő páciens",
-  "doctor.directory.noMatchDescription": "Próbáljon nevet, pitster-azonosítót vagy kórképet megadni.",
-  "doctor.requests.eyebrow": "Biztonságos hozzáférés",
-  "doctor.requests.title": "Hozzáférési kérelmek",
-  "doctor.requests.description": "Az orvosi profil megnyitása előtt tekintse át a páciens által jóváhagyott kérelmeket.",
-  "doctor.requests.received": "Érkezett: {time} · Ellenőrzött személyazonosság",
-  "doctor.requests.decline": "Elutasítás",
-  "doctor.requests.approve": "Hozzáférés jóváhagyása",
-  "doctor.requests.emptyTitle": "Nincs függőben lévő kérelem",
-  "doctor.requests.emptyDescription": "Az új hozzáférési kérelmek itt jelennek meg.",
-  "doctor.activity.eyebrow": "Auditnapló",
-  "doctor.activity.title": "Klinikai tevékenység",
-  "doctor.activity.description": "Minden profilhozzáférést és aláírt műveletet naplózunk.",
-  "doctor.activity.export": "Napló exportálása",
-  "doctor.activity.emptyTitle": "Nincs klinikai tevékenység",
-  "doctor.activity.emptyDescription": "Az engedélyezett műveletek itt jelennek meg.",
-  "doctor.table.patient": "Páciens",
-  "doctor.table.conditions": "Kórképek",
-  "doctor.table.lastReviewed": "Utolsó ellenőrzés",
-  "doctor.table.status": "Állapot",
-  "doctor.status.upToDate": "Naprakész",
-  "doctor.status.reviewDue": "Ellenőrzés esedékes",
-  "doctor.status.newUpdate": "Új frissítés",
-  "doctor.access.authorized": "Engedélyezett hozzáférés",
-  "doctor.access.familyCareTeam": "Háziorvosi ellátócsapat",
-  "doctor.access.temporary": "Ideiglenes hozzáférés · még {days} nap",
-  "doctor.allergyAlert": "Allergiafigyelmeztetés",
-  "doctor.currentMedications": "Jelenlegi gyógyszerek",
-  "doctor.lastClinicalReview": "Utolsó klinikai ellenőrzés",
-  "doctor.addClinicalNote": "Klinikai jegyzet hozzáadása",
-  "doctor.markReviewed": "Megjelölés ellenőrzöttként",
-  "doctor.auditNote": "A prototípus tevékenysége csak az aktuális böngészőmunkamenetben marad meg.",
-  "doctor.reason.medicationReconciliation": "Gyógyszeregyeztetés",
-  "doctor.reason.newPatientConsultation": "Első orvosi konzultáció",
-  "doctor.reason.followUpCare": "Kontrollvizsgálat",
-  "doctor.activity.reviewedUpdate": "Páciens által beküldött profilfrissítés ellenőrizve",
-  "doctor.activity.requestReceived": "Hozzáférési kérelem érkezett",
-  "doctor.activity.openedProfile": "Orvosi profil megnyitva konzultációhoz",
-  "doctor.activity.signedMedicationUpdate": "Gyógyszerelési módosítás aláírva",
-  "doctor.activity.type.clinicalReview": "Klinikai ellenőrzés",
-  "doctor.activity.type.access": "Hozzáférés",
-  "doctor.activity.type.profileView": "Profilmegtekintés",
-  "doctor.activity.type.signedUpdate": "Aláírt módosítás",
-  "doctor.time.today": "Ma",
-  "doctor.time.yesterday": "Tegnap",
-  "patient.access.context.clinicQr": "Bucharest Family Clinic · QR-hozzáférés",
-  "patient.access.context.clinicianNfc": "Ellenőrzött egészségügyi szakember · NFC-hozzáférés",
-  "patient.access.context.personalSession": "Személyes eszköz · Biztonságos munkamenet",
   "auth.login.title": "Bejelentkezés a klinikai portálra",
   "auth.login.description": "Használja az adminisztrátor által létrehozott orvosi fiókját.",
   "auth.login.email": "E-mail-cím",
@@ -238,75 +73,6 @@
   "auth.returnPatient": "Vissza a páciensportálra",
   "notice.accessDenied": "Hozzáférés megtagadva. Az orvosi profil nem nyílt meg.",
   "notice.serviceUnavailable": "A szolgáltatás átmenetileg nem érhető el. Semmi sem változott. Próbálja újra kézzel.",
-  "doctor.conditionNote.label": "Az állapot klinikai megjegyzése",
-  "doctor.conditionNote.help": "Csak ez a megjegyzésmező frissül, és a módosítás naplózásra kerül.",
-  "doctor.conditionNote.save": "Aláírt megjegyzés mentése",
-  "doctor.conditionNote.saving": "Mentés…",
-  "doctor.conditionNote.saved": "A klinikai megjegyzés mentése és naplózása megtörtént.",
-  "doctor.conditionNote.error": "A megjegyzést nem sikerült menteni.",
-  "doctor.conditionNote.unauthorized": "A megjegyzést nem mentettük, mert nincs szerkesztési jogosultság.",
-  "doctor.conditionNote.unavailable": "A megjegyzést nem mentettük, mert a szolgáltatás átmenetileg nem érhető el. Próbálja újra kézzel.",
-  "doctor.health.identity.title": "Egészségügyi kártyás személyazonosság",
-  "doctor.health.familyName": "Családi név",
-  "doctor.health.givenNames": "Utónevek",
-  "doctor.health.insurance.title": "Biztosítás ellenőrzése",
-  "doctor.health.insurance.status": "Biztosítási állapot",
-  "doctor.health.insurance.status.unknown": "Ismeretlen",
-  "doctor.health.insurance.status.insured": "Biztosított",
-  "doctor.health.insurance.status.uninsured": "Nem biztosított",
-  "doctor.health.insurance.status.verification_pending": "Ellenőrzés folyamatban",
-  "doctor.health.insurance.source": "Ellenőrzés forrása",
-  "doctor.health.insurance.source.not_verified": "Nincs ellenőrizve",
-  "doctor.health.insurance.source.cnas_manual_check": "A klinikus által végzett kézi CNAS-ellenőrzés",
-  "doctor.health.insurance.source.health_card": "Nemzeti egészségügyi kártya",
-  "doctor.health.insurance.source.supporting_document": "Igazoló dokumentum",
-  "doctor.health.insurance.source.clinician_attestation": "Orvosi igazolás",
-  "doctor.health.insurance.house": "Biztosítási pénztár / CAS",
-  "doctor.health.insurance.houseCode": "CAS-kód",
-  "doctor.health.insurance.houseName": "Biztosítási pénztár neve",
-  "doctor.health.verifiedAt": "Ellenőrzés ideje",
-  "doctor.health.lifeThreatening.title": "Életveszélyes diagnózisok",
-  "doctor.health.lifeThreatening.none": "Nincs rögzített életveszélyes diagnózis.",
-  "doctor.health.codeSystem.icd10": "ICD-10",
-  "doctor.health.codeSystem.snomed_ct": "SNOMED CT",
-  "doctor.health.codeSystem.other": "Egyéb kódrendszer",
-  "doctor.health.verifiedBy": "Ellenőrizte: {name} ({code}), {date}",
-  "doctor.health.familyDoctor.title": "Háziorvos",
-  "doctor.health.familyDoctor.name": "Név",
-  "doctor.health.familyDoctor.code": "Szakmai kód",
-  "doctor.health.familyDoctor.telephone": "Telefon",
-  "doctor.health.emergencyContacts.title": "Vészhelyzeti kapcsolatok",
-  "doctor.health.emergencyContacts.number": "{number}. kapcsolat",
-  "doctor.health.profileVerification.title": "Orvos által hitelesített profil",
-  "doctor.health.sensitive.title": "Érzékeny azonosítók",
-  "doctor.health.sensitive.description": "A védett azonosítók alapértelmezés szerint maszkoltak. Megjelenítésükhöz aktuális szerkesztési jog szükséges, és auditbejegyzés készül.",
-  "doctor.health.sensitive.cnp": "CNP",
-  "doctor.health.sensitive.insuranceNumber": "Biztosítási szám",
-  "doctor.health.sensitive.cardNumber": "Nemzeti egészségügyi kártya száma",
-  "doctor.health.sensitive.cardExpires": "Egészségügyi kártya lejárata",
-  "doctor.health.sensitive.reveal": "Érzékeny azonosítók megjelenítése",
-  "doctor.health.sensitive.hide": "Megjelenített értékek elrejtése és törlése",
-  "doctor.health.sensitive.loading": "Engedélyezés…",
-  "doctor.health.sensitive.unauthorized": "A jelenlegi jogosultság nem engedi ezen azonosítók elérését.",
-  "doctor.health.sensitive.unavailable": "Az érzékeny azonosítók átmenetileg nem érhetők el. Próbálja újra kézzel.",
-  "doctor.health.form.profileTitle": "Egészségügyi kártyaadatok frissítése",
-  "doctor.health.form.save": "Ellenőrzött adatok mentése",
-  "doctor.health.form.saving": "Mentés…",
-  "doctor.health.form.saved": "Az ellenőrzött adatokat mentettük és naplóztuk.",
-  "doctor.health.form.invalid": "Ellenőrizze a mezőket és az ellenőrzési adatok összhangját.",
-  "doctor.health.form.duplicate": "Már létezik aktív diagnózis ezzel a kódolási rendszerrel és kóddal.",
-  "doctor.health.form.unauthorized": "A jelenlegi jogosultság nem engedi ezt a frissítést.",
-  "doctor.health.form.unavailable": "A frissítési szolgáltatás átmenetileg nem érhető el. Próbálja újra kézzel.",
-  "doctor.health.diagnosis.name": "Diagnózis",
-  "doctor.health.diagnosis.codeSystem": "Kódrendszer",
-  "doctor.health.diagnosis.code": "Diagnóziskód",
-  "doctor.health.diagnosis.otherSystem": "Egyéb kódrendszer neve",
-  "doctor.health.diagnosis.add": "Életveszélyes diagnózis hozzáadása",
-  "doctor.health.diagnosis.deactivate": "Diagnózis inaktiválása",
-  "doctor.health.diagnosis.deactivateConfirmation": "Megerősítem, hogy ezt a diagnózist el kell távolítani az aktív figyelmeztetések listájáról.",
-  "doctor.health.diagnosis.reactivate": "Diagnózis újraaktiválása",
-  "doctor.health.diagnosis.historyTitle": "Inaktív diagnózisok előzményei",
-  "doctor.health.diagnosis.historyDescription": "Az inaktív diagnózisok nem jelennek meg az aktív klinikai figyelmeztetések között; itt áttekinthetők vagy újraaktiválhatók.",
   "admin.access.configuration.title": "Az adminisztráció nincs beállítva",
   "admin.access.configuration.description": "Az adminisztrációs konzol használata előtt adja hozzá a nyilvános Supabase-projektbeállításokat a helyi környezethez.",
   "admin.access.unauthorized.title": "Adminisztrációs hozzáférés megtagadva",
@@ -360,56 +126,6 @@
   "register.setPassword.status.unavailable": "A jelszót átmenetileg nem sikerült menteni. Próbálja újra kézzel.",
   "register.setPassword.requestNewLink": "Térjen vissza a regisztrációhoz új megerősítő e-mail kéréséhez.",
   "register.setPassword.back": "Vissza a regisztrációhoz",
-  "organization.clinic_manager.loginTitle": "Klinikavezetői bejelentkezés",
-  "organization.clinic_manager.loginDescription": "Kezelje jóváhagyott klinikai szervezetét és támogatott orvosait.",
-  "organization.staff.loginTitle": "Munkatársi bejelentkezés",
-  "organization.staff.loginDescription": "Nyissa meg a hozzárendelt orvosok időpontkezelő felületét.",
-  "organization.clinic_manager.eyebrow": "Klinikakezelés",
-  "organization.staff.eyebrow": "Orvos által hozzárendelt munkatárs",
-  "organization.clinic_manager.securityNote": "A klinikakezelés soha nem ad hozzáférést a páciensek egészségügyi profiljaihoz.",
-  "organization.staff.securityNote": "A munkatársi hozzáférés a hozzárendelt orvosok időpontjaira korlátozódik, és nem tartalmaz egészségügyi profilokat.",
-  "organization.welcome": "Üdvözöljük, {name}",
-  "organization.membershipRole": "Tagsági szerep",
-  "organization.billingStatus": "Számlázási adatok",
-  "organization.doctors": "Támogatott és tag orvosok",
-  "organization.doctorsEmpty": "Ehhez a klinikához még nincs orvos kapcsolva.",
-  "organization.clinicsEmpty": "Nincs elérhető aktív klinikai tagság.",
-  "organization.assignmentsEmpty": "Jelenleg nincs aktív orvosi hozzárendelés.",
-  "organization.status.pending": "Jóváhagyásra vár",
-  "organization.status.active": "Aktív",
-  "organization.status.suspended": "Felfüggesztve",
-  "organization.status.rejected": "Elutasítva",
-  "organization.role.owner": "Tulajdonos",
-  "organization.role.manager": "Vezető",
-  "organization.billing.incomplete": "Hiányos",
-  "organization.billing.active": "Aktív",
-  "organization.billing.suspended": "Felfüggesztve",
-  "organization.membership.invited": "Meghívva",
-  "organization.membership.active": "Aktív",
-  "organization.membership.suspended": "Felfüggesztve",
-  "organization.membership.ended": "Befejezve",
-  "organization.access.configuration": "A szervezeti szolgáltatás nincs beállítva.",
-  "organization.access.unavailable": "A szervezeti szolgáltatás átmenetileg nem érhető el. A fiók állapota nem változott.",
-  "organization.access.unauthorized": "Ez a fiók nem jogosult erre a portálra.",
-  "organization.access.pending": "A fiók vagy a szervezet jóváhagyásra vár.",
-  "organization.access.suspended": "Ez a szervezeti hozzáférés fel van függesztve.",
-  "organization.access.rejected": "Ezt a szervezeti regisztrációt nem hagyták jóvá.",
-  "organization.staffManagement.title": "Munkatársi meghívások és hozzárendelések",
-  "organization.invite.email": "Meghívási e-mail",
-  "organization.invite.clinic_doctor": "Orvosi meghívó létrehozása",
-  "organization.invite.doctor_staff": "Munkatársi meghívó létrehozása",
-  "organization.invite.creating": "Meghívó létrehozása…",
-  "organization.invite.status.created": "A meghívó létrejött, és e-mailben elküldtük a címzettnek.",
-  "organization.invite.status.created_email_failed": "A meghívó létrejött, de az e-mailt nem sikerült elküldeni. Másolja ki, és küldje el kézzel a védett hivatkozást.",
-  "organization.invite.status.invalid": "Ellenőrizze az e-mail-címet és a meghívás adatait.",
-  "organization.invite.status.duplicate": "Ehhez az e-mail-címhez már tartozik függőben lévő meghívó.",
-  "organization.invite.status.unauthorized": "A jelenlegi jogosultság nem engedi ezt a meghívást.",
-  "organization.invite.status.unavailable": "A meghívások átmenetileg nem érhetők el. Próbálja újra kézzel.",
-  "organization.membership.action.active": "Újraaktiválás",
-  "organization.membership.action.suspended": "Felfüggesztés",
-  "organization.membership.result.invalid": "A kért tagsági módosítás érvénytelen.",
-  "organization.membership.result.unauthorized": "Nem jogosult ennek a tagságnak a módosítására.",
-  "organization.membership.result.unavailable": "A tagsági módosítások átmenetileg nem érhetők el.",
   "invoicing.eyebrow": "Számlázási profil",
   "invoicing.title": "Számlázási adatok",
   "invoicing.description": "Ezek az adatok azonosítják a jogi fizetőt. A lezárt számlázási időszakok saját történeti pillanatképet őriznek.",
@@ -455,165 +171,10 @@
   "admin.mfa.challenge.title": "A második tényező megerősítése",
   "admin.mfa.challenge.description": "Írja be a hitelesítő alkalmazásban látható aktuális kódot.",
   "admin.mfa.challenge.verify": "Személyazonosság ellenőrzése",
-  "admin.brand.console": "Biztonságos adminisztrációs konzol",
-  "admin.nav.label": "Adminisztrációs szakaszok",
-  "admin.nav.users": "Felhasználók",
-  "admin.nav.doctors": "Orvosok",
-  "admin.nav.patients": "Páciensek",
-  "admin.nav.grants": "Hozzáférési engedélyek",
-  "admin.nav.audit": "Auditnapló",
-  "admin.role.superadmin": "Superadmin",
-  "admin.security.session": "Munkamenet biztonsága",
-  "admin.security.aal2": "MFA ellenőrizve",
-  "admin.dashboard.eyebrow": "Rendszerirányítás",
-  "admin.dashboard.generated": "Frissítve",
-  "admin.section.users.title": "Adminisztrációs felhasználók",
-  "admin.section.users.description": "Adminisztrátori szerepkörök és fiókállapotok áttekintése.",
-  "admin.section.doctors.title": "Orvosok",
-  "admin.section.doctors.description": "Az orvosi identitás és ellenőrzési állapot áttekintése.",
-  "admin.section.patients.title": "Páciensek",
-  "admin.section.patients.description": "Páciensnyilvántartások és archiválási állapot áttekintése.",
-  "admin.section.grants.title": "Hozzáférési engedélyek",
-  "admin.section.grants.description": "Orvosi jogosultságok, állapot és hatókör áttekintése.",
-  "admin.section.audit.title": "Auditnapló",
-  "admin.section.audit.description": "A megváltoztathatatlan biztonsági és adminisztrációs eseménynapló olvasása.",
-  "admin.table.name": "Név",
-  "admin.table.role": "Szerepkör",
-  "admin.table.status": "Állapot",
-  "admin.table.created": "Létrehozva",
-  "admin.table.specialty": "Szakterület",
-  "admin.table.clinic": "Klinika",
-  "admin.table.vitapassId": "pitster-azonosító",
-  "admin.table.patient": "Páciens",
-  "admin.table.doctor": "Orvos",
-  "admin.table.permissions": "Jogosultságok",
-  "admin.table.time": "Időpont",
-  "admin.table.action": "Művelet",
-  "admin.table.resource": "Erőforrás",
-  "admin.empty.users": "Nem láthatók adminisztrációs felhasználók.",
-  "admin.empty.doctors": "Nem láthatók orvosok.",
-  "admin.empty.patients": "Nem láthatók páciensek.",
-  "admin.empty.grants": "Nem láthatók hozzáférési engedélyek.",
-  "admin.empty.audit": "Nem láthatók auditesemények.",
-  "admin.status.archived": "Archivált",
-  "admin.status.current": "Aktuális",
-  "admin.permission.view": "Megtekintés",
-  "admin.permission.edit": "Szerkesztés",
   "admin.access.securityError.title": "A biztonsági ellenőrzés nem érhető el",
   "admin.access.securityError.description": "A pitster nem tudta ellenőrizni a többtényezős biztonsági állapotot. Nem nyíltak meg adminisztrációs adatok. Jelentkezzen ki, és próbálja újra később.",
   "admin.access.unavailable.title": "Az adminisztráció átmenetileg nem érhető el",
   "admin.access.unavailable.description": "A pitster nem tudta betölteni az adminisztrátori hozzáférést, mert a szolgáltatás nem válaszolt. A fiók állapota nem változott. Próbálja újra kézzel.",
-  "admin.role.admin": "Adminisztrátor",
-  "admin.status.active": "Aktív",
-  "admin.status.suspended": "Felfüggesztett",
-  "admin.status.pending": "Függőben",
-  "admin.status.approved": "Jóváhagyott",
-  "admin.status.rejected": "Elutasított",
-  "admin.status.revoked": "Visszavont",
-  "admin.status.expired": "Lejárt",
-  "admin.value.unknown": "Ismeretlen",
-  "admin.audit.action.signIn": "Bejelentkezett",
-  "admin.audit.action.signOut": "Kijelentkezett",
-  "admin.audit.action.accessDenied": "Hozzáférés megtagadva",
-  "admin.audit.action.patientProfileViewed": "Páciensprofil megtekintve",
-  "admin.audit.action.patientProfileUpdated": "Páciensprofil frissítve",
-  "admin.audit.action.accessGrantCreated": "Hozzáférési engedély létrehozva",
-  "admin.audit.action.accessGrantApproved": "Hozzáférési engedély jóváhagyva",
-  "admin.audit.action.accessGrantRevoked": "Hozzáférési engedély visszavonva",
-  "admin.audit.action.accessGrantUpdated": "Hozzáférési engedély frissítve",
-  "admin.audit.action.administratorCreated": "Adminisztrátor létrehozva",
-  "admin.audit.action.administratorUpdated": "Adminisztrátor frissítve",
-  "admin.audit.action.administratorSuspended": "Adminisztrátor felfüggesztve",
-  "admin.audit.action.clinicianCreated": "Orvos létrehozva",
-  "admin.audit.action.clinicianUpdated": "Orvos frissítve",
-  "admin.audit.action.clinicianApproved": "Orvos jóváhagyva",
-  "admin.audit.action.clinicianSuspended": "Orvos felfüggesztve",
-  "admin.audit.action.patientCreated": "Páciens létrehozva",
-  "admin.audit.action.patientUpdated": "Páciens frissítve",
-  "admin.audit.action.patientArchived": "Páciens archiválva",
-  "admin.audit.action.medicalRecordCreated": "Egészségügyi bejegyzés létrehozva",
-  "admin.audit.action.medicalRecordUpdated": "Egészségügyi bejegyzés frissítve",
-  "admin.audit.action.sensitiveIdentifiersViewed": "Érzékeny azonosítók megjelenítve",
-  "admin.audit.action.sensitiveIdentifiersUpdated": "Érzékeny azonosítók frissítve",
-  "admin.audit.resource.authSession": "Hitelesítési munkamenet",
-  "admin.audit.resource.patientProfile": "Páciensprofil",
-  "admin.audit.resource.accessGrant": "Hozzáférési engedély",
-  "admin.audit.resource.chronicCondition": "Krónikus állapot",
-  "admin.audit.resource.administrators": "Adminisztrátorok",
-  "admin.audit.resource.clinicians": "Orvosok",
-  "admin.audit.resource.patients": "Páciensek",
-  "admin.audit.resource.allergies": "Allergiák",
-  "admin.audit.resource.medications": "Gyógyszerek",
-  "admin.audit.resource.chronicConditions": "Krónikus állapotok",
-  "admin.audit.resource.surgeries": "Műtétek",
-  "admin.audit.resource.implants": "Implantátumok és eszközök",
-  "admin.audit.resource.emergencyContacts": "Vészhelyzeti kapcsolatok",
-  "admin.audit.resource.accessGrants": "Hozzáférési engedélyek",
-  "admin.audit.resource.sensitiveIdentifiers": "Érzékeny azonosítók",
-  "admin.audit.resource.lifeThreateningDiagnoses": "Életveszélyes diagnózisok",
-  "admin.audit.resource.healthCardProfile": "Egészségügyi kártyaprofil",
-  "appointments.eyebrow": "Időpontkezelés",
-  "appointments.title": "Időpontok",
-  "appointments.description": "Az orvosok és a hozzárendelt munkatársak időpontokat hozhatnak létre, erősíthetnek meg és kezelhetnek. A megerősítéskor SMS, 24 órával előtte emlékeztető érkezik.",
-  "appointments.staffScope": "Ugyanazokat az időpontadatokat és műveleteket éri el, mint minden Önhöz rendelt orvos. A hozzáférés az aktív orvosi hozzárendelésekre korlátozódik.",
-  "appointments.back": "Vissza a portálra",
-  "appointments.doctor": "Orvos",
-  "appointments.patientName": "Páciens neve",
-  "appointments.patientPhone": "Páciens mobiltelefonszáma",
-  "appointments.patientEmail": "Páciens e-mail-címe",
-  "appointments.source": "Foglalás forrása",
-  "appointments.source.phone": "Telefon",
-  "appointments.source.walk_in": "Személyes bejelentkezés",
-  "appointments.source.online": "Online",
-  "appointments.source.email": "E-mail",
-  "appointments.source.other": "Egyéb",
-  "appointments.start": "Kezdés",
-  "appointments.end": "Befejezés",
-  "appointments.date": "Dátum",
-  "appointments.slot": "Szabad időpont",
-  "appointments.chooseSlot": "Válasszon időpontot",
-  "appointments.noSlots": "Ezen a napon nincs szabad időpont",
-  "appointments.initialStatus": "Kezdeti állapot",
-  "appointments.note": "Szervezési megjegyzés (orvosi adat nélkül)",
-  "appointments.create": "Időpont létrehozása",
-  "appointments.saving": "Mentés…",
-  "appointments.apply": "Alkalmaz",
-  "appointments.list": "Tervezett időpontok",
-  "appointments.empty": "Nincs rögzített időpont.",
-  "appointments.status.pending": "Függőben",
-  "appointments.status.confirmed": "Megerősítve",
-  "appointments.status.rescheduled": "Átütemezve",
-  "appointments.status.cancelled": "Lemondva",
-  "appointments.status.completed": "Befejezve",
-  "appointments.status.no_show": "Nem jelent meg",
-  "appointments.feedback.saved": "Az időpont mentve.",
-  "appointments.feedback.saved_sms_pending": "Az időpont mentve. Az SMS küldése függőben van; ellenőrizze az SMSLink beállításait.",
-  "appointments.feedback.saved_email_pending": "Az időpont mentve, de az e-mailt nem sikerült elküldeni. Ellenőrizze az MXroute beállításait.",
-  "appointments.feedback.saved_notifications_pending": "Az időpont mentve, de az e-mail és az SMS küldése függőben van.",
-  "appointments.feedback.invalid": "Ellenőrizze az időpont adatait.",
-  "appointments.feedback.conflict": "Az orvosnak erre az időre már van megerősített időpontja.",
-  "appointments.feedback.unauthorized": "Nincs jogosultsága ennek az orvosnak az időpontjait kezelni.",
-  "appointments.feedback.unavailable": "Az időpontkezelő szolgáltatás átmenetileg nem érhető el.",
-  "availability.eyebrow": "Munkarend",
-  "availability.title": "Elérhetőség",
-  "availability.description": "Állítsa be a heti rendelési időt és a 15, 30 vagy 45 perces időpontokat. A hozzárendelt munkatársak csak ezekre foglalhatnak.",
-  "availability.active": "Elérhető",
-  "availability.start": "Kezdés",
-  "availability.end": "Befejezés",
-  "availability.duration": "Időpont hossza",
-  "availability.minutes": "perc",
-  "availability.save": "Nap mentése",
-  "availability.feedback.saved": "Az elérhetőség mentve.",
-  "availability.feedback.invalid": "Ellenőrizze a rendelési időt és az időpont hosszát.",
-  "availability.feedback.unauthorized": "Az elérhetőséget csak az orvos módosíthatja.",
-  "availability.feedback.unavailable": "Az elérhetőség átmenetileg nem érhető el.",
-  "availability.day.sunday": "Vasárnap",
-  "availability.day.monday": "Hétfő",
-  "availability.day.tuesday": "Kedd",
-  "availability.day.wednesday": "Szerda",
-  "availability.day.thursday": "Csütörtök",
-  "availability.day.friday": "Péntek",
-  "availability.day.saturday": "Szombat",
   "calendar.title": "Időpontnaptár",
   "calendar.previous": "Előző időszak",
   "calendar.next": "Következő időszak",
@@ -631,12 +192,6 @@
   "calendar.selectAppointment": "Válasszon ki egy időpontot az összegzés és az elérhető műveletek megtekintéséhez.",
   "calendar.closeDetails": "Időpont összegzésének bezárása",
   "calendar.duration": "Időtartam",
-  "appointments.requestedOnline": "Online kérelem",
-  "appointments.decline": "Elutasítás",
-  "appointments.confirm": "Időpont megerősítése",
-  "appointments.requestQueue": "Időpontkérelmek",
-  "appointments.requestQueueHelp": "Tekintse át a betegkérelmeket, mielőtt megerősített időpontként megjelennének.",
-  "appointments.noPendingRequests": "Nincs várakozó időpontkérelem.",
   "home.doctors": "Orvosok",
   "home.specialties": "Szakterületek",
   "home.myAppointments": "Időpontjaim",
@@ -784,693 +339,429 @@
   "booking.managementFeedback.invalid": "Ellenőrizze a kiválasztott lehetőséget és a megerősítést.",
   "booking.managementFeedback.conflict": "Ez az időpont már nem elérhető. Válasszon másikat.",
   "booking.managementFeedback.unavailable": "Az időpontkezelés átmenetileg nem elérhető. Próbálja újra később.",
-  "appointments.changeQueue": "Lemondási és átütemezési kérelmek",
-  "appointments.changeQueueHelp": "Ellenőrizze a betegek kérelmeit. Az időpont csak jóváhagyás után változik.",
-  "appointments.noPendingChanges": "Nincs függőben lévő lemondási vagy átütemezési kérelem.",
-  "appointments.change.cancel": "Lemondási kérelem",
-  "appointments.change.reschedule": "Átütemezési kérelem",
-  "appointments.currentTime": "Aktuális időpont",
-  "appointments.requestedTime": "Kért időpont",
-  "appointments.approve": "Kérelem jóváhagyása",
-  "appointments.quickAdd": "Telefonos és személyes kérés",
-  "appointments.quickAddTitle": "Időpont hozzáadása egy betegnek",
-  "appointments.quickAddHelp": "Használja ezt az űrlapot telefonos, e-mailes vagy személyes megkeresés esetén.",
-  "appointments.chooseAction": "Időpontművelet",
-  "appointments.saveAction": "Művelet mentése",
-  "patientAppointments.eyebrow": "Az Ön ellátási naptára",
-  "patientAppointments.title": "Időpontjaim",
-  "patientAppointments.welcome": "Üdvözöljük, {name}. A vendégként és a fiókkal foglalt időpontok együtt jelennek meg.",
-  "patientAppointments.bookNew": "Új időpont foglalása",
-  "patientAppointments.medicalFolder": "Egészségügyi mappa",
-  "patientAppointments.signOut": "Kijelentkezés",
-  "patientAppointments.upcoming": "Közelgő",
-  "patientAppointments.history": "Korábbi időpontok",
-  "patientAppointments.noneUpcoming": "Nincs közelgő időpont.",
-  "patientAppointments.empty": "Még nincs időpont",
-  "patientAppointments.emptyHelp": "A hitelesített e-mail-címmel foglalt időpontok automatikusan megjelennek itt.",
-  "patientAppointments.unavailable": "Az időpontok átmenetileg nem érhetők el.",
-  "patientAppointments.feedback.saved": "A kérelmet mentettük. A rendelő ellenőrizni fogja.",
-  "patientAppointments.feedback.invalid": "Ellenőrizze a kiválasztott lehetőséget és a megerősítést.",
-  "patientAppointments.feedback.conflict": "Ez az időpont már nem elérhető. Válasszon másikat.",
-  "patientAppointments.feedback.unauthorized": "Ez az időpont nem tartozik az Ön betegfiókjához.",
-  "patientAppointments.feedback.unavailable": "Az időpontkezelés átmenetileg nem érhető el.",
-  "patientAppointments.login.title": "Beteg bejelentkezés",
-  "patientAppointments.login.description": "Nyissa meg egészségügyi mappáját, és kezelje a hitelesített e-mailhez kapcsolódó időpontokat.",
-  "patientAppointments.login.configuration": "A betegbejelentkezés nincs beállítva.",
-  "patientAppointments.login.invalid_credentials": "Az e-mail-cím vagy jelszó hibás, vagy ez nem Beteg fiók.",
-  "patientAppointments.login.rate_limited": "Túl sok bejelentkezési kísérlet. Várjon, majd próbálja újra.",
-  "patientAppointments.login.unavailable": "A betegbejelentkezés átmenetileg nem érhető el.",
-  "patientAppointments.login.noAccount": "Új a platformon?",
-  "staffPatients.title": "Orvosi profilok",
-  "staffPatients.readOnly": "A csak olvasási hozzáférés a hozzárendelt orvosokkal megosztott páciensekre korlátozódik. A védett azonosítók rejtve maradnak, és minden megnyitást naplózunk.",
-  "staffPatients.empty": "Nincs elérhető megosztott páciensprofil.",
-  "doctorProfile.appointmentHint": "Válasszon megfelelő időpontot online",
-  "doctorProfile.book": "Szabad időpontok",
-  "doctorProfile.about": "Az orvosról",
-  "doctorProfile.aboutEmpty": "A szakmai információk hamarosan elérhetők.",
-  "doctorProfile.practice": "Rendelési információk",
-  "doctorProfile.clinic": "Klinika",
-  "doctorProfile.address": "Cím",
-  "doctorProfile.phone": "Telefon",
-  "doctorProfile.email": "E-mail",
-  "doctorProfile.experience": "Tapasztalat",
-  "doctorProfile.years": "év",
-  "doctorProfile.languages": "Beszélt nyelvek",
-  "workspace.settings": "Profil- és munkaterület-beállítások",
   "workspace.back": "Vissza",
-  "workspace.eyebrow": "Profil és munkaterület",
-  "workspace.doctorTitle": "Orvosi beállítások",
-  "workspace.doctorDescription": "Tartsa naprakészen nyilvános szakmai profilját és rendelési adatait.",
-  "workspace.profileTitle": "Szakmai profil",
-  "workspace.profileHelp": "Ezek az adatok az orvos saját oldalán jelennek meg.",
-  "workspace.bio": "Szakmai bemutatkozás",
-  "workspace.phone": "Nyilvános telefon",
-  "workspace.email": "Nyilvános e-mail",
-  "workspace.experience": "Tapasztalati évek",
-  "workspace.languages": "Nyelvek, vesszővel elválasztva",
-  "workspace.acceptsPatients": "Új pácienseket fogad",
-  "workspace.clinicTitle": "Klinika / munkaterület",
-  "workspace.managedClinic": "A klinika kezeli",
-  "workspace.managedClinicHelp": "A klinikavezető kezeli ezeket az adatokat, és fedezi a pitster költségeit.",
-  "workspace.clinicName": "Megjelenített név",
-  "workspace.legalName": "Hivatalos név",
-  "workspace.description": "Klinika leírása",
-  "workspace.country": "Országkód",
-  "workspace.city": "Város",
-  "workspace.address": "Cím",
-  "workspace.latitude": "Szélességi fok",
-  "workspace.longitude": "Hosszúsági fok",
-  "workspace.clinicsTitle": "Klinikabeállítások",
-  "workspace.clinicsDescription": "Adjon hozzá és kezeljen klinikai helyszíneket, majd a megfelelő klinikakártyáról hívja meg az orvosokat.",
-  "workspace.addClinic": "További klinika hozzáadása",
-  "workspace.createClinic": "Klinika létrehozása",
   "workspace.save": "Módosítások mentése",
   "workspace.saving": "Mentés…",
-  "workspace.status.saved": "A módosítások mentve.",
-  "workspace.status.created": "A klinika létrejött.",
-  "workspace.status.invalid": "Ellenőrizze a megadott adatokat.",
-  "workspace.status.unauthorized": "Nincs jogosultsága ehhez a munkaterülethez.",
-  "workspace.status.unavailable": "A munkaterület átmenetileg nem érhető el.",
-  "billing.details": "Számlázási adatok",
-  "billing.eyebrow": "Támogatott orvosok költségei",
-  "billing.clinicTitle": "Klinikai számlázási áttekintő",
-  "billing.clinicDescription": "Az előfizetési és elküldött SMS-költségek orvosonként láthatók az aktuális és az előző öt hónapra.",
-  "billing.sponsoredDoctors": "Fedezett orvosok",
-  "billing.smsSent": "Elküldött SMS-ek",
-  "billing.currentTotal": "Aktuális összeg",
-  "billing.closed": "Lezárt hónap",
-  "billing.open": "Aktuális nyitott hónap",
-  "billing.doctor": "Orvos",
-  "billing.subscription": "Előfizetés",
-  "billing.smsCost": "SMS-költség",
-  "billing.total": "Összesen",
   "billing.downloadCsv": "CSV letöltése",
-  "billing.accountingEyebrow": "Platformkönyvelés",
-  "billing.platformTitle": "Számlázandó összegek",
-  "billing.platformDescription": "Tömör havi összesítők független orvosoknak és klinikai szervezeteknek.",
-  "billing.allPayers": "Minden fizető",
-  "billing.clinics": "Klinikák",
-  "billing.independentDoctors": "Független orvosok",
-  "billing.payer": "Fizető",
-  "billing.payerType": "Típus",
-  "billing.clinic": "Klinikai szervezet",
-  "billing.independentDoctor": "Független orvos",
-  "billing.pricing": "Következő díjszabás",
-  "billing.pricingHelp": "A módosítások a következő hónap első napjától érvényesek.",
-  "billing.nextSubscription": "Orvosi előfizetés (EUR)",
-  "billing.nextSms": "SMS-egységár (EUR)",
-  "billing.rateStatus.saved": "A következő havi díjszabás mentve.",
-  "billing.rateStatus.invalid": "Ellenőrizze az árakat.",
-  "billing.rateStatus.unavailable": "A díjszabás átmenetileg nem érhető el.",
-  "admin.role.manager": "Platformmenedzser",
-  "billing.accountingAccess": "Könyvelési hozzáférés",
-  "billing.accountingAccessHelp": "A kijelölt platformmenedzserek csak a védett számlázási áttekintőhöz kapnak hozzáférést.",
-  "billing.accessEnabled": "Engedélyezve",
-  "billing.accessDisabled": "Nincs engedélyezve",
-  "billing.grantAccess": "Hozzáférés megadása",
-  "billing.removeAccess": "Hozzáférés eltávolítása",
-  "admin.nav.attention": "Teendők",
-  "admin.nav.clinics": "Rendelők",
-  "admin.nav.organizations": "Klinikai szervezetek",
-  "admin.nav.managers": "Menedzserek",
-  "admin.nav.specialties": "Szakterületek",
-  "admin.nav.reviews": "Értékelések",
-  "admin.nav.sms": "SMS",
-  "admin.nav.contracts": "Szerződések",
-  "admin.nav.privacy": "Adatvédelem",
   "admin.nav.invoicing": "Számlázás",
-  "admin.nav.security": "Fiókbiztonság",
-  "admin.section.attention.title": "Teendők",
-  "admin.section.attention.description": "Kezdje a jóváhagyásokkal és a munkát akadályozó hiányos beállításokkal.",
-  "admin.section.clinics.title": "Rendelőhelyek",
-  "admin.section.clinics.description": "Tekintse át a helyeket, valamint a hozzárendelt orvosokat és menedzsereket.",
-  "admin.section.organizations.title": "Klinikai szervezetek",
-  "admin.section.organizations.description": "Tekintse át a klinikamenedzsereket, az állapotot és a helyszíneket.",
-  "admin.section.managers.title": "Platformmenedzserek",
-  "admin.section.managers.description": "Tekintse át a védett platformfiókokat és a delegált könyvelési hozzáférést.",
-  "admin.section.specialties.title": "Orvosi szakterületek",
-  "admin.section.specialties.description": "Kezelje az orvosprofilokban és a keresésben használt katalógust.",
-  "admin.section.reviews.title": "Orvosértékelések",
-  "admin.section.reviews.description": "Moderálja a bejelentett vagy nem megfelelő nyilvános értékeléseket.",
-  "admin.section.sms.title": "SMS-szolgáltatás",
-  "admin.section.sms.description": "Tekintse át az SMS-használatot és elérhetőséget.",
-  "admin.section.contracts.title": "Szerződések és árak",
-  "admin.section.contracts.description": "Készítsen szerződéseket, kiegészítéseket és egyedi szolgáltatási árakat.",
-  "admin.section.privacy.title": "Adatvédelem és jogi dokumentumok",
-  "admin.section.privacy.description": "Kezelje a nyilvános jogi oldalakat és az első látogatáskor megjelenő tájékoztatót.",
-  "admin.section.security.title": "Fiókbiztonság",
-  "admin.section.security.description": "Fenntartva a platformfiókok és biztonsági műveletek számára.",
-  "admin.table.identifier": "Szakmai azonosító",
-  "admin.table.location": "Helyszín",
-  "admin.table.doctors": "Orvosok",
-  "admin.table.clinics": "Rendelők",
-  "admin.table.accounting": "Könyvelés",
-  "admin.empty.clinics": "Nincs látható rendelőhely.",
-  "admin.empty.organizations": "Nincs látható klinikai szervezet.",
-  "admin.attention.title": "Intézkedést igénylő feladatok",
-  "admin.attention.description": "A legrégebbi függő tételek jelennek meg először.",
-  "admin.attention.open": "Megnyitás",
-  "admin.attention.empty": "Jelenleg nincs intézkedést igénylő tétel.",
-  "admin.task.doctor_approval": "Orvos jóváhagyása",
-  "admin.task.clinic_approval": "Rendelő jóváhagyása",
-  "admin.task.clinic_manager_approval": "Klinikamenedzser jóváhagyása",
-  "admin.task.billing_profile": "Hiányos számlázási adatok",
-  "admin.planned.title": "A munkaterület előkészítve",
-  "admin.planned.description": "Ez a cél az elfogadott ütemterv része. A kezelőszervek a következő célzott szakaszban készülnek el.",
-  "admin.doctor.invite.title": "Orvos meghívása",
-  "admin.doctor.invite.description": "Küldjön védett regisztrációs linket, és opcionálisan engedje el az előfizetést 3, 6 vagy 12 hónapra.",
-  "admin.doctor.invite.email": "Orvos e-mail-címe",
-  "admin.doctor.invite.freeAccess": "Ingyenes előfizetési időszak",
-  "admin.doctor.invite.language": "Meghívó nyelve",
-  "admin.doctor.invite.submit": "Meghívó létrehozása és küldése",
-  "admin.doctor.invite.sending": "Meghívó létrehozása…",
-  "admin.doctor.invite.history": "Legutóbbi adminisztrátori meghívók",
-  "admin.doctor.invite.status.created": "A meghívó elkészült, az e-mailt elküldtük.",
-  "admin.doctor.invite.status.created_email_failed": "A meghívó elkészült, de az e-mail nem küldhető el. Másolja ki kézzel a védett linket.",
-  "admin.doctor.invite.status.invalid": "Ellenőrizze az e-mailt és az ingyenes időszakot.",
-  "admin.doctor.invite.status.duplicate": "Ehhez az e-mailhez már tartozik függő meghívó.",
-  "admin.doctor.invite.status.unauthorized": "Nincs jogosultsága orvos meghívására.",
-  "admin.doctor.invite.status.unavailable": "Az orvosi meghívók átmenetileg nem érhetők el.",
-  "admin.doctor.invitationStatus.pending": "Függőben",
-  "admin.doctor.invitationStatus.accepted": "Elfogadva",
-  "admin.doctor.invitationStatus.revoked": "Visszavonva",
-  "admin.doctor.invitationStatus.expired": "Lejárt",
-  "admin.doctor.free.none": "Nincs ingyenes időszak",
-  "admin.doctor.free.3": "3 hónap ingyen",
-  "admin.doctor.free.6": "6 hónap ingyen",
-  "admin.doctor.free.12": "12 hónap ingyen",
-  "admin.doctor.noEmail": "Nincs kapcsolt bejelentkezési e-mail",
-  "admin.doctor.statusReason": "Állapotváltozás oka",
-  "admin.doctor.statusReasonHelp": "Felfüggesztésnél, elutasításnál vagy újraaktiválásnál ajánlott.",
-  "admin.doctor.save": "Orvos mentése",
-  "admin.doctor.saving": "Mentés…",
-  "admin.doctor.update.saved": "Az orvos adatai és állapota elmentve.",
-  "admin.doctor.update.invalid": "Ellenőrizze az orvos adatait.",
-  "admin.doctor.update.duplicate": "A szakmai azonosítót már másik orvos használja.",
-  "admin.doctor.update.unauthorized": "Nincs jogosultsága az orvos módosítására.",
-  "admin.doctor.update.unavailable": "Az orvos jelenleg nem módosítható.",
-  "admin.doctor.clinicAssociations": "Klinikai kapcsolatok",
-  "admin.doctor.noClinicAssociations": "Nincs klinikai kapcsolat.",
-  "admin.doctor.freeAccess": "Ingyenes időszakok előzményei",
-  "admin.doctor.free.noneActive": "Nincs ingyenes időszak.",
-  "admin.doctor.statusHistory": "Állapotelőzmények",
-  "admin.doctor.noStatusHistory": "Még nincs állapotváltozás.",
-  "admin.clinic.add.title": "Rendelőhely hozzáadása",
-  "admin.clinic.add.description": "Hozzon létre fizikai helyszínt egy meglévő klinikai szervezet alatt.",
-  "admin.clinic.organization": "Klinikai szervezet",
-  "admin.clinic.selectOrganization": "Szervezet kiválasztása",
-  "admin.clinic.locationName": "Helyszín neve",
-  "admin.clinic.add.submit": "Helyszín hozzáadása",
-  "admin.clinic.save": "Helyszín mentése",
-  "admin.clinic.saving": "Mentés…",
-  "admin.clinic.addressMissing": "A cím nincs kitöltve",
-  "admin.clinic.statusReason": "Állapotváltozás oka",
-  "admin.clinic.assign.title": "Orvos hozzárendelése",
-  "admin.clinic.assign.description": "Rendeljen jóváhagyott orvost ehhez a helyszínhez. A fizetési felelősség külön marad.",
-  "admin.clinic.assign.selectDoctor": "Jóváhagyott orvos kiválasztása",
-  "admin.clinic.assign.submit": "Hozzárendelés mentése",
-  "admin.clinic.assignedDoctors": "Hozzárendelt orvosok",
-  "admin.clinic.noAssignedDoctors": "Nincs ehhez a helyszínhez rendelt orvos.",
-  "admin.clinic.statusHistory": "Helyszín állapotelőzményei",
-  "admin.clinic.noStatusHistory": "Még nincs helyszín-állapotváltozás.",
-  "admin.clinic.assignment.active": "Aktív",
-  "admin.clinic.assignment.invited": "Meghívott",
-  "admin.clinic.assignment.suspended": "Felfüggesztve",
-  "admin.clinic.assignment.ended": "Lezárva",
-  "admin.clinic.result.created": "A rendelőhely elkészült.",
-  "admin.clinic.result.saved": "A rendelőhely módosításai elmentve.",
-  "admin.clinic.result.invalid": "Adja meg a kötelező helyadatokat. Aktív helyszínhez cím szükséges.",
-  "admin.clinic.result.unauthorized": "Nincs jogosultsága rendelőhelyek kezelésére.",
-  "admin.clinic.result.unavailable": "A helyszínkezelés átmenetileg nem érhető el."
-  ,"admin.patient.status.active": "Aktív"
-  ,"admin.patient.status.suspended": "Felfüggesztve"
-  ,"admin.patient.status.blocked": "Letiltva"
-  ,"admin.patient.status.archived": "Archiválva"
-  ,"admin.patient.noEmail": "Nincs összekapcsolt bejelentkezési e-mail"
-  ,"admin.patient.neverSignedIn": "Még nem jelentkezett be"
-  ,"admin.patient.lastSignIn": "Utolsó bejelentkezés"
-  ,"admin.patient.familyName": "Vezetéknév"
-  ,"admin.patient.givenNames": "Keresztnevek"
-  ,"admin.patient.phone": "Fiók telefonszáma"
-  ,"admin.patient.language": "Előnyben részesített nyelv"
-  ,"admin.patient.statusReason": "Az állapotváltozás oka"
-  ,"admin.patient.statusReasonHelp": "Opcionális indoklás felfüggesztéshez, letiltáshoz vagy újraaktiváláshoz."
-  ,"admin.patient.save": "Páciens mentése"
-  ,"admin.patient.saving": "Mentés…"
-  ,"admin.patient.result.saved": "A páciens fiókadatai és állapota elmentve."
-  ,"admin.patient.result.invalid": "Ellenőrizze a páciens fiókadatait."
-  ,"admin.patient.result.unauthorized": "Nincs jogosultsága a páciensfiókok kezeléséhez."
-  ,"admin.patient.result.unavailable": "A páciensfiókok kezelése átmenetileg nem érhető el."
-  ,"admin.patient.archivedHelp": "Ez a fiók archiválva van. Az előzmények megmaradnak, és innen nem aktiválható újra."
-  ,"admin.patient.accountDetails": "Fiókadatok"
-  ,"admin.patient.emailConfirmed": "E-mail megerősítve"
-  ,"admin.patient.emailNotConfirmed": "E-mail nincs megerősítve"
-  ,"admin.patient.created": "Fiók létrehozva"
-  ,"admin.patient.statusHistory": "Fiókállapot előzményei"
-  ,"admin.patient.noStatusHistory": "Még nincs rögzített állapotváltozás."
-  ,"admin.patient.medicalPrivacy": "Egészségügyi adatok védelme"
-  ,"admin.patient.medicalPrivacyHelp": "Az Orvosi profil, az Orvosi mappa és a védett azonosítók nem érhetők el az Adminisztrációban."
-  ,"patientAppointments.account.suspended": "pitster-fiókja fel van függesztve. Kérjen segítséget az ügyfélszolgálattól."
-  ,"patientAppointments.account.blocked": "pitster-fiókja le van tiltva. Kérjen segítséget az ügyfélszolgálattól."
-  ,"patientAppointments.account.archived": "Ez a pitster-fiók archiválva van, és nem fér hozzá a páciensszolgáltatásokhoz."
-  ,"home.addressSearchPlaceholder": "Cím vagy település keresése"
-  ,"home.addressSearchHelp": "Válasszon Google-címet az 50 km-en belüli orvosok kereséséhez."
-  ,"home.addressSearchFallback": "A Google címkereső nem érhető el. Írjon be egy települést vagy címet."
-  ,"workspace.addressSearchHelp": "Válassza ki a címet a Google találatai közül, hogy a rendelő pontosan jelenjen meg a térképen."
-  ,"workspace.addressSearchFallback": "A Google címkereső nem érhető el. Adja meg kézzel a címet, települést és országot."
-  ,"serviceCatalogue.title": "Szolgáltatáskatalógus"
-  ,"serviceCatalogue.eyebrow": "Műhelykezelés"
-  ,"serviceCatalogue.description": "Hozza létre és tegye közzé az ügyfelek által igényelhető szolgáltatásokat. Az archivált szolgáltatások a meglévő foglalásokhoz kapcsolva maradnak, de eltűnnek a műhely nyilvános oldaláról."
-  ,"serviceCatalogue.workshop": "Műhely"
-  ,"serviceCatalogue.publishedCount": "közzétéve"
-  ,"serviceCatalogue.emptyTitle": "Még nincsenek szolgáltatások"
-  ,"serviceCatalogue.emptyDescription": "Adja hozzá a műhely első foglalható szolgáltatását."
-  ,"serviceCatalogue.addService": "Szolgáltatás hozzáadása"
-  ,"serviceCatalogue.adding": "Hozzáadás…"
-  ,"serviceCatalogue.name": "Szolgáltatás neve"
-  ,"serviceCatalogue.category": "Kategória"
-  ,"serviceCatalogue.serviceDescription": "Leírás"
-  ,"serviceCatalogue.duration": "Időtartam (perc)"
-  ,"serviceCatalogue.priceFrom": "Induló ár"
-  ,"serviceCatalogue.currency": "Pénznem"
-  ,"serviceCatalogue.displayOrder": "Megjelenítési sorrend"
-  ,"serviceCatalogue.requiresDiagnosis": "A végleges árhoz diagnosztika szükséges"
-  ,"serviceCatalogue.priceReview": "Ár átvizsgálás után"
-  ,"serviceCatalogue.published": "Közzétéve"
-  ,"serviceCatalogue.archived": "Archiválva"
-  ,"serviceCatalogue.archiveAction": "Szolgáltatás archiválása"
-  ,"serviceCatalogue.publishAction": "Szolgáltatás közzététele"
-  ,"serviceCatalogue.noWorkshopTitle": "Nincs elérhető műhely"
-  ,"serviceCatalogue.noWorkshopDescription": "A szolgáltatások hozzáadása előtt hozzon létre műhelytelephelyet."
-  ,"serviceCatalogue.manageWorkshops": "Műhelyek kezelése"
-  ,"serviceCatalogue.status.saved": "A szolgáltatás frissítve."
-  ,"serviceCatalogue.status.created": "A szolgáltatás hozzáadva."
-  ,"serviceCatalogue.status.published": "A szolgáltatás közzétéve."
-  ,"serviceCatalogue.status.archived": "A szolgáltatás archiválva."
-  ,"serviceCatalogue.status.invalid": "Ellenőrizze a szolgáltatás adatait."
-  ,"serviceCatalogue.status.unauthorized": "Nincs jogosultsága a műhely kezeléséhez."
-  ,"serviceCatalogue.status.conflict": "Már létezik ilyen nevű szolgáltatás."
-  ,"serviceCatalogue.status.unavailable": "A katalógus nem frissíthető. Próbálja újra."
-  ,"workshopBookings.eyebrow": "Műhelyműveletek"
-  ,"workshopBookings.title": "Foglalási kérelmek"
-  ,"workshopBookings.description": "Tekintse át a beérkező szervizkérelmeket, egyeztessen időpontot az ügyféllel, és őrizze meg minden döntés előzményét. A javasolt időpont csak megerősítés után válik foglalássá."
-  ,"workshopBookings.visible": "kérelem látható"
-  ,"workshopBookings.filter": "Szűrő"
-  ,"workshopBookings.filter.open": "Nyitott kérelmek"
-  ,"workshopBookings.filter.all": "Minden kérelem"
-  ,"workshopBookings.emptyTitle": "Nincs megfelelő kérelem"
-  ,"workshopBookings.emptyDescription": "Az új ügyfélkérelmek itt jelennek meg."
-  ,"workshopBookings.status.requested": "Kérelmezve"
-  ,"workshopBookings.status.confirmed": "Megerősítve"
-  ,"workshopBookings.status.checked_in": "Átvéve"
-  ,"workshopBookings.status.diagnosing": "Diagnosztika alatt"
-  ,"workshopBookings.status.awaiting_approval": "Jóváhagyásra vár"
-  ,"workshopBookings.status.in_service": "Javítás alatt"
-  ,"workshopBookings.status.ready_for_collection": "Átvehető"
-  ,"workshopBookings.status.completed": "Befejezve"
-  ,"workshopBookings.status.declined": "Elutasítva"
-  ,"workshopBookings.status.cancelled": "Lemondva"
-  ,"workshopBookings.status.no_show": "Nem jelent meg"
-  ,"workshopBookings.customerVehicle": "Ügyfél és jármű"
-  ,"workshopBookings.customer": "Ügyfél"
-  ,"workshopBookings.contact": "Kapcsolat"
-  ,"workshopBookings.vehicle": "Jármű"
-  ,"workshopBookings.mileage": "Kilométeróra"
-  ,"workshopBookings.mobility": "Mobilitási igény"
-  ,"workshopBookings.language": "Ügyfél nyelve"
-  ,"workshopBookings.requestedTimes": "Foglalási időpontok"
-  ,"workshopBookings.preferred": "Elsődleges"
-  ,"workshopBookings.alternate": "Alternatív"
-  ,"workshopBookings.confirmed": "Megerősített"
-  ,"workshopBookings.proposed": "Műhely javaslata"
-  ,"workshopBookings.notes": "Ügyfél megjegyzése"
-  ,"workshopBookings.noCustomerNote": "Az ügyfél nem adott meg megjegyzést."
-  ,"workshopBookings.workshopNote": "Műhely megjegyzése"
-  ,"workshopBookings.manage": "Kérelem kezelése"
-  ,"workshopBookings.noActions": "Ehhez az állapothoz nincs elérhető foglalási művelet."
-  ,"workshopBookings.history": "Életciklus-előzmények"
-  ,"workshopBookings.mobility.none": "Nincs különleges igény"
-  ,"workshopBookings.mobility.pickup": "Jármű elszállítása"
-  ,"workshopBookings.mobility.courtesy_car": "Csereautó"
-  ,"workshopBookings.mobility.wait_on_site": "Helyszíni várakozás"
-  ,"workshopBookings.action.time": "Dátum és idő"
-  ,"workshopBookings.action.reason": "Indok"
-  ,"workshopBookings.action.note": "Megjegyzés (nem kötelező)"
-  ,"workshopBookings.action.saving": "Mentés…"
-  ,"workshopBookings.action.confirm": "Foglalás megerősítése"
-  ,"workshopBookings.action.propose_time": "Másik időpont javaslata"
-  ,"workshopBookings.action.reschedule": "Foglalás átütemezése"
-  ,"workshopBookings.action.decline": "Kérelem elutasítása"
-  ,"workshopBookings.action.cancel": "Foglalás lemondása"
-  ,"workshopBookings.result.confirmed": "A foglalás megerősítve."
-  ,"workshopBookings.result.proposed": "Az alternatív időpont rögzítve."
-  ,"workshopBookings.result.rescheduled": "A foglalás átütemezve."
-  ,"workshopBookings.result.declined": "A kérelem elutasítva."
-  ,"workshopBookings.result.cancelled": "A foglalás lemondva."
-  ,"workshopBookings.result.invalid": "Ellenőrizze az időpontot és a kötelező indokot."
-  ,"workshopBookings.result.unauthorized": "Nem kezelheti ezt a műhelykérelmet."
-  ,"workshopBookings.result.unavailable": "A kérelem nem frissíthető. Próbálja újra."
-  ,"workshopBookings.history.request_received": "Kérelem beérkezett"
-  ,"workshopBookings.history.migration_snapshot": "Kezdeti állapot"
-  ,"workshopBookings.history.confirmed": "Foglalás megerősítve"
-  ,"workshopBookings.history.time_proposed": "Alternatív időpont javasolva"
-  ,"workshopBookings.history.rescheduled": "Foglalás átütemezve"
-  ,"workshopBookings.history.declined": "Kérelem elutasítva"
-  ,"workshopBookings.history.cancelled": "Foglalás lemondva"
-  ,"workshopBookings.history.proposal_accepted": "Javasolt időpont elfogadva"
-  ,"workshopBookings.history.proposal_declined": "Javasolt időpont elutasítva"
-  ,"workshopBookings.history.customer_cancelled": "Ügyfél által lemondva"
-  ,"customerBookings.back": "Saját garázs"
-  ,"customerBookings.eyebrow": "Ügyfélfoglalások"
-  ,"customerBookings.title": "Szervizfoglalásaim"
-  ,"customerBookings.description": "Kövesse kérelmeit, válaszoljon a műhely javaslataira, és tekintse meg a visszaigazolt adatokat."
-  ,"customerBookings.visible": "foglalás látható"
-  ,"customerBookings.requestedTime": "Kért időpont"
-  ,"customerBookings.proposedTime": "Javasolt időpont"
-  ,"customerBookings.confirmedTime": "Megerősített időpont"
-  ,"customerBookings.proposalEyebrow": "Teendő szükséges"
-  ,"customerBookings.proposalTitle": "A műhely másik időpontot javasolt"
-  ,"customerBookings.bookingDetails": "Foglalás részletei"
-  ,"customerBookings.vehicle": "Jármű"
-  ,"customerBookings.preferred": "Elsődleges"
-  ,"customerBookings.alternate": "Alternatív"
-  ,"customerBookings.confirmed": "Megerősített"
-  ,"customerBookings.yourNote": "Saját megjegyzés"
-  ,"customerBookings.workshopNote": "Műhely megjegyzése"
-  ,"customerBookings.workshopDetails": "Műhely adatai"
-  ,"customerBookings.contactUnavailable": "Az elérhetőségek még nem állnak rendelkezésre."
-  ,"customerBookings.history": "Foglalási előzmények"
-  ,"customerBookings.cancelTitle": "Foglalás lemondása"
-  ,"customerBookings.cancelDescription": "A lemondás végleges. Adja meg az okát a műhelynek."
-  ,"customerBookings.cancelReason": "Lemondás oka"
-  ,"customerBookings.noteOptional": "Megjegyzés (opcionális)"
-  ,"customerBookings.saving": "Mentés…"
-  ,"customerBookings.action.accept_proposal": "Javasolt időpont elfogadása"
-  ,"customerBookings.action.decline_proposal": "Javasolt időpont elutasítása"
-  ,"customerBookings.action.cancel": "Foglalás lemondása"
-  ,"customerBookings.result.accepted": "A javasolt időpont megerősítve."
-  ,"customerBookings.result.declined": "A műhely javaslata elutasítva."
-  ,"customerBookings.result.cancelled": "A foglalás lemondva."
-  ,"customerBookings.result.invalid": "Ez a művelet már nem érvényes. Frissítse az oldalt."
-  ,"customerBookings.result.unauthorized": "Ezt a foglalást nem kezelheti."
-  ,"customerBookings.result.unavailable": "A foglalást nem sikerült frissíteni."
-  ,"customerBookings.emptyTitle": "Nincs megfelelő foglalás"
-  ,"customerBookings.emptyDescription": "Szervizkérelmei a foglalás után itt jelennek meg."
-  ,"customerBookings.bookService": "Szerviz foglalása"
-  ,"register.customer.choice": "Ügyfél"
-  ,"register.workshop_manager.choice": "Műhelyvezető"
-  ,"register.customer.title": "Ügyfél-regisztráció"
-  ,"register.customer.description": "Hozzon létre pitster-fiókot járműveihez és szervizfoglalásaihoz."
-  ,"register.workshop_manager.title": "Műhelyvezetői regisztráció"
-  ,"register.workshop_manager.description": "Hozzon létre szolgáltatói fiókot műhelyvállalkozásához."
-  ,"register.workshop_manager.legalName": "Szolgáltató hivatalos neve"
-  ,"register.workshop_manager.displayName": "Szolgáltató megjelenített neve"
-  ,"platformLogin.customer.title": "Ügyfél bejelentkezés"
-  ,"platformLogin.customer.description": "Hozzáférés a garázshoz és a szervizfoglalásokhoz."
-  ,"platformLogin.workshop_manager.title": "Műhelyvezetői bejelentkezés"
-  ,"platformLogin.workshop_manager.description": "Kérelmek, szolgáltatások és műhelyek kezelése."
-  ,"platformLogin.noAccount": "Még nincs fiókja?"
-  ,"platformLogin.register": "Fiók létrehozása"
-  ,"managerPortal.eyebrow": "Műhelykezelés"
-  ,"managerPortal.welcome": "Üdvözöljük, {name}"
-  ,"managerPortal.description": "Kezelje szolgáltatóit, műhelyeit, katalógusát és foglalási kérelmeit."
-  ,"managerPortal.workshops": "Műhelyek"
-  ,"managerPortal.role": "Tagsági szerep"
-  ,"managerPortal.empty": "Nincs aktív szolgáltatói tagság."
-  ,"workshopOperations.eyebrow": "Műhelyműveletek"
-  ,"workshopOperations.title": "Műhelybeállítások"
-  ,"workshopOperations.description": "Kezelje a nyilvános profilt, foglalási szabályokat, nyitvatartást, mobilitási lehetőségeket és rendkívüli zárásokat."
-  ,"workshopOperations.publicProfile": "Nyilvános profil"
-  ,"workshopOperations.displayName": "Műhely neve"
-  ,"workshopOperations.descriptionLabel": "Leírás"
-  ,"workshopOperations.phone": "Nyilvános telefon"
-  ,"workshopOperations.email": "Nyilvános e-mail"
-  ,"workshopOperations.address": "Műhely címe"
-  ,"workshopOperations.bookingRules": "Foglalási szabályok"
-  ,"workshopOperations.leadTime": "Minimális előfoglalás (perc)"
-  ,"workshopOperations.horizon": "Foglalási időszak (nap)"
-  ,"workshopOperations.capacity": "Napi kérelemkapacitás"
-  ,"workshopOperations.interval": "Időköz (perc)"
-  ,"workshopOperations.timeZone": "Időzóna"
-  ,"workshopOperations.acceptsRequests": "Nyilvános foglalási kérelmek fogadása"
-  ,"workshopOperations.pickup": "Járműátvétel biztosítása"
-  ,"workshopOperations.courtesyCar": "Csereautó biztosítása"
-  ,"workshopOperations.waitOnSite": "Helyszíni várakozás engedélyezése"
-  ,"workshopOperations.hours": "Heti nyitvatartás"
-  ,"workshopOperations.closed": "Zárva"
-  ,"workshopOperations.opens": "Nyitás"
-  ,"workshopOperations.closes": "Zárás"
-  ,"workshopOperations.weekday.0": "Vasárnap"
-  ,"workshopOperations.weekday.1": "Hétfő"
-  ,"workshopOperations.weekday.2": "Kedd"
-  ,"workshopOperations.weekday.3": "Szerda"
-  ,"workshopOperations.weekday.4": "Csütörtök"
-  ,"workshopOperations.weekday.5": "Péntek"
-  ,"workshopOperations.weekday.6": "Szombat"
-  ,"workshopOperations.save": "Műhelybeállítások mentése"
-  ,"workshopOperations.saving": "Mentés…"
-  ,"workshopOperations.closures": "Rendkívüli zárások"
-  ,"workshopOperations.closuresDescription": "A zárások felülírják a heti nyitvatartást és blokkolják az új kérelmeket."
-  ,"workshopOperations.closure.starts": "Kezdete"
-  ,"workshopOperations.closure.ends": "Vége"
-  ,"workshopOperations.closure.reason": "Ok (opcionális)"
-  ,"workshopOperations.closure.add": "Zárás hozzáadása"
-  ,"workshopOperations.closure.remove": "Eltávolítás"
-  ,"workshopOperations.closure.defaultReason": "Műhely zárva"
-  ,"workshopOperations.closure.empty": "Nincs közelgő zárás."
-  ,"workshopOperations.emptyTitle": "Nincs elérhető műhely"
-  ,"workshopOperations.emptyDescription": "A beállításhoz aktív műhelytagság szükséges."
-  ,"workshopOperations.result.saved": "A műhelybeállítások mentve."
-  ,"workshopOperations.result.created": "A zárás hozzáadva."
-  ,"workshopOperations.result.removed": "A zárás eltávolítva."
-  ,"workshopOperations.result.invalid": "Ellenőrizze a beállításokat és nyitvatartást."
-  ,"workshopOperations.result.unauthorized": "Ezt a műhelyt nem kezelheti."
-  ,"workshopOperations.result.unavailable": "A műhelyt nem sikerült frissíteni."
-  ,"repairLifecycle.eyebrow": "Műhelyműveletek"
-  ,"repairLifecycle.title": "Javítási folyamat"
-  ,"repairLifecycle.description": "Kezelje a munkát az átvételtől a diagnózison át az átadásig."
-  ,"repairLifecycle.visible": "javítás látható"
-  ,"repairLifecycle.filter.active": "Aktív javítások"
-  ,"repairLifecycle.note": "Műhelymegjegyzés (opcionális)"
-  ,"repairLifecycle.saving": "Mentés…"
-  ,"repairLifecycle.result.saved": "A javítás frissítve."
-  ,"repairLifecycle.result.invalid": "Ez az állapotváltás már nem érvényes."
-  ,"repairLifecycle.result.unauthorized": "Ezt a javítást nem kezelheti."
-  ,"repairLifecycle.result.unavailable": "A javítás nem frissíthető."
-  ,"repairLifecycle.action.check_in": "Jármű átvétele"
-  ,"repairLifecycle.action.start_diagnosis": "Diagnosztika indítása"
-  ,"repairLifecycle.action.start_work": "Jóváhagyott munka indítása"
-  ,"repairLifecycle.action.ready_for_collection": "Átvehetőnek jelölés"
-  ,"repairLifecycle.action.complete": "Javítás befejezése"
-  ,"repairLifecycle.action.mark_no_show": "Meg nem jelentként jelölés"
-  ,"repairLifecycle.diagnosis": "Diagnózis"
-  ,"repairLifecycle.items": "Árajánlat tételei"
-  ,"repairLifecycle.addItem": "Tétel hozzáadása"
-  ,"repairLifecycle.itemType": "Tételtípus"
-  ,"repairLifecycle.itemDescription": "Leírás"
-  ,"repairLifecycle.quantity": "Mennyiség"
-  ,"repairLifecycle.unitPrice": "Egységár"
-  ,"repairLifecycle.removeItem": "Tétel eltávolítása"
-  ,"repairLifecycle.currency": "Pénznem"
-  ,"repairLifecycle.customerNote": "Üzenet az ügyfélnek (opcionális)"
-  ,"repairLifecycle.sendEstimate": "Árajánlat küldése"
-  ,"repairLifecycle.estimate": "Árajánlat"
-  ,"repairLifecycle.estimateStatus.awaiting_customer": "Ügyfélre vár"
-  ,"repairLifecycle.estimateStatus.approved": "Jóváhagyva"
-  ,"repairLifecycle.estimateStatus.declined": "Elutasítva"
-  ,"repairLifecycle.estimateStatus.superseded": "Lecserélve"
-  ,"repairLifecycle.type.labor": "Munkadíj"
-  ,"repairLifecycle.type.part": "Alkatrész"
-  ,"repairLifecycle.type.other": "Egyéb"
-  ,"repairLifecycle.total": "Összesen"
-  ,"repairLifecycle.customerDecisionNote": "Ügyfél megjegyzése"
-  ,"repairLifecycle.appointment": "Időpont"
-  ,"repairLifecycle.jobDetails": "Munka részletei"
-  ,"repairLifecycle.nextAction": "Következő művelet"
-  ,"repairLifecycle.waitingCustomer": "Várakozás az ügyfél döntésére."
-  ,"repairLifecycle.noActions": "Ez a javítás lezárult."
-  ,"repairLifecycle.emptyTitle": "Nincs megfelelő javítás"
-  ,"repairLifecycle.emptyDescription": "A visszaigazolt foglalások itt jelennek meg."
-  ,"repairLifecycle.customerAction.approve": "Árajánlat jóváhagyása"
-  ,"repairLifecycle.customerAction.decline": "Árajánlat elutasítása"
-  ,"repairLifecycle.customerResult.approved": "Az árajánlat jóváhagyva."
-  ,"repairLifecycle.customerResult.estimate_declined": "Az árajánlat felülvizsgálatra visszaküldve."
-  ,"repairLifecycle.customerResult.invalid": "Ez az árajánlat már nem vár döntésre."
-  ,"repairLifecycle.customerResult.unauthorized": "Erről az árajánlatról nem dönthet."
-  ,"repairLifecycle.customerResult.unavailable": "Az árajánlat nem frissíthető."
-  ,"repairLifecycle.approvedWaiting": "Jóváhagyva — a műhely megkezdheti a munkát."
-  ,"workshopBookings.history.checked_in": "Jármű átvéve"
-  ,"workshopBookings.history.diagnosis_recorded": "Diagnosztika elindítva"
-  ,"workshopBookings.history.estimate_sent": "Árajánlat elküldve"
-  ,"workshopBookings.history.estimate_approved": "Árajánlat jóváhagyva"
-  ,"workshopBookings.history.estimate_declined": "Árajánlat elutasítva"
-  ,"workshopBookings.history.work_started": "Munka elkezdve"
-  ,"workshopBookings.history.ready_for_collection": "Átvehető"
-  ,"workshopBookings.history.completed": "Javítás befejezve"
-  ,"workshopBookings.history.no_show": "Ügyfél nem jelent meg"
-  ,"providerBilling.eyebrow": "Szolgáltatói számlázás"
-  ,"providerBilling.title": "Előfizetés és számlák"
-  ,"providerBilling.description": "Kezelje a havi 35 eurós előfizetést, a számlázási adatokat, a fizetést és a Stripe-számlákat."
-  ,"providerBilling.provider": "Szolgáltató"
-  ,"providerBilling.checkoutSuccess": "A fizetés befejeződött. A Stripe az aláírt webhookon keresztül erősíti meg az előfizetést."
-  ,"providerBilling.checkoutCancelled": "A fizetés megszakadt. Az előfizetés nem változott."
-  ,"providerBilling.error": "A számlázási művelet nem hajtható végre."
-  ,"providerBilling.plan": "Jelenlegi csomag"
-  ,"providerBilling.month": "hónap"
-  ,"providerBilling.smsIncluded": "SMS-sel együtt"
-  ,"providerBilling.status": "Állapot"
-  ,"providerBilling.renews": "A jelenlegi időszak vége"
-  ,"providerBilling.cancelsAtPeriodEnd": "Lemondás az időszak végére ütemezve"
-  ,"providerBilling.subscribe": "Előfizetés Stripe-pal"
-  ,"providerBilling.portal": "Számlázás kezelése a Stripe-ban"
-  ,"providerBilling.notConfigured": "A Stripe-környezet nincs beállítva."
-  ,"providerBilling.profileTitle": "Számlázási adatok"
-  ,"providerBilling.profileDescription": "Ezek az adatok azonosítják a fizető szolgáltatót. A fizetési adatokat a Stripe biztonságosan kezeli."
-  ,"providerBilling.billingEmail": "Számlázási e-mail"
-  ,"providerBilling.billingContact": "Számlázási kapcsolattartó"
-  ,"providerBilling.taxIdentifier": "Adószám"
-  ,"providerBilling.addressLine1": "Cím 1. sor"
-  ,"providerBilling.addressLine2": "Cím 2. sor"
-  ,"providerBilling.city": "Város"
-  ,"providerBilling.postalCode": "Irányítószám"
-  ,"providerBilling.country": "Országkód"
-  ,"providerBilling.result.saved": "A számlázási adatok mentve."
-  ,"providerBilling.result.invalid": "Ellenőrizze a számlázási adatokat."
-  ,"providerBilling.result.unauthorized": "Csak aktív tulajdonos kezelheti a számlázást."
-  ,"providerBilling.result.configuration": "A Stripe nincs beállítva."
-  ,"providerBilling.result.unavailable": "A számlázási adatok nem frissíthetők."
-  ,"providerBilling.invoices": "Stripe-számlák"
-  ,"providerBilling.invoice": "Számla"
-  ,"providerBilling.period": "Időszak"
-  ,"providerBilling.amount": "Összeg"
-  ,"providerBilling.documents": "Dokumentumok"
-  ,"providerBilling.view": "Megtekintés"
-  ,"providerBilling.noInvoices": "A Stripe által létrehozott számlák itt jelennek meg."
-  ,"providerBilling.subscription.not_started": "Nincs előfizetés"
-  ,"providerBilling.subscription.incomplete": "Befejezetlen fizetés"
-  ,"providerBilling.subscription.incomplete_expired": "Lejárt fizetés"
-  ,"providerBilling.subscription.trialing": "Próbaidőszak"
-  ,"providerBilling.subscription.active": "Aktív"
-  ,"providerBilling.subscription.past_due": "Lejárt fizetés"
-  ,"providerBilling.subscription.canceled": "Lemondva"
-  ,"providerBilling.subscription.unpaid": "Kifizetetlen"
-  ,"providerBilling.subscription.paused": "Szüneteltetve"
-  ,"commercialAdmin.eyebrow": "Kereskedelmi műveletek"
-  ,"commercialAdmin.title": "Szolgáltatói előfizetések és műveletek"
-  ,"commercialAdmin.description": "Kövesse a Stripe-előfizetéseket, exportálja a könyvelési adatokat, és kezelje a működési állapotot a fizetéstől elkülönítve."
-  ,"commercialAdmin.providers": "Szolgáltatók"
-  ,"commercialAdmin.activeSubscriptions": "Aktív előfizetések"
-  ,"commercialAdmin.attention": "Fizetési figyelmeztetés"
-  ,"commercialAdmin.mrr": "Havi ismétlődő bevétel"
-  ,"commercialAdmin.provider": "Szolgáltató"
-  ,"commercialAdmin.providerStatus": "Működési állapot"
-  ,"commercialAdmin.subscription": "Előfizetés"
-  ,"commercialAdmin.renewal": "Időszak vége"
-  ,"commercialAdmin.invoices": "Számlák"
-  ,"commercialAdmin.operation": "Admin művelet"
-  ,"commercialAdmin.reason": "Indoklás szükséges"
-  ,"commercialAdmin.providerStatus.pending": "Függőben"
-  ,"commercialAdmin.providerStatus.active": "Aktív"
-  ,"commercialAdmin.providerStatus.suspended": "Felfüggesztve"
-  ,"commercialAdmin.providerStatus.rejected": "Elutasítva"
-  ,"commercialAdmin.result.saved": "A szolgáltató állapota frissítve."
-  ,"commercialAdmin.result.invalid": "Válasszon másik érvényes állapotot, és adjon meg indokot."
-  ,"commercialAdmin.result.unauthorized": "Platformadminisztrátori hozzáférés szükséges."
-  ,"commercialAdmin.result.unavailable": "A szolgáltató állapota nem frissíthető."
-  ,"serviceCatalogue.vehicleType": "Járműtípus"
-  ,"serviceCatalogue.vehicleType.car_van": "Személyautó / furgon"
-  ,"serviceCatalogue.vehicleType.motorcycle_scooter": "Motorkerékpár / benzines robogó"
-  ,"serviceCatalogue.vehicleType.electric_bicycle": "Elektromos kerékpár"
-  ,"serviceCatalogue.vehicleType.electric_kick_scooter": "Elektromos roller"
-  ,"serviceCatalogue.bookingMode": "Foglalási út"
-  ,"serviceCatalogue.bookingMode.direct": "Közvetlen szolgáltatás"
-  ,"serviceCatalogue.bookingMode.diagnosis_first": "Először diagnosztika"
-  ,"serviceCatalogue.bookingMode.diagnosis": "Kezdeti diagnosztika"
-  ,"serviceCatalogue.diagnosisFeeHelp": "Közzététel előtt adjon meg pozitív diagnosztikai díjat. A díj akkor is fizetendő, ha az ügyfél elutasítja a további javítást."
-  ,"serviceCatalogue.setupRequired": "Díj megadása szükséges"
-  ,"serviceCatalogue.template": "Standard szolgáltatássablon"
-  ,"serviceCatalogue.template.custom": "Egyéni szolgáltatás"
-  ,"workshopBookings.calendar.title": "Műhelynaptár"
-  ,"workshopBookings.calendarStatus.proposed": "Javasolt időpont"
-  ,"workshopBookings.calendarStatus.rescheduled": "Átütemezve"
-  ,"workshopBookings.manual.add": "Időpont hozzáadása"
-  ,"workshopBookings.manual.source": "Foglalás forrása"
-  ,"workshopBookings.manual.phone": "Ügyfél telefonszáma (opcionális)"
-  ,"workshopBookings.manual.email": "Ügyfél e-mail-címe (opcionális)"
-  ,"workshopBookings.manual.registration": "Rendszám"
-  ,"workshopBookings.manual.make": "Jármű márkája"
-  ,"workshopBookings.manual.model": "Jármű modellje"
-  ,"workshopBookings.manual.year": "Gyártási év"
-  ,"workshopBookings.customerStates": "Az ügyfél elmondása"
-  ,"workshopBookings.customerStatesHelp": "A tüneteket és tényeket pontosan az ügyfél elmondása szerint rögzítse."
-  ,"workshopBookings.manual.create": "Időpont létrehozása"
-  ,"workshopBookings.manual.result.created": "Az időpont bekerült a naptárba."
-  ,"workshopBookings.manual.result.invalid": "Ellenőrizze az időpont, az ügyfél és a jármű adatait."
-  ,"workshopBookings.manual.result.unauthorized": "Ehhez a műhelyhez nem adhat hozzá időpontot."
-  ,"workshopBookings.manual.result.unavailable": "Az időpont nem hozható létre."
-  ,"workshopBookings.source.public_request": "Online kérés"
-  ,"workshopBookings.source.manager_phone": "Telefonhívás"
-  ,"workshopBookings.source.manager_walk_in": "Bejelentkezés nélküli ügyfél"
-  ,"workshopBookings.source.manager_other": "Egyéb műhelybejegyzés"
-  ,"workshopBookings.history.manager_created": "A műhely hozta létre az időpontot"
-  ,"automotiveAdmin.console": "Platformüzemeltetés"
-  ,"automotiveAdmin.navigation": "Autós adminisztráció"
-  ,"automotiveAdmin.nav.overview": "Áttekintés"
-  ,"automotiveAdmin.nav.providers": "Szolgáltatók"
-  ,"automotiveAdmin.nav.workshops": "Műhelyek"
-  ,"automotiveAdmin.nav.customers": "Ügyfelek"
-  ,"automotiveAdmin.nav.managers": "Műhelyvezetők"
-  ,"automotiveAdmin.nav.sms": "SMS-kézbesítés"
-  ,"automotiveAdmin.nav.security": "Biztonság"
-  ,"automotiveAdmin.openBookings": "Nyitott foglalások"
-  ,"automotiveAdmin.smsAttention": "Figyelmet igénylő SMS-ek"
-  ,"automotiveAdmin.recentProviders": "Legújabb szolgáltatók"
-  ,"automotiveAdmin.provider": "Szolgáltató"
-  ,"automotiveAdmin.providers": "Szolgáltatók"
-  ,"automotiveAdmin.workshop": "Műhely"
-  ,"automotiveAdmin.workshops": "Műhelyek"
-  ,"automotiveAdmin.customer": "Ügyfél"
-  ,"automotiveAdmin.manager": "Műhelyvezető"
-  ,"automotiveAdmin.managers": "Vezetők"
-  ,"automotiveAdmin.legalName": "Jogi név"
-  ,"automotiveAdmin.location": "Helyszín"
-  ,"automotiveAdmin.phone": "Telefon"
-  ,"automotiveAdmin.vehicles": "Járművek"
-  ,"automotiveAdmin.bookings": "Foglalások"
-  ,"automotiveAdmin.created": "Létrehozva"
-  ,"automotiveAdmin.smsEvent": "SMS-esemény"
-  ,"automotiveAdmin.pending": "Függőben"
-  ,"automotiveAdmin.sent": "Elküldve"
-  ,"automotiveAdmin.failed": "Sikertelen"
-  ,"automotiveAdmin.empty": "Ebben a részben nincs adat."
-  ,"automotiveAdmin.securityTitle": "Adminisztrátori munkamenet biztonsága"
-  ,"automotiveAdmin.securityDescription": "Az adminisztrátori hozzáférés aktív fiókot és többtényezős hitelesítést igényel."
-  ,"automotiveAdmin.role": "Szerepkör"
-  ,"automotiveAdmin.session": "Munkamenet-biztonság"
-  ,"automotiveAdmin.generated": "Pillanatkép ideje"
-  ,"automotiveAdmin.sms.booking_confirmed": "Foglalás megerősítve"
-  ,"automotiveAdmin.sms.reminder_24h": "24 órás emlékeztető"
-  ,"automotiveAdmin.sms.repair_started": "Javítás elkezdődött"
-  ,"automotiveAdmin.sms.ready_for_pickup": "Átvehető"
-  ,"automotiveAdmin.sms.review_request": "Értékelési kérés"
+  "home.addressSearchPlaceholder": "Cím vagy település keresése",
+  "home.addressSearchHelp": "Válasszon Google-címet az 50 km-en belüli orvosok kereséséhez.",
+  "home.addressSearchFallback": "A Google címkereső nem érhető el. Írjon be egy települést vagy címet.",
+  "workspace.addressSearchHelp": "Válassza ki a címet a Google találatai közül, hogy a rendelő pontosan jelenjen meg a térképen.",
+  "workspace.addressSearchFallback": "A Google címkereső nem érhető el. Adja meg kézzel a címet, települést és országot.",
+  "serviceCatalogue.title": "Szolgáltatáskatalógus",
+  "serviceCatalogue.eyebrow": "Műhelykezelés",
+  "serviceCatalogue.description": "Hozza létre és tegye közzé az ügyfelek által igényelhető szolgáltatásokat. Az archivált szolgáltatások a meglévő foglalásokhoz kapcsolva maradnak, de eltűnnek a műhely nyilvános oldaláról.",
+  "serviceCatalogue.workshop": "Műhely",
+  "serviceCatalogue.publishedCount": "közzétéve",
+  "serviceCatalogue.emptyTitle": "Még nincsenek szolgáltatások",
+  "serviceCatalogue.emptyDescription": "Adja hozzá a műhely első foglalható szolgáltatását.",
+  "serviceCatalogue.addService": "Szolgáltatás hozzáadása",
+  "serviceCatalogue.adding": "Hozzáadás…",
+  "serviceCatalogue.name": "Szolgáltatás neve",
+  "serviceCatalogue.category": "Kategória",
+  "serviceCatalogue.serviceDescription": "Leírás",
+  "serviceCatalogue.duration": "Időtartam (perc)",
+  "serviceCatalogue.priceFrom": "Induló ár",
+  "serviceCatalogue.currency": "Pénznem",
+  "serviceCatalogue.displayOrder": "Megjelenítési sorrend",
+  "serviceCatalogue.requiresDiagnosis": "A végleges árhoz diagnosztika szükséges",
+  "serviceCatalogue.priceReview": "Ár átvizsgálás után",
+  "serviceCatalogue.published": "Közzétéve",
+  "serviceCatalogue.archived": "Archiválva",
+  "serviceCatalogue.archiveAction": "Szolgáltatás archiválása",
+  "serviceCatalogue.publishAction": "Szolgáltatás közzététele",
+  "serviceCatalogue.noWorkshopTitle": "Nincs elérhető műhely",
+  "serviceCatalogue.noWorkshopDescription": "A szolgáltatások hozzáadása előtt hozzon létre műhelytelephelyet.",
+  "serviceCatalogue.manageWorkshops": "Műhelyek kezelése",
+  "serviceCatalogue.status.saved": "A szolgáltatás frissítve.",
+  "serviceCatalogue.status.created": "A szolgáltatás hozzáadva.",
+  "serviceCatalogue.status.published": "A szolgáltatás közzétéve.",
+  "serviceCatalogue.status.archived": "A szolgáltatás archiválva.",
+  "serviceCatalogue.status.invalid": "Ellenőrizze a szolgáltatás adatait.",
+  "serviceCatalogue.status.unauthorized": "Nincs jogosultsága a műhely kezeléséhez.",
+  "serviceCatalogue.status.conflict": "Már létezik ilyen nevű szolgáltatás.",
+  "serviceCatalogue.status.unavailable": "A katalógus nem frissíthető. Próbálja újra.",
+  "workshopBookings.eyebrow": "Műhelyműveletek",
+  "workshopBookings.title": "Foglalási kérelmek",
+  "workshopBookings.description": "Tekintse át a beérkező szervizkérelmeket, egyeztessen időpontot az ügyféllel, és őrizze meg minden döntés előzményét. A javasolt időpont csak megerősítés után válik foglalássá.",
+  "workshopBookings.visible": "kérelem látható",
+  "workshopBookings.filter": "Szűrő",
+  "workshopBookings.filter.open": "Nyitott kérelmek",
+  "workshopBookings.filter.all": "Minden kérelem",
+  "workshopBookings.emptyTitle": "Nincs megfelelő kérelem",
+  "workshopBookings.emptyDescription": "Az új ügyfélkérelmek itt jelennek meg.",
+  "workshopBookings.status.requested": "Kérelmezve",
+  "workshopBookings.status.confirmed": "Megerősítve",
+  "workshopBookings.status.checked_in": "Átvéve",
+  "workshopBookings.status.diagnosing": "Diagnosztika alatt",
+  "workshopBookings.status.awaiting_approval": "Jóváhagyásra vár",
+  "workshopBookings.status.in_service": "Javítás alatt",
+  "workshopBookings.status.ready_for_collection": "Átvehető",
+  "workshopBookings.status.completed": "Befejezve",
+  "workshopBookings.status.declined": "Elutasítva",
+  "workshopBookings.status.cancelled": "Lemondva",
+  "workshopBookings.status.no_show": "Nem jelent meg",
+  "workshopBookings.customerVehicle": "Ügyfél és jármű",
+  "workshopBookings.customer": "Ügyfél",
+  "workshopBookings.contact": "Kapcsolat",
+  "workshopBookings.vehicle": "Jármű",
+  "workshopBookings.mileage": "Kilométeróra",
+  "workshopBookings.mobility": "Mobilitási igény",
+  "workshopBookings.language": "Ügyfél nyelve",
+  "workshopBookings.requestedTimes": "Foglalási időpontok",
+  "workshopBookings.preferred": "Elsődleges",
+  "workshopBookings.alternate": "Alternatív",
+  "workshopBookings.confirmed": "Megerősített",
+  "workshopBookings.proposed": "Műhely javaslata",
+  "workshopBookings.notes": "Ügyfél megjegyzése",
+  "workshopBookings.noCustomerNote": "Az ügyfél nem adott meg megjegyzést.",
+  "workshopBookings.workshopNote": "Műhely megjegyzése",
+  "workshopBookings.manage": "Kérelem kezelése",
+  "workshopBookings.noActions": "Ehhez az állapothoz nincs elérhető foglalási művelet.",
+  "workshopBookings.history": "Életciklus-előzmények",
+  "workshopBookings.mobility.none": "Nincs különleges igény",
+  "workshopBookings.mobility.pickup": "Jármű elszállítása",
+  "workshopBookings.mobility.courtesy_car": "Csereautó",
+  "workshopBookings.mobility.wait_on_site": "Helyszíni várakozás",
+  "workshopBookings.action.time": "Dátum és idő",
+  "workshopBookings.action.reason": "Indok",
+  "workshopBookings.action.note": "Megjegyzés (nem kötelező)",
+  "workshopBookings.action.saving": "Mentés…",
+  "workshopBookings.action.confirm": "Foglalás megerősítése",
+  "workshopBookings.action.propose_time": "Másik időpont javaslata",
+  "workshopBookings.action.reschedule": "Foglalás átütemezése",
+  "workshopBookings.action.decline": "Kérelem elutasítása",
+  "workshopBookings.action.cancel": "Foglalás lemondása",
+  "workshopBookings.result.confirmed": "A foglalás megerősítve.",
+  "workshopBookings.result.proposed": "Az alternatív időpont rögzítve.",
+  "workshopBookings.result.rescheduled": "A foglalás átütemezve.",
+  "workshopBookings.result.declined": "A kérelem elutasítva.",
+  "workshopBookings.result.cancelled": "A foglalás lemondva.",
+  "workshopBookings.result.invalid": "Ellenőrizze az időpontot és a kötelező indokot.",
+  "workshopBookings.result.unauthorized": "Nem kezelheti ezt a műhelykérelmet.",
+  "workshopBookings.result.unavailable": "A kérelem nem frissíthető. Próbálja újra.",
+  "workshopBookings.history.request_received": "Kérelem beérkezett",
+  "workshopBookings.history.migration_snapshot": "Kezdeti állapot",
+  "workshopBookings.history.confirmed": "Foglalás megerősítve",
+  "workshopBookings.history.time_proposed": "Alternatív időpont javasolva",
+  "workshopBookings.history.rescheduled": "Foglalás átütemezve",
+  "workshopBookings.history.declined": "Kérelem elutasítva",
+  "workshopBookings.history.cancelled": "Foglalás lemondva",
+  "workshopBookings.history.proposal_accepted": "Javasolt időpont elfogadva",
+  "workshopBookings.history.proposal_declined": "Javasolt időpont elutasítva",
+  "workshopBookings.history.customer_cancelled": "Ügyfél által lemondva",
+  "customerBookings.back": "Saját garázs",
+  "customerBookings.eyebrow": "Ügyfélfoglalások",
+  "customerBookings.title": "Szervizfoglalásaim",
+  "customerBookings.description": "Kövesse kérelmeit, válaszoljon a műhely javaslataira, és tekintse meg a visszaigazolt adatokat.",
+  "customerBookings.visible": "foglalás látható",
+  "customerBookings.requestedTime": "Kért időpont",
+  "customerBookings.proposedTime": "Javasolt időpont",
+  "customerBookings.confirmedTime": "Megerősített időpont",
+  "customerBookings.proposalEyebrow": "Teendő szükséges",
+  "customerBookings.proposalTitle": "A műhely másik időpontot javasolt",
+  "customerBookings.bookingDetails": "Foglalás részletei",
+  "customerBookings.vehicle": "Jármű",
+  "customerBookings.preferred": "Elsődleges",
+  "customerBookings.alternate": "Alternatív",
+  "customerBookings.confirmed": "Megerősített",
+  "customerBookings.yourNote": "Saját megjegyzés",
+  "customerBookings.workshopNote": "Műhely megjegyzése",
+  "customerBookings.workshopDetails": "Műhely adatai",
+  "customerBookings.contactUnavailable": "Az elérhetőségek még nem állnak rendelkezésre.",
+  "customerBookings.history": "Foglalási előzmények",
+  "customerBookings.cancelTitle": "Foglalás lemondása",
+  "customerBookings.cancelDescription": "A lemondás végleges. Adja meg az okát a műhelynek.",
+  "customerBookings.cancelReason": "Lemondás oka",
+  "customerBookings.noteOptional": "Megjegyzés (opcionális)",
+  "customerBookings.saving": "Mentés…",
+  "customerBookings.action.accept_proposal": "Javasolt időpont elfogadása",
+  "customerBookings.action.decline_proposal": "Javasolt időpont elutasítása",
+  "customerBookings.action.cancel": "Foglalás lemondása",
+  "customerBookings.result.accepted": "A javasolt időpont megerősítve.",
+  "customerBookings.result.declined": "A műhely javaslata elutasítva.",
+  "customerBookings.result.cancelled": "A foglalás lemondva.",
+  "customerBookings.result.invalid": "Ez a művelet már nem érvényes. Frissítse az oldalt.",
+  "customerBookings.result.unauthorized": "Ezt a foglalást nem kezelheti.",
+  "customerBookings.result.unavailable": "A foglalást nem sikerült frissíteni.",
+  "customerBookings.emptyTitle": "Nincs megfelelő foglalás",
+  "customerBookings.emptyDescription": "Szervizkérelmei a foglalás után itt jelennek meg.",
+  "customerBookings.bookService": "Szerviz foglalása",
+  "register.customer.choice": "Ügyfél",
+  "register.workshop_manager.choice": "Műhelyvezető",
+  "register.customer.title": "Ügyfél-regisztráció",
+  "register.customer.description": "Hozzon létre pitster-fiókot járműveihez és szervizfoglalásaihoz.",
+  "register.workshop_manager.title": "Műhelyvezetői regisztráció",
+  "register.workshop_manager.description": "Hozzon létre szolgáltatói fiókot műhelyvállalkozásához.",
+  "register.workshop_manager.legalName": "Szolgáltató hivatalos neve",
+  "register.workshop_manager.displayName": "Szolgáltató megjelenített neve",
+  "platformLogin.customer.title": "Ügyfél bejelentkezés",
+  "platformLogin.customer.description": "Hozzáférés a garázshoz és a szervizfoglalásokhoz.",
+  "platformLogin.workshop_manager.title": "Műhelyvezetői bejelentkezés",
+  "platformLogin.workshop_manager.description": "Kérelmek, szolgáltatások és műhelyek kezelése.",
+  "platformLogin.noAccount": "Még nincs fiókja?",
+  "platformLogin.register": "Fiók létrehozása",
+  "managerPortal.eyebrow": "Műhelykezelés",
+  "managerPortal.welcome": "Üdvözöljük, {name}",
+  "managerPortal.description": "Kezelje szolgáltatóit, műhelyeit, katalógusát és foglalási kérelmeit.",
+  "managerPortal.workshops": "Műhelyek",
+  "managerPortal.role": "Tagsági szerep",
+  "managerPortal.empty": "Nincs aktív szolgáltatói tagság.",
+  "workshopOperations.eyebrow": "Műhelyműveletek",
+  "workshopOperations.title": "Műhelybeállítások",
+  "workshopOperations.description": "Kezelje a nyilvános profilt, foglalási szabályokat, nyitvatartást, mobilitási lehetőségeket és rendkívüli zárásokat.",
+  "workshopOperations.publicProfile": "Nyilvános profil",
+  "workshopOperations.displayName": "Műhely neve",
+  "workshopOperations.descriptionLabel": "Leírás",
+  "workshopOperations.phone": "Nyilvános telefon",
+  "workshopOperations.email": "Nyilvános e-mail",
+  "workshopOperations.address": "Műhely címe",
+  "workshopOperations.bookingRules": "Foglalási szabályok",
+  "workshopOperations.leadTime": "Minimális előfoglalás (perc)",
+  "workshopOperations.horizon": "Foglalási időszak (nap)",
+  "workshopOperations.capacity": "Napi kérelemkapacitás",
+  "workshopOperations.interval": "Időköz (perc)",
+  "workshopOperations.timeZone": "Időzóna",
+  "workshopOperations.acceptsRequests": "Nyilvános foglalási kérelmek fogadása",
+  "workshopOperations.pickup": "Járműátvétel biztosítása",
+  "workshopOperations.courtesyCar": "Csereautó biztosítása",
+  "workshopOperations.waitOnSite": "Helyszíni várakozás engedélyezése",
+  "workshopOperations.hours": "Heti nyitvatartás",
+  "workshopOperations.closed": "Zárva",
+  "workshopOperations.opens": "Nyitás",
+  "workshopOperations.closes": "Zárás",
+  "workshopOperations.weekday.0": "Vasárnap",
+  "workshopOperations.weekday.1": "Hétfő",
+  "workshopOperations.weekday.2": "Kedd",
+  "workshopOperations.weekday.3": "Szerda",
+  "workshopOperations.weekday.4": "Csütörtök",
+  "workshopOperations.weekday.5": "Péntek",
+  "workshopOperations.weekday.6": "Szombat",
+  "workshopOperations.save": "Műhelybeállítások mentése",
+  "workshopOperations.saving": "Mentés…",
+  "workshopOperations.closures": "Rendkívüli zárások",
+  "workshopOperations.closuresDescription": "A zárások felülírják a heti nyitvatartást és blokkolják az új kérelmeket.",
+  "workshopOperations.closure.starts": "Kezdete",
+  "workshopOperations.closure.ends": "Vége",
+  "workshopOperations.closure.reason": "Ok (opcionális)",
+  "workshopOperations.closure.add": "Zárás hozzáadása",
+  "workshopOperations.closure.remove": "Eltávolítás",
+  "workshopOperations.closure.defaultReason": "Műhely zárva",
+  "workshopOperations.closure.empty": "Nincs közelgő zárás.",
+  "workshopOperations.emptyTitle": "Nincs elérhető műhely",
+  "workshopOperations.emptyDescription": "A beállításhoz aktív műhelytagság szükséges.",
+  "workshopOperations.result.saved": "A műhelybeállítások mentve.",
+  "workshopOperations.result.created": "A zárás hozzáadva.",
+  "workshopOperations.result.removed": "A zárás eltávolítva.",
+  "workshopOperations.result.invalid": "Ellenőrizze a beállításokat és nyitvatartást.",
+  "workshopOperations.result.unauthorized": "Ezt a műhelyt nem kezelheti.",
+  "workshopOperations.result.unavailable": "A műhelyt nem sikerült frissíteni.",
+  "repairLifecycle.eyebrow": "Műhelyműveletek",
+  "repairLifecycle.title": "Javítási folyamat",
+  "repairLifecycle.description": "Kezelje a munkát az átvételtől a diagnózison át az átadásig.",
+  "repairLifecycle.visible": "javítás látható",
+  "repairLifecycle.filter.active": "Aktív javítások",
+  "repairLifecycle.note": "Műhelymegjegyzés (opcionális)",
+  "repairLifecycle.saving": "Mentés…",
+  "repairLifecycle.result.saved": "A javítás frissítve.",
+  "repairLifecycle.result.invalid": "Ez az állapotváltás már nem érvényes.",
+  "repairLifecycle.result.unauthorized": "Ezt a javítást nem kezelheti.",
+  "repairLifecycle.result.unavailable": "A javítás nem frissíthető.",
+  "repairLifecycle.action.check_in": "Jármű átvétele",
+  "repairLifecycle.action.start_diagnosis": "Diagnosztika indítása",
+  "repairLifecycle.action.start_work": "Jóváhagyott munka indítása",
+  "repairLifecycle.action.ready_for_collection": "Átvehetőnek jelölés",
+  "repairLifecycle.action.complete": "Javítás befejezése",
+  "repairLifecycle.action.mark_no_show": "Meg nem jelentként jelölés",
+  "repairLifecycle.diagnosis": "Diagnózis",
+  "repairLifecycle.items": "Árajánlat tételei",
+  "repairLifecycle.addItem": "Tétel hozzáadása",
+  "repairLifecycle.itemType": "Tételtípus",
+  "repairLifecycle.itemDescription": "Leírás",
+  "repairLifecycle.quantity": "Mennyiség",
+  "repairLifecycle.unitPrice": "Egységár",
+  "repairLifecycle.removeItem": "Tétel eltávolítása",
+  "repairLifecycle.currency": "Pénznem",
+  "repairLifecycle.customerNote": "Üzenet az ügyfélnek (opcionális)",
+  "repairLifecycle.sendEstimate": "Árajánlat küldése",
+  "repairLifecycle.estimate": "Árajánlat",
+  "repairLifecycle.estimateStatus.awaiting_customer": "Ügyfélre vár",
+  "repairLifecycle.estimateStatus.approved": "Jóváhagyva",
+  "repairLifecycle.estimateStatus.declined": "Elutasítva",
+  "repairLifecycle.estimateStatus.superseded": "Lecserélve",
+  "repairLifecycle.type.labor": "Munkadíj",
+  "repairLifecycle.type.part": "Alkatrész",
+  "repairLifecycle.type.other": "Egyéb",
+  "repairLifecycle.total": "Összesen",
+  "repairLifecycle.customerDecisionNote": "Ügyfél megjegyzése",
+  "repairLifecycle.appointment": "Időpont",
+  "repairLifecycle.jobDetails": "Munka részletei",
+  "repairLifecycle.nextAction": "Következő művelet",
+  "repairLifecycle.waitingCustomer": "Várakozás az ügyfél döntésére.",
+  "repairLifecycle.noActions": "Ez a javítás lezárult.",
+  "repairLifecycle.emptyTitle": "Nincs megfelelő javítás",
+  "repairLifecycle.emptyDescription": "A visszaigazolt foglalások itt jelennek meg.",
+  "repairLifecycle.customerAction.approve": "Árajánlat jóváhagyása",
+  "repairLifecycle.customerAction.decline": "Árajánlat elutasítása",
+  "repairLifecycle.customerResult.approved": "Az árajánlat jóváhagyva.",
+  "repairLifecycle.customerResult.estimate_declined": "Az árajánlat felülvizsgálatra visszaküldve.",
+  "repairLifecycle.customerResult.invalid": "Ez az árajánlat már nem vár döntésre.",
+  "repairLifecycle.customerResult.unauthorized": "Erről az árajánlatról nem dönthet.",
+  "repairLifecycle.customerResult.unavailable": "Az árajánlat nem frissíthető.",
+  "repairLifecycle.approvedWaiting": "Jóváhagyva — a műhely megkezdheti a munkát.",
+  "workshopBookings.history.checked_in": "Jármű átvéve",
+  "workshopBookings.history.diagnosis_recorded": "Diagnosztika elindítva",
+  "workshopBookings.history.estimate_sent": "Árajánlat elküldve",
+  "workshopBookings.history.estimate_approved": "Árajánlat jóváhagyva",
+  "workshopBookings.history.estimate_declined": "Árajánlat elutasítva",
+  "workshopBookings.history.work_started": "Munka elkezdve",
+  "workshopBookings.history.ready_for_collection": "Átvehető",
+  "workshopBookings.history.completed": "Javítás befejezve",
+  "workshopBookings.history.no_show": "Ügyfél nem jelent meg",
+  "providerBilling.eyebrow": "Szolgáltatói számlázás",
+  "providerBilling.title": "Előfizetés és számlák",
+  "providerBilling.description": "Kezelje a havi 35 eurós előfizetést, a számlázási adatokat, a fizetést és a Stripe-számlákat.",
+  "providerBilling.provider": "Szolgáltató",
+  "providerBilling.checkoutSuccess": "A fizetés befejeződött. A Stripe az aláírt webhookon keresztül erősíti meg az előfizetést.",
+  "providerBilling.checkoutCancelled": "A fizetés megszakadt. Az előfizetés nem változott.",
+  "providerBilling.error": "A számlázási művelet nem hajtható végre.",
+  "providerBilling.plan": "Jelenlegi csomag",
+  "providerBilling.month": "hónap",
+  "providerBilling.smsIncluded": "SMS-sel együtt",
+  "providerBilling.status": "Állapot",
+  "providerBilling.renews": "A jelenlegi időszak vége",
+  "providerBilling.cancelsAtPeriodEnd": "Lemondás az időszak végére ütemezve",
+  "providerBilling.subscribe": "Előfizetés Stripe-pal",
+  "providerBilling.portal": "Számlázás kezelése a Stripe-ban",
+  "providerBilling.notConfigured": "A Stripe-környezet nincs beállítva.",
+  "providerBilling.profileTitle": "Számlázási adatok",
+  "providerBilling.profileDescription": "Ezek az adatok azonosítják a fizető szolgáltatót. A fizetési adatokat a Stripe biztonságosan kezeli.",
+  "providerBilling.billingEmail": "Számlázási e-mail",
+  "providerBilling.billingContact": "Számlázási kapcsolattartó",
+  "providerBilling.taxIdentifier": "Adószám",
+  "providerBilling.addressLine1": "Cím 1. sor",
+  "providerBilling.addressLine2": "Cím 2. sor",
+  "providerBilling.city": "Város",
+  "providerBilling.postalCode": "Irányítószám",
+  "providerBilling.country": "Országkód",
+  "providerBilling.result.saved": "A számlázási adatok mentve.",
+  "providerBilling.result.invalid": "Ellenőrizze a számlázási adatokat.",
+  "providerBilling.result.unauthorized": "Csak aktív tulajdonos kezelheti a számlázást.",
+  "providerBilling.result.configuration": "A Stripe nincs beállítva.",
+  "providerBilling.result.unavailable": "A számlázási adatok nem frissíthetők.",
+  "providerBilling.invoices": "Stripe-számlák",
+  "providerBilling.invoice": "Számla",
+  "providerBilling.period": "Időszak",
+  "providerBilling.amount": "Összeg",
+  "providerBilling.documents": "Dokumentumok",
+  "providerBilling.view": "Megtekintés",
+  "providerBilling.noInvoices": "A Stripe által létrehozott számlák itt jelennek meg.",
+  "providerBilling.subscription.not_started": "Nincs előfizetés",
+  "providerBilling.subscription.incomplete": "Befejezetlen fizetés",
+  "providerBilling.subscription.incomplete_expired": "Lejárt fizetés",
+  "providerBilling.subscription.trialing": "Próbaidőszak",
+  "providerBilling.subscription.active": "Aktív",
+  "providerBilling.subscription.past_due": "Lejárt fizetés",
+  "providerBilling.subscription.canceled": "Lemondva",
+  "providerBilling.subscription.unpaid": "Kifizetetlen",
+  "providerBilling.subscription.paused": "Szüneteltetve",
+  "commercialAdmin.eyebrow": "Kereskedelmi műveletek",
+  "commercialAdmin.title": "Szolgáltatói előfizetések és műveletek",
+  "commercialAdmin.description": "Kövesse a Stripe-előfizetéseket, exportálja a könyvelési adatokat, és kezelje a működési állapotot a fizetéstől elkülönítve.",
+  "commercialAdmin.providers": "Szolgáltatók",
+  "commercialAdmin.activeSubscriptions": "Aktív előfizetések",
+  "commercialAdmin.attention": "Fizetési figyelmeztetés",
+  "commercialAdmin.mrr": "Havi ismétlődő bevétel",
+  "commercialAdmin.provider": "Szolgáltató",
+  "commercialAdmin.providerStatus": "Működési állapot",
+  "commercialAdmin.subscription": "Előfizetés",
+  "commercialAdmin.renewal": "Időszak vége",
+  "commercialAdmin.invoices": "Számlák",
+  "commercialAdmin.operation": "Admin művelet",
+  "commercialAdmin.reason": "Indoklás szükséges",
+  "commercialAdmin.providerStatus.pending": "Függőben",
+  "commercialAdmin.providerStatus.active": "Aktív",
+  "commercialAdmin.providerStatus.suspended": "Felfüggesztve",
+  "commercialAdmin.providerStatus.rejected": "Elutasítva",
+  "commercialAdmin.result.saved": "A szolgáltató állapota frissítve.",
+  "commercialAdmin.result.invalid": "Válasszon másik érvényes állapotot, és adjon meg indokot.",
+  "commercialAdmin.result.unauthorized": "Platformadminisztrátori hozzáférés szükséges.",
+  "commercialAdmin.result.unavailable": "A szolgáltató állapota nem frissíthető.",
+  "serviceCatalogue.vehicleType": "Járműtípus",
+  "serviceCatalogue.vehicleType.car_van": "Személyautó / furgon",
+  "serviceCatalogue.vehicleType.motorcycle_scooter": "Motorkerékpár / benzines robogó",
+  "serviceCatalogue.vehicleType.electric_bicycle": "Elektromos kerékpár",
+  "serviceCatalogue.vehicleType.electric_kick_scooter": "Elektromos roller",
+  "serviceCatalogue.bookingMode": "Foglalási út",
+  "serviceCatalogue.bookingMode.direct": "Közvetlen szolgáltatás",
+  "serviceCatalogue.bookingMode.diagnosis_first": "Először diagnosztika",
+  "serviceCatalogue.bookingMode.diagnosis": "Kezdeti diagnosztika",
+  "serviceCatalogue.diagnosisFeeHelp": "Közzététel előtt adjon meg pozitív diagnosztikai díjat. A díj akkor is fizetendő, ha az ügyfél elutasítja a további javítást.",
+  "serviceCatalogue.setupRequired": "Díj megadása szükséges",
+  "serviceCatalogue.template": "Standard szolgáltatássablon",
+  "serviceCatalogue.template.custom": "Egyéni szolgáltatás",
+  "workshopBookings.calendar.title": "Műhelynaptár",
+  "workshopBookings.calendarStatus.proposed": "Javasolt időpont",
+  "workshopBookings.calendarStatus.rescheduled": "Átütemezve",
+  "workshopBookings.manual.add": "Időpont hozzáadása",
+  "workshopBookings.manual.source": "Foglalás forrása",
+  "workshopBookings.manual.phone": "Ügyfél telefonszáma (opcionális)",
+  "workshopBookings.manual.email": "Ügyfél e-mail-címe (opcionális)",
+  "workshopBookings.manual.registration": "Rendszám",
+  "workshopBookings.manual.make": "Jármű márkája",
+  "workshopBookings.manual.model": "Jármű modellje",
+  "workshopBookings.manual.year": "Gyártási év",
+  "workshopBookings.customerStates": "Az ügyfél elmondása",
+  "workshopBookings.customerStatesHelp": "A tüneteket és tényeket pontosan az ügyfél elmondása szerint rögzítse.",
+  "workshopBookings.manual.create": "Időpont létrehozása",
+  "workshopBookings.manual.result.created": "Az időpont bekerült a naptárba.",
+  "workshopBookings.manual.result.invalid": "Ellenőrizze az időpont, az ügyfél és a jármű adatait.",
+  "workshopBookings.manual.result.unauthorized": "Ehhez a műhelyhez nem adhat hozzá időpontot.",
+  "workshopBookings.manual.result.unavailable": "Az időpont nem hozható létre.",
+  "workshopBookings.source.public_request": "Online kérés",
+  "workshopBookings.source.manager_phone": "Telefonhívás",
+  "workshopBookings.source.manager_walk_in": "Bejelentkezés nélküli ügyfél",
+  "workshopBookings.source.manager_other": "Egyéb műhelybejegyzés",
+  "workshopBookings.history.manager_created": "A műhely hozta létre az időpontot",
+  "automotiveAdmin.console": "Platformüzemeltetés",
+  "automotiveAdmin.navigation": "Autós adminisztráció",
+  "automotiveAdmin.nav.overview": "Áttekintés",
+  "automotiveAdmin.nav.providers": "Szolgáltatók",
+  "automotiveAdmin.nav.workshops": "Műhelyek",
+  "automotiveAdmin.nav.customers": "Ügyfelek",
+  "automotiveAdmin.nav.managers": "Műhelyvezetők",
+  "automotiveAdmin.nav.sms": "SMS-kézbesítés",
+  "automotiveAdmin.nav.security": "Biztonság",
+  "automotiveAdmin.openBookings": "Nyitott foglalások",
+  "automotiveAdmin.smsAttention": "Figyelmet igénylő SMS-ek",
+  "automotiveAdmin.recentProviders": "Legújabb szolgáltatók",
+  "automotiveAdmin.provider": "Szolgáltató",
+  "automotiveAdmin.providers": "Szolgáltatók",
+  "automotiveAdmin.workshop": "Műhely",
+  "automotiveAdmin.workshops": "Műhelyek",
+  "automotiveAdmin.customer": "Ügyfél",
+  "automotiveAdmin.manager": "Műhelyvezető",
+  "automotiveAdmin.managers": "Vezetők",
+  "automotiveAdmin.legalName": "Jogi név",
+  "automotiveAdmin.location": "Helyszín",
+  "automotiveAdmin.phone": "Telefon",
+  "automotiveAdmin.vehicles": "Járművek",
+  "automotiveAdmin.bookings": "Foglalások",
+  "automotiveAdmin.created": "Létrehozva",
+  "automotiveAdmin.smsEvent": "SMS-esemény",
+  "automotiveAdmin.pending": "Függőben",
+  "automotiveAdmin.sent": "Elküldve",
+  "automotiveAdmin.failed": "Sikertelen",
+  "automotiveAdmin.empty": "Ebben a részben nincs adat.",
+  "automotiveAdmin.securityTitle": "Adminisztrátori munkamenet biztonsága",
+  "automotiveAdmin.securityDescription": "Az adminisztrátori hozzáférés aktív fiókot és többtényezős hitelesítést igényel.",
+  "automotiveAdmin.role": "Szerepkör",
+  "automotiveAdmin.session": "Munkamenet-biztonság",
+  "automotiveAdmin.generated": "Pillanatkép ideje",
+  "automotiveAdmin.sms.booking_confirmed": "Foglalás megerősítve",
+  "automotiveAdmin.sms.reminder_24h": "24 órás emlékeztető",
+  "automotiveAdmin.sms.repair_started": "Javítás elkezdődött",
+  "automotiveAdmin.sms.ready_for_pickup": "Átvehető",
+  "automotiveAdmin.sms.review_request": "Értékelési kérés"
 }

@@ -37,61 +37,6 @@
   "a11y.patientPortal": "pitster-Patientenportal",
   "a11y.closePatientProfile": "Patientenprofil schließen",
   "a11y.openPatientProfile": "Profil von {name} öffnen",
-  "patient.nav.profile": "Medizinisches Profil",
-  "patient.nav.share": "Sicher teilen",
-  "patient.nav.access": "Zugriffsverlauf",
-  "patient.identityVerified": "Identität bestätigt",
-  "patient.readOnly": "Patientenansicht · Schreibgeschützt",
-  "patient.clinicianEditMode": "Ärztlicher Bearbeitungsmodus",
-  "patient.dateOfBirth": "Geburtsdatum",
-  "patient.bloodGroup": "Blutgruppe",
-  "patient.sex": "Geschlecht",
-  "patient.organDonor": "Organspende",
-  "patient.allergies": "Allergien",
-  "patient.chronicConditions": "Chronische Erkrankungen",
-  "patient.previousProcedures": "Frühere Eingriffe",
-  "patient.emergencyContact": "Notfallkontakt",
-  "patient.familyDoctor": "Hausarzt",
-  "patient.lastUpdated": "Zuletzt aktualisiert",
-  "patient.emergencyMode": "Notfallmodus",
-  "patient.doctorAccess": "Arztportal",
-  "patient.signedInAsPatient": "Als Patient angemeldet",
-  "patient.critical.title": "Kritische Informationen",
-  "patient.critical.help": "Wesentliche Angaben für die Notfallversorgung",
-  "patient.section.personal": "Persönliche Daten",
-  "patient.section.medications": "Aktuelle Medikation",
-  "patient.section.conditions": "Diagnosen und Anamnese",
-  "patient.section.devices": "Implantate und Medizinprodukte",
-  "patient.section.contacts": "Versorgungskontakte",
-  "patient.action.saveSignedUpdate": "Signierte Änderung speichern",
-  "patient.action.add": "Hinzufügen",
-  "patient.action.editable": "Bearbeitbar",
-  "patient.medications.none": "Keine Medikamente dokumentiert",
-  "patient.implants.none": "Keine Implantate oder Medizinprodukte dokumentiert",
-  "patient.share.title": "Profil teilen",
-  "patient.share.description": "Wählen Sie eine sichere Methode für den zeitlich begrenzten Zugriff durch medizinisches Fachpersonal.",
-  "patient.share.scan": "Zum Anzeigen scannen",
-  "patient.share.qrHelp": "15 Minuten gültig · Nur Lesen",
-  "patient.share.nfc": "Per NFC teilen",
-  "patient.share.nfcHelp": "An ein anderes Gerät halten",
-  "patient.share.email": "Sichere E-Mail senden",
-  "patient.share.emailHelp": "Befristeten Link erstellen",
-  "patient.share.download": "Notfallkarte herunterladen",
-  "patient.share.downloadHelp": "Offline verfügbar · PDF",
-  "patient.share.privacy": "Datenschutzeinstellungen",
-  "patient.share.expiry": "Link-Gültigkeit",
-  "patient.share.minutes": "15 Minuten",
-  "patient.share.noActiveLinks": "Keine aktiven Freigabelinks",
-  "patient.share.revoke": "Alle aktiven Links widerrufen",
-  "patient.share.sensitiveExcluded": "CNP, Versicherungsnummer und Daten der nationalen Gesundheitskarte werden niemals über QR, NFC, E-Mail-Links oder die Notfallkarte geteilt.",
-  "patient.access.title": "Zugriffe auf Ihr Profil",
-  "patient.access.description": "Zu Ihrer Sicherheit wird jeder Zugriff protokolliert.",
-  "patient.access.emptyTitle": "Keine Zugriffe",
-  "patient.access.emptyDescription": "Autorisierte Profilzugriffe werden hier angezeigt.",
-  "patient.modal.title": "Zugang zum Arztportal",
-  "patient.modal.description": "Öffnen Sie den klinischen Arbeitsbereich, um in diesem Prototyp Patientenprofile und Zugriffsanfragen zu prüfen.",
-  "patient.modal.continue": "Zum Arztportal",
-  "patient.modal.note": "Nur Prototyp · Authentifizierung und dauerhafte Speicherung sind noch nicht umgesetzt.",
   "notice.demoSession": "Die Demo-Sitzung bleibt auf diesem Gerät aktiv",
   "notice.recordSaved": "Die medizinische Änderung wurde gespeichert und signiert",
   "notice.nfcReady": "NFC-Freigabe ist bereit — Geräte nah aneinander halten",
@@ -103,116 +48,6 @@
   "notice.noteOpened": "Entwurf der klinischen Notiz wurde geöffnet",
   "notice.profileReviewed": "Das Profil von {name} wurde als geprüft markiert",
   "notice.requestDecision": "Die Anfrage von {name} wurde {decision}",
-  "medical.sex.female": "Weiblich",
-  "medical.sex.male": "Männlich",
-  "medical.relationship.husband": "Ehemann",
-  "medical.relationship.other": "Andere Beziehung",
-  "medical.allergy.penicillin": "Penicillin",
-  "medical.allergy.latex": "Latex",
-  "medical.allergy.ibuprofen": "Ibuprofen",
-  "medical.allergy.noneKnown": "Keine bekannten Allergien",
-  "medical.condition.type2Diabetes": "Diabetes mellitus Typ 2",
-  "medical.condition.hypertension": "Arterielle Hypertonie",
-  "medical.condition.atrialFibrillation": "Vorhofflimmern",
-  "medical.condition.asthma": "Asthma bronchiale",
-  "medical.condition.hyperlipidemia": "Hyperlipidämie",
-  "medical.condition.hypothyroidism": "Hypothyreose",
-  "medical.schedule.twiceDaily": "Zweimal täglich",
-  "medical.schedule.everyMorning": "Jeden Morgen",
-  "medical.schedule.asPrescribed": "Nach ärztlicher Anordnung",
-  "medical.procedure.appendectomy": "Appendektomie",
-  "medical.implant.none": "Keine Implantate oder Medizinprodukte",
-  "medical.specialty.familyMedicine": "Allgemeinmedizin",
-  "doctor.brand.clinical": "Klinik",
-  "doctor.workspace": "Arbeitsbereich",
-  "doctor.primaryCare": "Primärversorgung",
-  "doctor.nav.overview": "Übersicht",
-  "doctor.nav.patients": "Patienten",
-  "doctor.nav.requests": "Zugriffsanfragen",
-  "doctor.nav.activity": "Aktivitätsprotokoll",
-  "doctor.secureSession": "Sichere Sitzung",
-  "doctor.autoLock": "Automatische Sperre in 26 Min.",
-  "doctor.search.placeholder": "Nach Name, pitster-ID oder Diagnose suchen",
-  "doctor.patientPortal": "Patientenportal",
-  "doctor.welcome.date": "{date}",
-  "doctor.welcome.greeting": "Guten Morgen, {name}.",
-  "doctor.welcome.description": "Diese Punkte benötigen heute Ihre Aufmerksamkeit.",
-  "doctor.findPatient": "Patienten suchen",
-  "doctor.metrics.patients": "Patienten in Ihrer Betreuung",
-  "doctor.metrics.activeGrants": "Aktive Freigaben",
-  "doctor.metrics.requests": "Zugriffsanfragen",
-  "doctor.metrics.urgent": "{count} dringend",
-  "doctor.metrics.reviewed": "Geprüfte Akten",
-  "doctor.metrics.last30Days": "Letzte 30 Tage",
-  "doctor.review.title": "Prüfung erforderlich",
-  "doctor.review.description": "Neue Angaben und Akten zur ärztlichen Prüfung",
-  "doctor.viewAll": "Alle anzeigen",
-  "doctor.years": "{count} Jahre",
-  "doctor.review.noneTitle": "Keine Prüfung erforderlich",
-  "doctor.review.noneDescription": "Neue Patientenangaben werden hier angezeigt.",
-  "doctor.requests.previewDescription": "Vom Patienten freigegebener Profilzugriff",
-  "doctor.requests.reviewCount": "{count} Anfragen prüfen",
-  "doctor.recent.title": "Zuletzt aufgerufene Patienten",
-  "doctor.recent.description": "Ihre zuletzt geöffneten Patientenprofile",
-  "doctor.patientDirectory": "Patientenverzeichnis",
-  "doctor.noGrants.title": "Keine Patientenzugriffe",
-  "doctor.noGrants.description": "Genehmigte Zugriffe werden hier angezeigt.",
-  "doctor.directory.eyebrow": "Patientenverzeichnis",
-  "doctor.directory.results": "Ergebnisse für „{query}“",
-  "doctor.directory.title": "Patienten in Ihrer Betreuung",
-  "doctor.directory.description": "Prüfen Sie Profile, die mit Ihrem klinischen Arbeitsbereich geteilt wurden.",
-  "doctor.directory.invite": "Patienten einladen",
-  "doctor.directory.patientCount": "{count} Patienten",
-  "doctor.directory.patientCountOne": "1 Patient",
-  "doctor.directory.needsReview": "Prüfung erforderlich",
-  "doctor.directory.noMatchTitle": "Keine passenden Patienten",
-  "doctor.directory.noMatchDescription": "Suchen Sie nach Name, pitster-ID oder Diagnose.",
-  "doctor.requests.eyebrow": "Sicherer Zugriff",
-  "doctor.requests.title": "Zugriffsanfragen",
-  "doctor.requests.description": "Prüfen Sie vom Patienten freigegebene Anfragen, bevor Sie ein medizinisches Profil öffnen.",
-  "doctor.requests.received": "Eingegangen {time} · Identität bestätigt",
-  "doctor.requests.decline": "Ablehnen",
-  "doctor.requests.approve": "Zugriff genehmigen",
-  "doctor.requests.emptyTitle": "Keine offenen Anfragen",
-  "doctor.requests.emptyDescription": "Neue Zugriffsanfragen werden hier angezeigt.",
-  "doctor.activity.eyebrow": "Auditprotokoll",
-  "doctor.activity.title": "Klinische Aktivitäten",
-  "doctor.activity.description": "Jeder Profilzugriff und jede signierte Aktion wird protokolliert.",
-  "doctor.activity.export": "Protokoll exportieren",
-  "doctor.activity.emptyTitle": "Keine klinischen Aktivitäten",
-  "doctor.activity.emptyDescription": "Autorisierte Aktionen werden hier angezeigt.",
-  "doctor.table.patient": "Patient",
-  "doctor.table.conditions": "Diagnosen",
-  "doctor.table.lastReviewed": "Zuletzt geprüft",
-  "doctor.table.status": "Status",
-  "doctor.status.upToDate": "Aktuell",
-  "doctor.status.reviewDue": "Prüfung fällig",
-  "doctor.status.newUpdate": "Neue Angaben",
-  "doctor.access.authorized": "Autorisierter Zugriff",
-  "doctor.access.familyCareTeam": "Hausärztliches Behandlungsteam",
-  "doctor.access.temporary": "Befristeter Zugriff · noch {days} Tage",
-  "doctor.allergyAlert": "Allergiehinweis",
-  "doctor.currentMedications": "Aktuelle Medikation",
-  "doctor.lastClinicalReview": "Letzte klinische Prüfung",
-  "doctor.addClinicalNote": "Klinische Notiz hinzufügen",
-  "doctor.markReviewed": "Als geprüft markieren",
-  "doctor.auditNote": "Prototyp-Aktivitäten werden nur während dieser Browsersitzung gespeichert.",
-  "doctor.reason.medicationReconciliation": "Medikamentenabgleich",
-  "doctor.reason.newPatientConsultation": "Erstvorstellung",
-  "doctor.reason.followUpCare": "Verlaufskontrolle",
-  "doctor.activity.reviewedUpdate": "Vom Patienten eingereichte Profiländerung geprüft",
-  "doctor.activity.requestReceived": "Zugriffsanfrage eingegangen",
-  "doctor.activity.openedProfile": "Medizinisches Profil zur Konsultation geöffnet",
-  "doctor.activity.signedMedicationUpdate": "Medikationsänderung signiert",
-  "doctor.activity.type.clinicalReview": "Klinische Prüfung",
-  "doctor.activity.type.access": "Zugriff",
-  "doctor.activity.type.profileView": "Profilansicht",
-  "doctor.activity.type.signedUpdate": "Signierte Änderung",
-  "doctor.time.today": "Heute",
-  "doctor.time.yesterday": "Gestern",
-  "patient.access.context.clinicQr": "Bucharest Family Clinic · QR-Zugriff",
-  "patient.access.context.clinicianNfc": "Verifizierte medizinische Fachkraft · NFC-Zugriff",
-  "patient.access.context.personalSession": "Persönliches Gerät · Sichere Sitzung",
   "auth.login.title": "Anmeldung zum klinischen Portal",
   "auth.login.description": "Verwenden Sie Ihr administrativ eingerichtetes Arztkonto.",
   "auth.login.email": "E-Mail-Adresse",
@@ -238,75 +73,6 @@
   "auth.returnPatient": "Zum Patientenportal zurückkehren",
   "notice.accessDenied": "Zugriff verweigert. Das medizinische Profil wurde nicht geöffnet.",
   "notice.serviceUnavailable": "Der Dienst ist vorübergehend nicht verfügbar. Es wurde nichts geändert. Versuchen Sie es manuell erneut.",
-  "doctor.conditionNote.label": "Klinische Verlaufsnotiz",
-  "doctor.conditionNote.help": "Nur dieses Notizfeld wird aktualisiert und revisionssicher protokolliert.",
-  "doctor.conditionNote.save": "Signierte Notiz speichern",
-  "doctor.conditionNote.saving": "Wird gespeichert…",
-  "doctor.conditionNote.saved": "Die klinische Notiz wurde gespeichert und protokolliert.",
-  "doctor.conditionNote.error": "Die Notiz konnte nicht gespeichert werden.",
-  "doctor.conditionNote.unauthorized": "Die Notiz wurde nicht gespeichert, weil keine Bearbeitungsberechtigung besteht.",
-  "doctor.conditionNote.unavailable": "Die Notiz wurde nicht gespeichert, weil der Dienst vorübergehend nicht verfügbar ist. Versuchen Sie es manuell erneut.",
-  "doctor.health.identity.title": "Identität der Gesundheitskarte",
-  "doctor.health.familyName": "Familienname",
-  "doctor.health.givenNames": "Vornamen",
-  "doctor.health.insurance.title": "Versicherungsprüfung",
-  "doctor.health.insurance.status": "Versicherungsstatus",
-  "doctor.health.insurance.status.unknown": "Unbekannt",
-  "doctor.health.insurance.status.insured": "Versichert",
-  "doctor.health.insurance.status.uninsured": "Nicht versichert",
-  "doctor.health.insurance.status.verification_pending": "Prüfung ausstehend",
-  "doctor.health.insurance.source": "Prüfquelle",
-  "doctor.health.insurance.source.not_verified": "Nicht geprüft",
-  "doctor.health.insurance.source.cnas_manual_check": "Manuelle CNAS-Prüfung durch den Arzt",
-  "doctor.health.insurance.source.health_card": "Nationale Gesundheitskarte",
-  "doctor.health.insurance.source.supporting_document": "Nachweisdokument",
-  "doctor.health.insurance.source.clinician_attestation": "Ärztliche Bestätigung",
-  "doctor.health.insurance.house": "Versicherungskasse / CAS",
-  "doctor.health.insurance.houseCode": "CAS-Code",
-  "doctor.health.insurance.houseName": "Name der Versicherungskasse",
-  "doctor.health.verifiedAt": "Geprüft am",
-  "doctor.health.lifeThreatening.title": "Lebensbedrohliche Diagnosen",
-  "doctor.health.lifeThreatening.none": "Es ist keine lebensbedrohliche Diagnose erfasst.",
-  "doctor.health.codeSystem.icd10": "ICD-10",
-  "doctor.health.codeSystem.snomed_ct": "SNOMED CT",
-  "doctor.health.codeSystem.other": "Anderes Kodiersystem",
-  "doctor.health.verifiedBy": "Geprüft von {name} ({code}) am {date}",
-  "doctor.health.familyDoctor.title": "Hausarzt",
-  "doctor.health.familyDoctor.name": "Name",
-  "doctor.health.familyDoctor.code": "Berufscode",
-  "doctor.health.familyDoctor.telephone": "Telefon",
-  "doctor.health.emergencyContacts.title": "Notfallkontakte",
-  "doctor.health.emergencyContacts.number": "Kontakt {number}",
-  "doctor.health.profileVerification.title": "Ärztlich bestätigtes Profil",
-  "doctor.health.sensitive.title": "Sensible Identifikatoren",
-  "doctor.health.sensitive.description": "Geschützte Identifikatoren sind standardmäßig maskiert. Das Anzeigen erfordert eine aktuelle Bearbeitungsberechtigung und erzeugt einen Audit-Eintrag.",
-  "doctor.health.sensitive.cnp": "CNP",
-  "doctor.health.sensitive.insuranceNumber": "Versicherungsnummer",
-  "doctor.health.sensitive.cardNumber": "Nummer der nationalen Gesundheitskarte",
-  "doctor.health.sensitive.cardExpires": "Ablauf der Gesundheitskarte",
-  "doctor.health.sensitive.reveal": "Sensible Identifikatoren anzeigen",
-  "doctor.health.sensitive.hide": "Angezeigte Werte ausblenden und verwerfen",
-  "doctor.health.sensitive.loading": "Autorisierung läuft…",
-  "doctor.health.sensitive.unauthorized": "Die aktuelle Berechtigung erlaubt keinen Zugriff auf diese Identifikatoren.",
-  "doctor.health.sensitive.unavailable": "Sensible Identifikatoren sind vorübergehend nicht verfügbar. Versuchen Sie es manuell erneut.",
-  "doctor.health.form.profileTitle": "Gesundheitskartenangaben aktualisieren",
-  "doctor.health.form.save": "Geprüfte Angaben speichern",
-  "doctor.health.form.saving": "Wird gespeichert…",
-  "doctor.health.form.saved": "Die geprüften Angaben wurden gespeichert und protokolliert.",
-  "doctor.health.form.invalid": "Prüfen Sie die Felder und die Konsistenz der Verifizierungsangaben.",
-  "doctor.health.form.duplicate": "Eine aktive Diagnose mit diesem Kodiersystem und Code ist bereits vorhanden.",
-  "doctor.health.form.unauthorized": "Die aktuelle Berechtigung erlaubt diese Änderung nicht.",
-  "doctor.health.form.unavailable": "Der Aktualisierungsdienst ist vorübergehend nicht verfügbar. Versuchen Sie es manuell erneut.",
-  "doctor.health.diagnosis.name": "Diagnose",
-  "doctor.health.diagnosis.codeSystem": "Kodiersystem",
-  "doctor.health.diagnosis.code": "Diagnosecode",
-  "doctor.health.diagnosis.otherSystem": "Name des anderen Kodiersystems",
-  "doctor.health.diagnosis.add": "Lebensbedrohliche Diagnose hinzufügen",
-  "doctor.health.diagnosis.deactivate": "Diagnose deaktivieren",
-  "doctor.health.diagnosis.deactivateConfirmation": "Ich bestätige, dass diese Diagnose aus der aktiven Warnliste entfernt werden soll.",
-  "doctor.health.diagnosis.reactivate": "Diagnose reaktivieren",
-  "doctor.health.diagnosis.historyTitle": "Verlauf inaktiver Diagnosen",
-  "doctor.health.diagnosis.historyDescription": "Inaktive Diagnosen erscheinen nicht in der aktiven klinischen Warnliste und können hier geprüft oder reaktiviert werden.",
   "admin.access.configuration.title": "Administration ist nicht konfiguriert",
   "admin.access.configuration.description": "Fügen Sie die öffentlichen Supabase-Projekteinstellungen zur lokalen Umgebung hinzu, bevor Sie die Administrationskonsole verwenden.",
   "admin.access.unauthorized.title": "Administrationszugriff verweigert",
@@ -360,56 +126,6 @@
   "register.setPassword.status.unavailable": "Das Passwort konnte vorübergehend nicht gespeichert werden. Versuchen Sie es manuell erneut.",
   "register.setPassword.requestNewLink": "Kehren Sie zur Registrierung zurück, um eine neue Bestätigungs-E-Mail anzufordern.",
   "register.setPassword.back": "Zurück zur Registrierung",
-  "organization.clinic_manager.loginTitle": "Anmeldung für Klinikmanager",
-  "organization.clinic_manager.loginDescription": "Verwalten Sie Ihre genehmigte Klinikorganisation und gesponserten Ärzte.",
-  "organization.staff.loginTitle": "Mitarbeiteranmeldung",
-  "organization.staff.loginDescription": "Öffnen Sie den Terminbereich für Ihre zugewiesenen Ärzte.",
-  "organization.clinic_manager.eyebrow": "Klinikverwaltung",
-  "organization.staff.eyebrow": "Ärztlich zugewiesene Mitarbeitende",
-  "organization.clinic_manager.securityNote": "Die Klinikverwaltung gewährt niemals Zugriff auf medizinische Patientenprofile.",
-  "organization.staff.securityNote": "Mitarbeiterzugriff ist auf Termine zugewiesener Ärzte beschränkt und umfasst keine medizinischen Profile.",
-  "organization.welcome": "Willkommen, {name}",
-  "organization.membershipRole": "Mitgliedschaftsrolle",
-  "organization.billingStatus": "Rechnungsdaten",
-  "organization.doctors": "Gesponserte und angeschlossene Ärzte",
-  "organization.doctorsEmpty": "Dieser Klinik sind noch keine Ärzte zugeordnet.",
-  "organization.clinicsEmpty": "Keine aktive Klinikmitgliedschaft verfügbar.",
-  "organization.assignmentsEmpty": "Derzeit ist keine Arztzuweisung aktiv.",
-  "organization.status.pending": "Genehmigung ausstehend",
-  "organization.status.active": "Aktiv",
-  "organization.status.suspended": "Gesperrt",
-  "organization.status.rejected": "Abgelehnt",
-  "organization.role.owner": "Inhaber",
-  "organization.role.manager": "Manager",
-  "organization.billing.incomplete": "Unvollständig",
-  "organization.billing.active": "Aktiv",
-  "organization.billing.suspended": "Gesperrt",
-  "organization.membership.invited": "Eingeladen",
-  "organization.membership.active": "Aktiv",
-  "organization.membership.suspended": "Gesperrt",
-  "organization.membership.ended": "Beendet",
-  "organization.access.configuration": "Der Organisationsdienst ist nicht konfiguriert.",
-  "organization.access.unavailable": "Der Organisationsdienst ist vorübergehend nicht verfügbar. Ihr Kontostatus wurde nicht geändert.",
-  "organization.access.unauthorized": "Dieses Konto ist für dieses Portal nicht autorisiert.",
-  "organization.access.pending": "Ihr Konto oder Ihre Organisation wartet auf Genehmigung.",
-  "organization.access.suspended": "Dieser Organisationszugriff ist gesperrt.",
-  "organization.access.rejected": "Diese Organisationsregistrierung wurde nicht genehmigt.",
-  "organization.staffManagement.title": "Mitarbeitereinladungen und Zuweisungen",
-  "organization.invite.email": "Einladungs-E-Mail",
-  "organization.invite.clinic_doctor": "Arzteinladung erstellen",
-  "organization.invite.doctor_staff": "Mitarbeitereinladung erstellen",
-  "organization.invite.creating": "Einladung wird erstellt…",
-  "organization.invite.status.created": "Die Einladung wurde erstellt und per E-Mail an den vorgesehenen Empfänger gesendet.",
-  "organization.invite.status.created_email_failed": "Die Einladung wurde erstellt, aber die E-Mail konnte nicht gesendet werden. Kopieren und senden Sie den geschützten Link manuell.",
-  "organization.invite.status.invalid": "Prüfen Sie E-Mail-Adresse und Einladungsangaben.",
-  "organization.invite.status.duplicate": "Für diese E-Mail-Adresse besteht bereits eine ausstehende Einladung.",
-  "organization.invite.status.unauthorized": "Die aktuelle Berechtigung erlaubt diese Einladung nicht.",
-  "organization.invite.status.unavailable": "Einladungen sind vorübergehend nicht verfügbar. Versuchen Sie es manuell erneut.",
-  "organization.membership.action.active": "Reaktivieren",
-  "organization.membership.action.suspended": "Sperren",
-  "organization.membership.result.invalid": "Die angeforderte Mitgliedschaftsänderung ist ungültig.",
-  "organization.membership.result.unauthorized": "Sie dürfen diese Mitgliedschaft nicht ändern.",
-  "organization.membership.result.unavailable": "Mitgliedschaftsänderungen sind vorübergehend nicht verfügbar.",
   "invoicing.eyebrow": "Abrechnungsprofil",
   "invoicing.title": "Rechnungsdaten",
   "invoicing.description": "Diese Angaben identifizieren den rechtlichen Zahler. Abgeschlossene Abrechnungszeiträume behalten ihren historischen Datenstand.",
@@ -455,165 +171,10 @@
   "admin.mfa.challenge.title": "Zweiten Faktor bestätigen",
   "admin.mfa.challenge.description": "Geben Sie den aktuellen Code aus Ihrer Authenticator-App ein.",
   "admin.mfa.challenge.verify": "Identität bestätigen",
-  "admin.brand.console": "Sichere Administrationskonsole",
-  "admin.nav.label": "Administrationsbereiche",
-  "admin.nav.users": "Benutzer",
-  "admin.nav.doctors": "Ärzte",
-  "admin.nav.patients": "Patienten",
-  "admin.nav.grants": "Zugriffsfreigaben",
-  "admin.nav.audit": "Auditverlauf",
-  "admin.role.superadmin": "Superadmin",
-  "admin.security.session": "Sitzungssicherheit",
-  "admin.security.aal2": "MFA bestätigt",
-  "admin.dashboard.eyebrow": "Systemverwaltung",
-  "admin.dashboard.generated": "Aktualisiert",
-  "admin.section.users.title": "Administrationsbenutzer",
-  "admin.section.users.description": "Administratorrollen und Kontostatus prüfen.",
-  "admin.section.doctors.title": "Ärzte",
-  "admin.section.doctors.description": "Identität und Verifizierungsstatus der Ärzte prüfen.",
-  "admin.section.patients.title": "Patienten",
-  "admin.section.patients.description": "Patientenakten und Archivierungsstatus prüfen.",
-  "admin.section.grants.title": "Zugriffsfreigaben",
-  "admin.section.grants.description": "Berechtigungen, Status und Umfang ärztlicher Zugriffe prüfen.",
-  "admin.section.audit.title": "Auditverlauf",
-  "admin.section.audit.description": "Den unveränderlichen Verlauf von Sicherheits- und Administrationsereignissen lesen.",
-  "admin.table.name": "Name",
-  "admin.table.role": "Rolle",
-  "admin.table.status": "Status",
-  "admin.table.created": "Erstellt",
-  "admin.table.specialty": "Fachgebiet",
-  "admin.table.clinic": "Klinik",
-  "admin.table.vitapassId": "pitster-ID",
-  "admin.table.patient": "Patient",
-  "admin.table.doctor": "Arzt",
-  "admin.table.permissions": "Berechtigungen",
-  "admin.table.time": "Zeit",
-  "admin.table.action": "Aktion",
-  "admin.table.resource": "Ressource",
-  "admin.empty.users": "Keine Administrationsbenutzer sichtbar.",
-  "admin.empty.doctors": "Keine Ärzte sichtbar.",
-  "admin.empty.patients": "Keine Patienten sichtbar.",
-  "admin.empty.grants": "Keine Zugriffsfreigaben sichtbar.",
-  "admin.empty.audit": "Keine Auditereignisse sichtbar.",
-  "admin.status.archived": "Archiviert",
-  "admin.status.current": "Aktuell",
-  "admin.permission.view": "Ansehen",
-  "admin.permission.edit": "Bearbeiten",
   "admin.access.securityError.title": "Sicherheitsprüfung nicht verfügbar",
   "admin.access.securityError.description": "pitster konnte den MFA-Sicherheitsstatus nicht prüfen. Es wurden keine Administrationsdaten geöffnet. Melden Sie sich ab und versuchen Sie es später erneut.",
   "admin.access.unavailable.title": "Verwaltung vorübergehend nicht verfügbar",
   "admin.access.unavailable.description": "pitster konnte den Verwaltungszugriff nicht laden, weil der Dienst nicht geantwortet hat. Ihr Kontostatus wurde nicht geändert. Versuchen Sie es manuell erneut.",
-  "admin.role.admin": "Administrator",
-  "admin.status.active": "Aktiv",
-  "admin.status.suspended": "Gesperrt",
-  "admin.status.pending": "Ausstehend",
-  "admin.status.approved": "Genehmigt",
-  "admin.status.rejected": "Abgelehnt",
-  "admin.status.revoked": "Widerrufen",
-  "admin.status.expired": "Abgelaufen",
-  "admin.value.unknown": "Unbekannt",
-  "admin.audit.action.signIn": "Angemeldet",
-  "admin.audit.action.signOut": "Abgemeldet",
-  "admin.audit.action.accessDenied": "Zugriff verweigert",
-  "admin.audit.action.patientProfileViewed": "Patientenprofil angesehen",
-  "admin.audit.action.patientProfileUpdated": "Patientenprofil aktualisiert",
-  "admin.audit.action.accessGrantCreated": "Zugriffsfreigabe erstellt",
-  "admin.audit.action.accessGrantApproved": "Zugriffsfreigabe genehmigt",
-  "admin.audit.action.accessGrantRevoked": "Zugriffsfreigabe widerrufen",
-  "admin.audit.action.accessGrantUpdated": "Zugriffsfreigabe aktualisiert",
-  "admin.audit.action.administratorCreated": "Administrator erstellt",
-  "admin.audit.action.administratorUpdated": "Administrator aktualisiert",
-  "admin.audit.action.administratorSuspended": "Administrator gesperrt",
-  "admin.audit.action.clinicianCreated": "Arzt erstellt",
-  "admin.audit.action.clinicianUpdated": "Arzt aktualisiert",
-  "admin.audit.action.clinicianApproved": "Arzt genehmigt",
-  "admin.audit.action.clinicianSuspended": "Arzt gesperrt",
-  "admin.audit.action.patientCreated": "Patient erstellt",
-  "admin.audit.action.patientUpdated": "Patient aktualisiert",
-  "admin.audit.action.patientArchived": "Patient archiviert",
-  "admin.audit.action.medicalRecordCreated": "Medizinischer Eintrag erstellt",
-  "admin.audit.action.medicalRecordUpdated": "Medizinischer Eintrag aktualisiert",
-  "admin.audit.action.sensitiveIdentifiersViewed": "Sensible Identifikatoren angezeigt",
-  "admin.audit.action.sensitiveIdentifiersUpdated": "Sensible Identifikatoren aktualisiert",
-  "admin.audit.resource.authSession": "Authentifizierungssitzung",
-  "admin.audit.resource.patientProfile": "Patientenprofil",
-  "admin.audit.resource.accessGrant": "Zugriffsfreigabe",
-  "admin.audit.resource.chronicCondition": "Chronische Erkrankung",
-  "admin.audit.resource.administrators": "Administratoren",
-  "admin.audit.resource.clinicians": "Ärzte",
-  "admin.audit.resource.patients": "Patienten",
-  "admin.audit.resource.allergies": "Allergien",
-  "admin.audit.resource.medications": "Medikamente",
-  "admin.audit.resource.chronicConditions": "Chronische Erkrankungen",
-  "admin.audit.resource.surgeries": "Operationen",
-  "admin.audit.resource.implants": "Implantate und Geräte",
-  "admin.audit.resource.emergencyContacts": "Notfallkontakte",
-  "admin.audit.resource.accessGrants": "Zugriffsfreigaben",
-  "admin.audit.resource.sensitiveIdentifiers": "Sensible Identifikatoren",
-  "admin.audit.resource.lifeThreateningDiagnoses": "Lebensbedrohliche Diagnosen",
-  "admin.audit.resource.healthCardProfile": "Gesundheitskartenprofil",
-  "appointments.eyebrow": "Terminplanung",
-  "appointments.title": "Termine",
-  "appointments.description": "Ärzte und zugewiesene Mitarbeitende können Termine anlegen, bestätigen und verwalten. Bei Bestätigung wird eine SMS gesendet; 24 Stunden vorher folgt eine Erinnerung.",
-  "appointments.staffScope": "Sie haben dieselben Termininformationen und Aktionen wie jeder Ihnen zugewiesene Arzt. Der Zugriff ist auf Ihre aktiven Arztzuweisungen beschränkt.",
-  "appointments.back": "Zurück zum Portal",
-  "appointments.doctor": "Arzt",
-  "appointments.patientName": "Patientenname",
-  "appointments.patientPhone": "Mobilnummer des Patienten",
-  "appointments.patientEmail": "E-Mail des Patienten",
-  "appointments.source": "Buchungsquelle",
-  "appointments.source.phone": "Telefon",
-  "appointments.source.walk_in": "Ohne Termin",
-  "appointments.source.online": "Online",
-  "appointments.source.email": "E-Mail",
-  "appointments.source.other": "Andere",
-  "appointments.start": "Beginn",
-  "appointments.end": "Ende",
-  "appointments.date": "Datum",
-  "appointments.slot": "Verfügbarer Termin",
-  "appointments.chooseSlot": "Uhrzeit auswählen",
-  "appointments.noSlots": "Keine freien Termine an diesem Tag",
-  "appointments.initialStatus": "Anfangsstatus",
-  "appointments.note": "Organisatorische Notiz (keine medizinischen Daten)",
-  "appointments.create": "Termin anlegen",
-  "appointments.saving": "Wird gespeichert…",
-  "appointments.apply": "Übernehmen",
-  "appointments.list": "Geplante Termine",
-  "appointments.empty": "Keine Termine erfasst.",
-  "appointments.status.pending": "Ausstehend",
-  "appointments.status.confirmed": "Bestätigt",
-  "appointments.status.rescheduled": "Verschoben",
-  "appointments.status.cancelled": "Abgesagt",
-  "appointments.status.completed": "Abgeschlossen",
-  "appointments.status.no_show": "Nicht erschienen",
-  "appointments.feedback.saved": "Termin gespeichert.",
-  "appointments.feedback.saved_sms_pending": "Termin gespeichert. SMS-Versand steht aus; prüfen Sie die SMSLink-Konfiguration.",
-  "appointments.feedback.saved_email_pending": "Termin gespeichert, aber die E-Mail konnte nicht gesendet werden. Prüfen Sie die MXroute-Konfiguration.",
-  "appointments.feedback.saved_notifications_pending": "Termin gespeichert, aber E-Mail- und SMS-Versand stehen noch aus.",
-  "appointments.feedback.invalid": "Prüfen Sie die Termindaten.",
-  "appointments.feedback.conflict": "Dieser Arzt hat zu dieser Zeit bereits einen bestätigten Termin.",
-  "appointments.feedback.unauthorized": "Sie dürfen die Termine dieses Arztes nicht verwalten.",
-  "appointments.feedback.unavailable": "Der Termindienst ist vorübergehend nicht verfügbar.",
-  "availability.eyebrow": "Arbeitsplan",
-  "availability.title": "Verfügbarkeit",
-  "availability.description": "Legen Sie Ihre wöchentlichen Arbeitszeiten und Termine von 15, 30 oder 45 Minuten fest. Zugewiesene Mitarbeiter können nur diese Termine buchen.",
-  "availability.active": "Verfügbar",
-  "availability.start": "Beginn",
-  "availability.end": "Ende",
-  "availability.duration": "Termindauer",
-  "availability.minutes": "Minuten",
-  "availability.save": "Tag speichern",
-  "availability.feedback.saved": "Verfügbarkeit gespeichert.",
-  "availability.feedback.invalid": "Prüfen Sie Arbeitszeiten und Termindauer.",
-  "availability.feedback.unauthorized": "Nur der Arzt kann die Verfügbarkeit ändern.",
-  "availability.feedback.unavailable": "Die Verfügbarkeit ist vorübergehend nicht erreichbar.",
-  "availability.day.sunday": "Sonntag",
-  "availability.day.monday": "Montag",
-  "availability.day.tuesday": "Dienstag",
-  "availability.day.wednesday": "Mittwoch",
-  "availability.day.thursday": "Donnerstag",
-  "availability.day.friday": "Freitag",
-  "availability.day.saturday": "Samstag",
   "calendar.title": "Terminkalender",
   "calendar.previous": "Vorheriger Zeitraum",
   "calendar.next": "Nächster Zeitraum",
@@ -631,12 +192,6 @@
   "calendar.selectAppointment": "Wählen Sie einen Termin aus, um die Zusammenfassung und verfügbare Aktionen anzuzeigen.",
   "calendar.closeDetails": "Terminzusammenfassung schließen",
   "calendar.duration": "Dauer",
-  "appointments.requestedOnline": "Online-Anfrage",
-  "appointments.decline": "Ablehnen",
-  "appointments.confirm": "Termin bestätigen",
-  "appointments.requestQueue": "Terminanfragen",
-  "appointments.requestQueueHelp": "Prüfen Sie Patientenanfragen, bevor sie als bestätigte Termine erscheinen.",
-  "appointments.noPendingRequests": "Es warten keine Terminanfragen.",
   "home.doctors": "Ärzte",
   "home.specialties": "Fachrichtungen",
   "home.myAppointments": "Meine Termine",
@@ -784,693 +339,429 @@
   "booking.managementFeedback.invalid": "Prüfen Sie die Auswahl und Bestätigung.",
   "booking.managementFeedback.conflict": "Dieser Termin ist nicht mehr verfügbar. Wählen Sie eine andere Zeit.",
   "booking.managementFeedback.unavailable": "Die Terminverwaltung ist vorübergehend nicht verfügbar. Versuchen Sie es später erneut.",
-  "appointments.changeQueue": "Stornierungs- und Terminänderungsanfragen",
-  "appointments.changeQueueHelp": "Prüfen Sie Patientenanfragen. Der Termin ändert sich erst nach Ihrer Genehmigung.",
-  "appointments.noPendingChanges": "Keine Stornierungs- oder Terminänderungsanfragen warten.",
-  "appointments.change.cancel": "Stornierungsanfrage",
-  "appointments.change.reschedule": "Terminänderungsanfrage",
-  "appointments.currentTime": "Aktueller Termin",
-  "appointments.requestedTime": "Gewünschter Termin",
-  "appointments.approve": "Anfrage genehmigen",
-  "appointments.quickAdd": "Telefon und Laufkundschaft",
-  "appointments.quickAddTitle": "Termin für einen Patienten hinzufügen",
-  "appointments.quickAddHelp": "Verwenden Sie dieses Formular bei Anfragen per Telefon, E-Mail oder direkt in der Praxis.",
-  "appointments.chooseAction": "Terminaktion",
-  "appointments.saveAction": "Terminaktion speichern",
-  "patientAppointments.eyebrow": "Ihr Behandlungsplan",
-  "patientAppointments.title": "Meine Termine",
-  "patientAppointments.welcome": "Willkommen, {name}. Gast- und Kontobuchungen werden hier gemeinsam angezeigt.",
-  "patientAppointments.bookNew": "Neuen Termin buchen",
-  "patientAppointments.medicalFolder": "Medizinische Akte",
-  "patientAppointments.signOut": "Abmelden",
-  "patientAppointments.upcoming": "Bevorstehend",
-  "patientAppointments.history": "Frühere Termine",
-  "patientAppointments.noneUpcoming": "Keine bevorstehenden Termine.",
-  "patientAppointments.empty": "Noch keine Termine",
-  "patientAppointments.emptyHelp": "Buchungen mit Ihrer bestätigten E-Mail-Adresse erscheinen hier automatisch.",
-  "patientAppointments.unavailable": "Ihre Termine sind vorübergehend nicht verfügbar.",
-  "patientAppointments.feedback.saved": "Ihre Anfrage wurde gespeichert. Die Praxis wird sie prüfen.",
-  "patientAppointments.feedback.invalid": "Prüfen Sie die Auswahl und Bestätigung.",
-  "patientAppointments.feedback.conflict": "Dieser Termin ist nicht mehr verfügbar. Wählen Sie einen anderen.",
-  "patientAppointments.feedback.unauthorized": "Dieser Termin gehört nicht zu Ihrem Patientenkonto.",
-  "patientAppointments.feedback.unavailable": "Die Terminverwaltung ist vorübergehend nicht verfügbar.",
-  "patientAppointments.login.title": "Patientenanmeldung",
-  "patientAppointments.login.description": "Öffnen Sie Ihre medizinische Akte und verwalten Sie alle mit Ihrer bestätigten E-Mail verknüpften Termine.",
-  "patientAppointments.login.configuration": "Die Patientenanmeldung ist nicht konfiguriert.",
-  "patientAppointments.login.invalid_credentials": "E-Mail-Adresse oder Passwort ist falsch, oder dies ist kein Patientenkonto.",
-  "patientAppointments.login.rate_limited": "Zu viele Anmeldeversuche. Warten Sie kurz und versuchen Sie es erneut.",
-  "patientAppointments.login.unavailable": "Die Patientenanmeldung ist vorübergehend nicht verfügbar.",
-  "patientAppointments.login.noAccount": "Neu auf der Plattform?",
-  "staffPatients.title": "Medizinische Profile",
-  "staffPatients.readOnly": "Der Lesezugriff ist auf Patienten beschränkt, die Ihren zugewiesenen Ärzten freigegeben wurden. Geschützte Identifikatoren bleiben verborgen und jedes geöffnete Profil wird protokolliert.",
-  "staffPatients.empty": "Keine freigegebenen Patientenprofile verfügbar.",
-  "doctorProfile.appointmentHint": "Wählen Sie online einen passenden Termin",
-  "doctorProfile.book": "Verfügbarkeit prüfen",
-  "doctorProfile.about": "Über die Ärztin / den Arzt",
-  "doctorProfile.aboutEmpty": "Berufliche Informationen werden bald ergänzt.",
-  "doctorProfile.practice": "Praxisinformationen",
-  "doctorProfile.clinic": "Klinik",
-  "doctorProfile.address": "Adresse",
-  "doctorProfile.phone": "Telefon",
-  "doctorProfile.email": "E-Mail",
-  "doctorProfile.experience": "Erfahrung",
-  "doctorProfile.years": "Jahre",
-  "doctorProfile.languages": "Sprachen",
-  "workspace.settings": "Profil- und Arbeitsbereichseinstellungen",
   "workspace.back": "Zurück",
-  "workspace.eyebrow": "Profil und Arbeitsbereich",
-  "workspace.doctorTitle": "Arzteinstellungen",
-  "workspace.doctorDescription": "Halten Sie Ihr öffentliches Berufsprofil und Ihre Praxisdaten aktuell.",
-  "workspace.profileTitle": "Berufsprofil",
-  "workspace.profileHelp": "Diese Angaben erscheinen auf Ihrer eigenen Arztseite.",
-  "workspace.bio": "Berufliche Vorstellung",
-  "workspace.phone": "Öffentliche Telefonnummer",
-  "workspace.email": "Öffentliche E-Mail",
-  "workspace.experience": "Berufsjahre",
-  "workspace.languages": "Sprachen, durch Kommas getrennt",
-  "workspace.acceptsPatients": "Nimmt neue Patienten auf",
-  "workspace.clinicTitle": "Klinik / Arbeitsbereich",
-  "workspace.managedClinic": "Von Ihrer Klinik verwaltet",
-  "workspace.managedClinicHelp": "Ihre Klinikleitung verwaltet diese Daten und übernimmt Ihre pitster-Kosten.",
-  "workspace.clinicName": "Anzeigename",
-  "workspace.legalName": "Rechtlicher Name",
-  "workspace.description": "Klinikbeschreibung",
-  "workspace.country": "Ländercode",
-  "workspace.city": "Ort",
-  "workspace.address": "Adresse",
-  "workspace.latitude": "Breitengrad",
-  "workspace.longitude": "Längengrad",
-  "workspace.clinicsTitle": "Klinikeinstellungen",
-  "workspace.clinicsDescription": "Fügen Sie Klinikstandorte hinzu und verwalten Sie sie; laden Sie Ärzte über die passende Klinikkarte ein.",
-  "workspace.addClinic": "Weitere Klinik hinzufügen",
-  "workspace.createClinic": "Klinik erstellen",
   "workspace.save": "Änderungen speichern",
   "workspace.saving": "Wird gespeichert…",
-  "workspace.status.saved": "Änderungen gespeichert.",
-  "workspace.status.created": "Klinik erstellt.",
-  "workspace.status.invalid": "Überprüfen Sie die Angaben.",
-  "workspace.status.unauthorized": "Sie haben keine Berechtigung für diesen Arbeitsbereich.",
-  "workspace.status.unavailable": "Der Arbeitsbereich ist vorübergehend nicht verfügbar.",
-  "billing.details": "Rechnungsdaten",
-  "billing.eyebrow": "Kosten gesponserter Ärzte",
-  "billing.clinicTitle": "Abrechnungsübersicht der Klinik",
-  "billing.clinicDescription": "Abonnement- und versendete SMS-Kosten werden je gesponsertem Arzt für den aktuellen und die fünf vorherigen Monate aufgeschlüsselt.",
-  "billing.sponsoredDoctors": "Übernommene Ärzte",
-  "billing.smsSent": "Gesendete SMS",
-  "billing.currentTotal": "Aktuelle Summe",
-  "billing.closed": "Abgeschlossener Monat",
-  "billing.open": "Laufender Monat",
-  "billing.doctor": "Arzt",
-  "billing.subscription": "Abonnement",
-  "billing.smsCost": "SMS-Kosten",
-  "billing.total": "Gesamt",
   "billing.downloadCsv": "CSV herunterladen",
-  "billing.accountingEyebrow": "Plattformbuchhaltung",
-  "billing.platformTitle": "Zu fakturierende Beträge",
-  "billing.platformDescription": "Kompakte Monatssummen für unabhängige Ärzte und Klinikorganisationen.",
-  "billing.allPayers": "Alle Zahler",
-  "billing.clinics": "Kliniken",
-  "billing.independentDoctors": "Unabhängige Ärzte",
-  "billing.payer": "Zahler",
-  "billing.payerType": "Typ",
-  "billing.clinic": "Klinikorganisation",
-  "billing.independentDoctor": "Unabhängiger Arzt",
-  "billing.pricing": "Künftige Preise",
-  "billing.pricingHelp": "Änderungen gelten ab dem ersten Tag des nächsten Monats.",
-  "billing.nextSubscription": "Arztabonnement (EUR)",
-  "billing.nextSms": "SMS-Einzelpreis (EUR)",
-  "billing.rateStatus.saved": "Die Preise für den nächsten Monat wurden gespeichert.",
-  "billing.rateStatus.invalid": "Überprüfen Sie die Preise.",
-  "billing.rateStatus.unavailable": "Die Preisverwaltung ist vorübergehend nicht verfügbar.",
-  "admin.role.manager": "Plattformmanager",
-  "billing.accountingAccess": "Buchhaltungszugriff",
-  "billing.accountingAccessHelp": "Gewähren Sie ausgewählten Plattformmanagern ausschließlich Zugriff auf die geschützte Abrechnungsübersicht.",
-  "billing.accessEnabled": "Aktiviert",
-  "billing.accessDisabled": "Nicht aktiviert",
-  "billing.grantAccess": "Zugriff gewähren",
-  "billing.removeAccess": "Zugriff entziehen",
-  "admin.nav.attention": "Handlungsbedarf",
-  "admin.nav.clinics": "Standorte",
-  "admin.nav.organizations": "Klinikorganisationen",
-  "admin.nav.managers": "Manager",
-  "admin.nav.specialties": "Fachrichtungen",
-  "admin.nav.reviews": "Bewertungen",
-  "admin.nav.sms": "SMS",
-  "admin.nav.contracts": "Verträge",
-  "admin.nav.privacy": "Datenschutz",
   "admin.nav.invoicing": "Abrechnung",
-  "admin.nav.security": "Kontosicherheit",
-  "admin.section.attention.title": "Handlungsbedarf",
-  "admin.section.attention.description": "Beginnen Sie mit Freigaben und unvollständigen Einrichtungen, die den Arbeitsablauf blockieren können.",
-  "admin.section.clinics.title": "Klinikstandorte",
-  "admin.section.clinics.description": "Prüfen Sie Standorte sowie zugeordnete Ärzte und Manager.",
-  "admin.section.organizations.title": "Klinikorganisationen",
-  "admin.section.organizations.description": "Prüfen Sie Klinikmanager, Organisationsstatus und Standortabdeckung.",
-  "admin.section.managers.title": "Plattformmanager",
-  "admin.section.managers.description": "Prüfen Sie geschützte Plattformkonten und delegierten Buchhaltungszugriff.",
-  "admin.section.specialties.title": "Medizinische Fachrichtungen",
-  "admin.section.specialties.description": "Verwalten Sie den Katalog für Arztprofile und Suche.",
-  "admin.section.reviews.title": "Arztbewertungen",
-  "admin.section.reviews.description": "Moderieren Sie gemeldete oder unangemessene öffentliche Bewertungen.",
-  "admin.section.sms.title": "SMS-Dienst",
-  "admin.section.sms.description": "Prüfen Sie SMS-Nutzung und Verfügbarkeit für Ärzte und Kliniken.",
-  "admin.section.contracts.title": "Verträge und Preise",
-  "admin.section.contracts.description": "Bereiten Sie Verträge, Nachträge und individuelle Servicepreise vor.",
-  "admin.section.privacy.title": "Datenschutz und Rechtstexte",
-  "admin.section.privacy.description": "Pflegen Sie öffentliche Rechtstexte und den Hinweis beim ersten Besuch.",
-  "admin.section.security.title": "Kontosicherheit",
-  "admin.section.security.description": "Reserviert für Plattformkonto- und Sicherheitsvorgänge.",
-  "admin.table.identifier": "Berufs-ID",
-  "admin.table.location": "Standort",
-  "admin.table.doctors": "Ärzte",
-  "admin.table.clinics": "Standorte",
-  "admin.table.accounting": "Buchhaltung",
-  "admin.empty.clinics": "Keine Klinikstandorte sichtbar.",
-  "admin.empty.organizations": "Keine Klinikorganisationen sichtbar.",
-  "admin.attention.title": "Aufgaben mit Handlungsbedarf",
-  "admin.attention.description": "Die ältesten offenen Einträge erscheinen zuerst.",
-  "admin.attention.open": "Öffnen",
-  "admin.attention.empty": "Derzeit ist keine Aktion erforderlich.",
-  "admin.task.doctor_approval": "Arztfreigabe",
-  "admin.task.clinic_approval": "Standortfreigabe",
-  "admin.task.clinic_manager_approval": "Freigabe des Klinikmanagers",
-  "admin.task.billing_profile": "Unvollständige Rechnungsdaten",
-  "admin.planned.title": "Arbeitsbereich vorbereitet",
-  "admin.planned.description": "Dieses Ziel ist Teil der abgestimmten Roadmap. Die Verwaltungsfunktionen folgen in der nächsten fokussierten Phase.",
-  "admin.doctor.invite.title": "Arzt einladen",
-  "admin.doctor.invite.description": "Senden Sie einen geschützten Registrierungslink und erlassen Sie optional das Abonnement für 3, 6 oder 12 Monate.",
-  "admin.doctor.invite.email": "E-Mail des Arztes",
-  "admin.doctor.invite.freeAccess": "Kostenfreier Abonnementzeitraum",
-  "admin.doctor.invite.language": "Einladungssprache",
-  "admin.doctor.invite.submit": "Einladung erstellen und senden",
-  "admin.doctor.invite.sending": "Einladung wird erstellt…",
-  "admin.doctor.invite.history": "Letzte Administratoreinladungen",
-  "admin.doctor.invite.status.created": "Einladung erstellt und E-Mail gesendet.",
-  "admin.doctor.invite.status.created_email_failed": "Einladung erstellt, aber die E-Mail konnte nicht gesendet werden. Kopieren Sie den geschützten Link manuell.",
-  "admin.doctor.invite.status.invalid": "Prüfen Sie E-Mail und kostenfreien Zeitraum.",
-  "admin.doctor.invite.status.duplicate": "Für diese E-Mail besteht bereits eine offene Einladung.",
-  "admin.doctor.invite.status.unauthorized": "Sie dürfen keine Ärzte einladen.",
-  "admin.doctor.invite.status.unavailable": "Arzteinladungen sind vorübergehend nicht verfügbar.",
-  "admin.doctor.invitationStatus.pending": "Ausstehend",
-  "admin.doctor.invitationStatus.accepted": "Angenommen",
-  "admin.doctor.invitationStatus.revoked": "Widerrufen",
-  "admin.doctor.invitationStatus.expired": "Abgelaufen",
-  "admin.doctor.free.none": "Kein kostenfreier Zeitraum",
-  "admin.doctor.free.3": "3 Monate kostenfrei",
-  "admin.doctor.free.6": "6 Monate kostenfrei",
-  "admin.doctor.free.12": "12 Monate kostenfrei",
-  "admin.doctor.noEmail": "Keine verknüpfte Login-E-Mail",
-  "admin.doctor.statusReason": "Grund der Statusänderung",
-  "admin.doctor.statusReasonHelp": "Empfohlen bei Sperrung, Ablehnung oder Reaktivierung.",
-  "admin.doctor.save": "Arzt speichern",
-  "admin.doctor.saving": "Wird gespeichert…",
-  "admin.doctor.update.saved": "Arztdaten und Status wurden gespeichert.",
-  "admin.doctor.update.invalid": "Prüfen Sie die Arztdaten.",
-  "admin.doctor.update.duplicate": "Diese Berufskennung wird bereits verwendet.",
-  "admin.doctor.update.unauthorized": "Sie dürfen diesen Arzt nicht bearbeiten.",
-  "admin.doctor.update.unavailable": "Der Arzt konnte momentan nicht aktualisiert werden.",
-  "admin.doctor.clinicAssociations": "Klinikzuordnungen",
-  "admin.doctor.noClinicAssociations": "Keine Klinikzuordnungen.",
-  "admin.doctor.freeAccess": "Verlauf kostenfreier Zeiträume",
-  "admin.doctor.free.noneActive": "Kein kostenfreier Zeitraum.",
-  "admin.doctor.statusHistory": "Statusverlauf",
-  "admin.doctor.noStatusHistory": "Noch keine Statusänderung erfasst.",
-  "admin.clinic.add.title": "Klinikstandort hinzufügen",
-  "admin.clinic.add.description": "Erstellen Sie einen physischen Standort unter einer bestehenden Klinikorganisation.",
-  "admin.clinic.organization": "Klinikorganisation",
-  "admin.clinic.selectOrganization": "Organisation auswählen",
-  "admin.clinic.locationName": "Standortname",
-  "admin.clinic.add.submit": "Standort hinzufügen",
-  "admin.clinic.save": "Standort speichern",
-  "admin.clinic.saving": "Wird gespeichert…",
-  "admin.clinic.addressMissing": "Adresse nicht vollständig",
-  "admin.clinic.statusReason": "Grund der Statusänderung",
-  "admin.clinic.assign.title": "Arztzuordnung",
-  "admin.clinic.assign.description": "Ordnen Sie diesem Standort einen freigegebenen Arzt zu. Die Zahlungsübernahme bleibt separat.",
-  "admin.clinic.assign.selectDoctor": "Freigegebenen Arzt auswählen",
-  "admin.clinic.assign.submit": "Zuordnung speichern",
-  "admin.clinic.assignedDoctors": "Zugeordnete Ärzte",
-  "admin.clinic.noAssignedDoctors": "Diesem Standort sind keine Ärzte zugeordnet.",
-  "admin.clinic.statusHistory": "Standort-Statusverlauf",
-  "admin.clinic.noStatusHistory": "Noch keine Statusänderung des Standorts.",
-  "admin.clinic.assignment.active": "Aktiv",
-  "admin.clinic.assignment.invited": "Eingeladen",
-  "admin.clinic.assignment.suspended": "Gesperrt",
-  "admin.clinic.assignment.ended": "Beendet",
-  "admin.clinic.result.created": "Klinikstandort erstellt.",
-  "admin.clinic.result.saved": "Änderungen am Klinikstandort gespeichert.",
-  "admin.clinic.result.invalid": "Geben Sie die erforderlichen Standortdaten ein. Für einen aktiven Standort ist eine Adresse erforderlich.",
-  "admin.clinic.result.unauthorized": "Sie dürfen Klinikstandorte nicht verwalten.",
-  "admin.clinic.result.unavailable": "Die Standortverwaltung ist vorübergehend nicht verfügbar."
-  ,"admin.patient.status.active": "Aktiv"
-  ,"admin.patient.status.suspended": "Gesperrt"
-  ,"admin.patient.status.blocked": "Blockiert"
-  ,"admin.patient.status.archived": "Archiviert"
-  ,"admin.patient.noEmail": "Keine verknüpfte Anmelde-E-Mail"
-  ,"admin.patient.neverSignedIn": "Noch nie angemeldet"
-  ,"admin.patient.lastSignIn": "Letzte Anmeldung"
-  ,"admin.patient.familyName": "Familienname"
-  ,"admin.patient.givenNames": "Vornamen"
-  ,"admin.patient.phone": "Telefon des Kontos"
-  ,"admin.patient.language": "Bevorzugte Sprache"
-  ,"admin.patient.statusReason": "Grund der Statusänderung"
-  ,"admin.patient.statusReasonHelp": "Optionaler Kontext für Sperrung, Blockierung oder Reaktivierung."
-  ,"admin.patient.save": "Patient speichern"
-  ,"admin.patient.saving": "Wird gespeichert…"
-  ,"admin.patient.result.saved": "Kontodaten und Status des Patienten wurden gespeichert."
-  ,"admin.patient.result.invalid": "Prüfen Sie die Patientenkontodaten."
-  ,"admin.patient.result.unauthorized": "Sie dürfen Patientenkonten nicht verwalten."
-  ,"admin.patient.result.unavailable": "Die Verwaltung von Patientenkonten ist vorübergehend nicht verfügbar."
-  ,"admin.patient.archivedHelp": "Dieses Konto ist archiviert. Der Verlauf bleibt erhalten und kann auf dieser Seite nicht reaktiviert werden."
-  ,"admin.patient.accountDetails": "Kontodaten"
-  ,"admin.patient.emailConfirmed": "E-Mail bestätigt"
-  ,"admin.patient.emailNotConfirmed": "E-Mail nicht bestätigt"
-  ,"admin.patient.created": "Konto erstellt"
-  ,"admin.patient.statusHistory": "Kontostatusverlauf"
-  ,"admin.patient.noStatusHistory": "Noch keine Statusänderungen erfasst."
-  ,"admin.patient.medicalPrivacy": "Datenschutz medizinischer Daten"
-  ,"admin.patient.medicalPrivacyHelp": "Medizinisches Profil, Patientenakte und geschützte Kennungen sind in der Administration nicht verfügbar."
-  ,"patientAppointments.account.suspended": "Ihr pitster-Konto ist gesperrt. Bitte wenden Sie sich an den Support."
-  ,"patientAppointments.account.blocked": "Ihr pitster-Konto ist blockiert. Bitte wenden Sie sich an den Support."
-  ,"patientAppointments.account.archived": "Dieses pitster-Konto ist archiviert und kann nicht auf Patientendienste zugreifen."
-  ,"home.addressSearchPlaceholder": "Adresse oder Ort suchen"
-  ,"home.addressSearchHelp": "Wählen Sie eine Google-Adresse, um Ärzte im Umkreis von 50 km zu finden."
-  ,"home.addressSearchFallback": "Die Google-Adresssuche ist nicht verfügbar. Geben Sie einen Ort oder eine Adresse ein."
-  ,"workspace.addressSearchHelp": "Wählen Sie die Adresse bei Google aus, damit die Klinik korrekt auf der Karte erscheint."
-  ,"workspace.addressSearchFallback": "Die Google-Adresssuche ist nicht verfügbar. Geben Sie Adresse, Ort und Land manuell ein."
-  ,"serviceCatalogue.title": "Leistungskatalog"
-  ,"serviceCatalogue.eyebrow": "Werkstattverwaltung"
-  ,"serviceCatalogue.description": "Erstellen und veröffentlichen Sie buchbare Leistungen. Archivierte Leistungen bleiben mit bestehenden Buchungen verknüpft, erscheinen aber nicht mehr auf der öffentlichen Werkstattseite."
-  ,"serviceCatalogue.workshop": "Werkstatt"
-  ,"serviceCatalogue.publishedCount": "veröffentlicht"
-  ,"serviceCatalogue.emptyTitle": "Noch keine Leistungen"
-  ,"serviceCatalogue.emptyDescription": "Fügen Sie die erste buchbare Leistung dieser Werkstatt hinzu."
-  ,"serviceCatalogue.addService": "Leistung hinzufügen"
-  ,"serviceCatalogue.adding": "Wird hinzugefügt…"
-  ,"serviceCatalogue.name": "Leistungsname"
-  ,"serviceCatalogue.category": "Kategorie"
-  ,"serviceCatalogue.serviceDescription": "Beschreibung"
-  ,"serviceCatalogue.duration": "Dauer (Minuten)"
-  ,"serviceCatalogue.priceFrom": "Preis ab"
-  ,"serviceCatalogue.currency": "Währung"
-  ,"serviceCatalogue.displayOrder": "Anzeigereihenfolge"
-  ,"serviceCatalogue.requiresDiagnosis": "Endpreis erfordert eine Diagnose"
-  ,"serviceCatalogue.priceReview": "Preis nach Prüfung"
-  ,"serviceCatalogue.published": "Veröffentlicht"
-  ,"serviceCatalogue.archived": "Archiviert"
-  ,"serviceCatalogue.archiveAction": "Leistung archivieren"
-  ,"serviceCatalogue.publishAction": "Leistung veröffentlichen"
-  ,"serviceCatalogue.noWorkshopTitle": "Keine Werkstatt verfügbar"
-  ,"serviceCatalogue.noWorkshopDescription": "Erstellen Sie einen Werkstattstandort, bevor Sie Leistungen hinzufügen."
-  ,"serviceCatalogue.manageWorkshops": "Werkstätten verwalten"
-  ,"serviceCatalogue.status.saved": "Leistung aktualisiert."
-  ,"serviceCatalogue.status.created": "Leistung hinzugefügt."
-  ,"serviceCatalogue.status.published": "Leistung veröffentlicht."
-  ,"serviceCatalogue.status.archived": "Leistung archiviert."
-  ,"serviceCatalogue.status.invalid": "Prüfen Sie die Leistungsangaben."
-  ,"serviceCatalogue.status.unauthorized": "Sie dürfen diese Werkstatt nicht verwalten."
-  ,"serviceCatalogue.status.conflict": "Eine Leistung mit diesem Namen ist bereits vorhanden."
-  ,"serviceCatalogue.status.unavailable": "Der Katalog konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut."
-  ,"workshopBookings.eyebrow": "Werkstattbetrieb"
-  ,"workshopBookings.title": "Buchungsanfragen"
-  ,"workshopBookings.description": "Prüfen Sie neue Serviceanfragen, vereinbaren Sie einen Termin und halten Sie jede Entscheidung nachvollziehbar fest. Ein vorgeschlagener Termin ist erst nach Bestätigung gebucht."
-  ,"workshopBookings.visible": "Anfragen angezeigt"
-  ,"workshopBookings.filter": "Filter"
-  ,"workshopBookings.filter.open": "Offene Anfragen"
-  ,"workshopBookings.filter.all": "Alle Anfragen"
-  ,"workshopBookings.emptyTitle": "Keine passenden Anfragen"
-  ,"workshopBookings.emptyDescription": "Neue Serviceanfragen von Kunden erscheinen hier."
-  ,"workshopBookings.status.requested": "Angefragt"
-  ,"workshopBookings.status.confirmed": "Bestätigt"
-  ,"workshopBookings.status.checked_in": "Eingecheckt"
-  ,"workshopBookings.status.diagnosing": "In Diagnose"
-  ,"workshopBookings.status.awaiting_approval": "Wartet auf Freigabe"
-  ,"workshopBookings.status.in_service": "In Bearbeitung"
-  ,"workshopBookings.status.ready_for_collection": "Abholbereit"
-  ,"workshopBookings.status.completed": "Abgeschlossen"
-  ,"workshopBookings.status.declined": "Abgelehnt"
-  ,"workshopBookings.status.cancelled": "Storniert"
-  ,"workshopBookings.status.no_show": "Nicht erschienen"
-  ,"workshopBookings.customerVehicle": "Kunde und Fahrzeug"
-  ,"workshopBookings.customer": "Kunde"
-  ,"workshopBookings.contact": "Kontakt"
-  ,"workshopBookings.vehicle": "Fahrzeug"
-  ,"workshopBookings.mileage": "Kilometerstand"
-  ,"workshopBookings.mobility": "Mobilitätswunsch"
-  ,"workshopBookings.language": "Kundensprache"
-  ,"workshopBookings.requestedTimes": "Buchungszeiten"
-  ,"workshopBookings.preferred": "Bevorzugt"
-  ,"workshopBookings.alternate": "Alternative"
-  ,"workshopBookings.confirmed": "Bestätigt"
-  ,"workshopBookings.proposed": "Werkstattvorschlag"
-  ,"workshopBookings.notes": "Kundennotiz"
-  ,"workshopBookings.noCustomerNote": "Der Kunde hat keine Notiz angegeben."
-  ,"workshopBookings.workshopNote": "Werkstattnotiz"
-  ,"workshopBookings.manage": "Anfrage bearbeiten"
-  ,"workshopBookings.noActions": "Für diesen Status sind keine Buchungsaktionen verfügbar."
-  ,"workshopBookings.history": "Verlauf"
-  ,"workshopBookings.mobility.none": "Keine besondere Anforderung"
-  ,"workshopBookings.mobility.pickup": "Fahrzeugabholung"
-  ,"workshopBookings.mobility.courtesy_car": "Ersatzwagen"
-  ,"workshopBookings.mobility.wait_on_site": "Vor Ort warten"
-  ,"workshopBookings.action.time": "Datum und Uhrzeit"
-  ,"workshopBookings.action.reason": "Begründung"
-  ,"workshopBookings.action.note": "Notiz (optional)"
-  ,"workshopBookings.action.saving": "Wird gespeichert…"
-  ,"workshopBookings.action.confirm": "Buchung bestätigen"
-  ,"workshopBookings.action.propose_time": "Anderen Termin vorschlagen"
-  ,"workshopBookings.action.reschedule": "Buchung verschieben"
-  ,"workshopBookings.action.decline": "Anfrage ablehnen"
-  ,"workshopBookings.action.cancel": "Buchung stornieren"
-  ,"workshopBookings.result.confirmed": "Die Buchung wurde bestätigt."
-  ,"workshopBookings.result.proposed": "Der alternative Termin wurde gespeichert."
-  ,"workshopBookings.result.rescheduled": "Die Buchung wurde verschoben."
-  ,"workshopBookings.result.declined": "Die Anfrage wurde abgelehnt."
-  ,"workshopBookings.result.cancelled": "Die Buchung wurde storniert."
-  ,"workshopBookings.result.invalid": "Prüfen Sie Termin und erforderliche Begründung."
-  ,"workshopBookings.result.unauthorized": "Sie dürfen diese Werkstattanfrage nicht bearbeiten."
-  ,"workshopBookings.result.unavailable": "Die Anfrage konnte nicht aktualisiert werden. Versuchen Sie es erneut."
-  ,"workshopBookings.history.request_received": "Anfrage eingegangen"
-  ,"workshopBookings.history.migration_snapshot": "Ausgangsstatus"
-  ,"workshopBookings.history.confirmed": "Buchung bestätigt"
-  ,"workshopBookings.history.time_proposed": "Alternativer Termin vorgeschlagen"
-  ,"workshopBookings.history.rescheduled": "Buchung verschoben"
-  ,"workshopBookings.history.declined": "Anfrage abgelehnt"
-  ,"workshopBookings.history.cancelled": "Buchung storniert"
-  ,"workshopBookings.history.proposal_accepted": "Terminvorschlag angenommen"
-  ,"workshopBookings.history.proposal_declined": "Terminvorschlag abgelehnt"
-  ,"workshopBookings.history.customer_cancelled": "Vom Kunden storniert"
-  ,"customerBookings.back": "Meine Garage"
-  ,"customerBookings.eyebrow": "Kundenbuchungen"
-  ,"customerBookings.title": "Meine Servicebuchungen"
-  ,"customerBookings.description": "Anfragen verfolgen, Werkstattvorschläge beantworten und bestätigte Werkstattdaten einsehen."
-  ,"customerBookings.visible": "Buchungen angezeigt"
-  ,"customerBookings.requestedTime": "Gewünschter Termin"
-  ,"customerBookings.proposedTime": "Vorgeschlagener Termin"
-  ,"customerBookings.confirmedTime": "Bestätigter Termin"
-  ,"customerBookings.proposalEyebrow": "Aktion erforderlich"
-  ,"customerBookings.proposalTitle": "Die Werkstatt hat einen anderen Termin vorgeschlagen"
-  ,"customerBookings.bookingDetails": "Buchungsdetails"
-  ,"customerBookings.vehicle": "Fahrzeug"
-  ,"customerBookings.preferred": "Bevorzugt"
-  ,"customerBookings.alternate": "Alternative"
-  ,"customerBookings.confirmed": "Bestätigt"
-  ,"customerBookings.yourNote": "Ihre Notiz"
-  ,"customerBookings.workshopNote": "Werkstattnotiz"
-  ,"customerBookings.workshopDetails": "Werkstattdetails"
-  ,"customerBookings.contactUnavailable": "Kontaktdaten sind noch nicht verfügbar."
-  ,"customerBookings.history": "Buchungsverlauf"
-  ,"customerBookings.cancelTitle": "Diese Buchung stornieren"
-  ,"customerBookings.cancelDescription": "Die Stornierung ist endgültig. Geben Sie der Werkstatt den Grund an."
-  ,"customerBookings.cancelReason": "Stornierungsgrund"
-  ,"customerBookings.noteOptional": "Notiz (optional)"
-  ,"customerBookings.saving": "Speichern…"
-  ,"customerBookings.action.accept_proposal": "Terminvorschlag annehmen"
-  ,"customerBookings.action.decline_proposal": "Terminvorschlag ablehnen"
-  ,"customerBookings.action.cancel": "Buchung stornieren"
-  ,"customerBookings.result.accepted": "Der vorgeschlagene Termin ist bestätigt."
-  ,"customerBookings.result.declined": "Der Werkstattvorschlag wurde abgelehnt."
-  ,"customerBookings.result.cancelled": "Die Buchung wurde storniert."
-  ,"customerBookings.result.invalid": "Diese Aktion ist nicht mehr gültig. Aktualisieren Sie die Seite."
-  ,"customerBookings.result.unauthorized": "Sie können diese Buchung nicht verwalten."
-  ,"customerBookings.result.unavailable": "Die Buchung konnte nicht aktualisiert werden."
-  ,"customerBookings.emptyTitle": "Keine passenden Buchungen"
-  ,"customerBookings.emptyDescription": "Ihre Serviceanfragen erscheinen hier nach der Buchung."
-  ,"customerBookings.bookService": "Service buchen"
-  ,"register.customer.choice": "Kunde"
-  ,"register.workshop_manager.choice": "Werkstattmanager"
-  ,"register.customer.title": "Kundenregistrierung"
-  ,"register.customer.description": "Erstellen Sie Ihr pitster-Konto für Fahrzeuge und Servicebuchungen."
-  ,"register.workshop_manager.title": "Werkstattmanager-Registrierung"
-  ,"register.workshop_manager.description": "Erstellen Sie ein Dienstleisterkonto für Ihren Werkstattbetrieb."
-  ,"register.workshop_manager.legalName": "Rechtlicher Name des Dienstleisters"
-  ,"register.workshop_manager.displayName": "Anzeigename des Dienstleisters"
-  ,"platformLogin.customer.title": "Kundenanmeldung"
-  ,"platformLogin.customer.description": "Greifen Sie auf Ihre Garage und Servicebuchungen zu."
-  ,"platformLogin.workshop_manager.title": "Werkstattmanager-Anmeldung"
-  ,"platformLogin.workshop_manager.description": "Verwalten Sie Anfragen, Services und Standorte."
-  ,"platformLogin.noAccount": "Noch kein Konto?"
-  ,"platformLogin.register": "Konto erstellen"
-  ,"managerPortal.eyebrow": "Werkstattverwaltung"
-  ,"managerPortal.welcome": "Willkommen, {name}"
-  ,"managerPortal.description": "Verwalten Sie Dienstleister, Werkstätten, Katalog und Buchungsanfragen."
-  ,"managerPortal.workshops": "Werkstätten"
-  ,"managerPortal.role": "Mitgliedsrolle"
-  ,"managerPortal.empty": "Keine aktive Dienstleister-Mitgliedschaft verfügbar."
-  ,"workshopOperations.eyebrow": "Werkstattbetrieb"
-  ,"workshopOperations.title": "Werkstatteinstellungen"
-  ,"workshopOperations.description": "Verwalten Sie öffentliches Profil, Buchungsregeln, Öffnungszeiten, Mobilitätsoptionen und Schließzeiten."
-  ,"workshopOperations.publicProfile": "Öffentliches Profil"
-  ,"workshopOperations.displayName": "Werkstattname"
-  ,"workshopOperations.descriptionLabel": "Beschreibung"
-  ,"workshopOperations.phone": "Öffentliche Telefonnummer"
-  ,"workshopOperations.email": "Öffentliche E-Mail"
-  ,"workshopOperations.address": "Werkstattadresse"
-  ,"workshopOperations.bookingRules": "Buchungsregeln"
-  ,"workshopOperations.leadTime": "Mindestvorlaufzeit (Minuten)"
-  ,"workshopOperations.horizon": "Buchungshorizont (Tage)"
-  ,"workshopOperations.capacity": "Tägliche Anfragekapazität"
-  ,"workshopOperations.interval": "Zeitintervall (Minuten)"
-  ,"workshopOperations.timeZone": "Zeitzone"
-  ,"workshopOperations.acceptsRequests": "Öffentliche Buchungsanfragen annehmen"
-  ,"workshopOperations.pickup": "Fahrzeugabholung anbieten"
-  ,"workshopOperations.courtesyCar": "Ersatzwagen anbieten"
-  ,"workshopOperations.waitOnSite": "Warten vor Ort erlauben"
-  ,"workshopOperations.hours": "Wöchentliche Öffnungszeiten"
-  ,"workshopOperations.closed": "Geschlossen"
-  ,"workshopOperations.opens": "Öffnet"
-  ,"workshopOperations.closes": "Schließt"
-  ,"workshopOperations.weekday.0": "Sonntag"
-  ,"workshopOperations.weekday.1": "Montag"
-  ,"workshopOperations.weekday.2": "Dienstag"
-  ,"workshopOperations.weekday.3": "Mittwoch"
-  ,"workshopOperations.weekday.4": "Donnerstag"
-  ,"workshopOperations.weekday.5": "Freitag"
-  ,"workshopOperations.weekday.6": "Samstag"
-  ,"workshopOperations.save": "Werkstatteinstellungen speichern"
-  ,"workshopOperations.saving": "Speichern…"
-  ,"workshopOperations.closures": "Ausnahmeschließungen"
-  ,"workshopOperations.closuresDescription": "Schließzeiten überschreiben den Wochenplan und blockieren neue Anfragen."
-  ,"workshopOperations.closure.starts": "Beginn"
-  ,"workshopOperations.closure.ends": "Ende"
-  ,"workshopOperations.closure.reason": "Grund (optional)"
-  ,"workshopOperations.closure.add": "Schließung hinzufügen"
-  ,"workshopOperations.closure.remove": "Entfernen"
-  ,"workshopOperations.closure.defaultReason": "Werkstatt geschlossen"
-  ,"workshopOperations.closure.empty": "Keine bevorstehenden Schließungen."
-  ,"workshopOperations.emptyTitle": "Keine Werkstätten verfügbar"
-  ,"workshopOperations.emptyDescription": "Zur Konfiguration ist eine aktive Werkstattmitgliedschaft erforderlich."
-  ,"workshopOperations.result.saved": "Werkstatteinstellungen wurden gespeichert."
-  ,"workshopOperations.result.created": "Die Schließung wurde hinzugefügt."
-  ,"workshopOperations.result.removed": "Die Schließung wurde entfernt."
-  ,"workshopOperations.result.invalid": "Prüfen Sie Einstellungen und Öffnungszeiten."
-  ,"workshopOperations.result.unauthorized": "Sie können diese Werkstatt nicht verwalten."
-  ,"workshopOperations.result.unavailable": "Die Werkstatt konnte nicht aktualisiert werden."
-  ,"repairLifecycle.eyebrow": "Werkstattbetrieb"
-  ,"repairLifecycle.title": "Reparaturablauf"
-  ,"repairLifecycle.description": "Führen Sie bestätigte Aufträge von der Annahme bis zur Abholung."
-  ,"repairLifecycle.visible": "Reparaturen angezeigt"
-  ,"repairLifecycle.filter.active": "Aktive Reparaturen"
-  ,"repairLifecycle.note": "Werkstattnotiz (optional)"
-  ,"repairLifecycle.saving": "Speichern…"
-  ,"repairLifecycle.result.saved": "Die Reparatur wurde aktualisiert."
-  ,"repairLifecycle.result.invalid": "Dieser Übergang ist nicht mehr gültig."
-  ,"repairLifecycle.result.unauthorized": "Sie können diese Reparatur nicht verwalten."
-  ,"repairLifecycle.result.unavailable": "Die Reparatur konnte nicht aktualisiert werden."
-  ,"repairLifecycle.action.check_in": "Fahrzeug annehmen"
-  ,"repairLifecycle.action.start_diagnosis": "Diagnose starten"
-  ,"repairLifecycle.action.start_work": "Genehmigte Arbeit starten"
-  ,"repairLifecycle.action.ready_for_collection": "Als abholbereit markieren"
-  ,"repairLifecycle.action.complete": "Reparatur abschließen"
-  ,"repairLifecycle.action.mark_no_show": "Als nicht erschienen markieren"
-  ,"repairLifecycle.diagnosis": "Diagnose"
-  ,"repairLifecycle.items": "Kostenvoranschlagspositionen"
-  ,"repairLifecycle.addItem": "Position hinzufügen"
-  ,"repairLifecycle.itemType": "Positionstyp"
-  ,"repairLifecycle.itemDescription": "Beschreibung"
-  ,"repairLifecycle.quantity": "Menge"
-  ,"repairLifecycle.unitPrice": "Einzelpreis"
-  ,"repairLifecycle.removeItem": "Position entfernen"
-  ,"repairLifecycle.currency": "Währung"
-  ,"repairLifecycle.customerNote": "Nachricht an den Kunden (optional)"
-  ,"repairLifecycle.sendEstimate": "Kostenvoranschlag senden"
-  ,"repairLifecycle.estimate": "Kostenvoranschlag"
-  ,"repairLifecycle.estimateStatus.awaiting_customer": "Wartet auf Kunden"
-  ,"repairLifecycle.estimateStatus.approved": "Genehmigt"
-  ,"repairLifecycle.estimateStatus.declined": "Abgelehnt"
-  ,"repairLifecycle.estimateStatus.superseded": "Ersetzt"
-  ,"repairLifecycle.type.labor": "Arbeit"
-  ,"repairLifecycle.type.part": "Teil"
-  ,"repairLifecycle.type.other": "Sonstiges"
-  ,"repairLifecycle.total": "Gesamt"
-  ,"repairLifecycle.customerDecisionNote": "Kundennotiz"
-  ,"repairLifecycle.appointment": "Termin"
-  ,"repairLifecycle.jobDetails": "Auftragsdetails"
-  ,"repairLifecycle.nextAction": "Nächster Schritt"
-  ,"repairLifecycle.waitingCustomer": "Warten auf die Entscheidung des Kunden."
-  ,"repairLifecycle.noActions": "Diese Reparatur ist abgeschlossen."
-  ,"repairLifecycle.emptyTitle": "Keine passenden Reparaturen"
-  ,"repairLifecycle.emptyDescription": "Bestätigte Buchungen erscheinen hier."
-  ,"repairLifecycle.customerAction.approve": "Kostenvoranschlag genehmigen"
-  ,"repairLifecycle.customerAction.decline": "Kostenvoranschlag ablehnen"
-  ,"repairLifecycle.customerResult.approved": "Der Kostenvoranschlag wurde genehmigt."
-  ,"repairLifecycle.customerResult.estimate_declined": "Der Kostenvoranschlag wurde zur Überarbeitung abgelehnt."
-  ,"repairLifecycle.customerResult.invalid": "Dieser Kostenvoranschlag wartet nicht mehr auf eine Entscheidung."
-  ,"repairLifecycle.customerResult.unauthorized": "Sie können diesen Kostenvoranschlag nicht entscheiden."
-  ,"repairLifecycle.customerResult.unavailable": "Der Kostenvoranschlag konnte nicht aktualisiert werden."
-  ,"repairLifecycle.approvedWaiting": "Genehmigt — die Werkstatt kann die Arbeit starten."
-  ,"workshopBookings.history.checked_in": "Fahrzeug angenommen"
-  ,"workshopBookings.history.diagnosis_recorded": "Diagnose gestartet"
-  ,"workshopBookings.history.estimate_sent": "Kostenvoranschlag gesendet"
-  ,"workshopBookings.history.estimate_approved": "Kostenvoranschlag genehmigt"
-  ,"workshopBookings.history.estimate_declined": "Kostenvoranschlag abgelehnt"
-  ,"workshopBookings.history.work_started": "Arbeit gestartet"
-  ,"workshopBookings.history.ready_for_collection": "Abholbereit"
-  ,"workshopBookings.history.completed": "Reparatur abgeschlossen"
-  ,"workshopBookings.history.no_show": "Kunde nicht erschienen"
-  ,"providerBilling.eyebrow": "Abrechnung für Dienstleister"
-  ,"providerBilling.title": "Abonnement und Rechnungen"
-  ,"providerBilling.description": "Verwalten Sie Ihr monatliches 35-€-Abonnement, Zahlungsdaten und Stripe-Rechnungen."
-  ,"providerBilling.provider": "Dienstleister"
-  ,"providerBilling.checkoutSuccess": "Checkout abgeschlossen. Stripe bestätigt das Abonnement über den signierten Webhook."
-  ,"providerBilling.checkoutCancelled": "Checkout abgebrochen. Es wurde nichts geändert."
-  ,"providerBilling.error": "Der Abrechnungsvorgang konnte nicht abgeschlossen werden."
-  ,"providerBilling.plan": "Aktueller Tarif"
-  ,"providerBilling.month": "Monat"
-  ,"providerBilling.smsIncluded": "SMS inklusive"
-  ,"providerBilling.status": "Status"
-  ,"providerBilling.renews": "Aktueller Zeitraum endet"
-  ,"providerBilling.cancelsAtPeriodEnd": "Kündigung zum Periodenende geplant"
-  ,"providerBilling.subscribe": "Mit Stripe abonnieren"
-  ,"providerBilling.portal": "Abrechnung in Stripe verwalten"
-  ,"providerBilling.notConfigured": "Die Stripe-Umgebung ist nicht konfiguriert."
-  ,"providerBilling.profileTitle": "Rechnungsidentität"
-  ,"providerBilling.profileDescription": "Diese Angaben identifizieren den zahlenden Dienstleister. Zahlungsdaten werden sicher von Stripe erfasst."
-  ,"providerBilling.billingEmail": "Rechnungs-E-Mail"
-  ,"providerBilling.billingContact": "Rechnungskontakt"
-  ,"providerBilling.taxIdentifier": "Steuernummer"
-  ,"providerBilling.addressLine1": "Adresszeile 1"
-  ,"providerBilling.addressLine2": "Adresszeile 2"
-  ,"providerBilling.city": "Ort"
-  ,"providerBilling.postalCode": "Postleitzahl"
-  ,"providerBilling.country": "Ländercode"
-  ,"providerBilling.result.saved": "Rechnungsdaten gespeichert."
-  ,"providerBilling.result.invalid": "Prüfen Sie die Rechnungsdaten."
-  ,"providerBilling.result.unauthorized": "Nur ein aktiver Inhaber kann die Abrechnung verwalten."
-  ,"providerBilling.result.configuration": "Stripe ist nicht konfiguriert."
-  ,"providerBilling.result.unavailable": "Rechnungsdaten konnten nicht aktualisiert werden."
-  ,"providerBilling.invoices": "Stripe-Rechnungen"
-  ,"providerBilling.invoice": "Rechnung"
-  ,"providerBilling.period": "Zeitraum"
-  ,"providerBilling.amount": "Betrag"
-  ,"providerBilling.documents": "Dokumente"
-  ,"providerBilling.view": "Anzeigen"
-  ,"providerBilling.noInvoices": "Rechnungen erscheinen hier, sobald Stripe sie erstellt."
-  ,"providerBilling.subscription.not_started": "Nicht abonniert"
-  ,"providerBilling.subscription.incomplete": "Checkout unvollständig"
-  ,"providerBilling.subscription.incomplete_expired": "Checkout abgelaufen"
-  ,"providerBilling.subscription.trialing": "Testphase"
-  ,"providerBilling.subscription.active": "Aktiv"
-  ,"providerBilling.subscription.past_due": "Zahlung überfällig"
-  ,"providerBilling.subscription.canceled": "Gekündigt"
-  ,"providerBilling.subscription.unpaid": "Unbezahlt"
-  ,"providerBilling.subscription.paused": "Pausiert"
-  ,"commercialAdmin.eyebrow": "Kommerzieller Betrieb"
-  ,"commercialAdmin.title": "Anbieterabonnements und Betrieb"
-  ,"commercialAdmin.description": "Überwachen Sie Stripe-Abonnements, exportieren Sie Buchhaltungsdaten und verwalten Sie den Betriebsstatus getrennt vom Zahlungsstatus."
-  ,"commercialAdmin.providers": "Anbieter"
-  ,"commercialAdmin.activeSubscriptions": "Aktive Abonnements"
-  ,"commercialAdmin.attention": "Zahlung prüfen"
-  ,"commercialAdmin.mrr": "Monatlich wiederkehrender Umsatz"
-  ,"commercialAdmin.provider": "Anbieter"
-  ,"commercialAdmin.providerStatus": "Betriebsstatus"
-  ,"commercialAdmin.subscription": "Abonnement"
-  ,"commercialAdmin.renewal": "Periodenende"
-  ,"commercialAdmin.invoices": "Rechnungen"
-  ,"commercialAdmin.operation": "Admin-Vorgang"
-  ,"commercialAdmin.reason": "Begründung erforderlich"
-  ,"commercialAdmin.providerStatus.pending": "Ausstehend"
-  ,"commercialAdmin.providerStatus.active": "Aktiv"
-  ,"commercialAdmin.providerStatus.suspended": "Gesperrt"
-  ,"commercialAdmin.providerStatus.rejected": "Abgelehnt"
-  ,"commercialAdmin.result.saved": "Anbieterstatus aktualisiert."
-  ,"commercialAdmin.result.invalid": "Wählen Sie einen anderen Status und geben Sie einen Grund an."
-  ,"commercialAdmin.result.unauthorized": "Plattformadministrator-Zugriff erforderlich."
-  ,"commercialAdmin.result.unavailable": "Anbieterstatus konnte nicht aktualisiert werden."
-  ,"serviceCatalogue.vehicleType": "Fahrzeugtyp"
-  ,"serviceCatalogue.vehicleType.car_van": "Auto / Transporter"
-  ,"serviceCatalogue.vehicleType.motorcycle_scooter": "Motorrad / Benzinroller"
-  ,"serviceCatalogue.vehicleType.electric_bicycle": "E-Bike"
-  ,"serviceCatalogue.vehicleType.electric_kick_scooter": "E-Scooter"
-  ,"serviceCatalogue.bookingMode": "Buchungsweg"
-  ,"serviceCatalogue.bookingMode.direct": "Direkte Leistung"
-  ,"serviceCatalogue.bookingMode.diagnosis_first": "Zuerst Diagnose"
-  ,"serviceCatalogue.bookingMode.diagnosis": "Erstdiagnose"
-  ,"serviceCatalogue.diagnosisFeeHelp": "Legen Sie vor der Veröffentlichung eine positive Diagnosegebühr fest. Sie bleibt fällig, wenn der Kunde weitere Reparaturen ablehnt."
-  ,"serviceCatalogue.setupRequired": "Gebühr erforderlich"
-  ,"serviceCatalogue.template": "Standardleistung"
-  ,"serviceCatalogue.template.custom": "Benutzerdefinierte Leistung"
-  ,"workshopBookings.calendar.title": "Werkstattkalender"
-  ,"workshopBookings.calendarStatus.proposed": "Termin vorgeschlagen"
-  ,"workshopBookings.calendarStatus.rescheduled": "Verschoben"
-  ,"workshopBookings.manual.add": "Termin hinzufügen"
-  ,"workshopBookings.manual.source": "Buchungsquelle"
-  ,"workshopBookings.manual.phone": "Kundentelefon (optional)"
-  ,"workshopBookings.manual.email": "Kunden-E-Mail (optional)"
-  ,"workshopBookings.manual.registration": "Kennzeichen"
-  ,"workshopBookings.manual.make": "Fahrzeugmarke"
-  ,"workshopBookings.manual.model": "Fahrzeugmodell"
-  ,"workshopBookings.manual.year": "Baujahr"
-  ,"workshopBookings.customerStates": "Kundenaussage"
-  ,"workshopBookings.customerStatesHelp": "Symptome und Fakten genau so erfassen, wie sie der Kunde beschreibt."
-  ,"workshopBookings.manual.create": "Termin erstellen"
-  ,"workshopBookings.manual.result.created": "Der Termin wurde dem Kalender hinzugefügt."
-  ,"workshopBookings.manual.result.invalid": "Prüfen Sie Termin-, Kunden- und Fahrzeugdaten."
-  ,"workshopBookings.manual.result.unauthorized": "Sie dürfen für diese Werkstatt keine Termine hinzufügen."
-  ,"workshopBookings.manual.result.unavailable": "Der Termin konnte nicht erstellt werden."
-  ,"workshopBookings.source.public_request": "Online-Anfrage"
-  ,"workshopBookings.source.manager_phone": "Telefonanruf"
-  ,"workshopBookings.source.manager_walk_in": "Laufkundschaft"
-  ,"workshopBookings.source.manager_other": "Sonstiger Werkstatteintrag"
-  ,"workshopBookings.history.manager_created": "Termin von der Werkstatt erstellt"
-  ,"automotiveAdmin.console": "Plattformbetrieb"
-  ,"automotiveAdmin.navigation": "Fahrzeug-Plattformverwaltung"
-  ,"automotiveAdmin.nav.overview": "Übersicht"
-  ,"automotiveAdmin.nav.providers": "Dienstleister"
-  ,"automotiveAdmin.nav.workshops": "Werkstätten"
-  ,"automotiveAdmin.nav.customers": "Kunden"
-  ,"automotiveAdmin.nav.managers": "Werkstattleiter"
-  ,"automotiveAdmin.nav.sms": "SMS-Versand"
-  ,"automotiveAdmin.nav.security": "Sicherheit"
-  ,"automotiveAdmin.openBookings": "Offene Buchungen"
-  ,"automotiveAdmin.smsAttention": "SMS mit Handlungsbedarf"
-  ,"automotiveAdmin.recentProviders": "Neue Dienstleister"
-  ,"automotiveAdmin.provider": "Dienstleister"
-  ,"automotiveAdmin.providers": "Dienstleister"
-  ,"automotiveAdmin.workshop": "Werkstatt"
-  ,"automotiveAdmin.workshops": "Werkstätten"
-  ,"automotiveAdmin.customer": "Kunde"
-  ,"automotiveAdmin.manager": "Werkstattleiter"
-  ,"automotiveAdmin.managers": "Leiter"
-  ,"automotiveAdmin.legalName": "Rechtlicher Name"
-  ,"automotiveAdmin.location": "Standort"
-  ,"automotiveAdmin.phone": "Telefon"
-  ,"automotiveAdmin.vehicles": "Fahrzeuge"
-  ,"automotiveAdmin.bookings": "Buchungen"
-  ,"automotiveAdmin.created": "Erstellt"
-  ,"automotiveAdmin.smsEvent": "SMS-Ereignis"
-  ,"automotiveAdmin.pending": "Ausstehend"
-  ,"automotiveAdmin.sent": "Gesendet"
-  ,"automotiveAdmin.failed": "Fehlgeschlagen"
-  ,"automotiveAdmin.empty": "Keine Einträge in diesem Bereich."
-  ,"automotiveAdmin.securityTitle": "Sicherheit der Administratorsitzung"
-  ,"automotiveAdmin.securityDescription": "Administratorzugriff erfordert ein aktives Konto und Mehrfaktor-Authentifizierung."
-  ,"automotiveAdmin.role": "Rolle"
-  ,"automotiveAdmin.session": "Sitzungssicherheit"
-  ,"automotiveAdmin.generated": "Momentaufnahme erstellt"
-  ,"automotiveAdmin.sms.booking_confirmed": "Buchung bestätigt"
-  ,"automotiveAdmin.sms.reminder_24h": "24-Stunden-Erinnerung"
-  ,"automotiveAdmin.sms.repair_started": "Reparatur begonnen"
-  ,"automotiveAdmin.sms.ready_for_pickup": "Abholbereit"
-  ,"automotiveAdmin.sms.review_request": "Bewertungsanfrage"
+  "home.addressSearchPlaceholder": "Adresse oder Ort suchen",
+  "home.addressSearchHelp": "Wählen Sie eine Google-Adresse, um Ärzte im Umkreis von 50 km zu finden.",
+  "home.addressSearchFallback": "Die Google-Adresssuche ist nicht verfügbar. Geben Sie einen Ort oder eine Adresse ein.",
+  "workspace.addressSearchHelp": "Wählen Sie die Adresse bei Google aus, damit die Klinik korrekt auf der Karte erscheint.",
+  "workspace.addressSearchFallback": "Die Google-Adresssuche ist nicht verfügbar. Geben Sie Adresse, Ort und Land manuell ein.",
+  "serviceCatalogue.title": "Leistungskatalog",
+  "serviceCatalogue.eyebrow": "Werkstattverwaltung",
+  "serviceCatalogue.description": "Erstellen und veröffentlichen Sie buchbare Leistungen. Archivierte Leistungen bleiben mit bestehenden Buchungen verknüpft, erscheinen aber nicht mehr auf der öffentlichen Werkstattseite.",
+  "serviceCatalogue.workshop": "Werkstatt",
+  "serviceCatalogue.publishedCount": "veröffentlicht",
+  "serviceCatalogue.emptyTitle": "Noch keine Leistungen",
+  "serviceCatalogue.emptyDescription": "Fügen Sie die erste buchbare Leistung dieser Werkstatt hinzu.",
+  "serviceCatalogue.addService": "Leistung hinzufügen",
+  "serviceCatalogue.adding": "Wird hinzugefügt…",
+  "serviceCatalogue.name": "Leistungsname",
+  "serviceCatalogue.category": "Kategorie",
+  "serviceCatalogue.serviceDescription": "Beschreibung",
+  "serviceCatalogue.duration": "Dauer (Minuten)",
+  "serviceCatalogue.priceFrom": "Preis ab",
+  "serviceCatalogue.currency": "Währung",
+  "serviceCatalogue.displayOrder": "Anzeigereihenfolge",
+  "serviceCatalogue.requiresDiagnosis": "Endpreis erfordert eine Diagnose",
+  "serviceCatalogue.priceReview": "Preis nach Prüfung",
+  "serviceCatalogue.published": "Veröffentlicht",
+  "serviceCatalogue.archived": "Archiviert",
+  "serviceCatalogue.archiveAction": "Leistung archivieren",
+  "serviceCatalogue.publishAction": "Leistung veröffentlichen",
+  "serviceCatalogue.noWorkshopTitle": "Keine Werkstatt verfügbar",
+  "serviceCatalogue.noWorkshopDescription": "Erstellen Sie einen Werkstattstandort, bevor Sie Leistungen hinzufügen.",
+  "serviceCatalogue.manageWorkshops": "Werkstätten verwalten",
+  "serviceCatalogue.status.saved": "Leistung aktualisiert.",
+  "serviceCatalogue.status.created": "Leistung hinzugefügt.",
+  "serviceCatalogue.status.published": "Leistung veröffentlicht.",
+  "serviceCatalogue.status.archived": "Leistung archiviert.",
+  "serviceCatalogue.status.invalid": "Prüfen Sie die Leistungsangaben.",
+  "serviceCatalogue.status.unauthorized": "Sie dürfen diese Werkstatt nicht verwalten.",
+  "serviceCatalogue.status.conflict": "Eine Leistung mit diesem Namen ist bereits vorhanden.",
+  "serviceCatalogue.status.unavailable": "Der Katalog konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.",
+  "workshopBookings.eyebrow": "Werkstattbetrieb",
+  "workshopBookings.title": "Buchungsanfragen",
+  "workshopBookings.description": "Prüfen Sie neue Serviceanfragen, vereinbaren Sie einen Termin und halten Sie jede Entscheidung nachvollziehbar fest. Ein vorgeschlagener Termin ist erst nach Bestätigung gebucht.",
+  "workshopBookings.visible": "Anfragen angezeigt",
+  "workshopBookings.filter": "Filter",
+  "workshopBookings.filter.open": "Offene Anfragen",
+  "workshopBookings.filter.all": "Alle Anfragen",
+  "workshopBookings.emptyTitle": "Keine passenden Anfragen",
+  "workshopBookings.emptyDescription": "Neue Serviceanfragen von Kunden erscheinen hier.",
+  "workshopBookings.status.requested": "Angefragt",
+  "workshopBookings.status.confirmed": "Bestätigt",
+  "workshopBookings.status.checked_in": "Eingecheckt",
+  "workshopBookings.status.diagnosing": "In Diagnose",
+  "workshopBookings.status.awaiting_approval": "Wartet auf Freigabe",
+  "workshopBookings.status.in_service": "In Bearbeitung",
+  "workshopBookings.status.ready_for_collection": "Abholbereit",
+  "workshopBookings.status.completed": "Abgeschlossen",
+  "workshopBookings.status.declined": "Abgelehnt",
+  "workshopBookings.status.cancelled": "Storniert",
+  "workshopBookings.status.no_show": "Nicht erschienen",
+  "workshopBookings.customerVehicle": "Kunde und Fahrzeug",
+  "workshopBookings.customer": "Kunde",
+  "workshopBookings.contact": "Kontakt",
+  "workshopBookings.vehicle": "Fahrzeug",
+  "workshopBookings.mileage": "Kilometerstand",
+  "workshopBookings.mobility": "Mobilitätswunsch",
+  "workshopBookings.language": "Kundensprache",
+  "workshopBookings.requestedTimes": "Buchungszeiten",
+  "workshopBookings.preferred": "Bevorzugt",
+  "workshopBookings.alternate": "Alternative",
+  "workshopBookings.confirmed": "Bestätigt",
+  "workshopBookings.proposed": "Werkstattvorschlag",
+  "workshopBookings.notes": "Kundennotiz",
+  "workshopBookings.noCustomerNote": "Der Kunde hat keine Notiz angegeben.",
+  "workshopBookings.workshopNote": "Werkstattnotiz",
+  "workshopBookings.manage": "Anfrage bearbeiten",
+  "workshopBookings.noActions": "Für diesen Status sind keine Buchungsaktionen verfügbar.",
+  "workshopBookings.history": "Verlauf",
+  "workshopBookings.mobility.none": "Keine besondere Anforderung",
+  "workshopBookings.mobility.pickup": "Fahrzeugabholung",
+  "workshopBookings.mobility.courtesy_car": "Ersatzwagen",
+  "workshopBookings.mobility.wait_on_site": "Vor Ort warten",
+  "workshopBookings.action.time": "Datum und Uhrzeit",
+  "workshopBookings.action.reason": "Begründung",
+  "workshopBookings.action.note": "Notiz (optional)",
+  "workshopBookings.action.saving": "Wird gespeichert…",
+  "workshopBookings.action.confirm": "Buchung bestätigen",
+  "workshopBookings.action.propose_time": "Anderen Termin vorschlagen",
+  "workshopBookings.action.reschedule": "Buchung verschieben",
+  "workshopBookings.action.decline": "Anfrage ablehnen",
+  "workshopBookings.action.cancel": "Buchung stornieren",
+  "workshopBookings.result.confirmed": "Die Buchung wurde bestätigt.",
+  "workshopBookings.result.proposed": "Der alternative Termin wurde gespeichert.",
+  "workshopBookings.result.rescheduled": "Die Buchung wurde verschoben.",
+  "workshopBookings.result.declined": "Die Anfrage wurde abgelehnt.",
+  "workshopBookings.result.cancelled": "Die Buchung wurde storniert.",
+  "workshopBookings.result.invalid": "Prüfen Sie Termin und erforderliche Begründung.",
+  "workshopBookings.result.unauthorized": "Sie dürfen diese Werkstattanfrage nicht bearbeiten.",
+  "workshopBookings.result.unavailable": "Die Anfrage konnte nicht aktualisiert werden. Versuchen Sie es erneut.",
+  "workshopBookings.history.request_received": "Anfrage eingegangen",
+  "workshopBookings.history.migration_snapshot": "Ausgangsstatus",
+  "workshopBookings.history.confirmed": "Buchung bestätigt",
+  "workshopBookings.history.time_proposed": "Alternativer Termin vorgeschlagen",
+  "workshopBookings.history.rescheduled": "Buchung verschoben",
+  "workshopBookings.history.declined": "Anfrage abgelehnt",
+  "workshopBookings.history.cancelled": "Buchung storniert",
+  "workshopBookings.history.proposal_accepted": "Terminvorschlag angenommen",
+  "workshopBookings.history.proposal_declined": "Terminvorschlag abgelehnt",
+  "workshopBookings.history.customer_cancelled": "Vom Kunden storniert",
+  "customerBookings.back": "Meine Garage",
+  "customerBookings.eyebrow": "Kundenbuchungen",
+  "customerBookings.title": "Meine Servicebuchungen",
+  "customerBookings.description": "Anfragen verfolgen, Werkstattvorschläge beantworten und bestätigte Werkstattdaten einsehen.",
+  "customerBookings.visible": "Buchungen angezeigt",
+  "customerBookings.requestedTime": "Gewünschter Termin",
+  "customerBookings.proposedTime": "Vorgeschlagener Termin",
+  "customerBookings.confirmedTime": "Bestätigter Termin",
+  "customerBookings.proposalEyebrow": "Aktion erforderlich",
+  "customerBookings.proposalTitle": "Die Werkstatt hat einen anderen Termin vorgeschlagen",
+  "customerBookings.bookingDetails": "Buchungsdetails",
+  "customerBookings.vehicle": "Fahrzeug",
+  "customerBookings.preferred": "Bevorzugt",
+  "customerBookings.alternate": "Alternative",
+  "customerBookings.confirmed": "Bestätigt",
+  "customerBookings.yourNote": "Ihre Notiz",
+  "customerBookings.workshopNote": "Werkstattnotiz",
+  "customerBookings.workshopDetails": "Werkstattdetails",
+  "customerBookings.contactUnavailable": "Kontaktdaten sind noch nicht verfügbar.",
+  "customerBookings.history": "Buchungsverlauf",
+  "customerBookings.cancelTitle": "Diese Buchung stornieren",
+  "customerBookings.cancelDescription": "Die Stornierung ist endgültig. Geben Sie der Werkstatt den Grund an.",
+  "customerBookings.cancelReason": "Stornierungsgrund",
+  "customerBookings.noteOptional": "Notiz (optional)",
+  "customerBookings.saving": "Speichern…",
+  "customerBookings.action.accept_proposal": "Terminvorschlag annehmen",
+  "customerBookings.action.decline_proposal": "Terminvorschlag ablehnen",
+  "customerBookings.action.cancel": "Buchung stornieren",
+  "customerBookings.result.accepted": "Der vorgeschlagene Termin ist bestätigt.",
+  "customerBookings.result.declined": "Der Werkstattvorschlag wurde abgelehnt.",
+  "customerBookings.result.cancelled": "Die Buchung wurde storniert.",
+  "customerBookings.result.invalid": "Diese Aktion ist nicht mehr gültig. Aktualisieren Sie die Seite.",
+  "customerBookings.result.unauthorized": "Sie können diese Buchung nicht verwalten.",
+  "customerBookings.result.unavailable": "Die Buchung konnte nicht aktualisiert werden.",
+  "customerBookings.emptyTitle": "Keine passenden Buchungen",
+  "customerBookings.emptyDescription": "Ihre Serviceanfragen erscheinen hier nach der Buchung.",
+  "customerBookings.bookService": "Service buchen",
+  "register.customer.choice": "Kunde",
+  "register.workshop_manager.choice": "Werkstattmanager",
+  "register.customer.title": "Kundenregistrierung",
+  "register.customer.description": "Erstellen Sie Ihr pitster-Konto für Fahrzeuge und Servicebuchungen.",
+  "register.workshop_manager.title": "Werkstattmanager-Registrierung",
+  "register.workshop_manager.description": "Erstellen Sie ein Dienstleisterkonto für Ihren Werkstattbetrieb.",
+  "register.workshop_manager.legalName": "Rechtlicher Name des Dienstleisters",
+  "register.workshop_manager.displayName": "Anzeigename des Dienstleisters",
+  "platformLogin.customer.title": "Kundenanmeldung",
+  "platformLogin.customer.description": "Greifen Sie auf Ihre Garage und Servicebuchungen zu.",
+  "platformLogin.workshop_manager.title": "Werkstattmanager-Anmeldung",
+  "platformLogin.workshop_manager.description": "Verwalten Sie Anfragen, Services und Standorte.",
+  "platformLogin.noAccount": "Noch kein Konto?",
+  "platformLogin.register": "Konto erstellen",
+  "managerPortal.eyebrow": "Werkstattverwaltung",
+  "managerPortal.welcome": "Willkommen, {name}",
+  "managerPortal.description": "Verwalten Sie Dienstleister, Werkstätten, Katalog und Buchungsanfragen.",
+  "managerPortal.workshops": "Werkstätten",
+  "managerPortal.role": "Mitgliedsrolle",
+  "managerPortal.empty": "Keine aktive Dienstleister-Mitgliedschaft verfügbar.",
+  "workshopOperations.eyebrow": "Werkstattbetrieb",
+  "workshopOperations.title": "Werkstatteinstellungen",
+  "workshopOperations.description": "Verwalten Sie öffentliches Profil, Buchungsregeln, Öffnungszeiten, Mobilitätsoptionen und Schließzeiten.",
+  "workshopOperations.publicProfile": "Öffentliches Profil",
+  "workshopOperations.displayName": "Werkstattname",
+  "workshopOperations.descriptionLabel": "Beschreibung",
+  "workshopOperations.phone": "Öffentliche Telefonnummer",
+  "workshopOperations.email": "Öffentliche E-Mail",
+  "workshopOperations.address": "Werkstattadresse",
+  "workshopOperations.bookingRules": "Buchungsregeln",
+  "workshopOperations.leadTime": "Mindestvorlaufzeit (Minuten)",
+  "workshopOperations.horizon": "Buchungshorizont (Tage)",
+  "workshopOperations.capacity": "Tägliche Anfragekapazität",
+  "workshopOperations.interval": "Zeitintervall (Minuten)",
+  "workshopOperations.timeZone": "Zeitzone",
+  "workshopOperations.acceptsRequests": "Öffentliche Buchungsanfragen annehmen",
+  "workshopOperations.pickup": "Fahrzeugabholung anbieten",
+  "workshopOperations.courtesyCar": "Ersatzwagen anbieten",
+  "workshopOperations.waitOnSite": "Warten vor Ort erlauben",
+  "workshopOperations.hours": "Wöchentliche Öffnungszeiten",
+  "workshopOperations.closed": "Geschlossen",
+  "workshopOperations.opens": "Öffnet",
+  "workshopOperations.closes": "Schließt",
+  "workshopOperations.weekday.0": "Sonntag",
+  "workshopOperations.weekday.1": "Montag",
+  "workshopOperations.weekday.2": "Dienstag",
+  "workshopOperations.weekday.3": "Mittwoch",
+  "workshopOperations.weekday.4": "Donnerstag",
+  "workshopOperations.weekday.5": "Freitag",
+  "workshopOperations.weekday.6": "Samstag",
+  "workshopOperations.save": "Werkstatteinstellungen speichern",
+  "workshopOperations.saving": "Speichern…",
+  "workshopOperations.closures": "Ausnahmeschließungen",
+  "workshopOperations.closuresDescription": "Schließzeiten überschreiben den Wochenplan und blockieren neue Anfragen.",
+  "workshopOperations.closure.starts": "Beginn",
+  "workshopOperations.closure.ends": "Ende",
+  "workshopOperations.closure.reason": "Grund (optional)",
+  "workshopOperations.closure.add": "Schließung hinzufügen",
+  "workshopOperations.closure.remove": "Entfernen",
+  "workshopOperations.closure.defaultReason": "Werkstatt geschlossen",
+  "workshopOperations.closure.empty": "Keine bevorstehenden Schließungen.",
+  "workshopOperations.emptyTitle": "Keine Werkstätten verfügbar",
+  "workshopOperations.emptyDescription": "Zur Konfiguration ist eine aktive Werkstattmitgliedschaft erforderlich.",
+  "workshopOperations.result.saved": "Werkstatteinstellungen wurden gespeichert.",
+  "workshopOperations.result.created": "Die Schließung wurde hinzugefügt.",
+  "workshopOperations.result.removed": "Die Schließung wurde entfernt.",
+  "workshopOperations.result.invalid": "Prüfen Sie Einstellungen und Öffnungszeiten.",
+  "workshopOperations.result.unauthorized": "Sie können diese Werkstatt nicht verwalten.",
+  "workshopOperations.result.unavailable": "Die Werkstatt konnte nicht aktualisiert werden.",
+  "repairLifecycle.eyebrow": "Werkstattbetrieb",
+  "repairLifecycle.title": "Reparaturablauf",
+  "repairLifecycle.description": "Führen Sie bestätigte Aufträge von der Annahme bis zur Abholung.",
+  "repairLifecycle.visible": "Reparaturen angezeigt",
+  "repairLifecycle.filter.active": "Aktive Reparaturen",
+  "repairLifecycle.note": "Werkstattnotiz (optional)",
+  "repairLifecycle.saving": "Speichern…",
+  "repairLifecycle.result.saved": "Die Reparatur wurde aktualisiert.",
+  "repairLifecycle.result.invalid": "Dieser Übergang ist nicht mehr gültig.",
+  "repairLifecycle.result.unauthorized": "Sie können diese Reparatur nicht verwalten.",
+  "repairLifecycle.result.unavailable": "Die Reparatur konnte nicht aktualisiert werden.",
+  "repairLifecycle.action.check_in": "Fahrzeug annehmen",
+  "repairLifecycle.action.start_diagnosis": "Diagnose starten",
+  "repairLifecycle.action.start_work": "Genehmigte Arbeit starten",
+  "repairLifecycle.action.ready_for_collection": "Als abholbereit markieren",
+  "repairLifecycle.action.complete": "Reparatur abschließen",
+  "repairLifecycle.action.mark_no_show": "Als nicht erschienen markieren",
+  "repairLifecycle.diagnosis": "Diagnose",
+  "repairLifecycle.items": "Kostenvoranschlagspositionen",
+  "repairLifecycle.addItem": "Position hinzufügen",
+  "repairLifecycle.itemType": "Positionstyp",
+  "repairLifecycle.itemDescription": "Beschreibung",
+  "repairLifecycle.quantity": "Menge",
+  "repairLifecycle.unitPrice": "Einzelpreis",
+  "repairLifecycle.removeItem": "Position entfernen",
+  "repairLifecycle.currency": "Währung",
+  "repairLifecycle.customerNote": "Nachricht an den Kunden (optional)",
+  "repairLifecycle.sendEstimate": "Kostenvoranschlag senden",
+  "repairLifecycle.estimate": "Kostenvoranschlag",
+  "repairLifecycle.estimateStatus.awaiting_customer": "Wartet auf Kunden",
+  "repairLifecycle.estimateStatus.approved": "Genehmigt",
+  "repairLifecycle.estimateStatus.declined": "Abgelehnt",
+  "repairLifecycle.estimateStatus.superseded": "Ersetzt",
+  "repairLifecycle.type.labor": "Arbeit",
+  "repairLifecycle.type.part": "Teil",
+  "repairLifecycle.type.other": "Sonstiges",
+  "repairLifecycle.total": "Gesamt",
+  "repairLifecycle.customerDecisionNote": "Kundennotiz",
+  "repairLifecycle.appointment": "Termin",
+  "repairLifecycle.jobDetails": "Auftragsdetails",
+  "repairLifecycle.nextAction": "Nächster Schritt",
+  "repairLifecycle.waitingCustomer": "Warten auf die Entscheidung des Kunden.",
+  "repairLifecycle.noActions": "Diese Reparatur ist abgeschlossen.",
+  "repairLifecycle.emptyTitle": "Keine passenden Reparaturen",
+  "repairLifecycle.emptyDescription": "Bestätigte Buchungen erscheinen hier.",
+  "repairLifecycle.customerAction.approve": "Kostenvoranschlag genehmigen",
+  "repairLifecycle.customerAction.decline": "Kostenvoranschlag ablehnen",
+  "repairLifecycle.customerResult.approved": "Der Kostenvoranschlag wurde genehmigt.",
+  "repairLifecycle.customerResult.estimate_declined": "Der Kostenvoranschlag wurde zur Überarbeitung abgelehnt.",
+  "repairLifecycle.customerResult.invalid": "Dieser Kostenvoranschlag wartet nicht mehr auf eine Entscheidung.",
+  "repairLifecycle.customerResult.unauthorized": "Sie können diesen Kostenvoranschlag nicht entscheiden.",
+  "repairLifecycle.customerResult.unavailable": "Der Kostenvoranschlag konnte nicht aktualisiert werden.",
+  "repairLifecycle.approvedWaiting": "Genehmigt — die Werkstatt kann die Arbeit starten.",
+  "workshopBookings.history.checked_in": "Fahrzeug angenommen",
+  "workshopBookings.history.diagnosis_recorded": "Diagnose gestartet",
+  "workshopBookings.history.estimate_sent": "Kostenvoranschlag gesendet",
+  "workshopBookings.history.estimate_approved": "Kostenvoranschlag genehmigt",
+  "workshopBookings.history.estimate_declined": "Kostenvoranschlag abgelehnt",
+  "workshopBookings.history.work_started": "Arbeit gestartet",
+  "workshopBookings.history.ready_for_collection": "Abholbereit",
+  "workshopBookings.history.completed": "Reparatur abgeschlossen",
+  "workshopBookings.history.no_show": "Kunde nicht erschienen",
+  "providerBilling.eyebrow": "Abrechnung für Dienstleister",
+  "providerBilling.title": "Abonnement und Rechnungen",
+  "providerBilling.description": "Verwalten Sie Ihr monatliches 35-€-Abonnement, Zahlungsdaten und Stripe-Rechnungen.",
+  "providerBilling.provider": "Dienstleister",
+  "providerBilling.checkoutSuccess": "Checkout abgeschlossen. Stripe bestätigt das Abonnement über den signierten Webhook.",
+  "providerBilling.checkoutCancelled": "Checkout abgebrochen. Es wurde nichts geändert.",
+  "providerBilling.error": "Der Abrechnungsvorgang konnte nicht abgeschlossen werden.",
+  "providerBilling.plan": "Aktueller Tarif",
+  "providerBilling.month": "Monat",
+  "providerBilling.smsIncluded": "SMS inklusive",
+  "providerBilling.status": "Status",
+  "providerBilling.renews": "Aktueller Zeitraum endet",
+  "providerBilling.cancelsAtPeriodEnd": "Kündigung zum Periodenende geplant",
+  "providerBilling.subscribe": "Mit Stripe abonnieren",
+  "providerBilling.portal": "Abrechnung in Stripe verwalten",
+  "providerBilling.notConfigured": "Die Stripe-Umgebung ist nicht konfiguriert.",
+  "providerBilling.profileTitle": "Rechnungsidentität",
+  "providerBilling.profileDescription": "Diese Angaben identifizieren den zahlenden Dienstleister. Zahlungsdaten werden sicher von Stripe erfasst.",
+  "providerBilling.billingEmail": "Rechnungs-E-Mail",
+  "providerBilling.billingContact": "Rechnungskontakt",
+  "providerBilling.taxIdentifier": "Steuernummer",
+  "providerBilling.addressLine1": "Adresszeile 1",
+  "providerBilling.addressLine2": "Adresszeile 2",
+  "providerBilling.city": "Ort",
+  "providerBilling.postalCode": "Postleitzahl",
+  "providerBilling.country": "Ländercode",
+  "providerBilling.result.saved": "Rechnungsdaten gespeichert.",
+  "providerBilling.result.invalid": "Prüfen Sie die Rechnungsdaten.",
+  "providerBilling.result.unauthorized": "Nur ein aktiver Inhaber kann die Abrechnung verwalten.",
+  "providerBilling.result.configuration": "Stripe ist nicht konfiguriert.",
+  "providerBilling.result.unavailable": "Rechnungsdaten konnten nicht aktualisiert werden.",
+  "providerBilling.invoices": "Stripe-Rechnungen",
+  "providerBilling.invoice": "Rechnung",
+  "providerBilling.period": "Zeitraum",
+  "providerBilling.amount": "Betrag",
+  "providerBilling.documents": "Dokumente",
+  "providerBilling.view": "Anzeigen",
+  "providerBilling.noInvoices": "Rechnungen erscheinen hier, sobald Stripe sie erstellt.",
+  "providerBilling.subscription.not_started": "Nicht abonniert",
+  "providerBilling.subscription.incomplete": "Checkout unvollständig",
+  "providerBilling.subscription.incomplete_expired": "Checkout abgelaufen",
+  "providerBilling.subscription.trialing": "Testphase",
+  "providerBilling.subscription.active": "Aktiv",
+  "providerBilling.subscription.past_due": "Zahlung überfällig",
+  "providerBilling.subscription.canceled": "Gekündigt",
+  "providerBilling.subscription.unpaid": "Unbezahlt",
+  "providerBilling.subscription.paused": "Pausiert",
+  "commercialAdmin.eyebrow": "Kommerzieller Betrieb",
+  "commercialAdmin.title": "Anbieterabonnements und Betrieb",
+  "commercialAdmin.description": "Überwachen Sie Stripe-Abonnements, exportieren Sie Buchhaltungsdaten und verwalten Sie den Betriebsstatus getrennt vom Zahlungsstatus.",
+  "commercialAdmin.providers": "Anbieter",
+  "commercialAdmin.activeSubscriptions": "Aktive Abonnements",
+  "commercialAdmin.attention": "Zahlung prüfen",
+  "commercialAdmin.mrr": "Monatlich wiederkehrender Umsatz",
+  "commercialAdmin.provider": "Anbieter",
+  "commercialAdmin.providerStatus": "Betriebsstatus",
+  "commercialAdmin.subscription": "Abonnement",
+  "commercialAdmin.renewal": "Periodenende",
+  "commercialAdmin.invoices": "Rechnungen",
+  "commercialAdmin.operation": "Admin-Vorgang",
+  "commercialAdmin.reason": "Begründung erforderlich",
+  "commercialAdmin.providerStatus.pending": "Ausstehend",
+  "commercialAdmin.providerStatus.active": "Aktiv",
+  "commercialAdmin.providerStatus.suspended": "Gesperrt",
+  "commercialAdmin.providerStatus.rejected": "Abgelehnt",
+  "commercialAdmin.result.saved": "Anbieterstatus aktualisiert.",
+  "commercialAdmin.result.invalid": "Wählen Sie einen anderen Status und geben Sie einen Grund an.",
+  "commercialAdmin.result.unauthorized": "Plattformadministrator-Zugriff erforderlich.",
+  "commercialAdmin.result.unavailable": "Anbieterstatus konnte nicht aktualisiert werden.",
+  "serviceCatalogue.vehicleType": "Fahrzeugtyp",
+  "serviceCatalogue.vehicleType.car_van": "Auto / Transporter",
+  "serviceCatalogue.vehicleType.motorcycle_scooter": "Motorrad / Benzinroller",
+  "serviceCatalogue.vehicleType.electric_bicycle": "E-Bike",
+  "serviceCatalogue.vehicleType.electric_kick_scooter": "E-Scooter",
+  "serviceCatalogue.bookingMode": "Buchungsweg",
+  "serviceCatalogue.bookingMode.direct": "Direkte Leistung",
+  "serviceCatalogue.bookingMode.diagnosis_first": "Zuerst Diagnose",
+  "serviceCatalogue.bookingMode.diagnosis": "Erstdiagnose",
+  "serviceCatalogue.diagnosisFeeHelp": "Legen Sie vor der Veröffentlichung eine positive Diagnosegebühr fest. Sie bleibt fällig, wenn der Kunde weitere Reparaturen ablehnt.",
+  "serviceCatalogue.setupRequired": "Gebühr erforderlich",
+  "serviceCatalogue.template": "Standardleistung",
+  "serviceCatalogue.template.custom": "Benutzerdefinierte Leistung",
+  "workshopBookings.calendar.title": "Werkstattkalender",
+  "workshopBookings.calendarStatus.proposed": "Termin vorgeschlagen",
+  "workshopBookings.calendarStatus.rescheduled": "Verschoben",
+  "workshopBookings.manual.add": "Termin hinzufügen",
+  "workshopBookings.manual.source": "Buchungsquelle",
+  "workshopBookings.manual.phone": "Kundentelefon (optional)",
+  "workshopBookings.manual.email": "Kunden-E-Mail (optional)",
+  "workshopBookings.manual.registration": "Kennzeichen",
+  "workshopBookings.manual.make": "Fahrzeugmarke",
+  "workshopBookings.manual.model": "Fahrzeugmodell",
+  "workshopBookings.manual.year": "Baujahr",
+  "workshopBookings.customerStates": "Kundenaussage",
+  "workshopBookings.customerStatesHelp": "Symptome und Fakten genau so erfassen, wie sie der Kunde beschreibt.",
+  "workshopBookings.manual.create": "Termin erstellen",
+  "workshopBookings.manual.result.created": "Der Termin wurde dem Kalender hinzugefügt.",
+  "workshopBookings.manual.result.invalid": "Prüfen Sie Termin-, Kunden- und Fahrzeugdaten.",
+  "workshopBookings.manual.result.unauthorized": "Sie dürfen für diese Werkstatt keine Termine hinzufügen.",
+  "workshopBookings.manual.result.unavailable": "Der Termin konnte nicht erstellt werden.",
+  "workshopBookings.source.public_request": "Online-Anfrage",
+  "workshopBookings.source.manager_phone": "Telefonanruf",
+  "workshopBookings.source.manager_walk_in": "Laufkundschaft",
+  "workshopBookings.source.manager_other": "Sonstiger Werkstatteintrag",
+  "workshopBookings.history.manager_created": "Termin von der Werkstatt erstellt",
+  "automotiveAdmin.console": "Plattformbetrieb",
+  "automotiveAdmin.navigation": "Fahrzeug-Plattformverwaltung",
+  "automotiveAdmin.nav.overview": "Übersicht",
+  "automotiveAdmin.nav.providers": "Dienstleister",
+  "automotiveAdmin.nav.workshops": "Werkstätten",
+  "automotiveAdmin.nav.customers": "Kunden",
+  "automotiveAdmin.nav.managers": "Werkstattleiter",
+  "automotiveAdmin.nav.sms": "SMS-Versand",
+  "automotiveAdmin.nav.security": "Sicherheit",
+  "automotiveAdmin.openBookings": "Offene Buchungen",
+  "automotiveAdmin.smsAttention": "SMS mit Handlungsbedarf",
+  "automotiveAdmin.recentProviders": "Neue Dienstleister",
+  "automotiveAdmin.provider": "Dienstleister",
+  "automotiveAdmin.providers": "Dienstleister",
+  "automotiveAdmin.workshop": "Werkstatt",
+  "automotiveAdmin.workshops": "Werkstätten",
+  "automotiveAdmin.customer": "Kunde",
+  "automotiveAdmin.manager": "Werkstattleiter",
+  "automotiveAdmin.managers": "Leiter",
+  "automotiveAdmin.legalName": "Rechtlicher Name",
+  "automotiveAdmin.location": "Standort",
+  "automotiveAdmin.phone": "Telefon",
+  "automotiveAdmin.vehicles": "Fahrzeuge",
+  "automotiveAdmin.bookings": "Buchungen",
+  "automotiveAdmin.created": "Erstellt",
+  "automotiveAdmin.smsEvent": "SMS-Ereignis",
+  "automotiveAdmin.pending": "Ausstehend",
+  "automotiveAdmin.sent": "Gesendet",
+  "automotiveAdmin.failed": "Fehlgeschlagen",
+  "automotiveAdmin.empty": "Keine Einträge in diesem Bereich.",
+  "automotiveAdmin.securityTitle": "Sicherheit der Administratorsitzung",
+  "automotiveAdmin.securityDescription": "Administratorzugriff erfordert ein aktives Konto und Mehrfaktor-Authentifizierung.",
+  "automotiveAdmin.role": "Rolle",
+  "automotiveAdmin.session": "Sitzungssicherheit",
+  "automotiveAdmin.generated": "Momentaufnahme erstellt",
+  "automotiveAdmin.sms.booking_confirmed": "Buchung bestätigt",
+  "automotiveAdmin.sms.reminder_24h": "24-Stunden-Erinnerung",
+  "automotiveAdmin.sms.repair_started": "Reparatur begonnen",
+  "automotiveAdmin.sms.ready_for_pickup": "Abholbereit",
+  "automotiveAdmin.sms.review_request": "Bewertungsanfrage"
 }

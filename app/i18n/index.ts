@@ -85,25 +85,3 @@ export function formatRelativeTime(
     "hour",
   );
 }
-
-export const medicalKey = {
-  sex: (key: "female" | "male") => `medical.sex.${key}` as TranslationKey,
-  relationship: (key: "husband") =>
-    `medical.relationship.${key}` as TranslationKey,
-  allergy: (key: "penicillin" | "latex" | "ibuprofen" | "noneKnown") =>
-    `medical.allergy.${key}` as TranslationKey,
-  condition: (
-    key:
-      | "type2Diabetes"
-      | "hypertension"
-      | "atrialFibrillation"
-      | "asthma"
-      | "hyperlipidemia"
-      | "hypothyroidism",
-  ) => `medical.condition.${key}` as TranslationKey,
-  schedule: (key: "twiceDaily" | "everyMorning" | "asPrescribed") =>
-    `medical.schedule.${key}` as TranslationKey,
-  procedure: (key: "appendectomy") =>
-    `medical.procedure.${key}` as TranslationKey,
-  implant: (key: "none") => `medical.implant.${key}` as TranslationKey,
-};

@@ -31,19 +31,19 @@ export default async function WorkshopPage({
   const workshop = await getPublicWorkshop(workshopId);
   if (!workshop) notFound();
   const services = await loadPublicWorkshopServices(workshopId);
-  return <main className="booking-shell doctor-public-page">
+  return <main className="booking-shell workshop-public-page">
       <PublicSiteHeader />
-    <section className="doctor-public-hero workshop-public-hero">
-      <div className="doctor-public-avatar">{initials(workshop.name)}</div>
+    <section className="workshop-public-hero">
+      <div className="workshop-public-avatar">{initials(workshop.name)}</div>
       <div>
-        <span className="doctor-verified">✓ Verified service provider</span>
+        <span className="workshop-verified">✓ Verified service provider</span>
         <h1>{workshop.name}</h1>
         <strong>{workshop.serviceCategories.join(" · ") || "Vehicle servicing and repairs"}</strong>
         <p>{[workshop.address, workshop.city, workshop.countryCode].filter(Boolean).join(", ")}</p>
       </div>
       <aside><small>The workshop confirms every request</small><Link href="#service-list">Choose a service</Link></aside>
     </section>
-    <section className="doctor-public-content workshop-public-content">
+    <section className="workshop-public-content">
       <article>
         <h2>About this workshop</h2>
         <p>{workshop.description || "Service information will be added by the workshop."}</p>

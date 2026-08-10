@@ -91,6 +91,17 @@ where target_account_type is null;
 ## Next retirement slice
 
 1. Apply the approved retention policy to medical records and accounting data.
-2. Remove unused medical translation keys and CSS after a canonical UI key audit.
-3. Drop compatibility database objects only in a separately reviewed migration
+2. Drop compatibility database objects only in a separately reviewed migration
    with a backup and rollback plan.
+
+## Retired in the canonical UI audit
+
+- Medical-only translation namespaces and obsolete clinic-era administrative
+  labels are removed consistently from all four locales.
+- Shared administrator authentication, MFA, workshop workspace controls, address
+  search help, and the commercial CSV label remain available under their existing
+  stable keys.
+- Dead doctor portal, patient record, clinic administration, and medical form CSS
+  is removed. The active public workshop profile selectors now use canonical
+  `workshop-public-*` names.
+- Regression coverage prevents retired medical keys and selectors from returning.

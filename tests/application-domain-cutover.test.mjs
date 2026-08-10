@@ -11,6 +11,13 @@ const customerBookings = await read("app/customer/bookings/page.tsx");
 const managerRequests = await read("app/workshop-manager/requests/page.tsx");
 const home = await read("app/HomeDiscoveryClient.tsx");
 const proxy = await read("proxy.ts");
+const css = await read("app/globals.css");
+const i18nIndex = await read("app/i18n/index.ts");
+const locales = await Promise.all(
+  ["en", "de", "ro", "hu"].map(async (locale) =>
+    JSON.parse(await read(`app/i18n/${locale}.json`)),
+  ),
+);
 
 test("active customer and manager pages use canonical access states", () => {
   assert.match(access, /getCustomerAccess/);
@@ -55,4 +62,34 @@ test("legacy medical routes and application modules are retired", async () => {
     "lib/sms/appointment-notifications.ts",
   ];
   for (const path of retired) await assert.rejects(fileAccess(new URL(path, root)), path);
+});
+
+test("canonical UI assets contain no retired medical namespaces or selectors", async () => {
+  const retiredNamespaces = [
+    "appointments",
+    "availability",
+    "doctor",
+    "doctorProfile",
+    "medical",
+    "organization",
+    "patient",
+    "patientAppointments",
+    "staffPatients",
+  ];
+  for (const dictionary of locales) {
+    const keys = Object.keys(dictionary);
+    for (const namespace of retiredNamespaces) {
+      assert.equal(keys.some((key) => key.startsWith(`${namespace}.`)), false, namespace);
+    }
+    assert.equal(keys.some((key) => /^admin\.(?:doctor|clinic|patient|audit|section|table|empty|task)\./.test(key)), false);
+    assert.deepEqual(keys.filter((key) => key.startsWith("billing.")), ["billing.downloadCsv"]);
+  }
+  assert.doesNotMatch(i18nIndex, /medicalKey|medical\./);
+  await assert.rejects(fileAccess(new URL("app/i18n/admin-values.ts", root)));
+  assert.doesNotMatch(
+    css,
+    /\.(?:doctor(?:-|\b)|patient(?:-|\b)|dp-|staff-patient|admin-(?:doctor|clinic|patient)|health-data-form|critical-diagnoses|sensitive-identifiers|diagnosis-)/,
+  );
+  assert.match(css, /\.workshop-public-page/);
+  assert.match(css, /\.workshop-public-hero/);
 });
