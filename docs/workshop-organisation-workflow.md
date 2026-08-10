@@ -18,10 +18,17 @@ An administrator can create a service organisation and issue an
 token digest, has an expiry, and becomes terminal when accepted, revoked, or
 expired.
 
-An administrator or organisation owner can issue a `location_manager`
-invitation for a workshop belonging to that organisation. Acceptance will create
-or connect the canonical manager profile, provider membership, and location
-assignment in the later workflow cutover.
+An administrator can issue a `location_manager` invitation for a workshop
+belonging to that organisation. Acceptance creates the canonical manager
+profile, provider membership, location assignment, and active account identity
+in one transaction. Existing active managers are assigned directly instead of
+being invited again. Organisation-owner self-service invitations are the next
+workflow phase.
+
+The admin console returns a one-time, seven-day invitation URL. Only its SHA-256
+digest is stored, so the administrator must copy and share the URL when it is
+created. The invited person confirms the email through Supabase and then uses
+the existing password-setup flow.
 
 ## Location coverage
 
@@ -45,7 +52,20 @@ independent from map visibility.
 
 ## Account controls
 
-`account_identities.status` is the future authoritative control for all platform
-roles. Status changes will be performed only through audited administrative
-functions that write immutable `platform_account_status_history` rows. Existing
-access checks intentionally ignore the new field until that cutover is deployed.
+`account_identities.status` is the authoritative application control for all
+platform roles. MFA-protected administrators can activate, deactivate, or block
+accounts with a required reason. Changes write immutable
+`platform_account_status_history` and organisation-administration audit rows.
+Administrators cannot change their own status, only Superadmins can control
+other administrators, and the final active Superadmin is protected. Customer,
+manager, accounting, and admin route guards now enforce the status; the shared
+workshop authorization function also enforces it for workshop-management RPCs.
+
+## Step 2 admin operations
+
+The admin providers page creates organisations and owner invitations. The
+workshops page creates geocoded locations, invites a new primary or supporting
+manager, and assigns an existing active manager. Customer and manager tables,
+plus the security page, expose the role-neutral account control. New providers
+and locations remain `pending`; publication eligibility and location-level
+billing activation remain separate controlled cutovers.

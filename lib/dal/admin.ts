@@ -2,6 +2,7 @@ import "server-only";
 
 import { createClient } from "../supabase/server";
 import type { AdministratorContext } from "./admin-auth";
+import { loadAdminOrganisationWorkflow, type AdminOrganisationWorkflow } from "./admin-organisations";
 import { DataAccessError } from "./errors";
 
 export type AdminSection = "overview" | "providers" | "workshops" | "customers" | "managers" | "sms" | "security";
@@ -16,16 +17,21 @@ export type AdminDashboardData = {
   customers: Array<{ id: string; fullName: string; phone: string | null; vehicleCount: number; bookingCount: number; createdAt: string }>;
   managers: Array<{ id: string; displayName: string; status: Status; providerNames: string[]; createdAt: string }>;
   sms: Array<{ kind: string; pending: number; sent: number; failed: number }>;
+  workflow: AdminOrganisationWorkflow;
 };
 
 export async function loadAdminDashboard(administrator: AdministratorContext): Promise<AdminDashboardData> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_automotive_admin_snapshot");
+  const [{ data, error }, workflow] = await Promise.all([
+    supabase.rpc("get_automotive_admin_snapshot"),
+    loadAdminOrganisationWorkflow(),
+  ]);
   if (error || !data || typeof data !== "object") {
     throw new DataAccessError(error?.code === "42501" ? "unauthorized" : "unavailable");
   }
   return {
-    ...(data as unknown as Omit<AdminDashboardData, "administrator">),
+    ...(data as unknown as Omit<AdminDashboardData, "administrator" | "workflow">),
     administrator: { displayName: administrator.displayName, role: administrator.role },
+    workflow,
   };
 }

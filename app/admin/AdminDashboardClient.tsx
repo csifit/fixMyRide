@@ -8,9 +8,9 @@ import PendingSubmitButton from "@/app/PendingSubmitButton";
 import { brand } from "@/lib/brand";
 import type { AdminDashboardData, AdminSection } from "@/lib/dal/admin";
 import { adminLogoutAction } from "./actions";
+import { AccountStatusControl, OrganisationAdministration, WorkshopAdministration } from "./AdminWorkflowForms";
 
 type T = (key: TranslationKey) => string;
-
 const sections: Array<{ id: AdminSection; href: string; key: TranslationKey; count?: keyof AdminDashboardData["counts"] }> = [
   { id: "overview", href: "/admin", key: "automotiveAdmin.nav.overview" },
   { id: "providers", href: "/admin/providers", key: "automotiveAdmin.nav.providers", count: "providers" },
@@ -24,11 +24,9 @@ const sections: Array<{ id: AdminSection; href: string; key: TranslationKey; cou
 function Table({ headers, rows, empty }: { headers: string[]; rows: Array<Array<string | number | ReactNode>>; empty: string }) {
   return <div className="admin-table-card"><table><thead><tr>{headers.map((header) => <th key={header}>{header}</th>)}</tr></thead><tbody>{rows.length ? rows.map((row, index) => <tr key={index}>{row.map((cell, cellIndex) => <td key={cellIndex}>{cell}</td>)}</tr>) : <tr><td colSpan={headers.length}>{empty}</td></tr>}</tbody></table></div>;
 }
-
 function Status({ value, t }: { value: string; t: T }) {
   return <b className={`admin-status ${value}`}>{t(`commercialAdmin.providerStatus.${value}` as TranslationKey)}</b>;
 }
-
 function Overview({ data, language, t }: { data: AdminDashboardData; language: Language; t: T }) {
   const metrics: Array<[number, TranslationKey]> = [
     [data.counts.providers, "automotiveAdmin.nav.providers"], [data.counts.workshops, "automotiveAdmin.nav.workshops"],
@@ -40,12 +38,19 @@ function Overview({ data, language, t }: { data: AdminDashboardData; language: L
 
 function Content({ section, data, language, t }: { section: AdminSection; data: AdminDashboardData; language: Language; t: T }) {
   if (section === "overview") return <Overview data={data} language={language} t={t} />;
-  if (section === "providers") return <Table headers={[t("automotiveAdmin.provider"), t("automotiveAdmin.legalName"), t("common.status"), t("automotiveAdmin.workshops"), t("automotiveAdmin.managers"), t("automotiveAdmin.created")]} rows={data.providers.map((row) => [row.displayName, row.legalName, <Status key={row.id} value={row.status} t={t} />, row.workshopCount, row.managerCount, formatDateTime(language, row.createdAt)])} empty={t("automotiveAdmin.empty")} />;
-  if (section === "workshops") return <Table headers={[t("automotiveAdmin.workshop"), t("automotiveAdmin.provider"), t("automotiveAdmin.location"), t("common.status"), t("automotiveAdmin.openBookings")]} rows={data.workshops.map((row) => [row.displayName, row.providerName, [row.city, row.countryCode].filter(Boolean).join(", "), <Status key={row.id} value={row.status} t={t} />, row.openBookingCount])} empty={t("automotiveAdmin.empty")} />;
-  if (section === "customers") return <Table headers={[t("automotiveAdmin.customer"), t("automotiveAdmin.phone"), t("automotiveAdmin.vehicles"), t("automotiveAdmin.bookings"), t("automotiveAdmin.created")]} rows={data.customers.map((row) => [row.fullName, row.phone ?? "—", row.vehicleCount, row.bookingCount, formatDateTime(language, row.createdAt)])} empty={t("automotiveAdmin.empty")} />;
-  if (section === "managers") return <Table headers={[t("automotiveAdmin.manager"), t("automotiveAdmin.providers"), t("common.status"), t("automotiveAdmin.created")]} rows={data.managers.map((row) => [row.displayName, row.providerNames.join(", ") || "—", <Status key={row.id} value={row.status} t={t} />, formatDateTime(language, row.createdAt)])} empty={t("automotiveAdmin.empty")} />;
+  if (section === "providers") return <><OrganisationAdministration providers={data.providers} invitations={data.workflow.invitations} t={t} /><Table headers={[t("automotiveAdmin.provider"), t("automotiveAdmin.legalName"), t("common.status"), t("automotiveAdmin.workshops"), t("automotiveAdmin.managers"), t("automotiveAdmin.created")]} rows={data.providers.map((row) => [row.displayName, row.legalName, <Status key={row.id} value={row.status} t={t} />, row.workshopCount, row.managerCount, formatDateTime(language, row.createdAt)])} empty={t("automotiveAdmin.empty")} /></>;
+  if (section === "workshops") return <WorkshopAdministration providers={data.providers} workflow={data.workflow} language={language} t={t} />;
+  if (section === "customers") return <Table headers={[t("automotiveAdmin.customer"), t("automotiveAdmin.phone"), t("automotiveAdmin.vehicles"), t("automotiveAdmin.bookings"), t("adminWorkflow.accountStatus")]} rows={data.customers.map((row) => {
+    const account = data.workflow.accounts.find((item) => item.customerId === row.id);
+    return [row.fullName, row.phone ?? "—", row.vehicleCount, row.bookingCount, account ? <AccountStatusControl key={row.id} account={account} t={t} /> : "—"];
+  })} empty={t("automotiveAdmin.empty")} />;
+  if (section === "managers") return <Table headers={[t("automotiveAdmin.manager"), t("automotiveAdmin.providers"), t("common.status"), t("adminWorkflow.accountStatus")]} rows={data.managers.map((row) => {
+    const manager = data.workflow.managers.find((item) => item.id === row.id);
+    const account = manager ? data.workflow.accounts.find((item) => item.authUserId === manager.authUserId) : undefined;
+    return [row.displayName, row.providerNames.join(", ") || "—", <Status key={row.id} value={row.status} t={t} />, account ? <AccountStatusControl key={row.id} account={account} t={t} /> : "—"];
+  })} empty={t("automotiveAdmin.empty")} />;
   if (section === "sms") return <Table headers={[t("automotiveAdmin.smsEvent"), t("automotiveAdmin.pending"), t("automotiveAdmin.sent"), t("automotiveAdmin.failed")]} rows={data.sms.map((row) => [t(`automotiveAdmin.sms.${row.kind}` as TranslationKey), row.pending, row.sent, row.failed])} empty={t("automotiveAdmin.empty")} />;
-  return <article className="admin-panel"><h2>{t("automotiveAdmin.securityTitle")}</h2><p>{t("automotiveAdmin.securityDescription")}</p><dl><div><dt>{t("automotiveAdmin.role")}</dt><dd>{data.administrator.role}</dd></div><div><dt>{t("automotiveAdmin.session")}</dt><dd>AAL2</dd></div><div><dt>{t("automotiveAdmin.generated")}</dt><dd>{formatDateTime(language, data.generatedAt)}</dd></div></dl></article>;
+  return <><article className="admin-panel"><h2>{t("automotiveAdmin.securityTitle")}</h2><p>{t("automotiveAdmin.securityDescription")}</p><dl><div><dt>{t("automotiveAdmin.role")}</dt><dd>{data.administrator.role}</dd></div><div><dt>{t("automotiveAdmin.session")}</dt><dd>AAL2</dd></div><div><dt>{t("automotiveAdmin.generated")}</dt><dd>{formatDateTime(language, data.generatedAt)}</dd></div></dl></article><Table headers={[t("adminWorkflow.account"), t("adminWorkflow.accountType"), t("adminWorkflow.accountStatus"), t("adminWorkflow.operation")]} rows={data.workflow.accounts.map((account) => [<span key={account.authUserId}><strong>{account.displayName}</strong><small>{account.email}</small></span>, account.accountType, t(`adminWorkflow.status.${account.status}` as TranslationKey), <AccountStatusControl key={account.authUserId} account={account} t={t} />])} empty={t("automotiveAdmin.empty")} /></>;
 }
 
 export default function AdminDashboard({ data, section = "overview" }: { data: AdminDashboardData; section?: AdminSection }) {

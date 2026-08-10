@@ -9,10 +9,11 @@ type BaseFailure = { state: "configuration" | "unavailable" | "unauthenticated" 
 export type CustomerAccess = BaseFailure | {
   state: "active";
   customer: { id: string; fullName: string };
-};
+} | { state: "deactivated" | "blocked" };
 
 export type WorkshopManagerAccess = BaseFailure
   | { state: "pending" | "suspended" | "rejected" }
+  | { state: "deactivated" | "blocked" }
   | { state: "active"; manager: { id: string; displayName: string } };
 
 async function authenticatedUserId() {
@@ -28,13 +29,14 @@ export async function getCustomerAccess(): Promise<CustomerAccess> {
   const auth = await authenticatedUserId();
   if (auth.state !== "authenticated") return auth;
   const [{ data: identity, error: identityError }, { data: customer, error: customerError }] = await Promise.all([
-    auth.supabase.from("account_identities").select("target_account_type").eq("auth_user_id", auth.userId).maybeSingle(),
+    auth.supabase.from("account_identities").select("target_account_type, status").eq("auth_user_id", auth.userId).maybeSingle(),
     auth.supabase.from("customer_profiles").select("id, auth_user_id, full_name").eq("auth_user_id", auth.userId).maybeSingle(),
   ]);
   if (identityError || customerError) return { state: "unavailable" };
   if (identity?.target_account_type !== "customer" || !customer || customer.auth_user_id !== auth.userId) {
     return { state: "unauthorized" };
   }
+  if (identity.status === "deactivated" || identity.status === "blocked") return { state: identity.status };
   return { state: "active", customer: { id: customer.id, fullName: customer.full_name } };
 }
 
@@ -42,13 +44,14 @@ export async function getWorkshopManagerAccess(): Promise<WorkshopManagerAccess>
   const auth = await authenticatedUserId();
   if (auth.state !== "authenticated") return auth;
   const [{ data: identity, error: identityError }, { data: manager, error: managerError }] = await Promise.all([
-    auth.supabase.from("account_identities").select("target_account_type").eq("auth_user_id", auth.userId).maybeSingle(),
+    auth.supabase.from("account_identities").select("target_account_type, status").eq("auth_user_id", auth.userId).maybeSingle(),
     auth.supabase.from("workshop_manager_profiles").select("id, auth_user_id, display_name, status").eq("auth_user_id", auth.userId).maybeSingle(),
   ]);
   if (identityError || managerError) return { state: "unavailable" };
   if (identity?.target_account_type !== "workshop_manager" || !manager || manager.auth_user_id !== auth.userId) {
     return { state: "unauthorized" };
   }
+  if (identity.status === "deactivated" || identity.status === "blocked") return { state: identity.status };
   if (manager.status === "pending") return { state: "pending" };
   if (manager.status === "suspended") return { state: "suspended" };
   if (manager.status !== "active") return { state: "rejected" };

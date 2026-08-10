@@ -85,6 +85,12 @@
   assignments, one Stripe customer per organisation, and one shadow subscription
   per workshop. Existing authorization, publication, and provider billing remain
   authoritative until their separately tested cutovers.
+- Migration 040 and the admin console implement the Step 2 workflow: an MFA-
+  protected administrator can invite an organisation owner, create a geocoded
+  workshop location, invite or directly assign its manager, and auditably manage
+  role-neutral account status. Invitations are one-time hashed links; accepting
+  one creates the canonical manager identity and assignment. Location billing
+  activation and public publication remain later cutovers.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted
