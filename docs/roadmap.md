@@ -80,6 +80,11 @@
 - The canonical UI audit removes medical-only translation namespaces and dead
   clinic-era styles in all four languages while retaining shared authentication,
   workshop workspace, address-search, and commercial export labels.
+- The multi-location expansion in migration 039 adds role-neutral account status
+  history, organisation/location invitations, location-scoped manager
+  assignments, one Stripe customer per organisation, and one shadow subscription
+  per workshop. Existing authorization, publication, and provider billing remain
+  authoritative until their separately tested cutovers.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

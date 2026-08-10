@@ -45,4 +45,5 @@ next-env.d.ts
 !/docs/hosted-integration-testing.md
 !/docs/legacy-retirement-audit.md
 !/docs/roadmap.md
+!/docs/workshop-organisation-workflow.md
 /README.md
