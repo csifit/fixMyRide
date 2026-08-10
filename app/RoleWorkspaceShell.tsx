@@ -18,6 +18,7 @@ const navigation: Record<Role, { title: string; items: Item[] }> = {
     { href: "/workshop-manager/requests", label: "Calendar & requests", mark: "C" },
     { href: "/workshop-manager/repairs", label: "Repair lifecycle", mark: "R" },
     { href: "/workshop-manager/workshops", label: "Workshops", mark: "W" },
+    { href: "/workshop-manager/organisation", label: "Organisation coverage", mark: "O" },
     { href: "/workshop-manager/services", label: "Service catalogue", mark: "S" },
     { href: "/workshop-manager/invoicing", label: "Subscription & billing", mark: "$" },
   ] },

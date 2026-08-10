@@ -69,3 +69,20 @@ manager, and assigns an existing active manager. Customer and manager tables,
 plus the security page, expose the role-neutral account control. New providers
 and locations remain `pending`; publication eligibility and location-level
 billing activation remain separate controlled cutovers.
+
+## Step 3 organisation coverage
+
+Active organisation owners have an owner-scoped coverage dashboard at
+`/workshop-manager/organisation`. It shows each location, its primary manager,
+shadow subscription and grace state, the EUR 35 unit price, and the total
+required monthly coverage for all organisation locations. The total is a
+projection only: this milestone does not create, modify, or multiply Stripe
+subscriptions.
+
+Owners can issue a seven-day invitation for a new primary or supporting manager
+at one of their own locations. The application returns the plaintext link once
+and stores only its SHA-256 digest. Owners can revoke an unused invitation and
+issue a replacement. Registration continues through the shared invitation,
+email-confirmation, and password-setup workflow introduced in Step 2. Existing
+accounts still require direct administrator assignment, preventing an owner from
+silently attaching an unrelated platform user by email.

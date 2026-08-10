@@ -91,6 +91,12 @@
   role-neutral account status. Invitations are one-time hashed links; accepting
   one creates the canonical manager identity and assignment. Location billing
   activation and public publication remain later cutovers.
+- Migration 041 adds the Step 3 organisation-owner workflow. Active owners can
+  oversee location coverage, manager responsibility, pending invitations, and
+  the projected EUR 35-per-location monthly total. They can create and revoke
+  hashed location-manager invitations scoped to their own organisation. This
+  dashboard remains read-only with respect to Stripe; location-level charging
+  is still a separate commercial cutover.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted
