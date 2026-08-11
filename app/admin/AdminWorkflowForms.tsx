@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import GoogleAddressSearch from "@/app/GoogleAddressSearch";
 import type { Language, TranslationKey } from "@/app/i18n";
 import type { AdminOrganisationWorkflow } from "@/lib/dal/admin-organisations";
@@ -52,14 +52,15 @@ function LocationForm({ providers, language, t }: {
   providers: Array<{ id: string; displayName: string; status: string }>; language: Language; t: T;
 }) {
   const [state, action, pending] = useActionState(createWorkshopLocationAction, initial);
+  const [locationReady, setLocationReady] = useState(false);
   return <details className="admin-workflow-card" open><summary><span><strong>{t("adminWorkflow.addLocation")}</strong><small>{t("adminWorkflow.addLocationHelp")}</small></span></summary>
     <form className="admin-workflow-form" action={action}>
       <label>{t("adminWorkflow.providerOptional")}<select name="providerId" defaultValue=""><option value="">{t("adminWorkflow.noProvider")}</option>{providers.map((provider) => <option value={provider.id} key={provider.id}>{provider.displayName} · {provider.status}</option>)}</select></label>
       <label>{t("adminWorkflow.locationName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
-      <GoogleAddressSearch label={t("adminWorkflow.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("workspace.addressSearchFallback")} language={language} disabled={pending} />
+      <GoogleAddressSearch label={t("adminWorkflow.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("adminWorkflow.addressSearchUnavailable")} language={language} disabled={pending} onSelection={(selection) => setLocationReady(Boolean(selection?.city && selection.latitude !== null && selection.longitude !== null))} />
       <label>{t("adminWorkflow.publicPhone")}<input name="publicPhone" maxLength={40} /></label>
       <label>{t("adminWorkflow.publicEmail")}<input name="publicEmail" type="email" maxLength={320} /></label>
-      <button disabled={pending}>{t("adminWorkflow.createLocation")}</button><Result state={state} t={t} />
+      <button disabled={pending || !locationReady}>{t("adminWorkflow.createLocation")}</button><Result state={state} t={t} />
     </form>
   </details>;
 }

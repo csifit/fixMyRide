@@ -31,6 +31,7 @@ export function classifyDatabaseError(error: {
   if (error.code === "23P01") return "conflict";
   if (
     error.code === "22000" ||
+    error.code === "22023" ||
     error.code === "23514" ||
     error.code === "22P02"
   ) {

@@ -14,7 +14,7 @@ import { DataAccessError } from "@/lib/dal/errors";
 import { getSiteUrl } from "@/lib/site-url";
 
 export type AdminWorkflowActionState = {
-  status: "idle" | "saved" | "invalid" | "duplicate" | "unauthorized" | "unavailable";
+  status: "idle" | "saved" | "invalid" | "geocode_required" | "duplicate" | "unauthorized" | "unavailable";
   invitationUrl?: string;
 };
 function result(error: unknown): AdminWorkflowActionState {
@@ -81,16 +81,21 @@ export async function createWorkshopLocationAction(
   _state: AdminWorkflowActionState, formData: FormData,
 ): Promise<AdminWorkflowActionState> {
   const parsed = locationSchema.safeParse(Object.fromEntries(formData));
+  const city = optional(formData.get("city"));
+  const address = optional(formData.get("address"));
   const latitude = optionalNumber(formData.get("latitude"));
   const longitude = optionalNumber(formData.get("longitude"));
-  if (!parsed.success || (latitude === null) !== (longitude === null)
-    || (latitude !== null && !Number.isFinite(latitude))
-    || (longitude !== null && !Number.isFinite(longitude))) return { status: "invalid" };
+  if (!parsed.success) return { status: "invalid" };
+  if (!city || !address || latitude === null || longitude === null
+    || !Number.isFinite(latitude) || latitude < -90 || latitude > 90
+    || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+    return { status: "geocode_required" };
+  }
   try {
     await createAdminWorkshopLocation({
       ...parsed.data, providerId: parsed.data.providerId || null,
       countryCode: parsed.data.countryCode.toUpperCase(),
-      city: optional(formData.get("city")), address: optional(formData.get("address")),
+      city, address,
       latitude, longitude, publicPhone: optional(formData.get("publicPhone")),
       publicEmail: optional(formData.get("publicEmail")),
     });

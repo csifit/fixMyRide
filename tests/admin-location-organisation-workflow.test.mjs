@@ -9,6 +9,7 @@ const actions = await read("app/admin/workflow-actions.ts");
 const forms = await read("app/admin/AdminWorkflowForms.tsx");
 const invitation = await read("app/register/invitation/actions.ts");
 const access = await read("lib/dal/platform-access.ts");
+const errors = await read("lib/dal/errors.ts");
 
 test("admin workflow mutations are MFA protected and exposed only as RPCs", () => {
   for (const name of [
@@ -40,10 +41,19 @@ test("organisation and location invitations keep plaintext secrets out of storag
 
 test("admin UI creates geocoded locations and assigns new or existing managers", () => {
   assert.match(forms, /GoogleAddressSearch/);
+  assert.match(forms, /onSelection=\{\(selection\) => setLocationReady/);
+  assert.match(forms, /disabled=\{pending \|\| !locationReady\}/);
+  assert.match(actions, /return \{ status: "geocode_required" \}/);
+  assert.match(actions, /latitude < -90 \|\| latitude > 90/);
   assert.match(forms, /inviteLocationManagerAction/);
   assert.match(forms, /assignLocationManagerAction/);
   assert.match(forms, /primary_manager/);
   assert.match(migration, /workshop already has a live primary manager/i);
+});
+
+test("invalid geocoding is reported as input guidance instead of an outage", () => {
+  assert.match(errors, /error\.code === "22023"/);
+  assert.match(actions, /status: "geocode_required"/);
 });
 
 test("account controls are audited, hierarchy safe, and enforced in access paths", () => {
