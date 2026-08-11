@@ -28,7 +28,7 @@ function InvitationResult({ state, t }: {
 }) {
   if (state.status === "idle") return null;
   const successful = (state.status === "saved" || state.status === "revoked")
-    && state.emailDelivery !== "failed";
+    && (!state.emailDelivery || state.emailDelivery === "sent");
   return <div className={successful ? "note-success" : "note-error"} role="status">
     <span>{t(`organisationCoverage.result.${state.status}` as TranslationKey)}</span>
     {state.emailDelivery && <strong>{t(`organisationCoverage.invitationEmail.${state.emailDelivery}` as TranslationKey)}</strong>}

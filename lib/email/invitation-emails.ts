@@ -1,6 +1,5 @@
 import "server-only";
 
-import nodemailer from "nodemailer";
 import { brand } from "@/lib/brand";
 
 export type InvitationEmailKind =
@@ -20,7 +19,15 @@ type InvitationEmailInput = {
   replacement?: boolean;
 };
 
-export type InvitationEmailDelivery = "sent" | "failed";
+export type InvitationEmailDelivery =
+  | "sent"
+  | "not_configured"
+  | "authentication_failed"
+  | "invalid_server"
+  | "sender_rejected"
+  | "rate_limited"
+  | "unavailable"
+  | "failed";
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>'"]/g, (character) => ({
@@ -127,51 +134,67 @@ function message(input: InvitationEmailInput) {
 export async function sendInvitationEmail(
   input: InvitationEmailInput,
 ): Promise<InvitationEmailDelivery> {
-  const host = process.env.MXROUTE_SERVER?.trim()
-    || process.env.SMTP_HOST?.trim();
-  const user = process.env.MXROUTE_USERNAME?.trim()
-    || process.env.SMTP_USER?.trim();
-  const password = process.env.MXROUTE_PASSWORD?.trim()
-    || process.env.SMTP_PASSWORD?.trim();
-  const from = process.env.INVITATION_EMAIL_FROM?.trim()
-    || process.env.SMTP_FROM?.trim()
-    || user;
-  const parsedPort = Number(process.env.SMTP_PORT?.trim() || "465");
-  if (!host || !user || !password || !from
-    || !Number.isInteger(parsedPort) || parsedPort < 1 || parsedPort > 65_535) {
-    return "failed";
-  }
+  const server = process.env.MXROUTE_SERVER?.trim();
+  const username = process.env.MXROUTE_USERNAME?.trim();
+  const password = process.env.MXROUTE_PASSWORD?.trim();
+  const configuredFrom = process.env.INVITATION_EMAIL_FROM?.trim();
+  const from = emailAddress(configuredFrom) ?? emailAddress(username);
+  if (!server || !username || !password || !from) return "not_configured";
 
   const content = message(input);
-  const transport = nodemailer.createTransport({
-    host,
-    port: parsedPort,
-    secure: process.env.SMTP_SECURE?.trim()
-      ? process.env.SMTP_SECURE.trim().toLowerCase() === "true"
-      : parsedPort === 465,
-    auth: { user, pass: password },
-    connectionTimeout: 10_000,
-    greetingTimeout: 10_000,
-    socketTimeout: 15_000,
-    tls: { minVersion: "TLSv1.2" },
-  });
   try {
-    const info = await transport.sendMail({
-      from,
-      to: input.to,
-      replyTo: brand.supportEmail,
-      subject: content.subject,
-      text: content.text,
-      html: content.html,
-      headers: {
-        "X-Invitation-Type": input.kind,
-        "X-Invitation-ID": input.invitationId,
-      },
+    const response = await fetch("https://smtpapi.mxroute.com/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        server,
+        username,
+        password,
+        from,
+        to: input.to,
+        subject: content.subject,
+        body: content.html,
+      }),
+      signal: AbortSignal.timeout(15_000),
     });
-    return info.accepted.length > 0 ? "sent" : "failed";
+    const payload = await response.json().catch(() => null) as {
+      success?: boolean; message?: string;
+    } | null;
+    if (response.ok && payload?.success === true) return "sent";
+
+    const delivery = classifyMxrouteFailure(response.status, payload?.message);
+    console.error("invitation_email_delivery_failed", {
+      provider: "mxroute", delivery, status: response.status,
+    });
+    return delivery;
   } catch {
-    return "failed";
-  } finally {
-    transport.close();
+    console.error("invitation_email_delivery_failed", {
+      provider: "mxroute", delivery: "unavailable",
+    });
+    return "unavailable";
   }
+}
+
+function emailAddress(value: string | undefined) {
+  if (!value) return null;
+  const bracketed = value.match(/<([^<>]+)>\s*$/)?.[1]?.trim();
+  const candidate = bracketed ?? value;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(candidate) ? candidate : null;
+}
+
+function classifyMxrouteFailure(
+  status: number,
+  message: string | undefined,
+): Exclude<InvitationEmailDelivery, "sent"> {
+  const normalized = message?.toLowerCase() ?? "";
+  if (status === 429 || normalized.includes("rate limit")) return "rate_limited";
+  if (status === 401 || status === 403 || normalized.includes("authentication")) {
+    return "authentication_failed";
+  }
+  if (normalized.includes("invalid server")) return "invalid_server";
+  if (normalized.includes("from") || normalized.includes("sender")) {
+    return "sender_rejected";
+  }
+  if (status >= 500) return "unavailable";
+  return "failed";
 }

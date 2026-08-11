@@ -38,4 +38,5 @@ test("admin pending invitations can issue and deliver a replacement link", () =>
   assert.match(actions, /status: "resent"/);
   assert.match(email, /REPLACEMENT/);
   assert.match(email, /invalidates every earlier invitation link/);
+  assert.match(forms, /!state\.emailDelivery \|\| state\.emailDelivery === "sent"/);
 });

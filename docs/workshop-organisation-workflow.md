@@ -26,12 +26,13 @@ being invited again. Organisation-owner self-service invitations are the next
 workflow phase.
 
 When an invitation is created, the application sends its one-time, seven-day
-URL through the configured MXroute SMTP account. Administrator invitations to
+URL through MXroute's HTTPS SMTP API. Administrator invitations to
 service organisations, administrator invitations to location managers, and
 service-organisation invitations to location managers have distinct subjects,
 headings, and sender-role labels. Only the URL's SHA-256 digest is stored. The
 creation screen retains the plaintext URL as a one-time delivery fallback and
-reports an explicit warning if SMTP delivery fails. The invited person confirms
+reports a specific configuration, authentication, server, sender, rate-limit,
+or availability warning when delivery fails. The invited person confirms
 the email through Supabase and then uses the existing password-setup flow.
 
 An MFA-authenticated administrator can resend a pending service-organisation

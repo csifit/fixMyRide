@@ -41,7 +41,7 @@ function locationPinLabels(t: T) {
 function Result({ state, t }: { state: AdminWorkflowActionState; t: T }) {
   if (state.status === "idle") return null;
   const successful = (state.status === "saved" || state.status === "resent")
-    && state.emailDelivery !== "failed";
+    && (!state.emailDelivery || state.emailDelivery === "sent");
   return <div className={successful ? "note-success" : "note-error"} role="status">
     <span>{t(`adminWorkflow.result.${state.status}` as TranslationKey)}</span>
     {state.emailDelivery && <strong>{t(`adminWorkflow.invitationEmail.${state.emailDelivery}` as TranslationKey)}</strong>}
@@ -56,11 +56,13 @@ function ResendOrganisationInvitation({ invitationId, t }: {
     resendServiceOrganisationInvitationAction,
     initial,
   );
-  return <form className="admin-invitation-resend" action={action}>
-    <input type="hidden" name="invitationId" value={invitationId} />
-    <button disabled={pending}>{t("adminWorkflow.resendInvitation")}</button>
+  return <>
+    <form className="admin-invitation-resend" action={action}>
+      <input type="hidden" name="invitationId" value={invitationId} />
+      <button disabled={pending}>{t("adminWorkflow.resendInvitation")}</button>
+    </form>
     <Result state={state} t={t} />
-  </form>;
+  </>;
 }
 
 export function OrganisationAdministration({ providers, invitations, t }: {
