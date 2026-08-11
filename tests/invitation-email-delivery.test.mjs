@@ -21,6 +21,10 @@ test("invitation email delivery uses the official MXroute serverless API", () =>
   assert.match(email, /authentication_failed/);
   assert.match(email, /invalid_server/);
   assert.match(email, /sender_rejected/);
+  assert.match(email, /recipient_rejected/);
+  assert.match(email, /no such user/);
+  assert.match(email, /replaceAll\(password, "\[redacted\]"\)/);
+  assert.match(email, /slice\(0, 300\)/);
   assert.doesNotMatch(email, /nodemailer/i);
   assert.doesNotMatch(email, /resend/i);
 });
@@ -40,5 +44,6 @@ test("every invitation creation action attempts delivery and preserves a fallbac
   assert.match(adminActions, /emailDelivery/);
   assert.match(ownerActions, /emailDelivery/);
   assert.match(adminForms, /state\.emailDelivery === "sent"/);
+  assert.match(adminForms, /state\.emailDiagnostic/);
   assert.match(ownerClient, /state\.emailDelivery === "sent"/);
 });

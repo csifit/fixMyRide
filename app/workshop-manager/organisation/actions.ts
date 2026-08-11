@@ -60,7 +60,7 @@ export async function inviteOrganisationManagerAction(
     try {
       const context = await getInvitationEmailContext(invitationId);
       if (context) {
-        emailDelivery = await sendInvitationEmail({
+        const email = await sendInvitationEmail({
           kind: "service_organisation_location_manager",
           to: context.email,
           invitationUrl: url.toString(),
@@ -70,6 +70,7 @@ export async function inviteOrganisationManagerAction(
           assignmentRole: context.assignmentRole ?? parsed.data.assignmentRole,
           invitationId,
         });
+        emailDelivery = email.delivery;
       }
     } catch {
       emailDelivery = "failed";

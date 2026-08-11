@@ -25,9 +25,15 @@ export type InvitationEmailDelivery =
   | "authentication_failed"
   | "invalid_server"
   | "sender_rejected"
+  | "recipient_rejected"
   | "rate_limited"
   | "unavailable"
   | "failed";
+
+export type InvitationEmailResult = {
+  delivery: InvitationEmailDelivery;
+  diagnostic?: string;
+};
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>'"]/g, (character) => ({
@@ -133,13 +139,15 @@ function message(input: InvitationEmailInput) {
 
 export async function sendInvitationEmail(
   input: InvitationEmailInput,
-): Promise<InvitationEmailDelivery> {
+): Promise<InvitationEmailResult> {
   const server = process.env.MXROUTE_SERVER?.trim();
   const username = process.env.MXROUTE_USERNAME?.trim();
   const password = process.env.MXROUTE_PASSWORD?.trim();
   const configuredFrom = process.env.INVITATION_EMAIL_FROM?.trim();
   const from = emailAddress(configuredFrom) ?? emailAddress(username);
-  if (!server || !username || !password || !from) return "not_configured";
+  if (!server || !username || !password || !from) {
+    return { delivery: "not_configured" };
+  }
 
   const content = message(input);
   try {
@@ -158,20 +166,28 @@ export async function sendInvitationEmail(
       signal: AbortSignal.timeout(15_000),
     });
     const payload = await response.json().catch(() => null) as {
-      success?: boolean; message?: string;
+      success?: boolean; message?: string; error?: string;
     } | null;
-    if (response.ok && payload?.success === true) return "sent";
+    if (response.ok && payload?.success === true) return { delivery: "sent" };
 
-    const delivery = classifyMxrouteFailure(response.status, payload?.message);
+    const providerMessage = payload?.message ?? payload?.error;
+    const delivery = classifyMxrouteFailure(
+      response.status,
+      providerMessage,
+    );
     console.error("invitation_email_delivery_failed", {
       provider: "mxroute", delivery, status: response.status,
     });
-    return delivery;
+    return {
+      delivery,
+      diagnostic: safeMxrouteDiagnostic(providerMessage, password)
+        ?? `MXroute returned HTTP ${response.status} without an error message.`,
+    };
   } catch {
     console.error("invitation_email_delivery_failed", {
       provider: "mxroute", delivery: "unavailable",
     });
-    return "unavailable";
+    return { delivery: "unavailable" };
   }
 }
 
@@ -188,13 +204,29 @@ function classifyMxrouteFailure(
 ): Exclude<InvitationEmailDelivery, "sent"> {
   const normalized = message?.toLowerCase() ?? "";
   if (status === 429 || normalized.includes("rate limit")) return "rate_limited";
-  if (status === 401 || status === 403 || normalized.includes("authentication")) {
+  if (status === 401 || status === 403 || normalized.includes("authentication")
+    || normalized.includes("authenticate") || normalized.includes("credentials")
+    || normalized.includes("invalid login") || normalized.includes("535")) {
     return "authentication_failed";
   }
   if (normalized.includes("invalid server")) return "invalid_server";
   if (normalized.includes("from") || normalized.includes("sender")) {
     return "sender_rejected";
   }
-  if (status >= 500) return "unavailable";
+  if (normalized.includes("recipient") || normalized.includes("no such user")
+    || normalized.includes("unrouteable") || normalized.includes("unroutable")) {
+    return "recipient_rejected";
+  }
+  if (status >= 500 || normalized.includes("connect")
+    || normalized.includes("timed out") || normalized.includes("timeout")) {
+    return "unavailable";
+  }
   return "failed";
+}
+
+function safeMxrouteDiagnostic(message: string | undefined, password: string) {
+  if (!message) return undefined;
+  const singleLine = message.replaceAll(password, "[redacted]")
+    .replace(/[\r\n\t]+/g, " ").replace(/\s{2,}/g, " ").trim();
+  return singleLine ? singleLine.slice(0, 300) : undefined;
 }

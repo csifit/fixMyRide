@@ -22,6 +22,7 @@ import {
   sendInvitationEmail,
   type InvitationEmailDelivery,
   type InvitationEmailKind,
+  type InvitationEmailResult,
 } from "@/lib/email/invitation-emails";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -29,6 +30,7 @@ export type AdminWorkflowActionState = {
   status: "idle" | "saved" | "resent" | "invalid" | "geocode_required" | "duplicate" | "blocked" | "unauthorized" | "unavailable";
   invitationUrl?: string;
   emailDelivery?: InvitationEmailDelivery;
+  emailDiagnostic?: string;
 };
 function result(error: unknown): AdminWorkflowActionState {
   if (error instanceof DataAccessError) {
@@ -66,10 +68,10 @@ async function deliverLocationInvitationEmail(input: {
   invitationUrl: string;
   expiresAt: string;
   kind: Extract<InvitationEmailKind, "admin_location_manager">;
-}): Promise<InvitationEmailDelivery> {
+}): Promise<InvitationEmailResult> {
   try {
     const context = await getInvitationEmailContext(input.invitationId);
-    if (!context) return "failed";
+    if (!context) return { delivery: "failed" };
     return await sendInvitationEmail({
       ...input,
       to: context.email,
@@ -78,7 +80,7 @@ async function deliverLocationInvitationEmail(input: {
       assignmentRole: context.assignmentRole ?? "manager",
     });
   } catch {
-    return "failed";
+    return { delivery: "failed" };
   }
 }
 function refresh() {
@@ -107,7 +109,7 @@ export async function inviteServiceOrganisationAction(
       expiresAt,
     });
     const url = invitationUrl(created.invitationId, secret.token);
-    const emailDelivery = await sendInvitationEmail({
+    const email = await sendInvitationEmail({
       kind: "admin_service_organisation",
       to: parsed.data.email,
       invitationUrl: url,
@@ -116,7 +118,10 @@ export async function inviteServiceOrganisationAction(
       invitationId: created.invitationId,
     });
     refresh();
-    return { status: "saved", invitationUrl: url, emailDelivery };
+    return {
+      status: "saved", invitationUrl: url,
+      emailDelivery: email.delivery, emailDiagnostic: email.diagnostic,
+    };
   } catch (error) { return result(error); }
 }
 
@@ -135,7 +140,7 @@ export async function resendServiceOrganisationInvitationAction(
       expiresAt,
     });
     const url = invitationUrl(invitation.invitationId, secret.token);
-    const emailDelivery = await sendInvitationEmail({
+    const email = await sendInvitationEmail({
       kind: "admin_service_organisation",
       to: invitation.email,
       invitationUrl: url,
@@ -145,7 +150,10 @@ export async function resendServiceOrganisationInvitationAction(
       replacement: true,
     });
     refresh();
-    return { status: "resent", invitationUrl: url, emailDelivery };
+    return {
+      status: "resent", invitationUrl: url,
+      emailDelivery: email.delivery, emailDiagnostic: email.diagnostic,
+    };
   } catch (error) {
     return result(error);
   }
@@ -332,13 +340,16 @@ export async function inviteLocationManagerAction(
       expiresAt,
     });
     const url = invitationUrl(id, secret.token);
-    const emailDelivery = await deliverLocationInvitationEmail({
+    const email = await deliverLocationInvitationEmail({
       invitationId: id,
       invitationUrl: url,
       expiresAt,
       kind: "admin_location_manager",
     });
-    refresh(); return { status: "saved", invitationUrl: url, emailDelivery };
+    refresh(); return {
+      status: "saved", invitationUrl: url,
+      emailDelivery: email.delivery, emailDiagnostic: email.diagnostic,
+    };
   } catch (error) { return result(error); }
 }
 

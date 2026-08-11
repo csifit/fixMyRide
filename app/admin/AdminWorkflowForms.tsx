@@ -45,6 +45,7 @@ function Result({ state, t }: { state: AdminWorkflowActionState; t: T }) {
   return <div className={successful ? "note-success" : "note-error"} role="status">
     <span>{t(`adminWorkflow.result.${state.status}` as TranslationKey)}</span>
     {state.emailDelivery && <strong>{t(`adminWorkflow.invitationEmail.${state.emailDelivery}` as TranslationKey)}</strong>}
+    {state.emailDiagnostic && <small className="admin-email-diagnostic">{t("adminWorkflow.mxrouteResponse")}: {state.emailDiagnostic}</small>}
     {state.invitationUrl && <><input value={state.invitationUrl} readOnly aria-label={t("adminWorkflow.invitationLink")} /><small>{t(state.emailDelivery === "sent" ? "adminWorkflow.backupLinkHelp" : "adminWorkflow.copyLinkHelp")}</small></>}
   </div>;
 }
