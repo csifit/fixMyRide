@@ -19,6 +19,7 @@
     "@supabase/supabase-js": "^2.111.0",
     "@types/google.maps": "^3.65.3",
     "next": "^16.3.0",
+    "nodemailer": "^9.0.5",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "stripe": "^22.4.0",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "22.19.19",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.4",

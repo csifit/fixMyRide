@@ -10,7 +10,7 @@ const ownerActions = await read("app/workshop-manager/organisation/actions.ts");
 const adminForms = await read("app/admin/AdminWorkflowForms.tsx");
 const ownerClient = await read("app/workshop-manager/organisation/OrganisationCoverageClient.tsx");
 
-test("invitation email delivery uses the official MXroute serverless API", () => {
+test("invitation email delivery uses the MXroute API with an authenticated SMTPS fallback", () => {
   assert.match(email, /^import "server-only";/);
   assert.match(email, /https:\/\/smtpapi\.mxroute\.com\//);
   for (const setting of ["MXROUTE_SERVER", "MXROUTE_USERNAME", "MXROUTE_PASSWORD"]) {
@@ -25,7 +25,12 @@ test("invitation email delivery uses the official MXroute serverless API", () =>
   assert.match(email, /no such user/);
   assert.match(email, /replaceAll\(password, "\[redacted\]"\)/);
   assert.match(email, /slice\(0, 300\)/);
-  assert.doesNotMatch(email, /nodemailer/i);
+  assert.match(email, /nodemailer\.createTransport/);
+  assert.match(email, /port: 465/);
+  assert.match(email, /secure: true/);
+  assert.match(email, /envelope: \{ from, to: \[input\.to\] \}/);
+  assert.match(email, /result\.accepted\.length > 0/);
+  assert.doesNotMatch(email, /INVITATION_EMAIL_FROM/);
   assert.doesNotMatch(email, /resend/i);
 });
 

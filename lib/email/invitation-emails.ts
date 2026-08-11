@@ -1,5 +1,7 @@
 import "server-only";
 
+import nodemailer from "nodemailer";
+
 import { brand } from "@/lib/brand";
 
 export type InvitationEmailKind =
@@ -143,13 +145,13 @@ export async function sendInvitationEmail(
   const server = process.env.MXROUTE_SERVER?.trim();
   const username = process.env.MXROUTE_USERNAME?.trim();
   const password = process.env.MXROUTE_PASSWORD?.trim();
-  const configuredFrom = process.env.INVITATION_EMAIL_FROM?.trim();
-  const from = emailAddress(configuredFrom) ?? emailAddress(username);
+  const from = emailAddress(username);
   if (!server || !username || !password || !from) {
     return { delivery: "not_configured" };
   }
 
   const content = message(input);
+  let apiStatus: number | undefined;
   try {
     const response = await fetch("https://smtpapi.mxroute.com/", {
       method: "POST",
@@ -170,24 +172,119 @@ export async function sendInvitationEmail(
     } | null;
     if (response.ok && payload?.success === true) return { delivery: "sent" };
 
+    apiStatus = response.status;
     const providerMessage = payload?.message ?? payload?.error;
-    const delivery = classifyMxrouteFailure(
-      response.status,
-      providerMessage,
-    );
     console.error("invitation_email_delivery_failed", {
-      provider: "mxroute", delivery, status: response.status,
+      provider: "mxroute_api",
+      delivery: classifyMxrouteFailure(response.status, providerMessage),
+      status: response.status,
     });
-    return {
-      delivery,
-      diagnostic: safeMxrouteDiagnostic(providerMessage, password)
-        ?? `MXroute returned HTTP ${response.status} without an error message.`,
-    };
   } catch {
     console.error("invitation_email_delivery_failed", {
-      provider: "mxroute", delivery: "unavailable",
+      provider: "mxroute_api", delivery: "unavailable",
     });
-    return { delivery: "unavailable" };
+  }
+
+  // MXroute's serverless API sometimes returns only "Message could not be sent."
+  // Retry against the same account over SMTPS so delivery can succeed or the
+  // administrator can see the actual SMTP rejection returned by MXroute.
+  return sendViaMxrouteSmtp({
+    server,
+    username,
+    password,
+    from,
+    input,
+    content,
+    apiStatus,
+  });
+}
+
+type MxrouteSmtpInput = {
+  server: string;
+  username: string;
+  password: string;
+  from: string;
+  input: InvitationEmailInput;
+  content: ReturnType<typeof message>;
+  apiStatus?: number;
+};
+
+type SmtpFailure = Error & {
+  code?: string;
+  command?: string;
+  response?: string;
+  responseCode?: number;
+};
+
+async function sendViaMxrouteSmtp({
+  server,
+  username,
+  password,
+  from,
+  input,
+  content,
+  apiStatus,
+}: MxrouteSmtpInput): Promise<InvitationEmailResult> {
+  const transport = nodemailer.createTransport({
+    host: server,
+    port: 465,
+    secure: true,
+    auth: { user: username, pass: password },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+    tls: { minVersion: "TLSv1.2" },
+  });
+
+  try {
+    const result = await transport.sendMail({
+      from: { name: brand.name, address: from },
+      envelope: { from, to: [input.to] },
+      to: input.to,
+      replyTo: brand.supportEmail,
+      subject: content.subject,
+      text: content.text,
+      html: content.html,
+      headers: {
+        "X-Invitation-Type": input.kind,
+        "X-Invitation-ID": input.invitationId,
+      },
+    });
+    if (result.accepted.length > 0) return { delivery: "sent" };
+
+    return {
+      delivery: "recipient_rejected",
+      diagnostic: "MXroute SMTP accepted no recipients.",
+    };
+  } catch (error) {
+    const failure = error as SmtpFailure;
+    const details = [
+      failure.code,
+      failure.responseCode,
+      failure.command,
+      failure.response,
+      failure.message,
+    ].filter((value): value is string | number => Boolean(value))
+      .map(String)
+      .filter((value, index, values) => values.indexOf(value) === index)
+      .join(" · ");
+    const diagnostic = safeMxrouteDiagnostic(details, password)
+      ?? (apiStatus
+        ? `MXroute SMTP failed after API HTTP ${apiStatus}.`
+        : "MXroute SMTP failed without an error message.");
+    const delivery = classifyMxrouteFailure(
+      failure.responseCode ?? 0,
+      diagnostic,
+    );
+    console.error("invitation_email_delivery_failed", {
+      provider: "mxroute_smtp",
+      delivery,
+      code: failure.code,
+      responseCode: failure.responseCode,
+    });
+    return { delivery, diagnostic };
+  } finally {
+    transport.close();
   }
 }
 

@@ -26,7 +26,8 @@ being invited again. Organisation-owner self-service invitations are the next
 workflow phase.
 
 When an invitation is created, the application sends its one-time, seven-day
-URL through MXroute's HTTPS SMTP API. Administrator invitations to
+URL through MXroute's HTTPS SMTP API, with authenticated SMTPS as a fallback
+when the API cannot provide a successful delivery response. Administrator invitations to
 service organisations, administrator invitations to location managers, and
 service-organisation invitations to location managers have distinct subjects,
 headings, and sender-role labels. Only the URL's SHA-256 digest is stored. The
