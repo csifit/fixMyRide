@@ -28,6 +28,7 @@ export function classifyDatabaseError(error: {
   | "conflict" {
   if (error.status === 429) return "rate_limited";
   if (error.code === "23505") return "conflict";
+  if (error.code === "23503") return "conflict";
   if (error.code === "23P01") return "conflict";
   if (
     error.code === "22000" ||

@@ -8,7 +8,7 @@ import PendingSubmitButton from "@/app/PendingSubmitButton";
 import { brand } from "@/lib/brand";
 import type { AdminDashboardData, AdminSection } from "@/lib/dal/admin";
 import { adminLogoutAction } from "./actions";
-import { AccountStatusControl, OrganisationAdministration, WorkshopAdministration } from "./AdminWorkflowForms";
+import { AccountStatusControl, OrganisationAdministration, ProviderAdministration, WorkshopAdministration } from "./AdminWorkflowForms";
 
 type T = (key: TranslationKey) => string;
 const sections: Array<{ id: AdminSection; href: string; key: TranslationKey; count?: keyof AdminDashboardData["counts"] }> = [
@@ -38,7 +38,7 @@ function Overview({ data, language, t }: { data: AdminDashboardData; language: L
 
 function Content({ section, data, language, t }: { section: AdminSection; data: AdminDashboardData; language: Language; t: T }) {
   if (section === "overview") return <Overview data={data} language={language} t={t} />;
-  if (section === "providers") return <><OrganisationAdministration providers={data.providers} invitations={data.workflow.invitations} t={t} /><Table headers={[t("automotiveAdmin.provider"), t("automotiveAdmin.legalName"), t("common.status"), t("automotiveAdmin.workshops"), t("automotiveAdmin.managers"), t("automotiveAdmin.created")]} rows={data.providers.map((row) => [row.displayName, row.legalName, <Status key={row.id} value={row.status} t={t} />, row.workshopCount, row.managerCount, formatDateTime(language, row.createdAt)])} empty={t("automotiveAdmin.empty")} /></>;
+  if (section === "providers") return <><OrganisationAdministration providers={data.providers} invitations={data.workflow.invitations} t={t} /><ProviderAdministration providers={data.providers} workflow={data.workflow} language={language} t={t} /></>;
   if (section === "workshops") return <WorkshopAdministration providers={data.providers} workflow={data.workflow} language={language} t={t} />;
   if (section === "customers") return <Table headers={[t("automotiveAdmin.customer"), t("automotiveAdmin.phone"), t("automotiveAdmin.vehicles"), t("automotiveAdmin.bookings"), t("adminWorkflow.accountStatus")]} rows={data.customers.map((row) => {
     const account = data.workflow.accounts.find((item) => item.customerId === row.id);

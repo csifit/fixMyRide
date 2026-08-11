@@ -4,18 +4,22 @@ import { createHash, randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
+  assignAdminWorkshopServiceProvider,
   assignAdminWorkshopManager,
   createAdminLocationManagerInvitation,
   createAdminOrganisationInvitation,
   createAdminWorkshopLocation,
+  deleteAdminServiceProvider,
+  setAdminServiceProviderStatus,
   setAdminPlatformAccountStatus,
+  updateAdminServiceProvider,
   updateAdminWorkshopLocation,
 } from "@/lib/dal/admin-organisations";
 import { DataAccessError } from "@/lib/dal/errors";
 import { getSiteUrl } from "@/lib/site-url";
 
 export type AdminWorkflowActionState = {
-  status: "idle" | "saved" | "invalid" | "geocode_required" | "duplicate" | "unauthorized" | "unavailable";
+  status: "idle" | "saved" | "invalid" | "geocode_required" | "duplicate" | "blocked" | "unauthorized" | "unavailable";
   invitationUrl?: string;
 };
 function result(error: unknown): AdminWorkflowActionState {
@@ -25,6 +29,12 @@ function result(error: unknown): AdminWorkflowActionState {
     if (error.code === "invalid_input" || error.code === "not_found") return { status: "invalid" };
   }
   return { status: "unavailable" };
+}
+function dependencyResult(error: unknown): AdminWorkflowActionState {
+  if (error instanceof DataAccessError && error.code === "conflict") {
+    return { status: "blocked" };
+  }
+  return result(error);
 }
 function optional(value: FormDataEntryValue | null) {
   const text = typeof value === "string" ? value.trim() : "";
@@ -70,6 +80,106 @@ export async function inviteServiceOrganisationAction(
     refresh();
     return { status: "saved", invitationUrl: invitationUrl(created.invitationId, secret.token) };
   } catch (error) { return result(error); }
+}
+
+const optionalProviderText = (minimum: number, maximum: number) => z.string().trim().max(maximum)
+  .refine((value) => value.length === 0 || value.length >= minimum);
+const providerDetailsSchema = z.object({
+  providerId: z.uuid(),
+  legalName: z.string().trim().min(2).max(200),
+  displayName: z.string().trim().min(2).max(160),
+  mainEmail: z.union([z.literal(""), z.email().max(320)]),
+  countryCode: z.string().trim().regex(/^[A-Za-z]{2}$/),
+  billingEmail: z.union([z.literal(""), z.email().max(320)]),
+  billingContact: optionalProviderText(2, 160),
+  taxIdentifier: optionalProviderText(2, 80),
+  vatIdentifier: optionalProviderText(2, 80),
+  registrationNumber: optionalProviderText(2, 80),
+  addressLine1: optionalProviderText(3, 240),
+  addressLine2: optionalProviderText(2, 240),
+  city: optionalProviderText(2, 120),
+  postalCode: optionalProviderText(2, 24),
+  billingCountryCode: z.string().trim().regex(/^[A-Za-z]{2}$/),
+});
+export async function updateServiceProviderOrganisationAction(
+  _state: AdminWorkflowActionState, formData: FormData,
+): Promise<AdminWorkflowActionState> {
+  const parsed = providerDetailsSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await updateAdminServiceProvider({
+      ...parsed.data,
+      mainEmail: optional(formData.get("mainEmail")),
+      billingEmail: optional(formData.get("billingEmail")),
+      billingContact: optional(formData.get("billingContact")),
+      taxIdentifier: optional(formData.get("taxIdentifier")),
+      vatIdentifier: optional(formData.get("vatIdentifier")),
+      registrationNumber: optional(formData.get("registrationNumber")),
+      addressLine1: optional(formData.get("addressLine1")),
+      addressLine2: optional(formData.get("addressLine2")),
+      city: optional(formData.get("city")),
+      postalCode: optional(formData.get("postalCode")),
+      countryCode: parsed.data.countryCode.toUpperCase(),
+      billingCountryCode: parsed.data.billingCountryCode.toUpperCase(),
+    });
+    refresh();
+    return { status: "saved" };
+  } catch (error) {
+    return result(error);
+  }
+}
+
+const providerLocationSchema = z.object({
+  providerId: z.uuid(), workshopId: z.uuid(),
+});
+export async function assignServiceProviderLocationAction(
+  _state: AdminWorkflowActionState, formData: FormData,
+): Promise<AdminWorkflowActionState> {
+  const parsed = providerLocationSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await assignAdminWorkshopServiceProvider(parsed.data.providerId, parsed.data.workshopId);
+    refresh();
+    return { status: "saved" };
+  } catch (error) {
+    return dependencyResult(error);
+  }
+}
+
+const providerStatusSchema = z.object({
+  providerId: z.uuid(), status: z.enum(["active", "suspended"]),
+  reason: z.string().trim().min(2).max(500),
+});
+export async function setServiceProviderStatusAction(
+  _state: AdminWorkflowActionState, formData: FormData,
+): Promise<AdminWorkflowActionState> {
+  const parsed = providerStatusSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await setAdminServiceProviderStatus(parsed.data.providerId, parsed.data.status, parsed.data.reason);
+    refresh();
+    return { status: "saved" };
+  } catch (error) {
+    return result(error);
+  }
+}
+
+const providerDeleteSchema = z.object({
+  providerId: z.uuid(), confirmation: z.string().trim().min(2).max(160),
+  reason: z.string().trim().min(2).max(500),
+});
+export async function deleteServiceProviderOrganisationAction(
+  _state: AdminWorkflowActionState, formData: FormData,
+): Promise<AdminWorkflowActionState> {
+  const parsed = providerDeleteSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await deleteAdminServiceProvider(parsed.data.providerId, parsed.data.confirmation, parsed.data.reason);
+    refresh();
+    return { status: "saved" };
+  } catch (error) {
+    return dependencyResult(error);
+  }
 }
 
 const locationSchema = z.object({

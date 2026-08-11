@@ -29,8 +29,13 @@ export async function loadAdminDashboard(administrator: AdministratorContext): P
   if (error || !data || typeof data !== "object") {
     throw new DataAccessError(error?.code === "42501" ? "unauthorized" : "unavailable");
   }
+  const snapshot = data as unknown as Omit<AdminDashboardData, "administrator" | "workflow">;
+  const activeProviderIds = new Set(workflow.providers.map((provider) => provider.id));
+  const providers = snapshot.providers.filter((provider) => activeProviderIds.has(provider.id));
   return {
-    ...(data as unknown as Omit<AdminDashboardData, "administrator" | "workflow">),
+    ...snapshot,
+    providers,
+    counts: { ...snapshot.counts, providers: providers.length },
     administrator: { displayName: administrator.displayName, role: administrator.role },
     workflow,
   };

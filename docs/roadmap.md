@@ -138,6 +138,12 @@
   default and adds an exact coordinate or draggable-pin mode for roadside and
   other non-addressable workshops; every edit is recorded in the immutable
   organisation administration history.
+- Migration 050 expands the compact service-provider administration list into
+  editable organisation accordions. MFA-authenticated administrators can update
+  company, primary-contact, tax, VAT and invoicing details; review and assign
+  unowned platform-curated locations; suspend or restore an organisation; and
+  archive an unused organisation. Deletion is deliberately dependency-guarded
+  and retains legally relevant Stripe, invoice and immutable audit records.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted
