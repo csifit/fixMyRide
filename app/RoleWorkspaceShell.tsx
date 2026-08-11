@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import type { SidebarIdentity } from "@/lib/dal/sidebar-identity";
 
 type Role = "customer" | "workshop_manager" | "workshop_staff" | "service_provider" | "service_organisation";
 type Item = { href: string; label: string; mark: string };
@@ -35,7 +36,7 @@ const navigation: Record<Role, { title: string; items: Item[] }> = {
   ] },
 };
 
-export default function RoleWorkspaceShell({ role, children }: { role: Role; children: ReactNode }) {
+export default function RoleWorkspaceShell({ role, identity, children }: { role: Role; identity: SidebarIdentity | null; children: ReactNode }) {
   const pathname = usePathname();
   const storageKey = `pitster.sidebar.${role}`;
   const [collapsed, setCollapsed] = useState(false);
@@ -57,6 +58,7 @@ export default function RoleWorkspaceShell({ role, children }: { role: Role; chi
     <aside className="role-sidebar">
       <header><Link href="/" aria-label="pitster home"><b>p</b><strong>pitster</strong></Link><button type="button" onClick={toggle} aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}>{collapsed ? ">" : "<"}</button></header>
       <small>{nav.title}</small>
+      {identity && <div className="role-sidebar-identity"><strong title={identity.displayName}>{identity.displayName}</strong><span title={identity.email}>{identity.email}</span></div>}
       <nav aria-label={`${nav.title} navigation`}>{nav.items.map((item) => {
         const active = pathname === item.href || (item.href !== `/${role.replace("_", "-")}` && pathname.startsWith(`${item.href}/`));
         return <Link key={item.href} href={item.href} className={active ? "active" : ""} title={collapsed ? item.label : undefined}><b>{item.mark}</b><span>{item.label}</span></Link>;

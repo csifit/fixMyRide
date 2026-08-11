@@ -448,3 +448,13 @@ a { color:var(--green); text-decoration:none; }
 .workshop-claim-form { display:flex; flex-wrap:wrap; align-items:end; gap:12px; }.workshop-claim-form label { display:grid; min-width:260px; gap:6px; color:#48635d; font-size:9px; font-weight:900; }.workshop-claim-form select { width:100%; border:1px solid #c4d7d2; border-radius:8px; padding:10px; background:#fff; color:#17332f; }
 @media (max-width:620px) { .workshop-claim-card { margin:32px auto; padding:24px; }.workshop-claim-card h1 { font-size:31px; }.workshop-claim-card.compact ol { grid-template-columns:1fr; } }
 @media (max-width:760px) { .role-workspace,.role-workspace.sidebar-collapsed { --role-sidebar-width:0px; }.role-sidebar { width:250px; transform:translateX(0); box-shadow:5px 0 18px #163c3522; }.role-workspace.sidebar-collapsed .role-sidebar { transform:translateX(-250px); }.role-sidebar,.role-workspace-content { transition:transform .2s ease,padding-left .2s ease; }.role-sidebar header button { position:fixed; top:15px; left:258px; background:#fff; }.role-workspace.sidebar-collapsed .role-sidebar header button { left:8px; top:15px; transform:translateX(250px); }.sidebar-collapsed .role-sidebar header a>strong,.sidebar-collapsed .role-sidebar>small,.sidebar-collapsed .role-sidebar nav span { display:initial; } }
+
+.role-sidebar-identity { margin:0 15px 14px; min-width:0; }
+.role-sidebar-identity strong,.role-sidebar-identity span,.admin-identity strong,.admin-identity small,.admin-identity>span { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.role-sidebar-identity strong { color:#244a43; font-size:11px; }
+.role-sidebar-identity span { margin-top:3px; color:#78908a; font-size:9px; }
+.admin-identity small { margin:0 0 6px; text-transform:capitalize; }
+.admin-identity>span { margin:4px 0 12px; color:#b7cdc8; font-size:9px; }
+.sidebar-collapsed .role-sidebar-identity { display:none; }
+@media (max-width:760px) { .sidebar-collapsed .role-sidebar-identity { display:initial; } }
+@media (max-width:700px) { .admin-identity { display:block; margin-top:16px; } }

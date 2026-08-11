@@ -17,6 +17,7 @@ export type AdministratorContext = {
   role: "superadmin" | "admin";
   status: "active";
   displayName: string;
+  email: string;
 };
 
 type AdministratorIdentityRow = {
@@ -79,6 +80,7 @@ export async function getAdminAccess(): Promise<AdminAccessResult> {
       role: administrator.role as "superadmin" | "admin",
       status: "active",
       displayName: administrator.display_name,
+      email: typeof claims?.email === "string" ? claims.email : "",
     },
   };
 }

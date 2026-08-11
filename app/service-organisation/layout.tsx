@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import RoleWorkspaceShell from "@/app/RoleWorkspaceShell";
+import { getSidebarIdentity } from "@/lib/dal/sidebar-identity";
 
-export default function ServiceOrganisationLayout({ children }: { children: ReactNode }) {
-  return <RoleWorkspaceShell role="service_organisation">{children}</RoleWorkspaceShell>;
+export default async function ServiceOrganisationLayout({ children }: { children: ReactNode }) {
+  const identity = await getSidebarIdentity();
+  return <RoleWorkspaceShell role="service_organisation" identity={identity}>{children}</RoleWorkspaceShell>;
 }

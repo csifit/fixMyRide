@@ -10,7 +10,7 @@ type Status = "pending" | "active" | "suspended" | "rejected";
 
 export type AdminDashboardData = {
   generatedAt: string;
-  administrator: { displayName: string; role: "superadmin" | "admin" };
+  administrator: { displayName: string; email: string; role: "superadmin" | "admin" };
   counts: { providers: number; workshops: number; customers: number; managers: number; openBookings: number; smsAttention: number };
   providers: Array<{ id: string; displayName: string; legalName: string; countryCode: string; status: Status; workshopCount: number; managerCount: number; createdAt: string }>;
   workshops: Array<{ id: string; displayName: string; providerName: string; city: string | null; countryCode: string; status: Status; acceptsBookings: boolean; openBookingCount: number; createdAt: string }>;
@@ -36,7 +36,7 @@ export async function loadAdminDashboard(administrator: AdministratorContext): P
     ...snapshot,
     providers,
     counts: { ...snapshot.counts, providers: providers.length },
-    administrator: { displayName: administrator.displayName, role: administrator.role },
+    administrator: { displayName: administrator.displayName, email: administrator.email, role: administrator.role },
     workflow,
   };
 }

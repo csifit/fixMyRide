@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import RoleWorkspaceShell from "@/app/RoleWorkspaceShell";
+import { getSidebarIdentity } from "@/lib/dal/sidebar-identity";
 
-export default function CustomerLayout({ children }: { children: ReactNode }) {
-  return <RoleWorkspaceShell role="customer">{children}</RoleWorkspaceShell>;
+export default async function CustomerLayout({ children }: { children: ReactNode }) {
+  const identity = await getSidebarIdentity();
+  return <RoleWorkspaceShell role="customer" identity={identity}>{children}</RoleWorkspaceShell>;
 }
