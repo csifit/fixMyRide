@@ -18,21 +18,36 @@ function Result({ state, t }: { state: WorkshopOperationsActionState; t: T }) {
 
 type OwnedProvider = { id: string; displayName: string; countryCode: string };
 
+function locationPinLabels(t: T) {
+  return {
+    searchMode: t("adminWorkflow.locationMode.search"),
+    pinMode: t("adminWorkflow.locationMode.pin"),
+    mapLabel: t("adminWorkflow.locationMode.mapLabel"),
+    mapHelp: t("adminWorkflow.locationMode.mapHelp"),
+    latitude: t("adminWorkflow.latitude"),
+    longitude: t("adminWorkflow.longitude"),
+    address: t("adminWorkflow.manualAddress"),
+    city: t("adminWorkflow.nearestCity"),
+    country: t("adminWorkflow.country"),
+  };
+}
+
 function CreateLocationForm({ providers, language, t, portalBasePath }: { providers: OwnedProvider[]; language: Language; t: T; portalBasePath: string }) {
   const [state, action, pending] = useActionState(createWorkshopLocationAction, idle);
   const [providerId, setProviderId] = useState(providers[0]?.id ?? "");
+  const [locationReady, setLocationReady] = useState(false);
   const provider = providers.find((item) => item.id === providerId) ?? providers[0];
   if (!provider) return null;
   return <details className="settings-accordion create-location-panel">
     <summary><span><strong>{t("workshopOperations.addLocation")}</strong><small>{t("workshopOperations.addLocationHelp")}</small></span><b>+</b></summary>
     <form className="settings-card create-location-form" action={action}>
-      {providers.length > 1 ? <label>{t("workshopOperations.organisation")}<select name="serviceProviderId" value={provider.id} onChange={(event) => setProviderId(event.target.value)}>{providers.map((item) => <option key={item.id} value={item.id}>{item.displayName}</option>)}</select></label> : <input type="hidden" name="serviceProviderId" value={provider.id} />}
+      {providers.length > 1 ? <label>{t("workshopOperations.organisation")}<select name="serviceProviderId" value={provider.id} onChange={(event) => { setProviderId(event.target.value); setLocationReady(false); }}>{providers.map((item) => <option key={item.id} value={item.id}>{item.displayName}</option>)}</select></label> : <input type="hidden" name="serviceProviderId" value={provider.id} />}
       <label>{t("workshopOperations.displayName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
       <div className="settings-two"><label>{t("workshopOperations.phone")}<input name="publicPhone" maxLength={40} /></label><label>{t("workshopOperations.email")}<input name="publicEmail" type="email" maxLength={320} /></label></div>
-      <GoogleAddressSearch key={provider.id} label={t("workshopOperations.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("workspace.addressSearchFallback")} language={language} initialCountryCode={provider.countryCode} disabled={pending} />
+      <GoogleAddressSearch key={provider.id} label={t("workshopOperations.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workshopOperations.addressSearchHelp")} unavailable={t("workshopOperations.addressSearchUnavailable")} language={language} initialCountryCode={provider.countryCode} disabled={pending} allowManualPin manualPinLabels={locationPinLabels(t)} onSelection={(selection) => setLocationReady(Boolean(selection?.city && selection.latitude !== null && selection.longitude !== null))} />
       <p className="coverage-note">{t("workshopOperations.newLocationCoverageHelp")}</p>
       <Result state={state} t={t} />
-      <button disabled={pending}>{t(pending ? "workshopOperations.creatingLocation" : "workshopOperations.createLocation")}</button>
+      <button disabled={pending || !locationReady}>{t(pending ? "workshopOperations.creatingLocation" : "workshopOperations.createLocation")}</button>
       {state.status === "location_created" && <div className="create-location-next"><Link href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/managers" : "/organisation"}`}>{t("workshopOperations.assignPrimaryManager")}</Link><Link href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/billing" : "/invoicing"}`}>{t("workshopOperations.activateCoverage")}</Link></div>}
     </form>
   </details>;

@@ -56,3 +56,15 @@ test("Google address-search guidance has translation parity", () => {
     for (const key of keys) assert.equal(typeof catalogs[language][key], "string", `${language}: ${key}`);
   }
 });
+
+test("owner location validation guidance has translation parity", () => {
+  const keys = [
+    "workshopOperations.result.location_invalid",
+    "workshopOperations.result.geocode_required",
+    "workshopOperations.addressSearchHelp",
+    "workshopOperations.addressSearchUnavailable",
+  ];
+  for (const language of ["en", "de", "ro", "hu"]) {
+    for (const key of keys) assert.equal(typeof catalogs[language][key], "string", `${language}: ${key}`);
+  }
+});

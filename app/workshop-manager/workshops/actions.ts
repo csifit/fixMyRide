@@ -5,7 +5,7 @@ import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
 import { addMyWorkshopClosure, createMyWorkshopLocation, removeMyWorkshopClosure, updateMyWorkshopOperations } from "@/lib/dal/workshop-operations";
 
-export type WorkshopOperationsActionState = { status: "idle" | "saved" | "created" | "location_created" | "removed" | "invalid" | "unauthorized" | "unavailable" };
+export type WorkshopOperationsActionState = { status: "idle" | "saved" | "created" | "location_created" | "removed" | "invalid" | "location_invalid" | "geocode_required" | "unauthorized" | "unavailable" };
 const nullable = (max: number) => z.string().trim().max(max).transform((value) => value || null);
 const nullableNumber = z.union([z.literal(""), z.coerce.number()]).transform((value) => value === "" ? null : value);
 const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
@@ -33,6 +33,7 @@ const createLocationSchema = z.object({
   longitude: coordinate.refine((value) => value >= -180 && value <= 180),
   publicPhone: nullable(40), publicEmail: z.union([z.literal(""), z.email().max(320)]).transform((value) => value || null),
 });
+const geocodedLocationFields = new Set(["countryCode", "city", "address", "latitude", "longitude"]);
 
 function result(error: unknown): WorkshopOperationsActionState {
   if (error instanceof DataAccessError) {
@@ -75,7 +76,10 @@ export async function removeWorkshopClosureAction(_state: WorkshopOperationsActi
 
 export async function createWorkshopLocationAction(_state: WorkshopOperationsActionState, formData: FormData): Promise<WorkshopOperationsActionState> {
   const parsed = createLocationSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) return { status: "invalid" };
+  if (!parsed.success) {
+    const needsGeocoding = parsed.error.issues.some((issue) => geocodedLocationFields.has(String(issue.path[0])));
+    return { status: needsGeocoding ? "geocode_required" : "location_invalid" };
+  }
   try {
     await createMyWorkshopLocation(parsed.data);
     refresh();
@@ -84,5 +88,8 @@ export async function createWorkshopLocationAction(_state: WorkshopOperationsAct
     revalidatePath("/service-organisation/managers");
     revalidatePath("/service-organisation/billing");
     return { status: "location_created" };
-  } catch (error) { return result(error); }
+  } catch (error) {
+    const failure = result(error);
+    return failure.status === "invalid" ? { status: "location_invalid" } : failure;
+  }
 }

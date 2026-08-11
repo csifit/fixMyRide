@@ -55,10 +55,14 @@ test("the workshops page exposes owner-only creation and existing location manag
   assert.match(page, /ownedProviders=\{ownedProviders\}/);
   assert.match(client, /function CreateLocationForm/);
   assert.match(client, /<GoogleAddressSearch/);
+  assert.match(client, /allowManualPin/);
+  assert.match(client, /disabled=\{pending \|\| !locationReady\}/);
+  assert.match(client, /onSelection=\{\(selection\) => setLocationReady/);
   assert.match(client, /workshopOperations\.assignPrimaryManager/);
   assert.match(client, /workshopOperations\.activateCoverage/);
   assert.match(actions, /createWorkshopLocationAction/);
   assert.match(actions, /coordinate = z\.string\(\)\.trim\(\)\.min\(1\)/);
+  assert.match(actions, /needsGeocoding \? "geocode_required" : "location_invalid"/);
   assert.match(actions, /revalidatePath\("\/workshop-manager\/invoicing"\)/);
   assert.match(dal, /rpc\("create_my_workshop_location"/);
 });
