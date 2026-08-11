@@ -34,6 +34,12 @@ creation screen retains the plaintext URL as a one-time delivery fallback and
 reports an explicit warning if SMTP delivery fails. The invited person confirms
 the email through Supabase and then uses the existing password-setup flow.
 
+An MFA-authenticated administrator can resend a pending service-organisation
+owner invitation from `/admin/providers`. Resending rotates the token digest,
+extends expiry by seven days, invalidates every earlier link, sends a replacement
+MXroute email, and records an immutable administration-history event. The new
+plaintext link is shown once as a fallback if email delivery fails.
+
 ## Location coverage
 
 Every workshop has a canonical `workshop_subscriptions` record. The organisation

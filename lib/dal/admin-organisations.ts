@@ -191,6 +191,27 @@ export async function createAdminOrganisationInvitation(input: {
   return data as unknown as { serviceProviderId: string; invitationId: string };
 }
 
+export async function resendAdminOrganisationInvitation(input: {
+  invitationId: string; tokenDigest: string; expiresAt: string;
+}) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc(
+    "resend_admin_service_organisation_invitation",
+    {
+      requested_invitation_id: input.invitationId,
+      requested_token_digest: input.tokenDigest,
+      requested_expires_at: input.expiresAt,
+    },
+  );
+  if (error || !data) fail(error ?? {});
+  return data as unknown as {
+    invitationId: string;
+    serviceProviderId: string;
+    email: string;
+    providerName: string;
+  };
+}
+
 export async function createAdminWorkshopLocation(input: {
   providerId: string | null; displayName: string; countryCode: string;
   city: string | null; address: string | null; latitude: number | null;

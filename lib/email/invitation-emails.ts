@@ -17,6 +17,7 @@ type InvitationEmailInput = {
   workshopName?: string | null;
   assignmentRole?: "primary_manager" | "manager";
   invitationId: string;
+  replacement?: boolean;
 };
 
 export type InvitationEmailDelivery = "sent" | "failed";
@@ -39,6 +40,16 @@ function emailCopy(input: InvitationEmailInput) {
     : "location manager";
 
   if (input.kind === "admin_service_organisation") {
+    if (input.replacement) {
+      return {
+        badge: "ADMIN → SERVICE ORGANISATION · REPLACEMENT",
+        subject: `Replacement admin invitation to service organisation: ${organisationName}`,
+        title: "Admin invitation resent to a service organisation",
+        description: `A ${brand.name} administrator reissued your organisation-owner invitation for ${organisationName}.`,
+        detail: "This replacement invalidates every earlier invitation link. Use only the new link in this email.",
+        action: "Accept replacement invitation",
+      };
+    }
     return {
       badge: "ADMIN → SERVICE ORGANISATION",
       subject: `Admin invitation to service organisation: ${organisationName}`,

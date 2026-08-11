@@ -13,6 +13,7 @@ import {
   deleteServiceProviderOrganisationAction,
   inviteLocationManagerAction,
   inviteServiceOrganisationAction,
+  resendServiceOrganisationInvitationAction,
   setServiceProviderStatusAction,
   updateServiceProviderOrganisationAction,
   updateWorkshopLocationAction,
@@ -39,7 +40,8 @@ function locationPinLabels(t: T) {
 
 function Result({ state, t }: { state: AdminWorkflowActionState; t: T }) {
   if (state.status === "idle") return null;
-  const successful = state.status === "saved" && state.emailDelivery !== "failed";
+  const successful = (state.status === "saved" || state.status === "resent")
+    && state.emailDelivery !== "failed";
   return <div className={successful ? "note-success" : "note-error"} role="status">
     <span>{t(`adminWorkflow.result.${state.status}` as TranslationKey)}</span>
     {state.emailDelivery && <strong>{t(`adminWorkflow.invitationEmail.${state.emailDelivery}` as TranslationKey)}</strong>}
@@ -47,12 +49,27 @@ function Result({ state, t }: { state: AdminWorkflowActionState; t: T }) {
   </div>;
 }
 
+function ResendOrganisationInvitation({ invitationId, t }: {
+  invitationId: string; t: T;
+}) {
+  const [state, action, pending] = useActionState(
+    resendServiceOrganisationInvitationAction,
+    initial,
+  );
+  return <form className="admin-invitation-resend" action={action}>
+    <input type="hidden" name="invitationId" value={invitationId} />
+    <button disabled={pending}>{t("adminWorkflow.resendInvitation")}</button>
+    <Result state={state} t={t} />
+  </form>;
+}
+
 export function OrganisationAdministration({ providers, invitations, t }: {
   providers: Array<{ id: string; displayName: string; status: string }>;
   invitations: AdminOrganisationWorkflow["invitations"]; t: T;
 }) {
   const [state, action, pending] = useActionState(inviteServiceOrganisationAction, initial);
-  const pendingInvitations = invitations.filter((item) => item.status === "pending");
+  const pendingInvitations = invitations.filter((item) =>
+    item.status === "pending" && item.kind === "organisation_owner");
   return <div className="admin-workflow-stack">
     <details className="admin-workflow-card" open><summary><span><strong>{t("adminWorkflow.inviteOrganisation")}</strong><small>{t("adminWorkflow.inviteOrganisationHelp")}</small></span></summary>
       <form className="admin-workflow-form" action={action}>
@@ -64,7 +81,7 @@ export function OrganisationAdministration({ providers, invitations, t }: {
       </form>
     </details>
     <section className="admin-workflow-card"><h3>{t("adminWorkflow.pendingInvitations")}</h3>
-      <div className="admin-invitation-list">{pendingInvitations.map((item) => <p key={item.id}><span><strong>{item.email}</strong><small>{item.providerName}{item.workshopName ? ` · ${item.workshopName}` : ""}</small></span><b>{item.kind}</b></p>)}{!pendingInvitations.length && <p>{t("adminWorkflow.noPendingInvitations")}</p>}</div>
+      <div className="admin-invitation-list">{pendingInvitations.map((item) => <article key={item.id}><span><strong>{item.email}</strong><small>{item.providerName}</small></span><b>{item.kind}</b><ResendOrganisationInvitation invitationId={item.id} t={t} /></article>)}{!pendingInvitations.length && <p>{t("adminWorkflow.noPendingInvitations")}</p>}</div>
     </section>
     <section className="admin-workflow-card"><h3>{t("adminWorkflow.organisationSummary")}</h3><p>{providers.length} {t("automotiveAdmin.providers")}</p></section>
   </div>;

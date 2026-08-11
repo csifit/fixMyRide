@@ -10,6 +10,7 @@ import {
   createAdminOrganisationInvitation,
   createAdminWorkshopLocation,
   deleteAdminServiceProvider,
+  resendAdminOrganisationInvitation,
   setAdminServiceProviderStatus,
   setAdminPlatformAccountStatus,
   updateAdminServiceProvider,
@@ -25,7 +26,7 @@ import {
 import { getSiteUrl } from "@/lib/site-url";
 
 export type AdminWorkflowActionState = {
-  status: "idle" | "saved" | "invalid" | "geocode_required" | "duplicate" | "blocked" | "unauthorized" | "unavailable";
+  status: "idle" | "saved" | "resent" | "invalid" | "geocode_required" | "duplicate" | "blocked" | "unauthorized" | "unavailable";
   invitationUrl?: string;
   emailDelivery?: InvitationEmailDelivery;
 };
@@ -117,6 +118,37 @@ export async function inviteServiceOrganisationAction(
     refresh();
     return { status: "saved", invitationUrl: url, emailDelivery };
   } catch (error) { return result(error); }
+}
+
+const resendOrganisationInvitationSchema = z.object({ invitationId: z.uuid() });
+export async function resendServiceOrganisationInvitationAction(
+  _state: AdminWorkflowActionState, formData: FormData,
+): Promise<AdminWorkflowActionState> {
+  const parsed = resendOrganisationInvitationSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  const secret = invitationSecret();
+  const expiresAt = new Date(Date.now() + 7 * 86_400_000).toISOString();
+  try {
+    const invitation = await resendAdminOrganisationInvitation({
+      invitationId: parsed.data.invitationId,
+      tokenDigest: secret.digest,
+      expiresAt,
+    });
+    const url = invitationUrl(invitation.invitationId, secret.token);
+    const emailDelivery = await sendInvitationEmail({
+      kind: "admin_service_organisation",
+      to: invitation.email,
+      invitationUrl: url,
+      expiresAt,
+      organisationName: invitation.providerName,
+      invitationId: invitation.invitationId,
+      replacement: true,
+    });
+    refresh();
+    return { status: "resent", invitationUrl: url, emailDelivery };
+  } catch (error) {
+    return result(error);
+  }
 }
 
 const optionalProviderText = (minimum: number, maximum: number) => z.string().trim().max(maximum)
