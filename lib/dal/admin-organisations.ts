@@ -12,6 +12,10 @@ export type AdminOrganisationWorkflow = {
     city: string | null;
     address: string | null;
     countryCode: string;
+    latitude: number | null;
+    longitude: number | null;
+    publicPhone: string | null;
+    publicEmail: string | null;
     primaryManagerId: string | null;
     primaryManagerName: string | null;
     subscriptionStatus: string;
@@ -53,20 +57,41 @@ type AdminWorkshopClaimStateRow = {
   claim_status: AdminOrganisationWorkflow["workshops"][number]["claimStatus"];
 };
 
+type AdminWorkshopLocationDetailRow = {
+  workshop_id: string;
+  service_provider_id: string | null;
+  display_name: string;
+  status: string;
+  city: string | null;
+  practice_address: string | null;
+  country_code: string;
+  latitude: number | string | null;
+  longitude: number | string | null;
+  public_phone: string | null;
+  public_email: string | null;
+};
+
 function fail(error: { code?: string; status?: number }): never {
   throw new DataAccessError(classifyDatabaseError(error));
 }
 
 export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisationWorkflow> {
   const supabase = await createClient();
-  const [{ data, error }, { data: claimRows, error: claimError }, { data: unownedRows, error: unownedError }] = await Promise.all([
+  const [
+    { data, error },
+    { data: claimRows, error: claimError },
+    { data: unownedRows, error: unownedError },
+    { data: locationRows, error: locationError },
+  ] = await Promise.all([
     supabase.rpc("get_admin_organisation_workflow"),
     supabase.rpc("get_admin_workshop_claim_states"),
     supabase.rpc("get_admin_unowned_workshops"),
+    supabase.rpc("get_admin_workshop_location_details"),
   ]);
   if (error || !data) fail(error ?? {});
   if (claimError) fail(claimError);
   if (unownedError) fail(unownedError);
+  if (locationError) fail(locationError);
   const workflow = data as unknown as AdminOrganisationWorkflow;
   for (const row of (unownedRows ?? []) as Array<Record<string, unknown>>) {
     workflow.workshops.push({
@@ -77,6 +102,10 @@ export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisation
       city: row.city as string | null,
       address: row.practice_address as string | null,
       countryCode: row.country_code as string,
+      latitude: null,
+      longitude: null,
+      publicPhone: null,
+      publicEmail: null,
       primaryManagerId: null,
       primaryManagerName: null,
       subscriptionStatus: row.subscription_status as string,
@@ -84,6 +113,25 @@ export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisation
       claimStatus: "unclaimed",
     });
   }
+  const locationByWorkshop = new Map(
+    ((locationRows ?? []) as AdminWorkshopLocationDetailRow[])
+      .map((row) => [row.workshop_id, row]),
+  );
+  workflow.workshops = workflow.workshops.map((workshop) => {
+    const location = locationByWorkshop.get(workshop.id);
+    return {
+      ...workshop,
+      latitude: location?.latitude == null ? null : Number(location.latitude),
+      longitude: location?.longitude == null ? null : Number(location.longitude),
+      publicPhone: location?.public_phone ?? null,
+      publicEmail: location?.public_email ?? null,
+      city: location?.city ?? workshop.city,
+      address: location?.practice_address ?? workshop.address,
+      countryCode: location?.country_code ?? workshop.countryCode,
+      displayName: location?.display_name ?? workshop.displayName,
+      status: location?.status ?? workshop.status,
+    };
+  });
   const claimByWorkshop = new Map<string, AdminWorkshopClaimStateRow>(
     ((claimRows ?? []) as AdminWorkshopClaimStateRow[])
       .map((row) => [row.workshop_id, row]),
@@ -152,6 +200,27 @@ export async function createAdminLocationManagerInvitation(input: {
   });
   if (error || !data) fail(error ?? {});
   return data as string;
+}
+
+export async function updateAdminWorkshopLocation(input: {
+  workshopId: string; displayName: string; countryCode: string;
+  city: string; address: string; latitude: number; longitude: number;
+  publicPhone: string | null; publicEmail: string | null;
+}) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("update_admin_workshop_location", {
+    requested_workshop_id: input.workshopId,
+    requested_display_name: input.displayName,
+    requested_country_code: input.countryCode,
+    requested_city: input.city,
+    requested_address: input.address,
+    requested_latitude: input.latitude,
+    requested_longitude: input.longitude,
+    requested_public_phone: input.publicPhone,
+    requested_public_email: input.publicEmail,
+  });
+  if (error) console.error("update_admin_workshop_location", { code: error.code });
+  if (error) fail(error);
 }
 
 export async function assignAdminWorkshopManager(input: {

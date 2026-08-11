@@ -9,6 +9,7 @@ import {
   createAdminOrganisationInvitation,
   createAdminWorkshopLocation,
   setAdminPlatformAccountStatus,
+  updateAdminWorkshopLocation,
 } from "@/lib/dal/admin-organisations";
 import { DataAccessError } from "@/lib/dal/errors";
 import { getSiteUrl } from "@/lib/site-url";
@@ -101,6 +102,38 @@ export async function createWorkshopLocationAction(
     });
     refresh(); return { status: "saved" };
   } catch (error) { return result(error); }
+}
+
+const updateLocationSchema = locationSchema.omit({ providerId: true }).extend({
+  workshopId: z.uuid(),
+});
+export async function updateWorkshopLocationAction(
+  _state: AdminWorkflowActionState, formData: FormData,
+): Promise<AdminWorkflowActionState> {
+  const parsed = updateLocationSchema.safeParse(Object.fromEntries(formData));
+  const city = optional(formData.get("city"));
+  const address = optional(formData.get("address"));
+  const latitude = optionalNumber(formData.get("latitude"));
+  const longitude = optionalNumber(formData.get("longitude"));
+  if (!parsed.success) return { status: "invalid" };
+  if (!city || !address || latitude === null || longitude === null
+    || !Number.isFinite(latitude) || latitude < -90 || latitude > 90
+    || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+    return { status: "geocode_required" };
+  }
+  try {
+    await updateAdminWorkshopLocation({
+      ...parsed.data,
+      countryCode: parsed.data.countryCode.toUpperCase(),
+      city, address, latitude, longitude,
+      publicPhone: optional(formData.get("publicPhone")),
+      publicEmail: optional(formData.get("publicEmail")),
+    });
+    refresh();
+    return { status: "saved" };
+  } catch (error) {
+    return result(error);
+  }
 }
 
 const managerInviteSchema = z.object({

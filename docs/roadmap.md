@@ -132,6 +132,12 @@
 - Migration 048 exposes the existing unique workshop slug through public
   discovery. Customer-facing workshop and request URLs use the readable slug,
   while legacy UUID URLs redirect to their canonical slug equivalent.
+- Migration 049 lets MFA-authenticated platform administrators correct existing
+  workshop location details and coordinates without changing stable public
+  slugs. The administrator location workflow keeps Google address search as the
+  default and adds an exact coordinate or draggable-pin mode for roadside and
+  other non-addressable workshops; every edit is recorded in the immutable
+  organisation administration history.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

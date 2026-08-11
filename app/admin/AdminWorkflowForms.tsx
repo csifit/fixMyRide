@@ -10,12 +10,27 @@ import {
   createWorkshopLocationAction,
   inviteLocationManagerAction,
   inviteServiceOrganisationAction,
+  updateWorkshopLocationAction,
   updatePlatformAccountStatusAction,
   type AdminWorkflowActionState,
 } from "./workflow-actions";
 
 type T = (key: TranslationKey) => string;
 const initial: AdminWorkflowActionState = { status: "idle" };
+
+function locationPinLabels(t: T) {
+  return {
+    searchMode: t("adminWorkflow.locationMode.search"),
+    pinMode: t("adminWorkflow.locationMode.pin"),
+    mapLabel: t("adminWorkflow.locationMode.mapLabel"),
+    mapHelp: t("adminWorkflow.locationMode.mapHelp"),
+    latitude: t("adminWorkflow.latitude"),
+    longitude: t("adminWorkflow.longitude"),
+    address: t("adminWorkflow.manualAddress"),
+    city: t("adminWorkflow.nearestCity"),
+    country: t("adminWorkflow.country"),
+  };
+}
 
 function Result({ state, t }: { state: AdminWorkflowActionState; t: T }) {
   if (state.status === "idle") return null;
@@ -57,12 +72,31 @@ function LocationForm({ providers, language, t }: {
     <form className="admin-workflow-form" action={action}>
       <label>{t("adminWorkflow.providerOptional")}<select name="providerId" defaultValue=""><option value="">{t("adminWorkflow.noProvider")}</option>{providers.map((provider) => <option value={provider.id} key={provider.id}>{provider.displayName} · {provider.status}</option>)}</select></label>
       <label>{t("adminWorkflow.locationName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
-      <GoogleAddressSearch label={t("adminWorkflow.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("adminWorkflow.addressSearchUnavailable")} language={language} disabled={pending} onSelection={(selection) => setLocationReady(Boolean(selection?.city && selection.latitude !== null && selection.longitude !== null))} />
+      <GoogleAddressSearch label={t("adminWorkflow.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("adminWorkflow.addressSearchUnavailable")} language={language} disabled={pending} allowManualPin manualPinLabels={locationPinLabels(t)} onSelection={(selection) => setLocationReady(Boolean(selection?.city && selection.latitude !== null && selection.longitude !== null))} />
       <label>{t("adminWorkflow.publicPhone")}<input name="publicPhone" maxLength={40} /></label>
       <label>{t("adminWorkflow.publicEmail")}<input name="publicEmail" type="email" maxLength={320} /></label>
       <button disabled={pending || !locationReady}>{t("adminWorkflow.createLocation")}</button><Result state={state} t={t} />
     </form>
   </details>;
+}
+
+function LocationEditForm({ workshop, language, t }: {
+  workshop: AdminOrganisationWorkflow["workshops"][number]; language: Language; t: T;
+}) {
+  const [state, action, pending] = useActionState(updateWorkshopLocationAction, initial);
+  const [locationReady, setLocationReady] = useState(Boolean(
+    workshop.address && workshop.city
+    && workshop.latitude !== null && workshop.longitude !== null,
+  ));
+  return <form className="admin-workflow-form" action={action}>
+      <input type="hidden" name="workshopId" value={workshop.id} />
+      <label>{t("adminWorkflow.locationName")}<input name="displayName" required minLength={2} maxLength={160} defaultValue={workshop.displayName} /></label>
+      <GoogleAddressSearch label={t("adminWorkflow.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("adminWorkflow.addressSearchUnavailable")} language={language} disabled={pending} initialAddress={workshop.address ?? ""} initialCity={workshop.city ?? ""} initialCountryCode={workshop.countryCode} initialLatitude={workshop.latitude} initialLongitude={workshop.longitude} allowManualPin manualPinLabels={locationPinLabels(t)} onSelection={(selection) => setLocationReady(Boolean(selection?.city && selection.latitude !== null && selection.longitude !== null))} />
+      <label>{t("adminWorkflow.publicPhone")}<input name="publicPhone" maxLength={40} defaultValue={workshop.publicPhone ?? ""} /></label>
+      <label>{t("adminWorkflow.publicEmail")}<input name="publicEmail" type="email" maxLength={320} defaultValue={workshop.publicEmail ?? ""} /></label>
+      <button disabled={pending || !locationReady}>{t("adminWorkflow.saveLocation")}</button>
+      <Result state={state} t={t} />
+    </form>;
 }
 
 function ManagerInviteForm({ workshops, t }: { workshops: AdminOrganisationWorkflow["workshops"]; t: T }) {
@@ -96,10 +130,13 @@ export function WorkshopAdministration({ providers, workflow, language, t }: {
   providers: Array<{ id: string; displayName: string; status: string }>;
   workflow: AdminOrganisationWorkflow; language: Language; t: T;
 }) {
+  const [editingWorkshopId, setEditingWorkshopId] = useState<string | null>(null);
+  const editingWorkshop = workflow.workshops.find((workshop) => workshop.id === editingWorkshopId) ?? null;
   return <div className="admin-workflow-stack">
     <LocationForm providers={providers} language={language} t={t} />
     <div className="admin-workflow-grid"><ManagerInviteForm workshops={workflow.workshops.filter((workshop) => workshop.providerId !== null)} t={t} /><ManagerAssignmentForm workshops={workflow.workshops.filter((workshop) => workshop.providerId !== null)} managers={workflow.managers} t={t} /></div>
-    <div className="admin-table-card"><table><thead><tr><th>{t("automotiveAdmin.workshop")}</th><th>{t("adminWorkflow.provider")}</th><th>{t("adminWorkflow.primaryManager")}</th><th>{t("adminWorkflow.subscription")}</th><th>{t("adminWorkflow.claim")}</th><th>{t("common.status")}</th></tr></thead><tbody>{workflow.workshops.map((workshop) => <tr key={workshop.id}><td><strong>{workshop.displayName}</strong><small>{[workshop.city, workshop.address].filter(Boolean).join(" · ")}</small></td><td>{providers.find((item) => item.id === workshop.providerId)?.displayName ?? t("adminWorkflow.noProvider")}</td><td>{workshop.primaryManagerName ?? t("adminWorkflow.noManager")}</td><td>{workshop.subscriptionStatus}</td><td><span>{t(`adminWorkflow.claimStatus.${workshop.claimStatus}` as TranslationKey)}</span>{workshop.creationSource === "administrator" && workshop.claimStatus !== "claimed" && <Link href={`/workshops/${workshop.id}`}>{t("adminWorkflow.openClaimPage")}</Link>}</td><td>{workshop.status}</td></tr>)}</tbody></table></div>
+    <div className="admin-table-card"><table><thead><tr><th>{t("automotiveAdmin.workshop")}</th><th>{t("adminWorkflow.provider")}</th><th>{t("adminWorkflow.primaryManager")}</th><th>{t("adminWorkflow.subscription")}</th><th>{t("adminWorkflow.claim")}</th><th>{t("common.status")}</th><th>{t("adminWorkflow.operation")}</th></tr></thead><tbody>{workflow.workshops.map((workshop) => <tr key={workshop.id}><td><strong>{workshop.displayName}</strong><small>{[workshop.city, workshop.address].filter(Boolean).join(" · ")}</small></td><td>{providers.find((item) => item.id === workshop.providerId)?.displayName ?? t("adminWorkflow.noProvider")}</td><td>{workshop.primaryManagerName ?? t("adminWorkflow.noManager")}</td><td>{workshop.subscriptionStatus}</td><td><span>{t(`adminWorkflow.claimStatus.${workshop.claimStatus}` as TranslationKey)}</span>{workshop.creationSource === "administrator" && workshop.claimStatus !== "claimed" && <Link href={`/workshops/${workshop.id}`}>{t("adminWorkflow.openClaimPage")}</Link>}</td><td>{workshop.status}</td><td><button type="button" className="admin-location-edit-button" onClick={() => setEditingWorkshopId(workshop.id)}>{t("adminWorkflow.editLocation")}</button></td></tr>)}</tbody></table></div>
+    {editingWorkshop && <section className="admin-location-editor"><header><div><strong>{t("adminWorkflow.editLocation")}</strong><span>{editingWorkshop.displayName}</span></div><button type="button" onClick={() => setEditingWorkshopId(null)} aria-label={t("common.close")}>×</button></header><LocationEditForm key={editingWorkshop.id} workshop={editingWorkshop} language={language} t={t} /></section>}
   </div>;
 }
 
