@@ -16,6 +16,13 @@ export type WorkshopManagerAccess = BaseFailure
   | { state: "deactivated" | "blocked" }
   | { state: "active"; manager: { id: string; displayName: string } };
 
+export type ServiceOrganisationAccess = Exclude<WorkshopManagerAccess, { state: "active" }>
+  | {
+    state: "active";
+    manager: { id: string; displayName: string };
+    organisationIds: string[];
+  };
+
 async function authenticatedUserId() {
   if (!readSupabaseEnvironment().configured) return { state: "configuration" as const };
   const supabase = await createClient();
@@ -56,4 +63,20 @@ export async function getWorkshopManagerAccess(): Promise<WorkshopManagerAccess>
   if (manager.status === "suspended") return { state: "suspended" };
   if (manager.status !== "active") return { state: "rejected" };
   return { state: "active", manager: { id: manager.id, displayName: manager.display_name } };
+}
+
+export async function getServiceOrganisationAccess(): Promise<ServiceOrganisationAccess> {
+  const access = await getWorkshopManagerAccess();
+  if (access.state !== "active") return access;
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("workshop_manager_memberships")
+    .select("service_provider_id")
+    .eq("workshop_manager_id", access.manager.id)
+    .eq("membership_role", "owner")
+    .eq("status", "active");
+  if (error) return { state: "unavailable" };
+  const organisationIds = (data ?? []).map((membership) => membership.service_provider_id);
+  if (!organisationIds.length) return { state: "unauthorized" };
+  return { state: "active", manager: access.manager, organisationIds };
 }

@@ -66,5 +66,24 @@ export async function setPasswordAction(
     return { status: "unavailable" };
   }
 
+  if (identity.target_account_type === "workshop_manager") {
+    const { data: manager, error: managerError } = await supabase
+      .from("workshop_manager_profiles")
+      .select("id")
+      .eq("auth_user_id", authUserId)
+      .maybeSingle();
+    if (managerError || !manager) return { status: "unavailable" };
+    const { data: ownership, error: ownershipError } = await supabase
+      .from("workshop_manager_memberships")
+      .select("service_provider_id")
+      .eq("workshop_manager_id", manager.id)
+      .eq("membership_role", "owner")
+      .eq("status", "active")
+      .limit(1)
+      .maybeSingle();
+    if (ownershipError) return { status: "unavailable" };
+    redirect(ownership ? "/service-organisation" : "/workshop-manager");
+  }
+
   redirect(destinations[identity.target_account_type] ?? "/");
 }

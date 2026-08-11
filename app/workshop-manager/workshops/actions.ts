@@ -41,7 +41,7 @@ function result(error: unknown): WorkshopOperationsActionState {
   }
   return { status: "unavailable" };
 }
-function refresh() { revalidatePath("/workshop-manager/workshops"); revalidatePath("/workshops"); }
+function refresh() { revalidatePath("/workshop-manager/workshops"); revalidatePath("/service-organisation/locations"); revalidatePath("/workshops"); }
 
 export async function updateWorkshopOperationsAction(_state: WorkshopOperationsActionState, formData: FormData): Promise<WorkshopOperationsActionState> {
   const hours = Array.from({ length: 7 }, (_, weekday) => {
@@ -81,6 +81,8 @@ export async function createWorkshopLocationAction(_state: WorkshopOperationsAct
     refresh();
     revalidatePath("/workshop-manager/organisation");
     revalidatePath("/workshop-manager/invoicing");
+    revalidatePath("/service-organisation/managers");
+    revalidatePath("/service-organisation/billing");
     return { status: "location_created" };
   } catch (error) { return result(error); }
 }

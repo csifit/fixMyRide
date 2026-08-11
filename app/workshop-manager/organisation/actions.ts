@@ -76,6 +76,7 @@ export async function inviteOrganisationManagerAction(
       emailDelivery = "failed";
     }
     revalidatePath("/workshop-manager/organisation");
+    revalidatePath("/service-organisation/managers");
     return { status: "saved", invitationUrl: url.toString(), emailDelivery };
   } catch (error) {
     return failure(error);
@@ -93,6 +94,7 @@ export async function revokeOrganisationManagerInvitationAction(
   try {
     await revokeOrganisationManagerInvitation(parsed.data.invitationId);
     revalidatePath("/workshop-manager/organisation");
+    revalidatePath("/service-organisation/managers");
     return { status: "revoked" };
   } catch (error) {
     return failure(error);

@@ -54,10 +54,11 @@ function RevokeInvitation({ invitationId, t }: {
   </form>;
 }
 
-export default function OrganisationCoverageClient({ coverage, providers, logoutAction }: {
+export default function OrganisationCoverageClient({ coverage, providers, logoutAction, portalBasePath = "/workshop-manager" }: {
   coverage: OrganisationCoverage;
   providers: Array<{ id: string; displayName: string }>;
   logoutAction: () => Promise<void>;
+  portalBasePath?: string;
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const [state, invitationAction, pending] = useActionState(
@@ -81,7 +82,7 @@ export default function OrganisationCoverageClient({ coverage, providers, logout
       <p className="registration-kicker">{t("organisationCoverage.eyebrow")}</p>
       <div className="coverage-title">
         <div><h1>{t("organisationCoverage.title")}</h1><p>{t("organisationCoverage.description")}</p></div>
-        {providers.length > 1 && <label>{t("organisationCoverage.organisation")}<select value={coverage.providerId} onChange={(event) => location.assign(`/workshop-manager/organisation?providerId=${event.target.value}`)}>{providers.map((provider) => <option key={provider.id} value={provider.id}>{provider.displayName}</option>)}</select></label>}
+        {providers.length > 1 && <label>{t("organisationCoverage.organisation")}<select value={coverage.providerId} onChange={(event) => location.assign(`${portalBasePath}${portalBasePath === "/service-organisation" ? "/managers" : "/organisation"}?providerId=${event.target.value}`)}>{providers.map((provider) => <option key={provider.id} value={provider.id}>{provider.displayName}</option>)}</select></label>}
       </div>
       <section className="coverage-metrics">
         <article><strong>{coverage.locationCount}</strong><span>{t("organisationCoverage.locations")}</span></article>
@@ -123,7 +124,7 @@ export default function OrganisationCoverageClient({ coverage, providers, logout
           </div>
         </section>
       </div>
-      <Link className="organization-action coverage-billing-link" href={`/workshop-manager/invoicing?providerId=${coverage.providerId}`}>{t("organisationCoverage.openBilling")}</Link>
+      <Link className="organization-action coverage-billing-link" href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/billing" : "/invoicing"}?providerId=${coverage.providerId}`}>{t("organisationCoverage.openBilling")}</Link>
     </section>
   </main>;
 }

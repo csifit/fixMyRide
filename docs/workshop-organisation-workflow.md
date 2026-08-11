@@ -6,6 +6,8 @@
 - A `workshop` is one physical location, one public listing, and one EUR 35
   monthly billing unit.
 - An organisation owner is authorized through the existing provider membership.
+- Organisation owners use the dedicated `/service-organisation` workspace;
+  location managers continue to use `/workshop-manager`.
 - A location manager is authorized through a location assignment. Each location
   must have one live primary manager before it can become publicly eligible.
 - Account status is role-neutral and applies to customers, managers, staff,
@@ -36,7 +38,9 @@ reports a specific configuration, authentication, server, sender, rate-limit,
 or availability warning when delivery fails. Accepting the emailed invitation
 proves control of the mailbox, so the acceptance action creates a confirmed
 account without asking Supabase Auth to send a second email. It signs in the new
-account and sends the invited person directly to the password-setup flow.
+account and sends the invited person directly to the password-setup flow. An
+accepted administrator-issued owner invitation also activates a still-pending
+service organisation so its owner can begin onboarding locations immediately.
 
 An MFA-authenticated administrator can resend a pending service-organisation
 owner invitation from `/admin/providers`. Resending rotates the token digest,
@@ -92,7 +96,7 @@ billing activation remain separate controlled cutovers.
 ## Step 3 organisation coverage
 
 Active organisation owners have an owner-scoped coverage dashboard at
-`/workshop-manager/organisation`. It shows each location, its primary manager,
+`/service-organisation/managers`. It shows each location, its primary manager,
 canonical subscription and grace state, the EUR 35 unit price, and the total
 required monthly coverage for all organisation locations. The total is a
 projection only: this milestone does not create, modify, or multiply Stripe
@@ -148,7 +152,7 @@ changing another location's customers, appointments, estimates, or repairs.
 ## Step 6 owner-created locations
 
 Migration 044 lets an active service-organisation owner create a geocoded
-workshop directly from `/workshop-manager/workshops`. Creating a location also
+workshop directly from `/service-organisation/locations`. Creating a location also
 creates its default weekday hours, diagnosis service, canonical location
 subscription record, and a supporting assignment for the owner, so the owner
 can finish its profile and operating rules immediately.
@@ -159,6 +163,11 @@ location subscription before the automatic publication rules can place it on
 the public map. Supporting location managers can continue to edit only the
 locations to which they are explicitly assigned; they cannot create billable
 locations for the organisation.
+
+Creating and configuring a location does not require Stripe payment. Billing
+coverage is enforced only when the location is evaluated for automatic public
+publication, so testing location setup and manager invitations does not need a
+temporary commercial bypass.
 
 ## Step 7 administrator-created location claims
 

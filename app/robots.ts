@@ -15,6 +15,7 @@ export default function robots(): MetadataRoute.Robots {
         "/garage",
         "/register",
         "/service-provider",
+        "/service-organisation",
         "/workshop-manager",
         "/workshop-staff",
         "/workshops/*/request",

@@ -80,7 +80,7 @@ export default function RegistrationForm({
         </form>
         <nav className="registration-links">
           <Link href="/register">{t("register.chooseAnother")}</Link>
-          <Link href={accountType === "customer" ? "/customer/login" : "/workshop-manager/login"}>{t("register.alreadyAccount")}</Link>
+          <Link href={accountType === "customer" ? "/customer/login" : "/service-organisation/login"}>{t("register.alreadyAccount")}</Link>
         </nav>
       </section>
     </main>

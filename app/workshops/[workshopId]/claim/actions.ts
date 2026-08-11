@@ -37,5 +37,5 @@ export async function beginWorkshopClaimAction(formData: FormData) {
   if (result.state === "claimed") {
     redirect(`/workshops/${parsed.data.workshopId}?claim=claimed`);
   }
-  redirect(`/workshop-manager/invoicing?providerId=${result.providerId}&workshopId=${parsed.data.workshopId}&claim=${result.state}`);
+  redirect(`/service-organisation/billing?providerId=${result.providerId}&workshopId=${parsed.data.workshopId}&claim=${result.state}`);
 }

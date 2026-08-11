@@ -12,6 +12,7 @@ test("standard Next.js production output exists", async () => {
   assert.equal(typeof manifest["/page"], "string");
   assert.equal(typeof manifest["/customer/bookings/page"], "string");
   assert.equal(typeof manifest["/workshop-manager/page"], "string");
+  assert.equal(typeof manifest["/service-organisation/page"], "string");
   assert.equal(typeof manifest["/admin/page"], "string");
   assert.equal(typeof manifest["/admin/login/page"], "string");
   assert.equal(typeof manifest["/admin/mfa/enroll/page"], "string");
@@ -41,6 +42,7 @@ test("platform login redirects to canonical destinations", async () => {
   const form = await readFile(new URL("app/authentication/PlatformLoginForm.tsx", root), "utf8");
   assert.match(action, /"\/customer\/bookings"/);
   assert.match(action, /"\/workshop-manager"/);
+  assert.match(action, /"\/service-organisation"/);
   assert.match(form, /platformLoginAction/);
 });
 

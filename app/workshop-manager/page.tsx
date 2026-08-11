@@ -11,5 +11,8 @@ export default async function WorkshopManagerPage() {
   if (access.state === "unauthenticated") redirect("/workshop-manager/login");
   if (access.state !== "active") return <main className="registration-shell"><section className="registration-card"><h1>Workshop manager access</h1><p>Your account is currently {access.state}. Contact platform support if this is unexpected.</p></section></main>;
   const providers = await loadManagedServiceProviders(access.manager.id);
+  if (providers.some((provider) => provider.membershipRole === "owner")) {
+    redirect("/service-organisation");
+  }
   return <WorkshopManagerDashboard displayName={access.manager.displayName} providers={providers} logoutAction={platformLogoutAction} />;
 }

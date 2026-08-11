@@ -56,7 +56,7 @@ export default function HomeDiscoveryClient({
         <Link href="/workshops">{t("home.nav.findWorkshop")}</Link>
         <a href="#services">{t("home.nav.services")}</a>
         <Link href="/garage">{t("home.nav.garage")}</Link>
-        <Link href="/workshop-manager/login">{t("home.nav.providers")}</Link>
+        <Link href="/service-organisation/login">{t("home.nav.providers")}</Link>
       </nav>
       <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label="Language">
         <option value="en">EN</option><option value="de">DE</option>
@@ -144,7 +144,7 @@ export default function HomeDiscoveryClient({
 
     <footer className="home-footer" id="legal">
       <div><strong>{t("home.footer.customers")}</strong><Link href="/workshops">{t("home.nav.findWorkshop")}</Link><Link href="/garage">{t("home.nav.garage")}</Link><Link href="/customer/login">{t("home.footer.signIn")}</Link></div>
-      <div><strong>{t("home.footer.providers")}</strong><Link href="/register/workshop-manager">{t("home.footer.join")}</Link><Link href="/workshop-manager/login">{t("home.footer.providerSignIn")}</Link><span>€35/{t("home.offer.month")} · {t("home.offer.sms")}</span></div>
+      <div><strong>{t("home.footer.providers")}</strong><Link href="/register/workshop-manager">{t("home.footer.join")}</Link><Link href="/service-organisation/login">{t("home.footer.providerSignIn")}</Link><span>€35/{t("home.offer.month")} · {t("home.offer.sms")}</span></div>
       <div><strong>{t("home.footer.legal")}</strong><a href="#legal">{t("home.footer.terms")}</a><a href="#legal">{t("home.footer.privacy")}</a><a href="#legal">{t("home.footer.cookies")}</a></div>
       <div><strong>{t("home.footer.contact")}</strong><a href={`mailto:${brand.supportEmail}`}>{t("home.footer.support")}</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>{t("home.footer.report")}</a></div>
       <p>© {new Date().getFullYear()} {brand.name}</p>

@@ -144,6 +144,10 @@
   unowned platform-curated locations; suspend or restore an organisation; and
   archive an unused organisation. Deletion is deliberately dependency-guarded
   and retains legally relevant Stripe, invoice and immutable audit records.
+- Migration 052 separates the service-organisation owner workspace from the
+  workshop-manager portal, routes accepted owners to that workspace, activates
+  still-pending organisations on owner acceptance, and keeps payment out of
+  location creation while retaining billing as a publication requirement.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

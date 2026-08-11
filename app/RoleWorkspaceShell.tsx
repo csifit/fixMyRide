@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 
-type Role = "customer" | "workshop_manager" | "workshop_staff" | "service_provider";
+type Role = "customer" | "workshop_manager" | "workshop_staff" | "service_provider" | "service_organisation";
 type Item = { href: string; label: string; mark: string };
 
 const navigation: Record<Role, { title: string; items: Item[] }> = {
@@ -18,9 +18,13 @@ const navigation: Record<Role, { title: string; items: Item[] }> = {
     { href: "/workshop-manager/requests", label: "Calendar & requests", mark: "C" },
     { href: "/workshop-manager/repairs", label: "Repair lifecycle", mark: "R" },
     { href: "/workshop-manager/workshops", label: "Workshops", mark: "W" },
-    { href: "/workshop-manager/organisation", label: "Organisation coverage", mark: "O" },
     { href: "/workshop-manager/services", label: "Service catalogue", mark: "S" },
-    { href: "/workshop-manager/invoicing", label: "Subscription & billing", mark: "$" },
+  ] },
+  service_organisation: { title: "Service organisation", items: [
+    { href: "/service-organisation", label: "Overview", mark: "O" },
+    { href: "/service-organisation/locations", label: "Locations", mark: "L" },
+    { href: "/service-organisation/managers", label: "Workshop managers", mark: "M" },
+    { href: "/service-organisation/billing", label: "Subscription & billing", mark: "$" },
   ] },
   workshop_staff: { title: "Workshop staff", items: [
     { href: "/workshop-staff", label: "Operations", mark: "O" },

@@ -9,6 +9,7 @@ const actions = await read("app/workshop-manager/organisation/actions.ts");
 const page = await read("app/workshop-manager/organisation/page.tsx");
 const client = await read("app/workshop-manager/organisation/OrganisationCoverageClient.tsx");
 const navigation = await read("app/RoleWorkspaceShell.tsx");
+const ownerPage = await read("app/service-organisation/managers/page.tsx");
 
 test("coverage reads and invitation mutations require an active organisation owner", () => {
   assert.match(migration, /create function private\.can_manage_service_organisation/);
@@ -46,7 +47,8 @@ test("owner invitations are hashed, expiring, location scoped, and revocable", (
 test("organisation coverage is reachable only through owner-filtered manager pages", () => {
   assert.match(page, /membershipRole === "owner"/);
   assert.match(page, /loadOrganisationCoverage/);
-  assert.match(navigation, /\/workshop-manager\/organisation/);
+  assert.match(navigation, /\/service-organisation\/managers/);
+  assert.match(ownerPage, /getServiceOrganisationAccess/);
   assert.match(client, /inviteOrganisationManagerAction/);
   assert.match(client, /revokeOrganisationManagerInvitationAction/);
 });

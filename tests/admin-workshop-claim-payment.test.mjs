@@ -77,7 +77,7 @@ test("public claim and billing surfaces guide the owner without bypassing paymen
   assert.match(claimCard, /workshopClaim\.button/);
   assert.match(claimCard, /beginWorkshopClaimAction/);
   assert.match(claimCard, /workshopClaim\.chooseOrganisation/);
-  assert.match(claimAction, /workshop-manager\/invoicing\?providerId=/);
+  assert.match(claimAction, /service-organisation\/billing\?providerId=/);
   assert.match(billing, /claimDetailsTitle/);
   assert.match(billing, /claimPaymentTitle/);
   assert.match(billing, /startStripeCheckoutAction/);

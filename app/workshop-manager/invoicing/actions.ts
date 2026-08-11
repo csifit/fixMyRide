@@ -41,13 +41,14 @@ export async function updateProviderBillingProfileAction(_state: ProviderBilling
       postalCode: values.postalCode || null, countryCode: values.countryCode,
     });
     revalidatePath("/workshop-manager/invoicing");
+    revalidatePath("/service-organisation/billing");
     return { status: "saved" };
   } catch (error) { return failure(error); }
 }
 
 export async function startStripeCheckoutAction(formData: FormData) {
   const parsed = checkoutSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirect("/workshop-manager/invoicing?billingError=invalid");
+  if (!parsed.success) redirect("/service-organisation/billing?billingError=invalid");
   let checkoutUrl: string;
   try {
     const billing = await loadProviderBilling(parsed.data.providerId);
@@ -102,33 +103,33 @@ export async function startStripeCheckoutAction(formData: FormData) {
           ? { end_behavior: { missing_payment_method: "cancel" } }
           : undefined,
       },
-      success_url: `${siteUrl}/workshop-manager/invoicing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=success`,
-      cancel_url: `${siteUrl}/workshop-manager/invoicing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=cancelled`,
+      success_url: `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=success`,
+      cancel_url: `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=cancelled`,
     });
     if (!session.url) throw new Error("stripe_checkout_url_missing");
     checkoutUrl = session.url;
   } catch (error) {
     const result = failure(error);
-    redirect(`/workshop-manager/invoicing?providerId=${parsed.data.providerId}&billingError=${result.status}`);
+    redirect(`/service-organisation/billing?providerId=${parsed.data.providerId}&billingError=${result.status}`);
   }
   redirect(checkoutUrl);
 }
 
 export async function openStripePortalAction(formData: FormData) {
   const parsed = providerSchema.safeParse(Object.fromEntries(formData));
-  if (!parsed.success) redirect("/workshop-manager/invoicing?billingError=invalid");
+  if (!parsed.success) redirect("/service-organisation/billing?billingError=invalid");
   let portalUrl: string;
   try {
     const billing = await loadProviderBilling(parsed.data.providerId);
     if (!billing.stripeCustomerId) throw new Error("stripe_customer_missing");
     const session = await getStripe().billingPortal.sessions.create({
       customer: billing.stripeCustomerId,
-      return_url: `${getSiteUrl()}/workshop-manager/invoicing?providerId=${billing.providerId}`,
+      return_url: `${getSiteUrl()}/service-organisation/billing?providerId=${billing.providerId}`,
     });
     portalUrl = session.url;
   } catch (error) {
     const result = failure(error);
-    redirect(`/workshop-manager/invoicing?providerId=${parsed.data.providerId}&billingError=${result.status}`);
+    redirect(`/service-organisation/billing?providerId=${parsed.data.providerId}&billingError=${result.status}`);
   }
   redirect(portalUrl);
 }

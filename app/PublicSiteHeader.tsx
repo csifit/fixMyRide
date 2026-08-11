@@ -13,7 +13,7 @@ export default function PublicSiteHeader() {
     <nav>
       <Link href="/workshops">Find a workshop</Link>
       <Link href="/garage">My Garage</Link>
-      <Link href="/workshop-manager/login">For service providers</Link>
+      <Link href="/service-organisation/login">For service organisations</Link>
     </nav>
     <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={ready ? t("a11y.languageSelector") : "Language"}>
       <option value="en">EN</option><option value="de">DE</option>

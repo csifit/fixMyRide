@@ -23,7 +23,7 @@ const money = (language: Language, cents: number, currency: string) =>
   new Intl.NumberFormat(locales[language], { style: "currency", currency })
     .format(cents / 100);
 
-export default function ProviderBillingClient({ billing, providers, stripeConfigured, notice, error, claimState, claimWorkshopId, logoutAction }: {
+export default function ProviderBillingClient({ billing, providers, stripeConfigured, notice, error, claimState, claimWorkshopId, logoutAction, portalBasePath = "/workshop-manager" }: {
   billing: ProviderBilling;
   providers: Array<{ id: string; displayName: string }>;
   stripeConfigured: boolean;
@@ -32,6 +32,7 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
   claimState: string | null;
   claimWorkshopId: string | null;
   logoutAction: () => Promise<void>;
+  portalBasePath?: string;
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const [state, profileAction, pending] = useActionState(
@@ -45,7 +46,7 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
 
   return <main className="billing-shell">
     <header className="settings-topbar">
-      <Link href="/workshop-manager">← {t("workspace.back")}</Link>
+      <Link href={portalBasePath}>← {t("workspace.back")}</Link>
       <strong>pitster</strong>
       <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}>
         <option value="en">EN</option><option value="de">DE</option>
@@ -57,7 +58,7 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
       <p className="registration-kicker">{t("providerBilling.eyebrow")}</p>
       <div className="provider-billing-title">
         <div><h1>{t("providerBilling.title")}</h1><p>{t("providerBilling.description")}</p></div>
-        {providers.length > 1 && <label>{t("providerBilling.provider")}<select value={billing.providerId} onChange={(event) => location.assign(`/workshop-manager/invoicing?providerId=${event.target.value}`)}>{providers.map((provider) => <option key={provider.id} value={provider.id}>{provider.displayName}</option>)}</select></label>}
+        {providers.length > 1 && <label>{t("providerBilling.provider")}<select value={billing.providerId} onChange={(event) => location.assign(`${portalBasePath}${portalBasePath === "/service-organisation" ? "/billing" : "/invoicing"}?providerId=${event.target.value}`)}>{providers.map((provider) => <option key={provider.id} value={provider.id}>{provider.displayName}</option>)}</select></label>}
       </div>
       {notice === "success" && <p className="note-success">{t("providerBilling.checkoutSuccess")}</p>}
       {notice === "cancelled" && <p className="note-error">{t("providerBilling.checkoutCancelled")}</p>}

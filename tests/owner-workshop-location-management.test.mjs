@@ -10,6 +10,11 @@ const page = await read("app/workshop-manager/workshops/page.tsx");
 const actions = await read("app/workshop-manager/workshops/actions.ts");
 const client = await read("app/workshop-manager/workshops/WorkshopOperationsClient.tsx");
 const dal = await read("lib/dal/workshop-operations.ts");
+const activation = await read("supabase/migrations/202608110052_service_organisation_owner_portal.sql");
+const portal = await read("app/service-organisation/page.tsx");
+const locations = await read("app/service-organisation/locations/page.tsx");
+const managers = await read("app/service-organisation/managers/page.tsx");
+const access = await read("lib/dal/platform-access.ts");
 
 test("only an active organisation owner can create a location", () => {
   assert.match(migration, /create function public\.create_my_workshop_location/);
@@ -18,6 +23,15 @@ test("only an active organisation owner can create a location", () => {
   assert.match(migration, /membership\.membership_role = 'owner'/);
   assert.match(migration, /identity\.status = 'active'/);
   assert.match(migration, /grant execute on function public\.create_my_workshop_location[\s\S]+to authenticated/);
+});
+
+test("accepted organisation-owner invitations activate the service organisation", () => {
+  assert.match(activation, /create function private\.activate_accepted_service_organisation/);
+  assert.match(activation, /new\.invitation_kind = 'organisation_owner'/);
+  assert.match(activation, /new\.status = 'accepted'/);
+  assert.match(activation, /set status = 'active'/);
+  assert.match(activation, /provider\.status = 'pending'/);
+  assert.match(activation, /invitation\.status = 'accepted'/);
 });
 
 test("new locations require complete Google geocoding and safe defaults", () => {
@@ -47,4 +61,13 @@ test("the workshops page exposes owner-only creation and existing location manag
   assert.match(actions, /coordinate = z\.string\(\)\.trim\(\)\.min\(1\)/);
   assert.match(actions, /revalidatePath\("\/workshop-manager\/invoicing"\)/);
   assert.match(dal, /rpc\("create_my_workshop_location"/);
+});
+
+test("organisation owners receive a distinct owner-only workspace", () => {
+  assert.match(access, /getServiceOrganisationAccess/);
+  assert.match(access, /membership_role", "owner"/);
+  assert.match(portal, /getServiceOrganisationAccess/);
+  assert.match(portal, /ServiceOrganisationDashboard/);
+  assert.match(locations, /portalBasePath="\/service-organisation"/);
+  assert.match(managers, /portalBasePath="\/service-organisation"/);
 });

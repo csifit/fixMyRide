@@ -39,9 +39,9 @@ test("public registration emits canonical automotive roles", () => {
 
 test("active navigation and middleware use canonical routes", () => {
   assert.match(home, /\/customer\/login/);
-  assert.match(home, /\/workshop-manager\/login/);
+  assert.match(home, /\/service-organisation\/login/);
   assert.doesNotMatch(home, /\/patient\/login|\/clinic-manager/);
-  for (const route of ["/customer/:path*", "/workshop-manager/:path*", "/service-provider/:path*", "/workshop-staff/:path*"]) {
+  for (const route of ["/customer/:path*", "/workshop-manager/:path*", "/service-organisation/:path*", "/service-provider/:path*", "/workshop-staff/:path*"]) {
     assert.ok(proxy.includes(route), route);
   }
   assert.doesNotMatch(proxy, /doctor|clinic-manager|patient|"\/staff/i);
