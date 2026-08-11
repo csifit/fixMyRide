@@ -72,7 +72,7 @@ export async function inviteServiceOrganisationAction(
 }
 
 const locationSchema = z.object({
-  providerId: z.uuid(), displayName: z.string().trim().min(2).max(160),
+  providerId: z.union([z.literal(""), z.uuid()]), displayName: z.string().trim().min(2).max(160),
   countryCode: z.string().trim().regex(/^[A-Za-z]{2}$/),
   publicEmail: z.union([z.literal(""), z.email().max(320)]),
   publicPhone: z.string().trim().max(40),
@@ -88,7 +88,8 @@ export async function createWorkshopLocationAction(
     || (longitude !== null && !Number.isFinite(longitude))) return { status: "invalid" };
   try {
     await createAdminWorkshopLocation({
-      ...parsed.data, countryCode: parsed.data.countryCode.toUpperCase(),
+      ...parsed.data, providerId: parsed.data.providerId || null,
+      countryCode: parsed.data.countryCode.toUpperCase(),
       city: optional(formData.get("city")), address: optional(formData.get("address")),
       latitude, longitude, publicPhone: optional(formData.get("publicPhone")),
       publicEmail: optional(formData.get("publicEmail")),

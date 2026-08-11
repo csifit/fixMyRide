@@ -6,7 +6,10 @@ import { beginMyWorkshopClaim } from "@/lib/dal/workshop-claims";
 import { DataAccessError } from "@/lib/dal/errors";
 import { getWorkshopManagerAccess } from "@/lib/dal/platform-access";
 
-const schema = z.object({ workshopId: z.uuid() });
+const schema = z.object({
+  workshopId: z.uuid(),
+  providerId: z.union([z.literal(""), z.uuid()]).optional(),
+});
 
 export async function beginWorkshopClaimAction(formData: FormData) {
   const parsed = schema.safeParse(Object.fromEntries(formData));
@@ -21,7 +24,10 @@ export async function beginWorkshopClaimAction(formData: FormData) {
 
   let result: Awaited<ReturnType<typeof beginMyWorkshopClaim>>;
   try {
-    result = await beginMyWorkshopClaim(parsed.data.workshopId);
+    result = await beginMyWorkshopClaim(
+      parsed.data.workshopId,
+      parsed.data.providerId || null,
+    );
   } catch (error) {
     if (error instanceof DataAccessError && error.code === "unauthorized") {
       redirect(`/workshops/${parsed.data.workshopId}?claim=unauthorized`);

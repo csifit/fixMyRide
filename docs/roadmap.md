@@ -119,9 +119,10 @@
   newly created workshop identifier while retaining the existing authorization,
   subscription, diagnosis-service, assignment, and audit triggers.
 - Migration 046 adds the administrator-created workshop claim lifecycle.
-  Geocoded admin-created locations become active and receive immediate map
-  visibility with a claim prompt. Only an active owner of the linked
-  organisation can proceed. Complete organisation billing details and an
+  Geocoded admin-created locations may start without an organisation or
+  manager, become active, and receive immediate map visibility with a claim
+  prompt. An active organisation owner chooses or verifies the organisation
+  during claim. Complete organisation billing details and an
   active or trialing EUR 35 location subscription are required; the signed
   Stripe webhook finalizes the claim, without fabricating subscription state.
 

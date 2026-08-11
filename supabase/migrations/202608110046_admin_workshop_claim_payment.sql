@@ -186,7 +186,6 @@ begin
     raise exception 'The linked service organisation owner is required'
       using errcode = '42501';
   end if;
-
   select manager.id into manager_id
   from public.workshop_manager_memberships membership
   join public.workshop_manager_profiles manager

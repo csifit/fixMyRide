@@ -148,16 +148,21 @@ locations for the organisation.
 ## Step 7 administrator-created location claims
 
 Migration 046 distinguishes locations created by an administrator from legacy
-and owner-created locations. A new geocoded administrator-created location
-starts `active` and `unclaimed`, and appears on the public map immediately. Its
+and owner-created locations. A new geocoded administrator-created location can
+start without a service organisation or manager. It starts `active` and
+`unclaimed`, and appears on the public map immediately. Its
 public location page offers **Claim this workshop** without exposing private
 organisation or billing data. This is an explicit temporary publication
 exception for administrator-curated locations, not subscription coverage.
 
-Only an active owner of the service organisation selected by the administrator
-can start the claim. The owner must first save complete organisation billing
-details and then activate the EUR 35 monthly subscription for that exact
-location. The claim changes to `awaiting_payment` before Checkout; only an
+If the administrator did not assign an organisation, the claimant chooses one
+of the active service organisations they own. The database verifies active
+owner access before attaching the location; unowned locations are unavailable
+to manager invitation and assignment controls until that happens. If an
+organisation was preassigned, only one of its active owners can proceed. The
+owner must then save complete organisation billing details and activate the EUR
+35 monthly subscription for that exact location. The claim changes to
+`awaiting_payment` before Checkout; only an
 active or trialing location subscription received through the existing signed
 Stripe webhook path finalizes it as `claimed`. Grace coverage does not complete
 a claim. After claiming, the normal publication rules require a geocoded active

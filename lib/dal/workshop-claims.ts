@@ -5,11 +5,12 @@ import { classifyDatabaseError, DataAccessError } from "./errors";
 
 export type PublicWorkshopClaim = {
   workshopId: string;
+  serviceProviderId: string | null;
   displayName: string;
   city: string | null;
   address: string | null;
   countryCode: string;
-  serviceProviderName: string;
+  serviceProviderName: string | null;
   status: "unclaimed" | "awaiting_payment" | "claimed";
 };
 
@@ -27,22 +28,24 @@ export async function loadPublicWorkshopClaim(workshopId: string): Promise<Publi
   const row = data as Record<string, unknown>;
   return {
     workshopId: row.workshop_id as string,
+    serviceProviderId: row.service_provider_id as string | null,
     displayName: row.display_name as string,
     city: row.city as string | null,
     address: row.practice_address as string | null,
     countryCode: row.country_code as string,
-    serviceProviderName: row.service_provider_name as string,
+    serviceProviderName: row.service_provider_name as string | null,
     status: row.claim_status as PublicWorkshopClaim["status"],
   };
 }
 
-export async function beginMyWorkshopClaim(workshopId: string): Promise<{
+export async function beginMyWorkshopClaim(workshopId: string, providerId: string | null): Promise<{
   providerId: string;
   state: "details_required" | "payment_required" | "claimed";
 }> {
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("begin_my_workshop_claim", {
     requested_workshop_id: workshopId,
+    requested_service_provider_id: providerId,
   });
   if (error || !data) fail(error ?? {});
   const result = data as Record<string, unknown>;

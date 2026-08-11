@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import PublicSiteHeader from "@/app/PublicSiteHeader";
 import { getPublicWorkshop, loadPublicWorkshopServices } from "@/lib/dal/public-workshops";
 import { loadPublicWorkshopClaim } from "@/lib/dal/workshop-claims";
+import { getWorkshopManagerAccess } from "@/lib/dal/platform-access";
+import { loadManagedServiceProviders } from "@/lib/dal/service-providers";
 import WorkshopClaimCard from "./WorkshopClaimCard";
 
 export const dynamic = "force-dynamic";
@@ -34,14 +36,23 @@ export default async function WorkshopPage({
     getPublicWorkshop(workshopId),
     loadPublicWorkshopClaim(workshopId),
   ]);
+  let ownerProviders: Array<{ id: string; displayName: string }> = [];
+  if (publicClaim && !publicClaim.serviceProviderId) {
+    const access = await getWorkshopManagerAccess();
+    if (access.state === "active") {
+      ownerProviders = (await loadManagedServiceProviders(access.manager.id))
+        .filter((provider) => provider.membershipRole === "owner" && provider.status === "active")
+        .map(({ id, displayName }) => ({ id, displayName }));
+    }
+  }
   if (!workshop) {
     if (!publicClaim) notFound();
-    return <main className="booking-shell workshop-claim-page"><PublicSiteHeader /><WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} /></main>;
+    return <main className="booking-shell workshop-claim-page"><PublicSiteHeader /><WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} ownerProviders={ownerProviders} /></main>;
   }
   const services = await loadPublicWorkshopServices(workshopId);
   return <main className="booking-shell workshop-public-page">
       <PublicSiteHeader />
-    {publicClaim && publicClaim.status !== "claimed" && <WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} compact />}
+    {publicClaim && publicClaim.status !== "claimed" && <WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} compact ownerProviders={ownerProviders} />}
     <section className="workshop-public-hero">
       <div className="workshop-public-avatar">{initials(workshop.name)}</div>
       <div>

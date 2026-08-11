@@ -5,10 +5,13 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const migration = await read("supabase/migrations/202608110046_admin_workshop_claim_payment.sql");
+const optionalOwnershipMigration = await read("supabase/migrations/202608110047_unowned_admin_workshop_claims.sql");
 const claimCard = await read("app/workshops/[workshopId]/WorkshopClaimCard.tsx");
 const claimAction = await read("app/workshops/[workshopId]/claim/actions.ts");
 const billing = await read("app/workshop-manager/invoicing/ProviderBillingClient.tsx");
 const adminDal = await read("lib/dal/admin-organisations.ts");
+const adminForms = await read("app/admin/AdminWorkflowForms.tsx");
+const adminActions = await read("app/admin/workflow-actions.ts");
 
 test("administrator-created locations enter an explicit claim lifecycle", () => {
   assert.match(migration, /create type public\.workshop_creation_source/);
@@ -32,6 +35,20 @@ test("claiming is organisation-owner scoped and requires complete details", () =
   assert.match(begin, /private\.has_complete_service_provider_claim_details/);
   assert.match(begin, /'details_required'/);
   assert.match(begin, /'awaiting_payment'/);
+});
+
+test("admin locations can start without an organisation or manager", () => {
+  assert.match(optionalOwnershipMigration, /alter column service_provider_id drop not null/);
+  assert.match(optionalOwnershipMigration, /workshop_row\.service_provider_id is null/);
+  assert.match(optionalOwnershipMigration, /set service_provider_id = provider_id/);
+  const create = optionalOwnershipMigration.match(/create or replace function public\.create_admin_workshop_location[\s\S]+?revoke all on function public\.create_admin_workshop_location/)?.[0] ?? "";
+  assert.match(create, /requested_service_provider_id is not null and not exists/);
+  assert.match(create, /created_workshop_id, requested_service_provider_id/);
+  assert.match(optionalOwnershipMigration, /create function public\.get_admin_unowned_workshops/);
+  assert.match(adminActions, /providerId: z\.union\(\[z\.literal\(""\), z\.uuid\(\)\]\)/);
+  assert.match(adminForms, /adminWorkflow\.providerOptional/);
+  assert.match(adminForms, /workshop\.providerId !== null/);
+  assert.match(adminDal, /get_admin_unowned_workshops/);
 });
 
 test("only paid Stripe subscription states finalize a claim", () => {
@@ -59,6 +76,7 @@ test("owner-created locations remain outside the admin claim lifecycle", () => {
 test("public claim and billing surfaces guide the owner without bypassing payment", () => {
   assert.match(claimCard, /workshopClaim\.button/);
   assert.match(claimCard, /beginWorkshopClaimAction/);
+  assert.match(claimCard, /workshopClaim\.chooseOrganisation/);
   assert.match(claimAction, /workshop-manager\/invoicing\?providerId=/);
   assert.match(billing, /claimDetailsTitle/);
   assert.match(billing, /claimPaymentTitle/);

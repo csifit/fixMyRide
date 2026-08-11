@@ -54,12 +54,12 @@ function LocationForm({ providers, language, t }: {
   const [state, action, pending] = useActionState(createWorkshopLocationAction, initial);
   return <details className="admin-workflow-card" open><summary><span><strong>{t("adminWorkflow.addLocation")}</strong><small>{t("adminWorkflow.addLocationHelp")}</small></span></summary>
     <form className="admin-workflow-form" action={action}>
-      <label>{t("adminWorkflow.provider")}<select name="providerId" required>{providers.map((provider) => <option value={provider.id} key={provider.id}>{provider.displayName} · {provider.status}</option>)}</select></label>
+      <label>{t("adminWorkflow.providerOptional")}<select name="providerId" defaultValue=""><option value="">{t("adminWorkflow.noProvider")}</option>{providers.map((provider) => <option value={provider.id} key={provider.id}>{provider.displayName} · {provider.status}</option>)}</select></label>
       <label>{t("adminWorkflow.locationName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
       <GoogleAddressSearch label={t("adminWorkflow.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("workspace.addressSearchFallback")} language={language} disabled={pending} />
       <label>{t("adminWorkflow.publicPhone")}<input name="publicPhone" maxLength={40} /></label>
       <label>{t("adminWorkflow.publicEmail")}<input name="publicEmail" type="email" maxLength={320} /></label>
-      <button disabled={pending || !providers.length}>{t("adminWorkflow.createLocation")}</button><Result state={state} t={t} />
+      <button disabled={pending}>{t("adminWorkflow.createLocation")}</button><Result state={state} t={t} />
     </form>
   </details>;
 }
@@ -97,8 +97,8 @@ export function WorkshopAdministration({ providers, workflow, language, t }: {
 }) {
   return <div className="admin-workflow-stack">
     <LocationForm providers={providers} language={language} t={t} />
-    <div className="admin-workflow-grid"><ManagerInviteForm workshops={workflow.workshops} t={t} /><ManagerAssignmentForm workshops={workflow.workshops} managers={workflow.managers} t={t} /></div>
-    <div className="admin-table-card"><table><thead><tr><th>{t("automotiveAdmin.workshop")}</th><th>{t("adminWorkflow.provider")}</th><th>{t("adminWorkflow.primaryManager")}</th><th>{t("adminWorkflow.subscription")}</th><th>{t("adminWorkflow.claim")}</th><th>{t("common.status")}</th></tr></thead><tbody>{workflow.workshops.map((workshop) => <tr key={workshop.id}><td><strong>{workshop.displayName}</strong><small>{[workshop.city, workshop.address].filter(Boolean).join(" · ")}</small></td><td>{providers.find((item) => item.id === workshop.providerId)?.displayName ?? "—"}</td><td>{workshop.primaryManagerName ?? t("adminWorkflow.noManager")}</td><td>{workshop.subscriptionStatus}</td><td><span>{t(`adminWorkflow.claimStatus.${workshop.claimStatus}` as TranslationKey)}</span>{workshop.creationSource === "administrator" && workshop.claimStatus !== "claimed" && <Link href={`/workshops/${workshop.id}`}>{t("adminWorkflow.openClaimPage")}</Link>}</td><td>{workshop.status}</td></tr>)}</tbody></table></div>
+    <div className="admin-workflow-grid"><ManagerInviteForm workshops={workflow.workshops.filter((workshop) => workshop.providerId !== null)} t={t} /><ManagerAssignmentForm workshops={workflow.workshops.filter((workshop) => workshop.providerId !== null)} managers={workflow.managers} t={t} /></div>
+    <div className="admin-table-card"><table><thead><tr><th>{t("automotiveAdmin.workshop")}</th><th>{t("adminWorkflow.provider")}</th><th>{t("adminWorkflow.primaryManager")}</th><th>{t("adminWorkflow.subscription")}</th><th>{t("adminWorkflow.claim")}</th><th>{t("common.status")}</th></tr></thead><tbody>{workflow.workshops.map((workshop) => <tr key={workshop.id}><td><strong>{workshop.displayName}</strong><small>{[workshop.city, workshop.address].filter(Boolean).join(" · ")}</small></td><td>{providers.find((item) => item.id === workshop.providerId)?.displayName ?? t("adminWorkflow.noProvider")}</td><td>{workshop.primaryManagerName ?? t("adminWorkflow.noManager")}</td><td>{workshop.subscriptionStatus}</td><td><span>{t(`adminWorkflow.claimStatus.${workshop.claimStatus}` as TranslationKey)}</span>{workshop.creationSource === "administrator" && workshop.claimStatus !== "claimed" && <Link href={`/workshops/${workshop.id}`}>{t("adminWorkflow.openClaimPage")}</Link>}</td><td>{workshop.status}</td></tr>)}</tbody></table></div>
   </div>;
 }
 

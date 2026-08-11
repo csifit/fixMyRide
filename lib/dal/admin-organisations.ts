@@ -6,7 +6,7 @@ import { classifyDatabaseError, DataAccessError } from "./errors";
 export type AdminOrganisationWorkflow = {
   workshops: Array<{
     id: string;
-    providerId: string;
+    providerId: string | null;
     displayName: string;
     status: string;
     city: string | null;
@@ -59,13 +59,31 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisationWorkflow> {
   const supabase = await createClient();
-  const [{ data, error }, { data: claimRows, error: claimError }] = await Promise.all([
+  const [{ data, error }, { data: claimRows, error: claimError }, { data: unownedRows, error: unownedError }] = await Promise.all([
     supabase.rpc("get_admin_organisation_workflow"),
     supabase.rpc("get_admin_workshop_claim_states"),
+    supabase.rpc("get_admin_unowned_workshops"),
   ]);
   if (error || !data) fail(error ?? {});
   if (claimError) fail(claimError);
+  if (unownedError) fail(unownedError);
   const workflow = data as unknown as AdminOrganisationWorkflow;
+  for (const row of (unownedRows ?? []) as Array<Record<string, unknown>>) {
+    workflow.workshops.push({
+      id: row.workshop_id as string,
+      providerId: null,
+      displayName: row.display_name as string,
+      status: row.status as string,
+      city: row.city as string | null,
+      address: row.practice_address as string | null,
+      countryCode: row.country_code as string,
+      primaryManagerId: null,
+      primaryManagerName: null,
+      subscriptionStatus: row.subscription_status as string,
+      creationSource: "administrator",
+      claimStatus: "unclaimed",
+    });
+  }
   const claimByWorkshop = new Map<string, AdminWorkshopClaimStateRow>(
     ((claimRows ?? []) as AdminWorkshopClaimStateRow[])
       .map((row) => [row.workshop_id, row]),
@@ -99,7 +117,7 @@ export async function createAdminOrganisationInvitation(input: {
 }
 
 export async function createAdminWorkshopLocation(input: {
-  providerId: string; displayName: string; countryCode: string;
+  providerId: string | null; displayName: string; countryCode: string;
   city: string | null; address: string | null; latitude: number | null;
   longitude: number | null; publicPhone: string | null; publicEmail: string | null;
 }) {
