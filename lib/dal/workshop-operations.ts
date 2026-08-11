@@ -109,6 +109,7 @@ export async function createMyWorkshopLocation(input: {
     requested_public_phone: input.publicPhone,
     requested_public_email: input.publicEmail,
   });
+  if (error) console.error("create_my_workshop_location", { code: error.code });
   if (error) fail(error);
   return data as string;
 }
