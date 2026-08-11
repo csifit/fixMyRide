@@ -23,12 +23,14 @@ const money = (language: Language, cents: number, currency: string) =>
   new Intl.NumberFormat(locales[language], { style: "currency", currency })
     .format(cents / 100);
 
-export default function ProviderBillingClient({ billing, providers, stripeConfigured, notice, error, logoutAction }: {
+export default function ProviderBillingClient({ billing, providers, stripeConfigured, notice, error, claimState, claimWorkshopId, logoutAction }: {
   billing: ProviderBilling;
   providers: Array<{ id: string; displayName: string }>;
   stripeConfigured: boolean;
   notice: string | null;
   error: string | null;
+  claimState: string | null;
+  claimWorkshopId: string | null;
   logoutAction: () => Promise<void>;
 }) {
   const [language, setLanguage, ready] = useLanguage();
@@ -39,6 +41,7 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
   const t = (key: TranslationKey) => translate(language, key);
   if (!ready) return <main className="registration-shell" aria-busy="true" />;
   const hasCustomer = Boolean(billing.stripeCustomerId);
+  const completingClaimDetails = claimState === "details_required";
 
   return <main className="billing-shell">
     <header className="settings-topbar">
@@ -59,6 +62,10 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
       {notice === "success" && <p className="note-success">{t("providerBilling.checkoutSuccess")}</p>}
       {notice === "cancelled" && <p className="note-error">{t("providerBilling.checkoutCancelled")}</p>}
       {error && <p className="note-error">{t("providerBilling.error")}</p>}
+      {claimWorkshopId && ["details_required", "payment_required"].includes(claimState ?? "") && <section className="billing-migration-notice workshop-claim-notice">
+        <div><strong>{t(claimState === "details_required" ? "providerBilling.claimDetailsTitle" : "providerBilling.claimPaymentTitle")}</strong><p>{t(claimState === "details_required" ? "providerBilling.claimDetailsDescription" : "providerBilling.claimPaymentDescription")}</p></div>
+        <Link href={`/workshops/${claimWorkshopId}`}>{t("providerBilling.claimReturn")}</Link>
+      </section>}
 
       {billing.legacySubscription.stripeSubscriptionId && <section className="billing-migration-notice">
         <div><strong>{t("providerBilling.migrationTitle")}</strong><p>{t("providerBilling.migrationDescription")}</p></div>
@@ -88,13 +95,13 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
         <summary><span><strong>{t("providerBilling.profileTitle")}</strong><small>{t("providerBilling.profileDescription")}</small></span></summary>
         <form className="provider-billing-profile" action={profileAction}>
           <input type="hidden" name="providerId" value={billing.providerId} />
-          <label>{t("providerBilling.billingEmail")}<input name="billingEmail" type="email" defaultValue={billing.billingProfile.billingEmail ?? ""} /></label>
-          <label>{t("providerBilling.billingContact")}<input name="billingContact" defaultValue={billing.billingProfile.billingContact ?? ""} /></label>
-          <label>{t("providerBilling.taxIdentifier")}<input name="taxIdentifier" defaultValue={billing.billingProfile.taxIdentifier ?? ""} /></label>
-          <label>{t("providerBilling.addressLine1")}<input name="addressLine1" defaultValue={billing.billingProfile.addressLine1 ?? ""} /></label>
+          <label>{t("providerBilling.billingEmail")}<input name="billingEmail" type="email" defaultValue={billing.billingProfile.billingEmail ?? ""} required={completingClaimDetails} /></label>
+          <label>{t("providerBilling.billingContact")}<input name="billingContact" defaultValue={billing.billingProfile.billingContact ?? ""} required={completingClaimDetails} /></label>
+          <label>{t("providerBilling.taxIdentifier")}<input name="taxIdentifier" defaultValue={billing.billingProfile.taxIdentifier ?? ""} required={completingClaimDetails} /></label>
+          <label>{t("providerBilling.addressLine1")}<input name="addressLine1" defaultValue={billing.billingProfile.addressLine1 ?? ""} required={completingClaimDetails} /></label>
           <label>{t("providerBilling.addressLine2")}<input name="addressLine2" defaultValue={billing.billingProfile.addressLine2 ?? ""} /></label>
-          <label>{t("providerBilling.city")}<input name="city" defaultValue={billing.billingProfile.city ?? ""} /></label>
-          <label>{t("providerBilling.postalCode")}<input name="postalCode" defaultValue={billing.billingProfile.postalCode ?? ""} /></label>
+          <label>{t("providerBilling.city")}<input name="city" defaultValue={billing.billingProfile.city ?? ""} required={completingClaimDetails} /></label>
+          <label>{t("providerBilling.postalCode")}<input name="postalCode" defaultValue={billing.billingProfile.postalCode ?? ""} required={completingClaimDetails} /></label>
           <label>{t("providerBilling.country")}<input name="countryCode" minLength={2} maxLength={2} defaultValue={billing.billingProfile.countryCode} required /></label>
           <button disabled={pending}>{t(pending ? "workspace.saving" : "workspace.save")}</button>
           {state.status !== "idle" && <p className={state.status === "saved" ? "note-success" : "note-error"}>{t(`providerBilling.result.${state.status}` as TranslationKey)}</p>}

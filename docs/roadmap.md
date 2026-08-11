@@ -118,6 +118,12 @@
   owner location-creation RPCs. Default operating hours now use the explicit
   newly created workshop identifier while retaining the existing authorization,
   subscription, diagnosis-service, assignment, and audit triggers.
+- Migration 046 adds the administrator-created workshop claim lifecycle.
+  Geocoded admin-created locations become active and receive immediate map
+  visibility with a claim prompt. Only an active owner of the linked
+  organisation can proceed. Complete organisation billing details and an
+  active or trialing EUR 35 location subscription are required; the signed
+  Stripe webhook finalizes the claim, without fabricating subscription state.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

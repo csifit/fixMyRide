@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PublicSiteHeader from "@/app/PublicSiteHeader";
 import { getPublicWorkshop, loadPublicWorkshopServices } from "@/lib/dal/public-workshops";
+import { loadPublicWorkshopClaim } from "@/lib/dal/workshop-claims";
+import WorkshopClaimCard from "./WorkshopClaimCard";
 
 export const dynamic = "force-dynamic";
 
@@ -24,15 +26,22 @@ export default async function WorkshopPage({
   searchParams,
 }: {
   params: Promise<{ workshopId: string }>;
-  searchParams: Promise<{ date?: string }>;
+  searchParams: Promise<{ date?: string; claim?: string }>;
 }) {
   const { workshopId } = await params;
-  const { date } = await searchParams;
-  const workshop = await getPublicWorkshop(workshopId);
-  if (!workshop) notFound();
+  const { date, claim: claimNotice } = await searchParams;
+  const [workshop, publicClaim] = await Promise.all([
+    getPublicWorkshop(workshopId),
+    loadPublicWorkshopClaim(workshopId),
+  ]);
+  if (!workshop) {
+    if (!publicClaim) notFound();
+    return <main className="booking-shell workshop-claim-page"><PublicSiteHeader /><WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} /></main>;
+  }
   const services = await loadPublicWorkshopServices(workshopId);
   return <main className="booking-shell workshop-public-page">
       <PublicSiteHeader />
+    {publicClaim && publicClaim.status !== "claimed" && <WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} compact />}
     <section className="workshop-public-hero">
       <div className="workshop-public-avatar">{initials(workshop.name)}</div>
       <div>
@@ -41,7 +50,7 @@ export default async function WorkshopPage({
         <strong>{workshop.serviceCategories.join(" · ") || "Vehicle servicing and repairs"}</strong>
         <p>{[workshop.address, workshop.city, workshop.countryCode].filter(Boolean).join(", ")}</p>
       </div>
-      <aside><small>The workshop confirms every request</small><Link href="#service-list">Choose a service</Link></aside>
+      {!publicClaim || publicClaim.status === "claimed" ? <aside><small>The workshop confirms every request</small><Link href="#service-list">Choose a service</Link></aside> : <aside><small>This workshop is listed by Pitster and is awaiting its service provider claim.</small></aside>}
     </section>
     <section className="workshop-public-content">
       <article>
@@ -62,7 +71,7 @@ export default async function WorkshopPage({
         </dl>
       </article>
     </section>
-    <section className="workshop-services" id="service-list">
+    {(!publicClaim || publicClaim.status === "claimed") && <section className="workshop-services" id="service-list">
       <header><p>Request to book</p><h2>Choose the service your vehicle needs</h2><span>Fault-based work starts with the workshop&apos;s disclosed diagnosis fee. Routine services can be booked directly.</span></header>
       <div>{services.map((service) => <article key={service.id}>
         <span>{service.category}</span><h3>{service.name}</h3>
@@ -73,6 +82,6 @@ export default async function WorkshopPage({
         <div><b>{price(service)}</b>{service.estimatedDurationMinutes && <small>Estimated {service.estimatedDurationMinutes} min</small>}</div>
         <Link href={`/workshops/${workshop.id}/request?service=${service.id}&date=${encodeURIComponent(date ?? "")}`}>Request appointment</Link>
       </article>)}</div>
-    </section>
+    </section>}
   </main>;
 }

@@ -18,5 +18,5 @@ export default async function ServiceProviderInvoicingPage({ searchParams }: { s
   const requestedId = typeof query.providerId === "string" ? query.providerId : providers[0].id;
   const selected = providers.find((provider) => provider.id === requestedId) ?? providers[0];
   const billing = await loadProviderBilling(selected.id);
-  return <ProviderBillingClient billing={billing} providers={providers.map(({ id, displayName }) => ({ id, displayName }))} stripeConfigured={isStripeConfigured()} notice={typeof query.checkout === "string" ? query.checkout : null} error={typeof query.billingError === "string" ? query.billingError : null} logoutAction={platformLogoutAction} />;
+  return <ProviderBillingClient billing={billing} providers={providers.map(({ id, displayName }) => ({ id, displayName }))} stripeConfigured={isStripeConfigured()} notice={typeof query.checkout === "string" ? query.checkout : null} error={typeof query.billingError === "string" ? query.billingError : null} claimState={typeof query.claim === "string" ? query.claim : null} claimWorkshopId={typeof query.workshopId === "string" ? query.workshopId : null} logoutAction={platformLogoutAction} />;
 }

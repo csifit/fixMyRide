@@ -144,3 +144,23 @@ location subscription before the automatic publication rules can place it on
 the public map. Supporting location managers can continue to edit only the
 locations to which they are explicitly assigned; they cannot create billable
 locations for the organisation.
+
+## Step 7 administrator-created location claims
+
+Migration 046 distinguishes locations created by an administrator from legacy
+and owner-created locations. A new geocoded administrator-created location
+starts `active` and `unclaimed`, and appears on the public map immediately. Its
+public location page offers **Claim this workshop** without exposing private
+organisation or billing data. This is an explicit temporary publication
+exception for administrator-curated locations, not subscription coverage.
+
+Only an active owner of the service organisation selected by the administrator
+can start the claim. The owner must first save complete organisation billing
+details and then activate the EUR 35 monthly subscription for that exact
+location. The claim changes to `awaiting_payment` before Checkout; only an
+active or trialing location subscription received through the existing signed
+Stripe webhook path finalizes it as `claimed`. Grace coverage does not complete
+a claim. After claiming, the normal publication rules require a geocoded active
+location, an active primary manager, active account identities, and location
+billing coverage. Administrator creation therefore permits temporary map
+visibility but never records or simulates a paid subscription.

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import GoogleAddressSearch from "@/app/GoogleAddressSearch";
 import type { Language, TranslationKey } from "@/app/i18n";
@@ -97,7 +98,7 @@ export function WorkshopAdministration({ providers, workflow, language, t }: {
   return <div className="admin-workflow-stack">
     <LocationForm providers={providers} language={language} t={t} />
     <div className="admin-workflow-grid"><ManagerInviteForm workshops={workflow.workshops} t={t} /><ManagerAssignmentForm workshops={workflow.workshops} managers={workflow.managers} t={t} /></div>
-    <div className="admin-table-card"><table><thead><tr><th>{t("automotiveAdmin.workshop")}</th><th>{t("adminWorkflow.provider")}</th><th>{t("adminWorkflow.primaryManager")}</th><th>{t("adminWorkflow.subscription")}</th><th>{t("common.status")}</th></tr></thead><tbody>{workflow.workshops.map((workshop) => <tr key={workshop.id}><td><strong>{workshop.displayName}</strong><small>{[workshop.city, workshop.address].filter(Boolean).join(" · ")}</small></td><td>{providers.find((item) => item.id === workshop.providerId)?.displayName ?? "—"}</td><td>{workshop.primaryManagerName ?? t("adminWorkflow.noManager")}</td><td>{workshop.subscriptionStatus}</td><td>{workshop.status}</td></tr>)}</tbody></table></div>
+    <div className="admin-table-card"><table><thead><tr><th>{t("automotiveAdmin.workshop")}</th><th>{t("adminWorkflow.provider")}</th><th>{t("adminWorkflow.primaryManager")}</th><th>{t("adminWorkflow.subscription")}</th><th>{t("adminWorkflow.claim")}</th><th>{t("common.status")}</th></tr></thead><tbody>{workflow.workshops.map((workshop) => <tr key={workshop.id}><td><strong>{workshop.displayName}</strong><small>{[workshop.city, workshop.address].filter(Boolean).join(" · ")}</small></td><td>{providers.find((item) => item.id === workshop.providerId)?.displayName ?? "—"}</td><td>{workshop.primaryManagerName ?? t("adminWorkflow.noManager")}</td><td>{workshop.subscriptionStatus}</td><td><span>{t(`adminWorkflow.claimStatus.${workshop.claimStatus}` as TranslationKey)}</span>{workshop.creationSource === "administrator" && workshop.claimStatus !== "claimed" && <Link href={`/workshops/${workshop.id}`}>{t("adminWorkflow.openClaimPage")}</Link>}</td><td>{workshop.status}</td></tr>)}</tbody></table></div>
   </div>;
 }
 

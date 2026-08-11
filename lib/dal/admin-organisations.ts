@@ -15,6 +15,8 @@ export type AdminOrganisationWorkflow = {
     primaryManagerId: string | null;
     primaryManagerName: string | null;
     subscriptionStatus: string;
+    creationSource: "legacy" | "administrator" | "organisation_owner";
+    claimStatus: "not_applicable" | "unclaimed" | "awaiting_payment" | "claimed";
   }>;
   managers: Array<{
     id: string;
@@ -45,15 +47,38 @@ export type AdminOrganisationWorkflow = {
   }>;
 };
 
+type AdminWorkshopClaimStateRow = {
+  workshop_id: string;
+  creation_source: AdminOrganisationWorkflow["workshops"][number]["creationSource"];
+  claim_status: AdminOrganisationWorkflow["workshops"][number]["claimStatus"];
+};
+
 function fail(error: { code?: string; status?: number }): never {
   throw new DataAccessError(classifyDatabaseError(error));
 }
 
 export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisationWorkflow> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_admin_organisation_workflow");
+  const [{ data, error }, { data: claimRows, error: claimError }] = await Promise.all([
+    supabase.rpc("get_admin_organisation_workflow"),
+    supabase.rpc("get_admin_workshop_claim_states"),
+  ]);
   if (error || !data) fail(error ?? {});
-  return data as unknown as AdminOrganisationWorkflow;
+  if (claimError) fail(claimError);
+  const workflow = data as unknown as AdminOrganisationWorkflow;
+  const claimByWorkshop = new Map<string, AdminWorkshopClaimStateRow>(
+    ((claimRows ?? []) as AdminWorkshopClaimStateRow[])
+      .map((row) => [row.workshop_id, row]),
+  );
+  workflow.workshops = workflow.workshops.map((workshop) => {
+    const claim = claimByWorkshop.get(workshop.id);
+    return {
+      ...workshop,
+      creationSource: claim?.creation_source ?? "legacy",
+      claimStatus: claim?.claim_status ?? "not_applicable",
+    };
+  });
+  return workflow;
 }
 
 export async function createAdminOrganisationInvitation(input: {
