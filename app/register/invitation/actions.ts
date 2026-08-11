@@ -1,13 +1,13 @@
 "use server";
 
 import { createHash, randomBytes } from "node:crypto";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
-import { getSiteUrl } from "@/lib/site-url";
 
 export type InvitationRegistrationState = {
-  status: "idle" | "check_email" | "invalid" | "already_registered" | "rate_limited" | "unavailable";
+  status: "idle" | "invalid" | "already_registered" | "rate_limited" | "unavailable";
 };
 const schema = z.object({
   invitationId: z.uuid(), token: z.string().min(30).max(100),
@@ -21,6 +21,7 @@ export async function registerInvitationAction(
   const parsed = schema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   const digest = createHash("sha256").update(parsed.data.token).digest("hex");
+  const password = randomBytes(48).toString("base64url");
   try {
     const service = createServiceClient();
     const { data: invitation, error: invitationError } = await service
@@ -29,29 +30,57 @@ export async function registerInvitationAction(
       .eq("id", parsed.data.invitationId)
       .eq("token_digest", digest)
       .maybeSingle();
-    if (invitationError) return { status: "unavailable" };
+    if (invitationError) {
+      logRegistrationFailure("invitation_lookup", invitationError);
+      return { status: "unavailable" };
+    }
     if (!invitation || invitation.status !== "pending"
       || invitation.email !== parsed.data.email.toLowerCase()
       || new Date(invitation.expires_at).getTime() <= Date.now()) return { status: "invalid" };
 
     const supabase = await createClient();
-    const { error } = await supabase.auth.signUp({
+    const { error: creationError } = await service.auth.admin.createUser({
       email: invitation.email,
-      password: randomBytes(48).toString("base64url"),
-      options: {
-        data: {
-          full_name: parsed.data.fullName,
-          service_provider_invitation_id: invitation.id,
-          service_provider_invitation_digest: digest,
-        },
-        emailRedirectTo: `${getSiteUrl()}/auth/confirm`,
+      password,
+      email_confirm: true,
+      user_metadata: {
+        full_name: parsed.data.fullName,
+        service_provider_invitation_id: invitation.id,
+        service_provider_invitation_digest: digest,
       },
     });
-    if (!error) return { status: "check_email" };
-    if (error.status === 429) return { status: "rate_limited" };
-    if (["user_already_exists", "email_exists", "user_already_registered"].includes(error.code ?? "")) {
+    if (creationError?.status === 429) return { status: "rate_limited" };
+    if (["user_already_exists", "email_exists", "user_already_registered"].includes(creationError?.code ?? "")) {
       return { status: "already_registered" };
     }
-    return error.status && error.status >= 500 ? { status: "unavailable" } : { status: "invalid" };
-  } catch { return { status: "unavailable" }; }
+    if (creationError) {
+      logRegistrationFailure("account_creation", creationError);
+      return { status: "unavailable" };
+    }
+
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: invitation.email,
+      password,
+    });
+    if (signInError) {
+      logRegistrationFailure("account_sign_in", signInError);
+      return { status: "unavailable" };
+    }
+  } catch (error) {
+    logRegistrationFailure("unexpected", error);
+    return { status: "unavailable" };
+  }
+
+  redirect("/register/set-password");
+}
+
+function logRegistrationFailure(stage: string, error: unknown) {
+  const details = error && typeof error === "object"
+    ? error as { code?: unknown; status?: unknown }
+    : null;
+  console.error("invitation_registration_failed", {
+    stage,
+    code: typeof details?.code === "string" ? details.code : undefined,
+    status: typeof details?.status === "number" ? details.status : undefined,
+  });
 }

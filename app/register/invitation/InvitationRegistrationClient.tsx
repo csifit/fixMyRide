@@ -26,8 +26,8 @@ export default function InvitationRegistrationClient({ invitation }: {
       <input type="hidden" name="invitationId" value={invitation.id} /><input type="hidden" name="token" value={invitation.token} />
       <label>{t("invitation.fullName")}<input name="fullName" required minLength={2} maxLength={160} autoComplete="name" /></label>
       <label>{t("invitation.email")}<input name="email" type="email" value={invitation.email} readOnly /></label>
-      {state.status !== "idle" && <p className={state.status === "check_email" ? "note-success" : "note-error"} role="status">{t(`invitation.status.${state.status}` as TranslationKey)}</p>}
-      <button disabled={pending || state.status === "check_email"}>{t(pending ? "invitation.submitting" : "invitation.submit")}</button>
+      {state.status !== "idle" && <p className="note-error" role="status">{t(`invitation.status.${state.status}` as TranslationKey)}</p>}
+      <button disabled={pending}>{t(pending ? "invitation.submitting" : "invitation.submit")}</button>
     </form><Link href="/">{t("invitation.back")}</Link>
   </section></main>;
 }

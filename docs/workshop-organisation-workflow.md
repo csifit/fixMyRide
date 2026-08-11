@@ -33,8 +33,10 @@ service-organisation invitations to location managers have distinct subjects,
 headings, and sender-role labels. Only the URL's SHA-256 digest is stored. The
 creation screen retains the plaintext URL as a one-time delivery fallback and
 reports a specific configuration, authentication, server, sender, rate-limit,
-or availability warning when delivery fails. The invited person confirms
-the email through Supabase and then uses the existing password-setup flow.
+or availability warning when delivery fails. Accepting the emailed invitation
+proves control of the mailbox, so the acceptance action creates a confirmed
+account without asking Supabase Auth to send a second email. It signs in the new
+account and sends the invited person directly to the password-setup flow.
 
 An MFA-authenticated administrator can resend a pending service-organisation
 owner invitation from `/admin/providers`. Resending rotates the token digest,

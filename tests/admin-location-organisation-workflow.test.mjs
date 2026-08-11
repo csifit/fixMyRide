@@ -37,6 +37,11 @@ test("organisation and location invitations keep plaintext secrets out of storag
   assert.match(migration, /insert into public\.account_identities/);
   assert.doesNotMatch(migration, /returning token_digest|token_plaintext|invitation_token\s+text/i);
   assert.match(invitation, /service_provider_invitation_digest/);
+  assert.match(invitation, /auth\.admin\.createUser/);
+  assert.match(invitation, /email_confirm: true/);
+  assert.match(invitation, /signInWithPassword/);
+  assert.match(invitation, /redirect\("\/register\/set-password"\)/);
+  assert.doesNotMatch(invitation, /auth\.signUp|emailRedirectTo|status: "check_email"/);
 });
 
 test("admin UI creates geocoded locations and assigns new or existing managers", () => {
