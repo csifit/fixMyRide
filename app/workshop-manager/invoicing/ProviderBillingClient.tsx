@@ -43,6 +43,9 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
   if (!ready) return <main className="registration-shell" aria-busy="true" />;
   const hasCustomer = Boolean(billing.stripeCustomerId);
   const completingClaimDetails = claimState === "details_required";
+  const subscription = billing.organisationSubscription;
+  const paymentAttention = Boolean(subscription.paymentGraceEndsAt)
+    || ["past_due", "unpaid"].includes(subscription.status);
 
   return <main className="billing-shell">
     <header className="settings-topbar">
@@ -68,22 +71,34 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
         <Link href={`/workshops/${claimWorkshopId}`}>{t("providerBilling.claimReturn")}</Link>
       </section>}
 
-      {billing.legacySubscription.stripeSubscriptionId && <section className="billing-migration-notice">
-        <div><strong>{t("providerBilling.migrationTitle")}</strong><p>{t("providerBilling.migrationDescription")}</p></div>
-        <span>{t(`providerBilling.subscription.${billing.legacySubscription.status}` as TranslationKey)}{billing.legacySubscription.currentPeriodEnd ? ` · ${formatDateTime(language, billing.legacySubscription.currentPeriodEnd)}` : ""}</span>
+      {paymentAttention && <section className="billing-migration-notice payment-attention-notice">
+        <div><strong>{t("providerBilling.paymentAttentionTitle")}</strong><p>{t("providerBilling.paymentAttentionDescription")}</p></div>
+        <span>{subscription.paymentGraceEndsAt ? `${t("providerBilling.graceUntil")} ${formatDateTime(language, subscription.paymentGraceEndsAt)}` : t(`providerBilling.subscription.${subscription.status}` as TranslationKey)}</span>
       </section>}
 
+      <section className="organisation-billing-summary">
+        <article><span>{t("providerBilling.coveredLocations")}</span><strong>{subscription.billingQuantity}</strong></article>
+        <article><span>{t("providerBilling.nextPayment")}</span><strong>{formatDateTime(language, subscription.nextBillingAt)}</strong></article>
+        <article><span>{t("providerBilling.upcomingTotal")}</span><strong>{money(language, subscription.upcomingAmountCents, billing.plan.currency)}</strong></article>
+        <article><span>{t("providerBilling.status")}</span><strong>{t(`providerBilling.subscription.${subscription.status}` as TranslationKey)}</strong></article>
+      </section>
+
       <section className="location-subscriptions">
-        <div className="location-subscriptions-title"><div><h2>{t("providerBilling.locationsTitle")}</h2><p>{t("providerBilling.locationsDescription")}</p></div><strong>{money(language, billing.plan.monthlyPriceCents, billing.plan.currency)} / {t("providerBilling.month")}</strong></div>
+        <div className="location-subscriptions-title"><div><h2>{t("providerBilling.locationsTitle")}</h2><p>{t("providerBilling.locationsDescription")}</p></div><strong>{money(language, billing.plan.monthlyPriceCents, billing.plan.currency)} / {t("providerBilling.locationPerMonth")}</strong></div>
         <div className="location-subscription-grid">{billing.locations.map((workshop) => {
-          const canSubscribe = ["not_started", "incomplete_expired", "canceled"].includes(workshop.subscriptionStatus);
+          const canActivate = !workshop.legacyStripeSubscriptionId
+            && ["uncovered", "grace"].includes(workshop.coverageState)
+            && !paymentAttention;
+          const isFreeUntilNextMonth = workshop.billableFrom?.slice(0, 10)
+            === subscription.nextBillingAt.slice(0, 10);
           return <article className={`location-subscription-card coverage-${workshop.coverageState}`} key={workshop.workshopId}>
             <header><div><h3>{workshop.displayName}</h3><p>{workshop.city ?? billing.displayName}</p></div><b>{t(`organisationCoverage.coverage.${workshop.coverageState}` as TranslationKey)}</b></header>
-            <dl><div><dt>{t("providerBilling.status")}</dt><dd>{t(`providerBilling.subscription.${workshop.subscriptionStatus}` as TranslationKey)}</dd></div><div><dt>{t("providerBilling.renews")}</dt><dd>{workshop.currentPeriodEnd ? formatDateTime(language, workshop.currentPeriodEnd) : "—"}</dd></div></dl>
-            {workshop.coverageGraceEndsAt && workshop.coverageState === "grace" && <p className="location-grace">{t("providerBilling.graceUntil")} {formatDateTime(language, workshop.coverageGraceEndsAt)}</p>}
+            <dl><div><dt>{t("providerBilling.status")}</dt><dd>{workshop.coverageStartedAt ? t("providerBilling.locationActive") : t("providerBilling.locationAwaitingBilling")}</dd></div><div><dt>{t("providerBilling.billableFrom")}</dt><dd>{workshop.billableFrom ? formatDateTime(language, workshop.billableFrom) : "—"}</dd></div></dl>
+            {isFreeUntilNextMonth && <p className="location-grace">{t("providerBilling.freeUntilNextMonth")}</p>}
+            {workshop.coverageState === "grace" && workshop.coverageGraceEndsAt && <p className="location-grace">{t("providerBilling.migrationTitle")} · {formatDateTime(language, workshop.coverageGraceEndsAt)}</p>}
+            {workshop.legacyStripeSubscriptionId && <p className="location-grace">{t("providerBilling.legacyLocationBilling")}</p>}
             <div className="provider-subscription-actions">
-              {stripeConfigured && canSubscribe && <form action={startStripeCheckoutAction}><input type="hidden" name="providerId" value={billing.providerId} /><input type="hidden" name="workshopId" value={workshop.workshopId} /><button className="organization-action">{t("providerBilling.subscribeLocation")}</button></form>}
-              {workshop.cancelAtPeriodEnd && <small>{t("providerBilling.cancelsAtPeriodEnd")}</small>}
+              {stripeConfigured && canActivate && <form action={startStripeCheckoutAction}><input type="hidden" name="providerId" value={billing.providerId} /><input type="hidden" name="workshopId" value={workshop.workshopId} /><button className="organization-action">{t("providerBilling.activateLocation")}</button></form>}
             </div>
           </article>;
         })}</div>
@@ -111,7 +126,7 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
 
       <section className="provider-invoices">
         <h2>{t("providerBilling.invoices")}</h2>
-        {billing.invoices.length ? <div className="billing-table-wrap"><table><thead><tr><th>{t("providerBilling.location")}</th><th>{t("providerBilling.invoice")}</th><th>{t("providerBilling.period")}</th><th>{t("providerBilling.status")}</th><th>{t("providerBilling.amount")}</th><th>{t("providerBilling.documents")}</th></tr></thead><tbody>{billing.invoices.map((invoice) => <tr key={invoice.id}><td>{invoice.workshopName ?? t("providerBilling.legacyOrganisation")}</td><td>{invoice.number ?? "—"}</td><td>{invoice.periodStart ? formatDateTime(language, invoice.periodStart) : "—"}</td><td>{invoice.status}</td><td>{money(language, invoice.amountDueCents, invoice.currency)}</td><td>{invoice.hostedInvoiceUrl && <a href={invoice.hostedInvoiceUrl} target="_blank" rel="noreferrer">{t("providerBilling.view")}</a>}{invoice.invoicePdfUrl && <a href={invoice.invoicePdfUrl} target="_blank" rel="noreferrer">PDF</a>}</td></tr>)}</tbody></table></div> : <p className="catalogue-empty">{t("providerBilling.noInvoices")}</p>}
+        {billing.invoices.length ? <div className="billing-table-wrap"><table><thead><tr><th>{t("providerBilling.invoice")}</th><th>{t("providerBilling.period")}</th><th>{t("providerBilling.status")}</th><th>{t("providerBilling.amount")}</th><th>{t("providerBilling.documents")}</th></tr></thead><tbody>{billing.invoices.map((invoice) => <tr key={invoice.id}><td>{invoice.number ?? "—"}</td><td>{invoice.periodStart ? formatDateTime(language, invoice.periodStart) : "—"}</td><td>{invoice.status}</td><td>{money(language, invoice.amountDueCents, invoice.currency)}</td><td>{invoice.hostedInvoiceUrl && <a href={invoice.hostedInvoiceUrl} target="_blank" rel="noreferrer">{t("providerBilling.view")}</a>}{invoice.invoicePdfUrl && <a href={invoice.invoicePdfUrl} target="_blank" rel="noreferrer">PDF</a>}</td></tr>)}</tbody></table></div> : <p className="catalogue-empty">{t("providerBilling.noInvoices")}</p>}
       </section>
     </section>
   </main>;

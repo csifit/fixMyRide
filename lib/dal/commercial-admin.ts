@@ -5,7 +5,18 @@ import { classifyDatabaseError, DataAccessError } from "./errors";
 
 export type CommercialAdminData = {
   counts: { providers: number; locations: number; activeSubscriptions: number; attention: number; monthlyRecurringCents: number };
-  locations: Array<{ id: string; providerId: string; providerName: string; providerStatus: string; displayName: string; city: string | null; workshopStatus: string; subscriptionStatus: string; coverageGraceEndsAt: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; monthlyPriceCents: number; currency: string; invoiceCount: number; lastInvoiceStatus: string | null }>;
+  providers: Array<{
+    id: string; displayName: string; legalName: string; providerStatus: string;
+    subscriptionStatus: string; activeLocationCount: number;
+    billingQuantity: number; monthlyPriceCents: number; currency: string;
+    paymentGraceEndsAt: string | null; nextBillingAt: string;
+    upcomingAmountCents: number;
+    invoices: Array<{
+      id: string; number: string | null; status: string;
+      amountDueCents: number; amountPaidCents: number;
+      periodStart: string | null; periodEnd: string | null; paidAt: string | null;
+    }>;
+  }>;
 };
 
 function fail(error: { code?: string; status?: number }): never {

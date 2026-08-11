@@ -30,9 +30,12 @@ export async function GET(request: NextRequest) {
     const access = await getAccountingAccess();
     if (access.state !== "authorized") return new NextResponse("Unauthorized", { status: 401 });
     const data = await loadCommercialAdmin();
-    const output: Array<Array<string | number>> = [["Provider ID", "Provider", "Location ID", "Location", "City", "Provider status", "Workshop status", "Subscription status", "Monthly price", "Currency", "Period end", "Grace end", "Invoices", "Last invoice status"]];
-    for (const location of data.locations) output.push([location.providerId, location.providerName, location.id, location.displayName, location.city ?? "", location.providerStatus, location.workshopStatus, location.subscriptionStatus, (location.monthlyPriceCents / 100).toFixed(2), location.currency, location.currentPeriodEnd ?? "", location.coverageGraceEndsAt ?? "", location.invoiceCount, location.lastInvoiceStatus ?? ""]);
-    return download(csv(output), `pitster-location-billing-${new Date().toISOString().slice(0, 10)}.csv`);
+    const output: Array<Array<string | number>> = [["Provider ID", "Provider", "Provider status", "Subscription status", "Covered locations", "Billing quantity", "Next billing", "Upcoming amount", "Currency", "Grace end", "Invoice number", "Invoice status", "Invoice period start", "Amount due", "Amount paid"]];
+    for (const provider of data.providers) {
+      const invoices = provider.invoices.length ? provider.invoices : [null];
+      for (const invoice of invoices) output.push([provider.id, provider.displayName, provider.providerStatus, provider.subscriptionStatus, provider.activeLocationCount, provider.billingQuantity, provider.nextBillingAt, (provider.upcomingAmountCents / 100).toFixed(2), provider.currency, provider.paymentGraceEndsAt ?? "", invoice?.number ?? "", invoice?.status ?? "", invoice?.periodStart ?? "", invoice ? (invoice.amountDueCents / 100).toFixed(2) : "", invoice ? (invoice.amountPaidCents / 100).toFixed(2) : ""]);
+    }
+    return download(csv(output), `pitster-organisation-billing-${new Date().toISOString().slice(0, 10)}.csv`);
   }
   if (!/^\d{4}-\d{2}-01$/.test(month)) return new NextResponse("Invalid month", { status: 400 });
   if (scope === "clinic") {

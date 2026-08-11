@@ -12,6 +12,7 @@ const identifier = (value: string | { id: string } | null | undefined) => typeof
 async function applyCheckout(event: Stripe.Event, session: Stripe.Checkout.Session) {
   const providerId = session.metadata?.service_provider_id ?? session.client_reference_id;
   const workshopId = session.metadata?.workshop_id;
+  const activationWorkshopId = session.metadata?.activation_workshop_id;
   const customerId = identifier(session.customer);
   const subscriptionId = identifier(session.subscription);
   if (!providerId || !customerId || !subscriptionId) throw new Error("stripe_checkout_metadata_missing");
@@ -20,6 +21,13 @@ async function applyCheckout(event: Stripe.Event, session: Stripe.Checkout.Sessi
     requested_event_created_at: timestamp(event.created), requested_livemode: event.livemode,
     requested_api_version: event.api_version, requested_provider_id: providerId,
     requested_workshop_id: workshopId, requested_customer_id: customerId,
+    requested_subscription_id: subscriptionId,
+  });
+  if (activationWorkshopId) return createServiceClient().rpc("apply_stripe_organisation_checkout_event", {
+    requested_event_id: event.id, requested_event_type: event.type,
+    requested_event_created_at: timestamp(event.created), requested_livemode: event.livemode,
+    requested_api_version: event.api_version, requested_provider_id: providerId,
+    requested_workshop_id: activationWorkshopId, requested_customer_id: customerId,
     requested_subscription_id: subscriptionId,
   });
   return createServiceClient().rpc("apply_stripe_checkout_event", {
@@ -46,13 +54,15 @@ async function applySubscription(event: Stripe.Event, subscription: Stripe.Subsc
     requested_cancel_at_period_end: subscription.cancel_at_period_end,
     requested_canceled_at: timestamp(subscription.canceled_at),
   });
-  return createServiceClient().rpc("apply_stripe_subscription_event", {
+  return createServiceClient().rpc("apply_stripe_organisation_subscription_event", {
     requested_event_id: event.id, requested_event_type: event.type,
     requested_event_created_at: timestamp(event.created), requested_livemode: event.livemode,
     requested_api_version: event.api_version,
     requested_provider_id: subscription.metadata.service_provider_id || null,
     requested_customer_id: identifier(subscription.customer), requested_subscription_id: subscription.id,
-    requested_price_id: item?.price.id ?? null, requested_status: subscription.status,
+    requested_subscription_item_id: item?.id ?? null,
+    requested_price_id: item?.price.id ?? null, requested_quantity: item?.quantity ?? 0,
+    requested_status: subscription.status,
     requested_period_start: timestamp(item?.current_period_start),
     requested_period_end: timestamp(item?.current_period_end),
     requested_cancel_at_period_end: subscription.cancel_at_period_end,
@@ -91,7 +101,7 @@ export async function POST(request: NextRequest) {
     let result: { error: { message?: string } | null } = { error: null };
     if (event.type === "checkout.session.completed") result = await applyCheckout(event, event.data.object);
     else if (["customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted", "customer.subscription.paused", "customer.subscription.resumed"].includes(event.type)) result = await applySubscription(event, event.data.object as Stripe.Subscription);
-    else if (["invoice.created", "invoice.finalized", "invoice.paid", "invoice.payment_failed", "invoice.voided", "invoice.marked_uncollectible"].includes(event.type)) result = await applyInvoice(event, event.data.object as Stripe.Invoice);
+    else if (["invoice.created", "invoice.finalized", "invoice.paid", "invoice.payment_failed", "invoice.payment_action_required", "invoice.voided", "invoice.marked_uncollectible"].includes(event.type)) result = await applyInvoice(event, event.data.object as Stripe.Invoice);
     if (result.error) throw new Error(result.error.message ?? "stripe_event_persistence_failed");
     return NextResponse.json({ received: true });
   } catch {

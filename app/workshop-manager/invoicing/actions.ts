@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
-import { attachProviderStripeCustomer, loadProviderBilling, updateProviderBillingProfile } from "@/lib/dal/provider-billing";
+import { activateProviderLocationBilling, attachProviderStripeCustomer, loadProviderBilling, prepareProviderSubscriptionReplacement, updateProviderBillingProfile } from "@/lib/dal/provider-billing";
 import { getSiteUrl } from "@/lib/site-url";
 import { getStripe, getStripeStandardPriceId } from "@/lib/stripe/server";
 
@@ -53,8 +53,7 @@ export async function startStripeCheckoutAction(formData: FormData) {
   try {
     const billing = await loadProviderBilling(parsed.data.providerId);
     const location = billing.locations.find((item) => item.workshopId === parsed.data.workshopId);
-    if (!location || (location.stripeSubscriptionId
-      && !["incomplete_expired", "canceled"].includes(location.subscriptionStatus))) {
+    if (!location || location.legacyStripeSubscriptionId) {
       throw new DataAccessError("conflict");
     }
     const stripe = getStripe();
@@ -62,7 +61,8 @@ export async function startStripeCheckoutAction(formData: FormData) {
     const price = await stripe.prices.retrieve(priceId);
     if (!price.active || price.unit_amount !== billing.plan.monthlyPriceCents
       || price.currency.toUpperCase() !== billing.plan.currency
-      || price.recurring?.interval !== "month" || price.recurring.interval_count !== 1) {
+      || price.recurring?.interval !== "month" || price.recurring.interval_count !== 1
+      || price.recurring.usage_type !== "licensed") {
       throw new Error("stripe_price_does_not_match_standard_plan");
     }
     let customerId = billing.stripeCustomerId;
@@ -82,32 +82,67 @@ export async function startStripeCheckoutAction(formData: FormData) {
       await attachProviderStripeCustomer(billing.providerId, customerId);
     }
     const siteUrl = getSiteUrl();
-    const graceEndsAt = location.coverageGraceEndsAt
-      ? Math.floor(new Date(location.coverageGraceEndsAt).getTime() / 1000)
-      : null;
-    const safeTrialEnd = graceEndsAt && graceEndsAt > Math.floor(Date.now() / 1000) + 172_800
-      ? graceEndsAt
-      : undefined;
-    const session = await stripe.checkout.sessions.create({
-      mode: "subscription", customer: customerId,
-      payment_method_collection: "always",
-      line_items: [{ price: priceId, quantity: 1 }],
-      billing_address_collection: "required", tax_id_collection: { enabled: true },
-      customer_update: { address: "auto", name: "auto" },
-      client_reference_id: location.workshopId,
-      metadata: { service_provider_id: billing.providerId, workshop_id: location.workshopId },
-      subscription_data: {
-        metadata: { service_provider_id: billing.providerId, workshop_id: location.workshopId },
-        trial_end: safeTrialEnd,
-        trial_settings: safeTrialEnd
-          ? { end_behavior: { missing_payment_method: "cancel" } }
-          : undefined,
-      },
-      success_url: `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=success`,
-      cancel_url: `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=cancelled`,
-    });
-    if (!session.url) throw new Error("stripe_checkout_url_missing");
-    checkoutUrl = session.url;
+    const coveredQuantity = billing.locations.filter((item) =>
+      item.coverageStartedAt && !item.legacyStripeSubscriptionId,
+    ).length;
+    const targetQuantity = coveredQuantity + (location.coverageStartedAt ? 0 : 1);
+    const organisationSubscription = billing.organisationSubscription;
+    if (organisationSubscription.paymentGraceEndsAt
+      || ["past_due", "unpaid", "paused", "incomplete"].includes(organisationSubscription.status)) {
+      throw new DataAccessError("conflict");
+    }
+
+    if (organisationSubscription.stripeSubscriptionId
+      && ["active", "trialing"].includes(organisationSubscription.status)
+      && organisationSubscription.paymentMethodConfirmedAt) {
+      const subscription = await stripe.subscriptions.retrieve(
+        organisationSubscription.stripeSubscriptionId,
+      );
+      const item = subscription.items.data.find((candidate) => candidate.price.id === priceId);
+      if (!item) throw new Error("stripe_subscription_item_missing");
+      await stripe.subscriptions.update(subscription.id, {
+        items: [{ id: item.id, quantity: targetQuantity }],
+        proration_behavior: "none",
+        metadata: { service_provider_id: billing.providerId },
+      }, { idempotencyKey: `activate-location-${location.workshopId}-${targetQuantity}` });
+      await activateProviderLocationBilling({
+        providerId: billing.providerId,
+        workshopId: location.workshopId,
+        subscriptionId: subscription.id,
+        subscriptionItemId: item.id,
+        quantity: targetQuantity,
+      });
+      revalidatePath("/service-organisation/billing");
+      revalidatePath("/service-organisation/locations");
+      checkoutUrl = `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=success`;
+    } else {
+      if (!["not_started", "incomplete_expired", "canceled"].includes(organisationSubscription.status)) {
+        throw new DataAccessError("conflict");
+      }
+      await prepareProviderSubscriptionReplacement(billing.providerId);
+      const now = new Date();
+      const nextMonthStart = Math.floor(Date.UTC(
+        now.getUTCFullYear(), now.getUTCMonth() + 1, 1, 0, 0, 0,
+      ) / 1000);
+      const session = await stripe.checkout.sessions.create({
+        mode: "subscription", customer: customerId,
+        payment_method_collection: "always",
+        line_items: [{ price: priceId, quantity: targetQuantity }],
+        billing_address_collection: "required", tax_id_collection: { enabled: true },
+        customer_update: { address: "auto", name: "auto" },
+        client_reference_id: billing.providerId,
+        metadata: { service_provider_id: billing.providerId, activation_workshop_id: location.workshopId },
+        subscription_data: {
+          metadata: { service_provider_id: billing.providerId },
+          billing_cycle_anchor: nextMonthStart,
+          proration_behavior: "none",
+        },
+        success_url: `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=success`,
+        cancel_url: `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=cancelled`,
+      }, { idempotencyKey: `organisation-checkout-${billing.providerId}-${location.workshopId}-${targetQuantity}` });
+      if (!session.url) throw new Error("stripe_checkout_url_missing");
+      checkoutUrl = session.url;
+    }
   } catch (error) {
     const result = failure(error);
     redirect(`/service-organisation/billing?providerId=${parsed.data.providerId}&billingError=${result.status}`);

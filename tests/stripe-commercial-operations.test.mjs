@@ -5,6 +5,7 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const migration = await read("supabase/migrations/202608070032_stripe_provider_commercial_operations.sql");
+const consolidation = await read("supabase/migrations/202608110053_consolidated_organisation_billing.sql");
 const stripeServer = await read("lib/stripe/server.ts");
 const webhook = await read("app/api/stripe/webhook/route.ts");
 const actions = await read("app/workshop-manager/invoicing/actions.ts");
@@ -28,7 +29,10 @@ test("only owners can initiate provider billing and payment never directly chang
   assert.match(actions, /mode: "subscription"/i);
   assert.match(actions, /price\.unit_amount !== billing\.plan\.monthlyPriceCents/i);
   assert.match(actions, /price\.recurring\?\.interval !== "month"/i);
-  assert.match(actions, /subscription_data: \{[\s\S]+metadata: \{ service_provider_id: billing\.providerId, workshop_id: location\.workshopId \}/i);
+  assert.match(actions, /subscription_data: \{[\s\S]+metadata: \{ service_provider_id: billing\.providerId \}/i);
+  assert.match(actions, /billing_cycle_anchor: nextMonthStart/i);
+  assert.match(actions, /proration_behavior: "none"/i);
+  assert.match(actions, /quantity: targetQuantity/i);
   assert.match(migration, /grant execute on function public\.attach_provider_stripe_customer\(uuid, text\) to service_role/i);
   assert.doesNotMatch(migration, /grant execute on function public\.attach_provider_stripe_customer[^;]+authenticated/i);
   const subscriptionFunction = migration.match(/create function public\.apply_stripe_subscription_event[\s\S]+?\n\$\$;/i)?.[0] ?? "";
@@ -41,11 +45,13 @@ test("signed Stripe webhooks are normalized into idempotent service-role RPCs", 
   assert.match(webhook, /request\.text\(\)/i);
   assert.match(webhook, /stripe-signature[\s\S]+constructEvent/i);
   const serviceGrant = migration.match(/grant execute on function public\.apply_stripe_checkout_event[\s\S]+?to service_role;/i)?.[0] ?? "";
-  for (const rpc of ["apply_stripe_checkout_event", "apply_stripe_subscription_event", "apply_stripe_invoice_event"]) {
+  for (const rpc of ["apply_stripe_checkout_event", "apply_stripe_invoice_event"]) {
     assert.match(migration, new RegExp(`create function public\\.${rpc}`, "i"));
     assert.match(serviceGrant, new RegExp(`public\\.${rpc}`, "i"));
     assert.match(webhook, new RegExp(rpc, "i"));
   }
+  assert.match(consolidation, /create function public\.apply_stripe_organisation_subscription_event/i);
+  assert.match(webhook, /apply_stripe_organisation_subscription_event/i);
   assert.match(migration, /on conflict \(stripe_event_id\) do nothing/i);
   assert.doesNotMatch(migration, /raw_payload|card_number|payment_method_details/i);
 });
@@ -64,7 +70,10 @@ test("commercial admins get MFA-scoped reporting, export, and audited operations
   assert.match(migration, /create function public\.get_provider_commercial_admin/i);
   assert.match(migration, /create function public\.set_admin_service_provider_status/i);
   assert.match(migration, /insert into public\.service_provider_status_history/i);
-  assert.match(adminPage, /monthlyRecurringCents/i);
+  assert.match(consolidation, /create or replace function public\.get_provider_commercial_admin/i);
+  assert.match(consolidation, /interval '6 months'/i);
+  assert.match(adminPage, /upcomingAmountCents/i);
+  assert.match(adminPage, /provider\.invoices\.map/i);
   assert.match(adminPage, /StatusForm/i);
   assert.match(exportRoute, /scope === "commercial"/i);
 });

@@ -14,9 +14,9 @@ export type ProviderBilling = {
   stripeCustomerId: string | null;
   billingProfile: { billingEmail: string | null; billingContact: string | null; taxIdentifier: string | null; addressLine1: string | null; addressLine2: string | null; city: string | null; postalCode: string | null; countryCode: string };
   plan: { id: string; name: string; monthlyPriceCents: number; currency: string; smsIncluded: boolean };
-  legacySubscription: { status: ProviderSubscriptionStatus; stripeSubscriptionId: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean };
-  locations: Array<{ workshopId: string; displayName: string; city: string | null; workshopStatus: string; subscriptionStatus: ProviderSubscriptionStatus; stripeSubscriptionId: string | null; coverageGraceEndsAt: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; coverageState: "covered" | "grace" | "attention" | "uncovered" }>;
-  invoices: Array<{ id: string; workshopId: string | null; workshopName: string | null; number: string | null; status: string; currency: string; amountDueCents: number; amountPaidCents: number; hostedInvoiceUrl: string | null; invoicePdfUrl: string | null; periodStart: string | null; periodEnd: string | null; dueAt: string | null; paidAt: string | null }>;
+  organisationSubscription: { status: ProviderSubscriptionStatus; stripeSubscriptionId: string | null; stripeSubscriptionItemId: string | null; billingQuantity: number; paymentMethodConfirmedAt: string | null; paymentGraceEndsAt: string | null; currentPeriodStart: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; nextBillingAt: string; upcomingAmountCents: number };
+  locations: Array<{ workshopId: string; displayName: string; city: string | null; workshopStatus: string; subscriptionStatus: ProviderSubscriptionStatus; legacyStripeSubscriptionId: string | null; coverageStartedAt: string | null; coverageGraceEndsAt: string | null; billableFrom: string | null; coverageState: "covered" | "grace" | "attention" | "uncovered" }>;
+  invoices: Array<{ id: string; number: string | null; status: string; currency: string; amountDueCents: number; amountPaidCents: number; hostedInvoiceUrl: string | null; invoicePdfUrl: string | null; periodStart: string | null; periodEnd: string | null; dueAt: string | null; paidAt: string | null }>;
 };
 
 function fail(error: { code?: string; status?: number }): never {
@@ -51,6 +51,30 @@ export async function attachProviderStripeCustomer(providerId: string, customerI
   const { error } = await createServiceClient().rpc("attach_provider_stripe_customer", {
     requested_provider_id: providerId,
     requested_stripe_customer_id: customerId,
+  });
+  if (error) fail(error);
+}
+
+export async function activateProviderLocationBilling(input: {
+  providerId: string;
+  workshopId: string;
+  subscriptionId: string;
+  subscriptionItemId: string;
+  quantity: number;
+}) {
+  const { error } = await createServiceClient().rpc("activate_provider_location_billing", {
+    requested_provider_id: input.providerId,
+    requested_workshop_id: input.workshopId,
+    requested_subscription_id: input.subscriptionId,
+    requested_subscription_item_id: input.subscriptionItemId,
+    requested_quantity: input.quantity,
+  });
+  if (error) fail(error);
+}
+
+export async function prepareProviderSubscriptionReplacement(providerId: string) {
+  const { error } = await createServiceClient().rpc("prepare_provider_subscription_replacement", {
+    requested_provider_id: providerId,
   });
   if (error) fail(error);
 }
