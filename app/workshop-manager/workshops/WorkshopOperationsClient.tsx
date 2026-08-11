@@ -6,14 +6,36 @@ import GoogleAddressSearch from "@/app/GoogleAddressSearch";
 import { formatDateTime, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { WorkshopClosure, WorkshopOperations } from "@/lib/dal/workshop-operations";
-import { addWorkshopClosureAction, removeWorkshopClosureAction, updateWorkshopOperationsAction, type WorkshopOperationsActionState } from "./actions";
+import { addWorkshopClosureAction, createWorkshopLocationAction, removeWorkshopClosureAction, updateWorkshopOperationsAction, type WorkshopOperationsActionState } from "./actions";
 
 const idle: WorkshopOperationsActionState = { status: "idle" };
 type T = (key: TranslationKey) => string;
 
 function Result({ state, t }: { state: WorkshopOperationsActionState; t: T }) {
   if (state.status === "idle") return null;
-  return <p role="status" className={["saved", "created", "removed"].includes(state.status) ? "note-success" : "note-error"}>{t(`workshopOperations.result.${state.status}` as TranslationKey)}</p>;
+  return <p role="status" className={["saved", "created", "location_created", "removed"].includes(state.status) ? "note-success" : "note-error"}>{t(`workshopOperations.result.${state.status}` as TranslationKey)}</p>;
+}
+
+type OwnedProvider = { id: string; displayName: string; countryCode: string };
+
+function CreateLocationForm({ providers, language, t }: { providers: OwnedProvider[]; language: Language; t: T }) {
+  const [state, action, pending] = useActionState(createWorkshopLocationAction, idle);
+  const [providerId, setProviderId] = useState(providers[0]?.id ?? "");
+  const provider = providers.find((item) => item.id === providerId) ?? providers[0];
+  if (!provider) return null;
+  return <details className="settings-accordion create-location-panel">
+    <summary><span><strong>{t("workshopOperations.addLocation")}</strong><small>{t("workshopOperations.addLocationHelp")}</small></span><b>+</b></summary>
+    <form className="settings-card create-location-form" action={action}>
+      {providers.length > 1 ? <label>{t("workshopOperations.organisation")}<select name="serviceProviderId" value={provider.id} onChange={(event) => setProviderId(event.target.value)}>{providers.map((item) => <option key={item.id} value={item.id}>{item.displayName}</option>)}</select></label> : <input type="hidden" name="serviceProviderId" value={provider.id} />}
+      <label>{t("workshopOperations.displayName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
+      <div className="settings-two"><label>{t("workshopOperations.phone")}<input name="publicPhone" maxLength={40} /></label><label>{t("workshopOperations.email")}<input name="publicEmail" type="email" maxLength={320} /></label></div>
+      <GoogleAddressSearch key={provider.id} label={t("workshopOperations.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workspace.addressSearchHelp")} unavailable={t("workspace.addressSearchFallback")} language={language} initialCountryCode={provider.countryCode} disabled={pending} />
+      <p className="coverage-note">{t("workshopOperations.newLocationCoverageHelp")}</p>
+      <Result state={state} t={t} />
+      <button disabled={pending}>{t(pending ? "workshopOperations.creatingLocation" : "workshopOperations.createLocation")}</button>
+      {state.status === "location_created" && <div className="create-location-next"><Link href="/workshop-manager/organisation">{t("workshopOperations.assignPrimaryManager")}</Link><Link href="/workshop-manager/invoicing">{t("workshopOperations.activateCoverage")}</Link></div>}
+    </form>
+  </details>;
 }
 
 function RemoveClosure({ closure, language, t }: { closure: WorkshopClosure; language: Language; t: T }) {
@@ -42,9 +64,19 @@ function WorkshopForm({ workshop, language, t }: { workshop: WorkshopOperations;
   </details>;
 }
 
-export default function WorkshopOperationsClient({ workshops, logoutAction }: { workshops: WorkshopOperations[]; logoutAction: () => Promise<void> }) {
+export default function WorkshopOperationsClient({ workshops, ownedProviders, logoutAction }: { workshops: WorkshopOperations[]; ownedProviders: OwnedProvider[]; logoutAction: () => Promise<void> }) {
   const [language, setLanguage, ready] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
   if (!ready) return <main className="registration-shell" aria-busy="true" />;
-  return <main className="settings-shell"><header className="settings-topbar"><Link href="/workshop-manager">← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header><section className="settings-content operations-content"><p className="registration-kicker">{t("workshopOperations.eyebrow")}</p><h1>{t("workshopOperations.title")}</h1><p>{t("workshopOperations.description")}</p><div className="settings-accordions">{workshops.map((workshop) => <WorkshopForm key={workshop.id} workshop={workshop} language={language} t={t} />)}{!workshops.length && <div className="catalogue-empty"><h2>{t("workshopOperations.emptyTitle")}</h2><p>{t("workshopOperations.emptyDescription")}</p></div>}</div></section></main>;
+  return <main className="settings-shell">
+    <header className="settings-topbar"><Link href="/workshop-manager">← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
+    <section className="settings-content operations-content">
+      <p className="registration-kicker">{t("workshopOperations.eyebrow")}</p><h1>{t("workshopOperations.title")}</h1><p>{t("workshopOperations.description")}</p>
+      <div className="settings-accordions">
+        {ownedProviders.length > 0 && <CreateLocationForm providers={ownedProviders} language={language} t={t} />}
+        {workshops.map((workshop) => <WorkshopForm key={workshop.id} workshop={workshop} language={language} t={t} />)}
+        {!workshops.length && <div className="catalogue-empty"><h2>{t("workshopOperations.emptyTitle")}</h2><p>{t("workshopOperations.emptyDescription")}</p></div>}
+      </div>
+    </section>
+  </main>;
 }

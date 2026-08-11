@@ -110,6 +110,10 @@
   active assignment to the exact canonical location; booking and repair
   management no longer authorize through organisation-wide membership or
   legacy workshop-profile identifiers.
+- Migration 044 allows active organisation owners to add geocoded, separately
+  billed locations from the workshop operations page. The creator receives a
+  supporting assignment for onboarding, while publication still requires a
+  dedicated primary manager and active location coverage.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

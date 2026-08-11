@@ -86,6 +86,33 @@ export async function loadMyWorkshopOperations(): Promise<WorkshopOperations[]> 
   }));
 }
 
+export async function createMyWorkshopLocation(input: {
+  serviceProviderId: string;
+  displayName: string;
+  countryCode: string;
+  city: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  publicPhone: string | null;
+  publicEmail: string | null;
+}) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("create_my_workshop_location", {
+    requested_service_provider_id: input.serviceProviderId,
+    requested_display_name: input.displayName,
+    requested_country_code: input.countryCode,
+    requested_city: input.city,
+    requested_address: input.address,
+    requested_latitude: input.latitude,
+    requested_longitude: input.longitude,
+    requested_public_phone: input.publicPhone,
+    requested_public_email: input.publicEmail,
+  });
+  if (error) fail(error);
+  return data as string;
+}
+
 export async function updateMyWorkshopOperations(input: UpdateWorkshopOperationsInput) {
   const supabase = await createClient();
   const { error } = await supabase.rpc("update_my_workshop_operations", {

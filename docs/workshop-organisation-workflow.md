@@ -129,3 +129,18 @@ Booking and repair mutation RPCs now authorize from the booking's canonical
 `workshop_id`; repair reads no longer use the retired legacy workshop-profile
 mapping. This prevents a manager assigned to one location from viewing or
 changing another location's customers, appointments, estimates, or repairs.
+
+## Step 6 owner-created locations
+
+Migration 044 lets an active service-organisation owner create a geocoded
+workshop directly from `/workshop-manager/workshops`. Creating a location also
+creates its default weekday hours, diagnosis service, canonical location
+subscription record, and a supporting assignment for the owner, so the owner
+can finish its profile and operating rules immediately.
+
+Every new location is a separate EUR 35 billing unit and starts unpublished.
+The owner must invite or assign its dedicated primary manager and activate its
+location subscription before the automatic publication rules can place it on
+the public map. Supporting location managers can continue to edit only the
+locations to which they are explicitly assigned; they cannot create billable
+locations for the organisation.

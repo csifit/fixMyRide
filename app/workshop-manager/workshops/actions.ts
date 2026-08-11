@@ -3,9 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
-import { addMyWorkshopClosure, removeMyWorkshopClosure, updateMyWorkshopOperations } from "@/lib/dal/workshop-operations";
+import { addMyWorkshopClosure, createMyWorkshopLocation, removeMyWorkshopClosure, updateMyWorkshopOperations } from "@/lib/dal/workshop-operations";
 
-export type WorkshopOperationsActionState = { status: "idle" | "saved" | "created" | "removed" | "invalid" | "unauthorized" | "unavailable" };
+export type WorkshopOperationsActionState = { status: "idle" | "saved" | "created" | "location_created" | "removed" | "invalid" | "unauthorized" | "unavailable" };
 const nullable = (max: number) => z.string().trim().max(max).transform((value) => value || null);
 const nullableNumber = z.union([z.literal(""), z.coerce.number()]).transform((value) => value === "" ? null : value);
 const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
@@ -24,6 +24,15 @@ const updateSchema = z.object({
 }).refine((value) => (value.latitude === null) === (value.longitude === null));
 const closureSchema = z.object({ workshopId: z.uuid(), startsAt: z.iso.datetime(), endsAt: z.iso.datetime(), reason: nullable(240) }).refine((value) => new Date(value.endsAt) > new Date(value.startsAt));
 const removeSchema = z.object({ closureId: z.uuid() });
+const coordinate = z.string().trim().min(1).transform(Number).pipe(z.number().finite());
+const createLocationSchema = z.object({
+  serviceProviderId: z.uuid(), displayName: z.string().trim().min(2).max(160),
+  countryCode: z.string().trim().length(2).transform((value) => value.toUpperCase()),
+  city: z.string().trim().min(1).max(120), address: z.string().trim().min(2).max(240),
+  latitude: coordinate.refine((value) => value >= -90 && value <= 90),
+  longitude: coordinate.refine((value) => value >= -180 && value <= 180),
+  publicPhone: nullable(40), publicEmail: z.union([z.literal(""), z.email().max(320)]).transform((value) => value || null),
+});
 
 function result(error: unknown): WorkshopOperationsActionState {
   if (error instanceof DataAccessError) {
@@ -62,4 +71,16 @@ export async function removeWorkshopClosureAction(_state: WorkshopOperationsActi
   const parsed = removeSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   try { await removeMyWorkshopClosure(parsed.data.closureId); refresh(); return { status: "removed" }; } catch (error) { return result(error); }
+}
+
+export async function createWorkshopLocationAction(_state: WorkshopOperationsActionState, formData: FormData): Promise<WorkshopOperationsActionState> {
+  const parsed = createLocationSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await createMyWorkshopLocation(parsed.data);
+    refresh();
+    revalidatePath("/workshop-manager/organisation");
+    revalidatePath("/workshop-manager/invoicing");
+    return { status: "location_created" };
+  } catch (error) { return result(error); }
 }
