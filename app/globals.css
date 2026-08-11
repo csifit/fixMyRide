@@ -270,7 +270,7 @@ a { color:var(--green); text-decoration:none; }
 .booking-logo { display:flex; align-items:center; gap:9px; margin-right:auto; color:#004646; font-size:20px; font-weight:900; text-decoration:none; }
 .booking-logo span { width:31px; height:31px; display:grid; place-items:center; border-radius:9px; background:#006E6E; color:#fff; font-size:23px; }
 .booking-header nav { display:flex; align-items:center; gap:22px; }.booking-header nav a { color:#355e56; font-size:11px; font-weight:800; text-decoration:none; }
-.booking-header select { width:auto; border:1px solid #c9d9d5; border-radius:8px; padding:8px; background:#fff; color:#315d54; font-weight:800; }
+.booking-header select { width:auto; border:1px solid #c9d9d5; border-radius:8px; padding:8px; background:#fff; color:#315d54; font-size:9px; font-weight:800; }
 .booking-hero { padding:56px max(20px,calc((100% - 1180px)/2)) 45px; background:linear-gradient(135deg,#005858,#004848); color:#fff; }
 .booking-hero>div { max-width:740px; }.booking-hero>div>span { color:#BFE8E8; font-size:10px; font-weight:900; letter-spacing:1.4px; text-transform:uppercase; }
 .booking-hero h1 { margin:10px 0; font:600 clamp(31px,5vw,49px)/1.1 Georgia,"Times New Roman",serif; }.booking-hero>div>p { max-width:680px; color:#D7EBEB; font-size:14px; line-height:1.6; }
@@ -325,7 +325,7 @@ a { color:var(--green); text-decoration:none; }
 .home-header { position:relative; z-index:10; min-height:72px; display:flex; align-items:center; gap:28px; padding:12px clamp(20px,4vw,64px); border-bottom:1px solid #d8e4e1; background:#fff; }
 .home-logo { display:flex; align-items:center; gap:10px; margin-right:auto; color:#143b35; font-size:20px; font-weight:950; text-decoration:none; }.home-logo span { width:34px; height:34px; display:grid; place-items:center; border-radius:10px; background:var(--brand-primary); color:#fff; font-size:24px; }
 .home-header nav { display:flex; align-items:center; gap:24px; }.home-header nav a { color:#355c55; font-size:11px; font-weight:800; text-decoration:none; }.home-header nav a:hover { color:var(--brand-primary); }
-.home-header select { width:auto; border:1px solid #c9d9d5; border-radius:8px; padding:8px; background:#fff; color:#315d54; font-weight:900; }
+.home-header select { width:auto; border:1px solid #c9d9d5; border-radius:8px; padding:7px 8px; background:#fff; color:#315d54; font-size:9px; font-weight:900; }
 .home-discovery { min-height:calc(100vh - 72px); display:grid; grid-template-columns:minmax(0,56%) minmax(390px,44%); background:#fff; }
 .home-map { position:relative; min-height:620px; overflow:hidden; border-right:1px solid #cbdcd8; background:#dce9e5; }
 .home-map-canvas { position:absolute; inset:0; overflow:hidden; background-color:#dfece8; background-image:linear-gradient(33deg,transparent 47%,#b8d1ca 48%,#b8d1ca 50%,transparent 51%),linear-gradient(142deg,transparent 45%,#c5d9d3 46%,#c5d9d3 48%,transparent 49%),radial-gradient(circle at 68% 64%,#c8ddd6 0 12%,transparent 12.5%),radial-gradient(circle at 28% 25%,#cfdfd9 0 9%,transparent 9.5%); background-size:180px 180px,240px 240px,100% 100%,100% 100%; }

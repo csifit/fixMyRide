@@ -108,7 +108,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
           <strong>{workshop.name}</strong><small>{workshop.city || workshop.countryCode}</small><hr />
           {date ? <strong>{new Intl.DateTimeFormat(language, { dateStyle: "full" }).format(new Date(`${date}T12:00:00`))} · {time}</strong> : <strong>Choose a preferred time</strong>}
           {service.bookingMode === "direct" ? <b>✓ Direct service request · no card required</b> : <b>✓ Diagnosis first · {diagnosisFee} fee disclosed</b>}<small>The workshop may suggest a different time after reviewing your request.</small>
-          <Link href={`/workshops/${workshop.id}`}>Choose another service</Link>
+          <Link href={`/workshops/${workshop.slug}`}>Choose another service</Link>
         </aside>
       </form>
     </section>

@@ -10,6 +10,7 @@ const requestFlow = await read("app/workshops/[workshopId]/request/ServiceReques
 const requestAction = await read("app/workshops/[workshopId]/request/actions.ts");
 const garage = await read("app/garage/GarageClient.tsx");
 const garageDal = await read("lib/dal/garage.ts");
+const english = JSON.parse(await read("app/i18n/en.json"));
 
 test("automotive records are additive and customer-owned vehicle data is protected by RLS", () => {
   for (const table of ["workshop_profiles", "workshop_services", "customer_profiles", "vehicles", "service_booking_requests", "provider_subscription_plans"]) {
@@ -35,7 +36,8 @@ test("public workshop discovery and booking use narrow RPCs", () => {
 test("the customer journey stays request-to-book until workshop confirmation", () => {
   assert.match(migration, /'requested',[\s\S]+?'confirmed'/i);
   assert.match(migration, /status <> 'confirmed' or confirmed_start is not null/i);
-  assert.match(home, /only booked after the workshop confirms it/i);
+  assert.equal(english["home.search.trust"], "Your request is only booked after the workshop confirms it");
+  assert.match(home, /home\.search\.trust/);
   assert.match(requestFlow, /This is a request, not a confirmed appointment yet/i);
   assert.match(requestFlow, /preferredStart/i);
   assert.match(requestFlow, /alternateStart/i);
@@ -46,7 +48,8 @@ test("provider price is EUR 35 monthly with SMS included and no usage surcharge"
   assert.match(migration, /'EUR', true/i);
   assert.match(migration, /values \(date_trunc\('month', current_date\)::date, 3500, 0\)/i);
   assert.match(home, /€35/i);
-  assert.match(home, /SMS included/i);
+  assert.equal(english["home.offer.sms"], "SMS included");
+  assert.match(home, /home\.offer\.sms/);
 });
 
 test("My Garage stores reusable vehicles and displays service request history", () => {

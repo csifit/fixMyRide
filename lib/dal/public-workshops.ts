@@ -6,6 +6,7 @@ import type { AutomotiveVehicleType, ServiceBookingMode } from "@/lib/automotive
 
 export type PublicWorkshop = {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
   countryCode: string;
@@ -53,7 +54,7 @@ export type PublicWorkshopBookingRules = {
 
 export async function searchPublicWorkshops(search = ""): Promise<PublicWorkshop[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("search_public_workshops", {
+  const { data, error } = await supabase.rpc("search_public_workshops_v2", {
     requested_search: search || null,
   });
   if (error) {
@@ -62,6 +63,7 @@ export async function searchPublicWorkshops(search = ""): Promise<PublicWorkshop
   }
   return (data ?? []).map((row: Record<string, unknown>) => ({
     id: row.workshop_id as string,
+    slug: row.workshop_slug as string,
     name: row.display_name as string,
     description: typeof row.description === "string" ? row.description : null,
     countryCode: row.country_code as string,
@@ -80,9 +82,11 @@ export async function searchPublicWorkshops(search = ""): Promise<PublicWorkshop
   }));
 }
 
-export async function getPublicWorkshop(workshopId: string) {
+export async function getPublicWorkshop(workshopReference: string) {
   const workshops = await searchPublicWorkshops("");
-  return workshops.find((workshop) => workshop.id === workshopId) ?? null;
+  return workshops.find((workshop) =>
+    workshop.id === workshopReference || workshop.slug === workshopReference
+  ) ?? null;
 }
 
 export async function loadPublicWorkshopServices(

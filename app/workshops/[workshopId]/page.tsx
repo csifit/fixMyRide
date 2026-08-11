@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
 import PublicSiteHeader from "@/app/PublicSiteHeader";
 import { getPublicWorkshop, loadPublicWorkshopServices } from "@/lib/dal/public-workshops";
 import { loadPublicWorkshopClaim } from "@/lib/dal/workshop-claims";
@@ -8,6 +9,20 @@ import { loadManagedServiceProviders } from "@/lib/dal/service-providers";
 import WorkshopClaimCard from "./WorkshopClaimCard";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: {
+  params: Promise<{ workshopId: string }>;
+}): Promise<Metadata> {
+  const { workshopId } = await params;
+  const workshop = await getPublicWorkshop(workshopId);
+  if (!workshop) return {};
+  return {
+    title: `${workshop.name} | pitster`,
+    description: workshop.description
+      ?? `View services and request an appointment with ${workshop.name}.`,
+    alternates: { canonical: `/workshops/${workshop.slug}` },
+  };
+}
 
 function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
@@ -32,10 +47,18 @@ export default async function WorkshopPage({
 }) {
   const { workshopId } = await params;
   const { date, claim: claimNotice } = await searchParams;
-  const [workshop, publicClaim] = await Promise.all([
-    getPublicWorkshop(workshopId),
-    loadPublicWorkshopClaim(workshopId),
-  ]);
+  const workshop = await getPublicWorkshop(workshopId);
+  const publicClaim = workshop
+    ? await loadPublicWorkshopClaim(workshop.id)
+    : /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(workshopId)
+      ? await loadPublicWorkshopClaim(workshopId)
+      : null;
+  if (workshop && workshopId !== workshop.slug) {
+    const query = new URLSearchParams();
+    if (date) query.set("date", date);
+    if (claimNotice) query.set("claim", claimNotice);
+    redirect(`/workshops/${workshop.slug}${query.size ? `?${query}` : ""}`);
+  }
   let ownerProviders: Array<{ id: string; displayName: string }> = [];
   if (publicClaim && !publicClaim.serviceProviderId) {
     const access = await getWorkshopManagerAccess();
@@ -49,7 +72,7 @@ export default async function WorkshopPage({
     if (!publicClaim) notFound();
     return <main className="booking-shell workshop-claim-page"><PublicSiteHeader /><WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} ownerProviders={ownerProviders} /></main>;
   }
-  const services = await loadPublicWorkshopServices(workshopId);
+  const services = await loadPublicWorkshopServices(workshop.id);
   return <main className="booking-shell workshop-public-page">
       <PublicSiteHeader />
     {publicClaim && publicClaim.status !== "claimed" && <WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} compact ownerProviders={ownerProviders} />}
@@ -91,7 +114,7 @@ export default async function WorkshopPage({
         {service.bookingMode === "diagnosis" && <p><strong>Initial diagnostic assessment</strong><br />Further work requires a separate estimate and your approval.</p>}
         {service.bookingMode === "direct" && <p><strong>Direct service</strong><br />No separate diagnosis is required unless the workshop finds an additional fault.</p>}
         <div><b>{price(service)}</b>{service.estimatedDurationMinutes && <small>Estimated {service.estimatedDurationMinutes} min</small>}</div>
-        <Link href={`/workshops/${workshop.id}/request?service=${service.id}&date=${encodeURIComponent(date ?? "")}`}>Request appointment</Link>
+        <Link href={`/workshops/${workshop.slug}/request?service=${service.id}&date=${encodeURIComponent(date ?? "")}`}>Request appointment</Link>
       </article>)}</div>
     </section>}
   </main>;

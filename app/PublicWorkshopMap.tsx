@@ -107,7 +107,7 @@ export default function PublicWorkshopMap({
       <small>Published workshop</small>
       <strong>{selected.name}</strong>
       <span>{[selected.address, selected.city].filter(Boolean).join(", ")}</span>
-      <Link href={`/workshops/${selected.id}?date=${encodeURIComponent(preferredDate)}`}>View workshop</Link>
+      <Link href={`/workshops/${selected.slug}?date=${encodeURIComponent(preferredDate)}`}>View workshop</Link>
     </article>}
     <span className="map-attribution">Published Pitster workshop locations</span>
   </section>;

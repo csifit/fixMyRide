@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import GoogleAddressSearch, { type GoogleAddressSelection } from "./GoogleAddressSearch";
 import PublicWorkshopMap from "./PublicWorkshopMap";
-import { type Language } from "@/app/i18n";
+import { translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import { brand } from "@/lib/brand";
 import { distanceInKilometers } from "@/lib/geo";
@@ -12,11 +12,6 @@ import type { PublicWorkshop } from "@/lib/dal/public-workshops";
 
 function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
-}
-
-function formatPrice(cents: number | null) {
-  if (cents === null) return "Price confirmed by workshop";
-  return `From €${(cents / 100).toFixed(0)}`;
 }
 
 export default function HomeDiscoveryClient({
@@ -27,6 +22,10 @@ export default function HomeDiscoveryClient({
   date: string;
 }) {
   const [language, setLanguage] = useLanguage();
+  const t = (key: TranslationKey) => translate(language, key);
+  const formatPrice = (cents: number | null) => cents === null
+    ? t("home.priceConfirmed")
+    : `${t("home.from")} €${(cents / 100).toFixed(0)}`;
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [locationText, setLocationText] = useState("");
@@ -54,10 +53,10 @@ export default function HomeDiscoveryClient({
     <header className="home-header">
       <Link href="/" className="home-logo"><span>{brand.mark}</span>{brand.name}</Link>
       <nav>
-        <Link href="/workshops">Find a workshop</Link>
-        <a href="#services">Services</a>
-        <Link href="/garage">My Garage</Link>
-        <Link href="/workshop-manager/login">For service providers</Link>
+        <Link href="/workshops">{t("home.nav.findWorkshop")}</Link>
+        <a href="#services">{t("home.nav.services")}</a>
+        <Link href="/garage">{t("home.nav.garage")}</Link>
+        <Link href="/workshop-manager/login">{t("home.nav.providers")}</Link>
       </nav>
       <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label="Language">
         <option value="en">EN</option><option value="de">DE</option>
@@ -67,87 +66,87 @@ export default function HomeDiscoveryClient({
 
     <section className="home-discovery automotive-hero">
       <div className="automotive-hero-copy">
-        <p>Car care, without the guesswork</p>
-        <h1>Find a trusted workshop and request your service online</h1>
-        <span>Compare nearby providers, tell them what your car needs, and receive confirmation by email and SMS.</span>
+        <p>{t("home.hero.kicker")}</p>
+        <h1>{t("home.hero.title")}</h1>
+        <span>{t("home.hero.description")}</span>
         <div className="automotive-trust-row">
-          <span>✓ Request for free</span>
-          <span>✓ Workshop confirmation</span>
-          <span>✓ No card required</span>
+          <span>✓ {t("home.hero.free")}</span>
+          <span>✓ {t("home.hero.confirmation")}</span>
+          <span>✓ {t("home.hero.noCard")}</span>
         </div>
       </div>
       <div className="home-search-panel">
-        <div><p>Start your booking</p><h2>What does your car need?</h2></div>
+        <div><p>{t("home.search.kicker")}</p><h2>{t("home.search.title")}</h2></div>
         <form className="home-filter-form" onSubmit={(event) => event.preventDefault()}>
-          <label><span>Workshop or service</span>
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Diagnostics, tyres, brakes…" />
+          <label><span>{t("home.search.workshopOrService")}</span>
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("home.search.workshopPlaceholder")} />
           </label>
           <div>
-            <label><span>Service</span>
+            <label><span>{t("home.search.service")}</span>
               <select value={category} onChange={(event) => setCategory(event.target.value)}>
-                <option value="">All services</option>
+                <option value="">{t("home.search.allServices")}</option>
                 {categories.map((item) => <option key={item} value={item}>{item}</option>)}
               </select>
             </label>
-            <GoogleAddressSearch label="Location" placeholder="Search an address or city" help="Choose an address to find workshops within 50 km." unavailable="Address search is unavailable. Type a city or address." language={language} formFields={false} onSelection={setLocationSelection} onTextChange={setLocationText} />
+            <GoogleAddressSearch label={t("home.search.location")} placeholder={t("home.search.locationPlaceholder")} help={t("home.search.locationHelp")} unavailable={t("home.search.locationUnavailable")} language={language} formFields={false} onSelection={setLocationSelection} onTextChange={setLocationText} />
           </div>
-          <label><span>Preferred arrival date</span>
+          <label><span>{t("home.search.date")}</span>
             <input type="date" value={preferredDate} min={date} onChange={(event) => setPreferredDate(event.target.value)} />
           </label>
-          <div className="home-search-summary"><strong>{filtered.length}</strong><span>matching workshops</span></div>
-          <a className="home-results-button" href="#featured-workshops">Show workshops</a>
+          <div className="home-search-summary"><strong>{filtered.length}</strong><span>{t("home.search.matches")}</span></div>
+          <a className="home-results-button" href="#featured-workshops">{t("home.search.show")}</a>
         </form>
-        <small className="home-trust-note">✓ Your request is only booked after the workshop confirms it</small>
+        <small className="home-trust-note">✓ {t("home.search.trust")}</small>
       </div>
     </section>
 
     <section className="home-map-section" aria-labelledby="workshop-map-title">
       <header>
-        <p>Workshop map</p>
-        <h2 id="workshop-map-title">Published service locations</h2>
-        <span>Locations appear automatically after their address, manager assignment and subscription coverage are ready.</span>
+        <p>{t("home.map.kicker")}</p>
+        <h2 id="workshop-map-title">{t("home.map.title")}</h2>
+        <span>{t("home.map.description")}</span>
       </header>
       <PublicWorkshopMap workshops={filtered} preferredDate={preferredDate} />
     </section>
 
     <section className="home-featured" id="featured-workshops">
       <header>
-        <div><p>Local service providers</p><h2>Published workshops</h2></div>
-        <Link href={`/workshops?date=${preferredDate}`}>View all workshops →</Link>
+        <div><p>{t("home.featured.kicker")}</p><h2>{t("home.featured.title")}</h2></div>
+        <Link href={`/workshops?date=${preferredDate}`}>{t("home.featured.all")} →</Link>
       </header>
       <div className="home-workshop-grid">
         {filtered.slice(0, 6).map((workshop) => <article className="home-workshop-card" key={workshop.id}>
           <div className="home-workshop-avatar">{initials(workshop.name)}</div>
-          <span className="home-verified">✓ Verified service provider</span>
+          <span className="home-verified">✓ {t("home.verified")}</span>
           <h3>{workshop.name}</h3>
-          <strong>{workshop.serviceCategories.slice(0, 2).join(" · ") || "General repairs"}</strong>
+          <strong>{workshop.serviceCategories.slice(0, 2).join(" · ") || t("home.generalRepairs")}</strong>
           <p>{workshop.city || workshop.countryCode}<br />{workshop.address}</p>
           <div className="workshop-features">
-            {workshop.offersPickup && <span>✓ Vehicle pickup</span>}
-            {workshop.offersCourtesyCar && <span>✓ Courtesy car</span>}
+            {workshop.offersPickup && <span>✓ {t("home.vehiclePickup")}</span>}
+            {workshop.offersCourtesyCar && <span>✓ {t("home.courtesyCar")}</span>}
           </div>
           <b>{formatPrice(workshop.priceFromCents)}</b>
-          <Link href={`/workshops/${workshop.id}?date=${preferredDate}`}>View workshop</Link>
+          <Link href={`/workshops/${workshop.slug}?date=${preferredDate}`}>{t("home.viewWorkshop")}</Link>
         </article>)}
-        {!filtered.length && <div className="booking-empty"><h3>No workshops found</h3><p>Try another service or location. New providers will appear here after the automotive database migration is applied.</p></div>}
+        {!filtered.length && <div className="booking-empty"><h3>{t("home.empty.title")}</h3><p>{t("home.empty.description")}</p></div>}
       </div>
     </section>
 
     <section className="home-specialty-strip" id="services">
-      <p>Browse by service</p><h2>Book the care your vehicle needs</h2>
+      <p>{t("home.services.kicker")}</p><h2>{t("home.services.title")}</h2>
       <div>{categories.map((item) => <button type="button" key={item} onClick={() => { setCategory(item); document.getElementById("featured-workshops")?.scrollIntoView({ behavior: "smooth" }); }}>{item}</button>)}</div>
     </section>
 
     <section className="provider-offer">
-      <div><p>For workshops</p><h2>Receive and manage customer booking requests</h2><span>One simple plan with the booking workspace and customer SMS notifications included.</span></div>
-      <div><strong>€35</strong><span>per month</span><b>SMS included</b><Link href="/register/workshop-manager">Join as a service provider</Link></div>
+      <div><p>{t("home.offer.kicker")}</p><h2>{t("home.offer.title")}</h2><span>{t("home.offer.description")}</span></div>
+      <div><strong>€35</strong><span>{t("home.offer.month")}</span><b>{t("home.offer.sms")}</b><Link href="/register/workshop-manager">{t("home.offer.join")}</Link></div>
     </section>
 
     <footer className="home-footer" id="legal">
-      <div><strong>Customers</strong><Link href="/workshops">Find a workshop</Link><Link href="/garage">My Garage</Link><Link href="/customer/login">Sign in</Link></div>
-      <div><strong>Service providers</strong><Link href="/register/workshop-manager">Join the platform</Link><Link href="/workshop-manager/login">Provider sign in</Link><span>€35/month · SMS included</span></div>
-      <div><strong>Legal</strong><a href="#legal">Terms and conditions</a><a href="#legal">Privacy policy</a><a href="#legal">Cookie policy</a></div>
-      <div><strong>Contact</strong><a href={`mailto:${brand.supportEmail}`}>Support</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>Report a problem</a></div>
+      <div><strong>{t("home.footer.customers")}</strong><Link href="/workshops">{t("home.nav.findWorkshop")}</Link><Link href="/garage">{t("home.nav.garage")}</Link><Link href="/customer/login">{t("home.footer.signIn")}</Link></div>
+      <div><strong>{t("home.footer.providers")}</strong><Link href="/register/workshop-manager">{t("home.footer.join")}</Link><Link href="/workshop-manager/login">{t("home.footer.providerSignIn")}</Link><span>€35/{t("home.offer.month")} · {t("home.offer.sms")}</span></div>
+      <div><strong>{t("home.footer.legal")}</strong><a href="#legal">{t("home.footer.terms")}</a><a href="#legal">{t("home.footer.privacy")}</a><a href="#legal">{t("home.footer.cookies")}</a></div>
+      <div><strong>{t("home.footer.contact")}</strong><a href={`mailto:${brand.supportEmail}`}>{t("home.footer.support")}</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>{t("home.footer.report")}</a></div>
       <p>© {new Date().getFullYear()} {brand.name}</p>
     </footer>
   </main>;

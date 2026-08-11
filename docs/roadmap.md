@@ -125,6 +125,13 @@
   during claim. Complete organisation billing details and an
   active or trialing EUR 35 location subscription are required; the signed
   Stripe webhook finalizes the claim, without fabricating subscription state.
+- Migration 047 separates platform-curated workshop listings from ownership.
+  Administrators can publish a geocoded location without choosing an
+  organisation or manager; an active owner attaches their organisation during
+  the claim before billing and payment can proceed.
+- Migration 048 exposes the existing unique workshop slug through public
+  discovery. Customer-facing workshop and request URLs use the readable slug,
+  while legacy UUID URLs redirect to their canonical slug equivalent.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted
