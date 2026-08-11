@@ -27,11 +27,14 @@ function InvitationResult({ state, t }: {
   t: (key: TranslationKey) => string;
 }) {
   if (state.status === "idle") return null;
-  return <div className={state.status === "saved" || state.status === "revoked" ? "note-success" : "note-error"} role="status">
+  const successful = (state.status === "saved" || state.status === "revoked")
+    && state.emailDelivery !== "failed";
+  return <div className={successful ? "note-success" : "note-error"} role="status">
     <span>{t(`organisationCoverage.result.${state.status}` as TranslationKey)}</span>
+    {state.emailDelivery && <strong>{t(`organisationCoverage.invitationEmail.${state.emailDelivery}` as TranslationKey)}</strong>}
     {state.invitationUrl && <>
       <input value={state.invitationUrl} readOnly aria-label={t("organisationCoverage.invitationLink")} />
-      <small>{t("organisationCoverage.copyLinkHelp")}</small>
+      <small>{t(state.emailDelivery === "sent" ? "organisationCoverage.backupLinkHelp" : "organisationCoverage.copyLinkHelp")}</small>
     </>}
   </div>;
 }

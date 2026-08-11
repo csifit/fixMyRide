@@ -25,10 +25,14 @@ in one transaction. Existing active managers are assigned directly instead of
 being invited again. Organisation-owner self-service invitations are the next
 workflow phase.
 
-The admin console returns a one-time, seven-day invitation URL. Only its SHA-256
-digest is stored, so the administrator must copy and share the URL when it is
-created. The invited person confirms the email through Supabase and then uses
-the existing password-setup flow.
+When an invitation is created, the application sends its one-time, seven-day
+URL through the configured MXroute SMTP account. Administrator invitations to
+service organisations, administrator invitations to location managers, and
+service-organisation invitations to location managers have distinct subjects,
+headings, and sender-role labels. Only the URL's SHA-256 digest is stored. The
+creation screen retains the plaintext URL as a one-time delivery fallback and
+reports an explicit warning if SMTP delivery fails. The invited person confirms
+the email through Supabase and then uses the existing password-setup flow.
 
 ## Location coverage
 
@@ -85,12 +89,13 @@ projection only: this milestone does not create, modify, or multiply Stripe
 subscriptions.
 
 Owners can issue a seven-day invitation for a new primary or supporting manager
-at one of their own locations. The application returns the plaintext link once
-and stores only its SHA-256 digest. Owners can revoke an unused invitation and
-issue a replacement. Registration continues through the shared invitation,
-email-confirmation, and password-setup workflow introduced in Step 2. Existing
-accounts still require direct administrator assignment, preventing an owner from
-silently attaching an unrelated platform user by email.
+at one of their own locations. The application emails the plaintext link through
+MXroute, returns it once as a delivery fallback, and stores only its SHA-256
+digest. Owners can revoke an unused invitation and issue a replacement.
+Registration continues through the shared invitation, email-confirmation, and
+password-setup workflow introduced in Step 2. Existing accounts still require
+direct administrator assignment, preventing an owner from silently attaching
+an unrelated platform user by email.
 
 ## Step 4 location billing cutover
 

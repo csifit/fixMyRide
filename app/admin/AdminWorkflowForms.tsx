@@ -39,9 +39,11 @@ function locationPinLabels(t: T) {
 
 function Result({ state, t }: { state: AdminWorkflowActionState; t: T }) {
   if (state.status === "idle") return null;
-  return <div className={state.status === "saved" ? "note-success" : "note-error"} role="status">
+  const successful = state.status === "saved" && state.emailDelivery !== "failed";
+  return <div className={successful ? "note-success" : "note-error"} role="status">
     <span>{t(`adminWorkflow.result.${state.status}` as TranslationKey)}</span>
-    {state.invitationUrl && <><input value={state.invitationUrl} readOnly aria-label={t("adminWorkflow.invitationLink")} /><small>{t("adminWorkflow.copyLinkHelp")}</small></>}
+    {state.emailDelivery && <strong>{t(`adminWorkflow.invitationEmail.${state.emailDelivery}` as TranslationKey)}</strong>}
+    {state.invitationUrl && <><input value={state.invitationUrl} readOnly aria-label={t("adminWorkflow.invitationLink")} /><small>{t(state.emailDelivery === "sent" ? "adminWorkflow.backupLinkHelp" : "adminWorkflow.copyLinkHelp")}</small></>}
   </div>;
 }
 

@@ -8,11 +8,17 @@ import {
   revokeOrganisationManagerInvitation,
 } from "@/lib/dal/organisation-coverage";
 import { DataAccessError } from "@/lib/dal/errors";
+import { getInvitationEmailContext } from "@/lib/dal/invitation-email-context";
+import {
+  sendInvitationEmail,
+  type InvitationEmailDelivery,
+} from "@/lib/email/invitation-emails";
 import { getSiteUrl } from "@/lib/site-url";
 
 export type OrganisationInvitationState = {
   status: "idle" | "saved" | "revoked" | "invalid" | "duplicate" | "unauthorized" | "unavailable";
   invitationUrl?: string;
+  emailDelivery?: InvitationEmailDelivery;
 };
 
 function failure(error: unknown): OrganisationInvitationState {
@@ -40,17 +46,36 @@ export async function inviteOrganisationManagerAction(
   if (!parsed.success) return { status: "invalid" };
   const token = randomBytes(32).toString("base64url");
   const tokenDigest = createHash("sha256").update(token).digest("hex");
+  const expiresAt = new Date(Date.now() + 7 * 86_400_000).toISOString();
   try {
     const invitationId = await createOrganisationManagerInvitation({
       ...parsed.data,
       tokenDigest,
-      expiresAt: new Date(Date.now() + 7 * 86_400_000).toISOString(),
+      expiresAt,
     });
     const url = new URL("/register/invitation", getSiteUrl());
     url.searchParams.set("id", invitationId);
     url.searchParams.set("token", token);
+    let emailDelivery: InvitationEmailDelivery = "failed";
+    try {
+      const context = await getInvitationEmailContext(invitationId);
+      if (context) {
+        emailDelivery = await sendInvitationEmail({
+          kind: "service_organisation_location_manager",
+          to: context.email,
+          invitationUrl: url.toString(),
+          expiresAt,
+          organisationName: context.organisationName,
+          workshopName: context.workshopName,
+          assignmentRole: context.assignmentRole ?? parsed.data.assignmentRole,
+          invitationId,
+        });
+      }
+    } catch {
+      emailDelivery = "failed";
+    }
     revalidatePath("/workshop-manager/organisation");
-    return { status: "saved", invitationUrl: url.toString() };
+    return { status: "saved", invitationUrl: url.toString(), emailDelivery };
   } catch (error) {
     return failure(error);
   }

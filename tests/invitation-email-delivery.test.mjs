@@ -1,0 +1,40 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+
+const root = new URL("../", import.meta.url);
+const read = (path) => readFile(new URL(path, root), "utf8");
+const email = await read("lib/email/invitation-emails.ts");
+const adminActions = await read("app/admin/workflow-actions.ts");
+const ownerActions = await read("app/workshop-manager/organisation/actions.ts");
+const adminForms = await read("app/admin/AdminWorkflowForms.tsx");
+const ownerClient = await read("app/workshop-manager/organisation/OrganisationCoverageClient.tsx");
+
+test("invitation email delivery uses server-only MXroute-compatible SMTP", () => {
+  assert.match(email, /^import "server-only";/);
+  assert.match(email, /nodemailer\.createTransport/);
+  for (const setting of ["MXROUTE_SERVER", "MXROUTE_USERNAME", "MXROUTE_PASSWORD", "SMTP_PORT", "SMTP_SECURE"]) {
+    assert.match(email, new RegExp(setting));
+  }
+  assert.match(email, /tls: \{ minVersion: "TLSv1\.2" \}/);
+  assert.match(email, /info\.accepted\.length > 0/);
+  assert.doesNotMatch(email, /resend/i);
+});
+
+test("email copy distinguishes administrator and service-organisation invitations", () => {
+  assert.match(email, /ADMIN → SERVICE ORGANISATION/);
+  assert.match(email, /Admin invitation to a service organisation/);
+  assert.match(email, /ADMIN → LOCATION MANAGER/);
+  assert.match(email, /SERVICE ORGANISATION → LOCATION MANAGER/);
+  assert.match(email, /issued by the service organisation, not by a platform administrator/);
+});
+
+test("every invitation creation action attempts delivery and preserves a fallback link", () => {
+  assert.match(adminActions, /kind: "admin_service_organisation"/);
+  assert.match(adminActions, /kind: "admin_location_manager"/);
+  assert.match(ownerActions, /kind: "service_organisation_location_manager"/);
+  assert.match(adminActions, /emailDelivery/);
+  assert.match(ownerActions, /emailDelivery/);
+  assert.match(adminForms, /state\.emailDelivery === "sent"/);
+  assert.match(ownerClient, /state\.emailDelivery === "sent"/);
+});

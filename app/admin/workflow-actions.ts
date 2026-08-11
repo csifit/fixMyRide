@@ -16,11 +16,18 @@ import {
   updateAdminWorkshopLocation,
 } from "@/lib/dal/admin-organisations";
 import { DataAccessError } from "@/lib/dal/errors";
+import { getInvitationEmailContext } from "@/lib/dal/invitation-email-context";
+import {
+  sendInvitationEmail,
+  type InvitationEmailDelivery,
+  type InvitationEmailKind,
+} from "@/lib/email/invitation-emails";
 import { getSiteUrl } from "@/lib/site-url";
 
 export type AdminWorkflowActionState = {
   status: "idle" | "saved" | "invalid" | "geocode_required" | "duplicate" | "blocked" | "unauthorized" | "unavailable";
   invitationUrl?: string;
+  emailDelivery?: InvitationEmailDelivery;
 };
 function result(error: unknown): AdminWorkflowActionState {
   if (error instanceof DataAccessError) {
@@ -53,6 +60,26 @@ function invitationUrl(id: string, token: string) {
   url.searchParams.set("id", id); url.searchParams.set("token", token);
   return url.toString();
 }
+async function deliverLocationInvitationEmail(input: {
+  invitationId: string;
+  invitationUrl: string;
+  expiresAt: string;
+  kind: Extract<InvitationEmailKind, "admin_location_manager">;
+}): Promise<InvitationEmailDelivery> {
+  try {
+    const context = await getInvitationEmailContext(input.invitationId);
+    if (!context) return "failed";
+    return await sendInvitationEmail({
+      ...input,
+      to: context.email,
+      organisationName: context.organisationName,
+      workshopName: context.workshopName,
+      assignmentRole: context.assignmentRole ?? "manager",
+    });
+  } catch {
+    return "failed";
+  }
+}
 function refresh() {
   revalidatePath("/admin"); revalidatePath("/admin/providers");
   revalidatePath("/admin/workshops"); revalidatePath("/admin/managers");
@@ -71,14 +98,24 @@ export async function inviteServiceOrganisationAction(
   const parsed = organisationSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   const secret = invitationSecret();
+  const expiresAt = new Date(Date.now() + 7 * 86_400_000).toISOString();
   try {
     const created = await createAdminOrganisationInvitation({
       ...parsed.data, countryCode: parsed.data.countryCode.toUpperCase(),
       tokenDigest: secret.digest,
-      expiresAt: new Date(Date.now() + 7 * 86_400_000).toISOString(),
+      expiresAt,
+    });
+    const url = invitationUrl(created.invitationId, secret.token);
+    const emailDelivery = await sendInvitationEmail({
+      kind: "admin_service_organisation",
+      to: parsed.data.email,
+      invitationUrl: url,
+      expiresAt,
+      organisationName: parsed.data.displayName,
+      invitationId: created.invitationId,
     });
     refresh();
-    return { status: "saved", invitationUrl: invitationUrl(created.invitationId, secret.token) };
+    return { status: "saved", invitationUrl: url, emailDelivery };
   } catch (error) { return result(error); }
 }
 
@@ -256,12 +293,20 @@ export async function inviteLocationManagerAction(
   const parsed = managerInviteSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   const secret = invitationSecret();
+  const expiresAt = new Date(Date.now() + 7 * 86_400_000).toISOString();
   try {
     const id = await createAdminLocationManagerInvitation({
       ...parsed.data, tokenDigest: secret.digest,
-      expiresAt: new Date(Date.now() + 7 * 86_400_000).toISOString(),
+      expiresAt,
     });
-    refresh(); return { status: "saved", invitationUrl: invitationUrl(id, secret.token) };
+    const url = invitationUrl(id, secret.token);
+    const emailDelivery = await deliverLocationInvitationEmail({
+      invitationId: id,
+      invitationUrl: url,
+      expiresAt,
+      kind: "admin_location_manager",
+    });
+    refresh(); return { status: "saved", invitationUrl: url, emailDelivery };
   } catch (error) { return result(error); }
 }
 
