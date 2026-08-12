@@ -9,6 +9,22 @@ import { useLanguage } from "@/app/i18n/useLanguage";
 import { brand } from "@/lib/brand";
 import { distanceInKilometers } from "@/lib/geo";
 import type { PublicWorkshop } from "@/lib/dal/public-workshops";
+import {
+  standardServiceTemplates,
+  vehicleTypes,
+  type AutomotiveVehicleType,
+} from "@/lib/automotive-service-catalogue";
+
+function serviceCategoriesFor(vehicleType: AutomotiveVehicleType) {
+  const categories = new Map<string, string[]>();
+  standardServiceTemplates
+    .filter((service) => service.vehicleType === vehicleType)
+    .forEach((service) => categories.set(
+      service.category,
+      [...(categories.get(service.category) ?? []), service.name],
+    ));
+  return [...categories.entries()].map(([name, services]) => ({ name, services }));
+}
 
 function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
@@ -133,8 +149,28 @@ export default function HomeDiscoveryClient({
     </section>
 
     <section className="home-specialty-strip" id="services">
-      <p>{t("home.services.kicker")}</p><h2>{t("home.services.title")}</h2>
-      <div>{categories.map((item) => <button type="button" key={item} onClick={() => { setCategory(item); document.getElementById("featured-workshops")?.scrollIntoView({ behavior: "smooth" }); }}>{item}</button>)}</div>
+      <header>
+        <p>{t("home.services.kicker")}</p>
+        <h2>{t("home.services.title")}</h2>
+        <span>{t("home.services.description")}</span>
+      </header>
+      <div className="home-service-directory">
+        {vehicleTypes.map((vehicleType) => {
+          const vehicleServices = standardServiceTemplates.filter((service) => service.vehicleType === vehicleType);
+          return <section className="home-vehicle-services" key={vehicleType} aria-labelledby={`services-${vehicleType}`}>
+            <header>
+              <h3 id={`services-${vehicleType}`}>{t(`serviceCatalogue.vehicleType.${vehicleType}` as TranslationKey)}</h3>
+              <span>{vehicleServices.length} {t("home.services.options")}</span>
+            </header>
+            <div>
+              {serviceCategoriesFor(vehicleType).map((group) => <article key={group.name}>
+                <h4>{group.name}</h4>
+                <ul>{group.services.map((service) => <li key={service}>{service}</li>)}</ul>
+              </article>)}
+            </div>
+          </section>;
+        })}
+      </div>
     </section>
 
     <section className="provider-offer">
@@ -143,8 +179,8 @@ export default function HomeDiscoveryClient({
     </section>
 
     <footer className="home-footer" id="legal">
-      <div><strong>{t("home.footer.customers")}</strong><Link href="/workshops">{t("home.nav.findWorkshop")}</Link><Link href="/garage">{t("home.nav.garage")}</Link><Link href="/customer/login">{t("home.footer.signIn")}</Link></div>
-      <div><strong>{t("home.footer.providers")}</strong><Link href="/register/workshop-manager">{t("home.footer.join")}</Link><Link href="/service-organisation/login">{t("home.footer.providerSignIn")}</Link><span>€35/{t("home.offer.month")} · {t("home.offer.sms")}</span></div>
+      <div><strong>{t("home.footer.customers")}</strong><Link href="/workshops">{t("home.nav.findWorkshop")}</Link><Link href="/garage">{t("home.nav.garage")}</Link><Link href="/guides/customers">{t("home.footer.customerGuide")}</Link><Link href="/customer/login">{t("home.footer.signIn")}</Link></div>
+      <div><strong>{t("home.footer.providers")}</strong><Link href="/register/workshop-manager">{t("home.footer.join")}</Link><Link href="/guides/service-providers">{t("home.footer.providerGuide")}</Link><Link href="/service-organisation/login">{t("home.footer.providerSignIn")}</Link><span>€35/{t("home.offer.month")} · {t("home.offer.sms")}</span></div>
       <div><strong>{t("home.footer.legal")}</strong><a href="#legal">{t("home.footer.terms")}</a><a href="#legal">{t("home.footer.privacy")}</a><a href="#legal">{t("home.footer.cookies")}</a></div>
       <div><strong>{t("home.footer.contact")}</strong><a href={`mailto:${brand.supportEmail}`}>{t("home.footer.support")}</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>{t("home.footer.report")}</a></div>
       <p>© {new Date().getFullYear()} {brand.name}</p>
