@@ -1066,6 +1066,8 @@
   "home.services.title": "Programează îngrijirea necesară vehiculului",
   "home.services.description": "Explorează toate serviciile din catalogul Pitster, organizate după tipul vehiculului și categoria serviciului.",
   "home.services.options": "opțiuni de service",
+  "home.services.vehicleTypes": "Tipuri de vehicule",
+  "serviceCatalogue.vehicleType.electric_vehicle": "Vehicule electrice (EV)",
   "home.offer.kicker": "Pentru ateliere",
   "home.offer.title": "Primește și gestionează solicitările clienților",
   "home.offer.description": "Un abonament simplu cu spațiu de rezervări și notificări SMS incluse.",

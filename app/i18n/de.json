@@ -1066,6 +1066,8 @@
   "home.services.title": "Buchen Sie die Pflege, die Ihr Fahrzeug braucht",
   "home.services.description": "Entdecken Sie alle Leistungen im Pitster-Katalog, geordnet nach Fahrzeugtyp und Leistungskategorie.",
   "home.services.options": "Leistungen",
+  "home.services.vehicleTypes": "Fahrzeugtypen",
+  "serviceCatalogue.vehicleType.electric_vehicle": "Elektrofahrzeuge (EVs)",
   "home.offer.kicker": "Für Werkstätten",
   "home.offer.title": "Kundenanfragen empfangen und verwalten",
   "home.offer.description": "Ein einfacher Tarif mit Buchungsbereich und SMS-Benachrichtigungen.",

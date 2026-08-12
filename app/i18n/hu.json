@@ -1066,6 +1066,8 @@
   "home.services.title": "Foglalja le a járművének szükséges gondoskodást",
   "home.services.description": "Fedezze fel a Pitster katalógus összes szolgáltatását járműtípus és szolgáltatási kategória szerint.",
   "home.services.options": "szolgáltatási lehetőség",
+  "home.services.vehicleTypes": "Járműtípusok",
+  "serviceCatalogue.vehicleType.electric_vehicle": "Elektromos járművek (EV-k)",
   "home.offer.kicker": "Műhelyeknek",
   "home.offer.title": "Ügyféligénylések fogadása és kezelése",
   "home.offer.description": "Egyszerű csomag foglalási munkaterülettel és SMS-értesítésekkel.",

@@ -1066,6 +1066,8 @@
   "home.services.title": "Book the care your vehicle needs",
   "home.services.description": "Explore every service option in the Pitster catalogue, organised by vehicle type and service category.",
   "home.services.options": "service options",
+  "home.services.vehicleTypes": "Vehicle types",
+  "serviceCatalogue.vehicleType.electric_vehicle": "Electric vehicles (EVs)",
   "home.offer.kicker": "For workshops",
   "home.offer.title": "Receive and manage customer booking requests",
   "home.offer.description": "One simple plan with the booking workspace and customer SMS notifications included.",

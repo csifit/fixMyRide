@@ -15,10 +15,33 @@ import {
   type AutomotiveVehicleType,
 } from "@/lib/automotive-service-catalogue";
 
-function serviceCategoriesFor(vehicleType: AutomotiveVehicleType) {
+type HomeVehicleType = AutomotiveVehicleType | "electric_vehicle";
+type HomeServiceCategory = { name: string; services: string[] };
+
+const electricVehicleServiceCategories: HomeServiceCategory[] = [
+  { name: "Diagnostics and safety", services: ["Electric vehicle diagnosis", "Warning light or fault-code diagnostics", "Vehicle will not start or enter drive mode", "High-voltage system safety inspection", "Electrical insulation fault diagnosis", "Pre-purchase EV inspection", "Accident or water-damage inspection", "I'm not sure what's wrong"] },
+  { name: "Routine servicing", services: ["EV manufacturer-scheduled service", "EV interim service", "EV full service", "Brake-fluid change", "Cabin-filter replacement", "Windscreen washer and wiper service", "General mechanical inspection"] },
+  { name: "High-voltage battery", services: ["High-voltage battery health and state-of-health check", "Reduced-range diagnosis", "Battery-management-system diagnosis", "Battery cell or module diagnosis", "High-voltage battery balancing", "High-voltage battery repair", "High-voltage battery replacement", "Battery enclosure and seal inspection"] },
+  { name: "Charging system", services: ["AC charging fault diagnosis", "DC rapid-charging fault diagnosis", "Charging-port inspection or repair", "Charging-port replacement", "On-board charger diagnosis or replacement", "Charging cable test or replacement", "Charge-lock actuator repair", "12-volt battery test or replacement"] },
+  { name: "Thermal management and climate", services: ["EV cooling-system diagnosis", "High-voltage battery cooling service", "EV coolant change", "Coolant pump or valve replacement", "Heat-pump diagnosis or repair", "Air-conditioning inspection or recharge", "Cabin heating fault diagnosis"] },
+  { name: "Electric drive system", services: ["Electric drive-motor diagnosis or repair", "Inverter diagnosis or replacement", "Power-electronics diagnosis", "Reduction gearbox service or repair", "Drive-unit noise or vibration diagnosis", "Driveshaft or CV-joint replacement"] },
+  { name: "Brakes, steering, and suspension", services: ["Brake inspection", "Brake-pad replacement", "Brake-disc replacement", "Regenerative-braking diagnosis", "Suspension inspection or repair", "Steering inspection or repair", "Wheel-bearing replacement"] },
+  { name: "EV tyres and wheels", services: ["EV-rated tyre fitting", "Seasonal tyre change", "Puncture repair", "Wheel balancing", "Wheel alignment", "Tyre rotation", "TPMS diagnosis or sensor replacement"] },
+  { name: "Software and low-voltage electronics", services: ["Vehicle software and firmware update", "Infotainment or connectivity diagnosis", "Driver-assistance system diagnosis", "Camera or radar calibration", "Low-voltage wiring repair", "Lighting repair", "Key, access, or immobiliser diagnosis"] },
+];
+
+const homeVehicleTypes: HomeVehicleType[] = [
+  "car_van",
+  "electric_vehicle",
+  ...vehicleTypes.filter((vehicleType) => vehicleType !== "car_van"),
+];
+
+function serviceCategoriesFor(vehicleType: HomeVehicleType): HomeServiceCategory[] {
+  if (vehicleType === "electric_vehicle") return electricVehicleServiceCategories;
   const categories = new Map<string, string[]>();
   standardServiceTemplates
     .filter((service) => service.vehicleType === vehicleType)
+    .filter((service) => service.category !== "Electric and hybrid vehicles")
     .forEach((service) => categories.set(
       service.category,
       [...(categories.get(service.category) ?? []), service.name],
@@ -47,6 +70,7 @@ export default function HomeDiscoveryClient({
   const [locationText, setLocationText] = useState("");
   const [locationSelection, setLocationSelection] = useState<GoogleAddressSelection | null>(null);
   const [preferredDate, setPreferredDate] = useState(date);
+  const [activeServiceVehicle, setActiveServiceVehicle] = useState<HomeVehicleType>("car_van");
   const categories = useMemo(
     () => [...new Set(workshops.flatMap((workshop) => workshop.serviceCategories))].sort(),
     [workshops],
@@ -155,15 +179,51 @@ export default function HomeDiscoveryClient({
         <span>{t("home.services.description")}</span>
       </header>
       <div className="home-service-directory">
-        {vehicleTypes.map((vehicleType) => {
-          const vehicleServices = standardServiceTemplates.filter((service) => service.vehicleType === vehicleType);
-          return <section className="home-vehicle-services" key={vehicleType} aria-labelledby={`services-${vehicleType}`}>
+        <div className="home-service-tabs" role="tablist" aria-label={t("home.services.vehicleTypes")} aria-orientation="vertical">
+          <strong>{t("home.services.vehicleTypes")}</strong>
+          {homeVehicleTypes.map((vehicleType, index) => <button
+            type="button"
+            role="tab"
+            id={`service-tab-${vehicleType}`}
+            aria-controls={`service-panel-${vehicleType}`}
+            aria-selected={activeServiceVehicle === vehicleType}
+            tabIndex={activeServiceVehicle === vehicleType ? 0 : -1}
+            key={vehicleType}
+            onClick={() => setActiveServiceVehicle(vehicleType)}
+            onKeyDown={(event) => {
+              if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+              event.preventDefault();
+              const nextIndex = event.key === "Home"
+                ? 0
+                : event.key === "End"
+                  ? homeVehicleTypes.length - 1
+                  : (index + (event.key === "ArrowDown" ? 1 : -1) + homeVehicleTypes.length) % homeVehicleTypes.length;
+              const nextVehicle = homeVehicleTypes[nextIndex];
+              setActiveServiceVehicle(nextVehicle);
+              document.getElementById(`service-tab-${nextVehicle}`)?.focus();
+            }}
+          >
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            {t(`serviceCatalogue.vehicleType.${vehicleType}` as TranslationKey)}
+          </button>)}
+        </div>
+        {homeVehicleTypes.map((vehicleType) => {
+          const groups = serviceCategoriesFor(vehicleType);
+          const serviceCount = groups.reduce((total, group) => total + group.services.length, 0);
+          return <section
+            className="home-vehicle-services"
+            id={`service-panel-${vehicleType}`}
+            role="tabpanel"
+            aria-labelledby={`service-tab-${vehicleType}`}
+            hidden={activeServiceVehicle !== vehicleType}
+            key={vehicleType}
+          >
             <header>
-              <h3 id={`services-${vehicleType}`}>{t(`serviceCatalogue.vehicleType.${vehicleType}` as TranslationKey)}</h3>
-              <span>{vehicleServices.length} {t("home.services.options")}</span>
+              <h3>{t(`serviceCatalogue.vehicleType.${vehicleType}` as TranslationKey)}</h3>
+              <span>{serviceCount} {t("home.services.options")}</span>
             </header>
             <div>
-              {serviceCategoriesFor(vehicleType).map((group) => <article key={group.name}>
+              {groups.map((group) => <article key={group.name}>
                 <h4>{group.name}</h4>
                 <ul>{group.services.map((service) => <li key={service}>{service}</li>)}</ul>
               </article>)}
