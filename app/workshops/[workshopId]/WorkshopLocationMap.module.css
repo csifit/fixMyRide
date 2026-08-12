@@ -1,0 +1,80 @@
+.card {
+  display: grid;
+  gap: 13px;
+  padding: 13px;
+  border: 1px solid #d7e3e0;
+  border-radius: 13px;
+  background: #fff;
+}
+
+.heading {
+  display: grid;
+  gap: 5px;
+}
+
+.heading h2,
+.heading p {
+  margin: 0;
+}
+
+.heading h2 {
+  font: 600 21px Georgia, serif;
+}
+
+.heading p {
+  color: #637873;
+  font-size: 10px;
+  line-height: 1.618;
+}
+
+.map {
+  position: relative;
+  aspect-ratio: 1.618 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e2efec, #f2f7f6);
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 21px;
+  color: #526e68;
+  text-align: center;
+}
+
+.pin {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 8px;
+  background: #006e6e;
+  box-shadow: 0 8px 21px #123e3540;
+  color: #fff;
+  font-weight: 900;
+  transform: rotate(-45deg);
+}
+
+.pin span {
+  transform: rotate(45deg);
+}
+
+.directions {
+  display: block;
+  padding: 10px 13px;
+  border-radius: 8px;
+  background: #e6f4f4;
+  color: #006e6e;
+  font-size: 9px;
+  font-weight: 900;
+  text-align: center;
+}

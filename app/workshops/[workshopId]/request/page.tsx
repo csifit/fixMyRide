@@ -1,5 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { getPublicWorkshop, loadPublicWorkshopBookingRules, loadPublicWorkshopServices } from "@/lib/dal/public-workshops";
+import { loadPublicWorkshopClaim } from "@/lib/dal/workshop-claims";
 import ServiceRequestFlow from "./ServiceRequestFlow";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +13,8 @@ export default async function ServiceRequestPage({ params, searchParams }: {
   const query = await searchParams;
   const workshop = await getPublicWorkshop(workshopId);
   if (!workshop) notFound();
+  const claim = await loadPublicWorkshopClaim(workshop.id);
+  if (claim && claim.status !== "claimed") redirect(`/workshops/${workshop.slug}`);
   if (workshopId !== workshop.slug) {
     const canonicalQuery = new URLSearchParams();
     if (query.service) canonicalQuery.set("service", query.service);

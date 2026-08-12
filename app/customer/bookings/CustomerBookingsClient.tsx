@@ -18,6 +18,30 @@ function money(language: Language, cents: number, currency: string) {
   return new Intl.NumberFormat(locales[language], { style: "currency", currency }).format(cents / 100);
 }
 
+const lifecycleStages = [
+  "customerBookings.lifecycle.requested",
+  "customerBookings.lifecycle.confirmed",
+  "customerBookings.lifecycle.diagnosis",
+  "customerBookings.lifecycle.approval",
+  "customerBookings.lifecycle.repair",
+  "customerBookings.lifecycle.collection",
+  "customerBookings.lifecycle.complete",
+] as const satisfies readonly TranslationKey[];
+
+function RepairLifecycleOverview({ status, t }: { status: CustomerBooking["status"]; t: Translate }) {
+  const position: Partial<Record<CustomerBooking["status"], number>> = {
+    requested: 0, confirmed: 1, checked_in: 1, diagnosing: 2,
+    awaiting_approval: 3, in_service: 4, ready_for_collection: 5, completed: 6,
+  };
+  const current = position[status] ?? -1;
+  const closedEarly = ["declined", "cancelled", "no_show"].includes(status);
+  return <section className={`customer-lifecycle-overview${closedEarly ? " lifecycle-closed" : ""}`} aria-label={t("customerBookings.lifecycle.title")}>
+    <header><div><h3>{t("customerBookings.lifecycle.title")}</h3><p>{t("customerBookings.lifecycle.description")}</p></div><span>{t(`workshopBookings.status.${status}` as TranslationKey)}</span></header>
+    <ol>{lifecycleStages.map((label, index) => <li key={label} className={index < current ? "complete" : index === current ? "current" : "upcoming"}><b>{index < current ? "✓" : index + 1}</b><span>{t(label)}</span></li>)}</ol>
+    <small>{t("customerBookings.lifecycle.notifications")}</small>
+  </section>;
+}
+
 function EstimateDecisionForm({ estimateId, decision, t }: { estimateId: string; decision: "approve" | "decline"; t: Translate }) {
   const [state, action, pending] = useActionState(decideRepairEstimateAction, idle);
   return <form className={`customer-booking-action ${decision === "decline" ? "danger" : ""}`} action={action}>
@@ -67,6 +91,7 @@ function BookingCard({ booking, language, t }: { booking: CustomerBooking; langu
       <div><small>{booking.confirmedStart ? t("customerBookings.confirmedTime") : booking.proposedStart ? t("customerBookings.proposedTime") : t("customerBookings.requestedTime")}</small><DateValue value={primaryTime} language={language} /></div>
       <em>{t(`workshopBookings.status.${booking.status}` as TranslationKey)}</em>
     </header>
+    <RepairLifecycleOverview status={booking.status} t={t} />
     {hasProposal && <section className="customer-proposal">
       <div><p>{t("customerBookings.proposalEyebrow")}</p><h3>{t("customerBookings.proposalTitle")}</h3><DateValue value={booking.proposedStart} language={language} />{booking.proposalNote && <span>{booking.proposalNote}</span>}</div>
       <div><CustomerActionForm bookingId={booking.id} actionKind="accept_proposal" t={t} /><CustomerActionForm bookingId={booking.id} actionKind="decline_proposal" t={t} /></div>

@@ -19,6 +19,14 @@ export default function WorkshopClaimCard({ claim, notice, compact = false, owne
   const messageKey = notice && ["account_required", "unauthorized", "unavailable", "claimed"].includes(notice)
     ? `workshopClaim.notice.${notice}` as TranslationKey
     : null;
+  if (compact) return <section className="workshop-claim-card compact">
+    <span>{t("workshopClaim.kicker")}</span>
+    <h2>{t("workshopClaim.title")}</h2>
+    <p>{t("workshopClaim.description")}</p>
+    {messageKey && <p className={notice === "claimed" ? "note-success" : "note-error"}>{t(messageKey)}</p>}
+    <details><summary>{t("workshopClaim.continue")}</summary><ol><li>{t("workshopClaim.step.owner")}</li><li>{t("workshopClaim.step.details")}</li><li>{t("workshopClaim.step.payment")}</li></ol></details>
+    <form action={beginWorkshopClaimAction} className="workshop-claim-form"><input type="hidden" name="workshopId" value={claim.workshopId} />{!claim.serviceProviderId && ownerProviders.length > 0 && <label>{t("workshopClaim.chooseOrganisation")}<select name="providerId" required defaultValue=""><option value="" disabled>{t("workshopClaim.chooseOrganisationPlaceholder")}</option>{ownerProviders.map((provider) => <option key={provider.id} value={provider.id}>{provider.displayName}</option>)}</select></label>}<button>{t(claim.status === "awaiting_payment" ? "workshopClaim.continue" : "workshopClaim.button")}</button></form>
+  </section>;
   return <section className={`workshop-claim-card${compact ? " compact" : ""}`}>
     <span>{t(claimed ? "workshopClaim.claimedKicker" : "workshopClaim.kicker")}</span>
     <h1>{claim.displayName}</h1>
