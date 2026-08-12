@@ -20,11 +20,13 @@ const navigation: Record<Role, { title: string; items: Item[] }> = {
     { href: "/workshop-manager/repairs", label: "Repair lifecycle", mark: "R" },
     { href: "/workshop-manager/workshops", label: "Workshops", mark: "W" },
     { href: "/workshop-manager/services", label: "Service catalogue", mark: "S" },
+    { href: "/workshop-manager/inventory", label: "Parts & consumables", mark: "I" },
   ] },
   service_organisation: { title: "Service organisation", items: [
     { href: "/service-organisation", label: "Overview", mark: "O" },
     { href: "/service-organisation/locations", label: "Locations", mark: "L" },
     { href: "/service-organisation/managers", label: "Workshop managers", mark: "M" },
+    { href: "/service-organisation/inventory", label: "Parts & consumables", mark: "I" },
     { href: "/service-organisation/billing", label: "Subscription & billing", mark: "$" },
   ] },
   workshop_staff: { title: "Workshop staff", items: [
