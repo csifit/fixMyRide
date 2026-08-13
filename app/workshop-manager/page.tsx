@@ -3,6 +3,7 @@ import { platformLogoutAction } from "@/app/authentication/actions";
 import { getWorkshopManagerAccess } from "@/lib/dal/platform-access";
 import { loadManagedServiceProviders } from "@/lib/dal/service-providers";
 import { loadMyWorkshopInventory } from "@/lib/dal/workshop-inventory";
+import { loadManagedQualityWorkspace } from "@/lib/dal/workshop-quality";
 import WorkshopManagerDashboard from "./WorkshopManagerDashboard";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +16,9 @@ export default async function WorkshopManagerPage() {
   if (providers.some((provider) => provider.membershipRole === "owner")) {
     redirect("/service-organisation");
   }
-  const inventories = await loadMyWorkshopInventory();
+  const [inventories, qualityWorkspace] = await Promise.all([
+    loadMyWorkshopInventory(), loadManagedQualityWorkspace(),
+  ]);
   const lowStockCount = inventories.flatMap((inventory) => inventory.items).filter((item) => item.quantity === 0 || (item.minimumQuantity > 0 && item.quantity <= item.minimumQuantity)).length;
-  return <WorkshopManagerDashboard displayName={access.manager.displayName} providers={providers} lowStockCount={lowStockCount} logoutAction={platformLogoutAction} />;
+  return <WorkshopManagerDashboard displayName={access.manager.displayName} providers={providers} lowStockCount={lowStockCount} dueReminderCount={qualityWorkspace.dueReminders.length} openQualityCaseCount={qualityWorkspace.cases.filter((item) => item.status === "open").length} logoutAction={platformLogoutAction} />;
 }

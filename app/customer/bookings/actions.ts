@@ -3,10 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
+import { dismissMyCustomerMaintenanceNotification } from "@/lib/dal/customer-maintenance";
 import { decideMyRepairEstimate, manageMyServiceBooking, submitMyServiceBookingFeedback } from "@/lib/dal/customer-bookings";
 
 export type CustomerBookingActionState = {
-  status: "idle" | "accepted" | "declined" | "cancelled" | "approved" | "estimate_declined" | "reviewed" | "invalid" | "unauthorized" | "unavailable";
+  status: "idle" | "accepted" | "declined" | "cancelled" | "approved" | "estimate_declined" | "reviewed" | "dismissed" | "invalid" | "unauthorized" | "unavailable";
 };
 
 const actionSchema = z.object({
@@ -86,4 +87,19 @@ export async function manageCustomerBookingAction(
   } catch (error) {
     return failure(error);
   }
+}
+
+const notificationSchema = z.object({ notificationId: z.uuid() });
+
+export async function dismissMaintenanceNotificationAction(
+  _state: CustomerBookingActionState,
+  formData: FormData,
+): Promise<CustomerBookingActionState> {
+  const parsed = notificationSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await dismissMyCustomerMaintenanceNotification(parsed.data.notificationId);
+    revalidatePath("/customer/bookings");
+    return { status: "dismissed" };
+  } catch (error) { return failure(error); }
 }

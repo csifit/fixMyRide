@@ -5,7 +5,8 @@ import { useActionState, useMemo, useState } from "react";
 import { formatDateTime, locales, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { CustomerBooking } from "@/lib/dal/customer-bookings";
-import { decideRepairEstimateAction, manageCustomerBookingAction, submitServiceFeedbackAction, type CustomerBookingActionState } from "./actions";
+import type { CustomerMaintenanceNotification } from "@/lib/dal/customer-maintenance";
+import { decideRepairEstimateAction, dismissMaintenanceNotificationAction, manageCustomerBookingAction, submitServiceFeedbackAction, type CustomerBookingActionState } from "./actions";
 
 type Translate = (key: TranslationKey) => string;
 const idle: CustomerBookingActionState = { status: "idle" };
@@ -86,6 +87,12 @@ function ServiceFeedbackForm({ booking, t }: { booking: CustomerBooking; t: Tran
   return <section className="customer-service-feedback"><header><div><p>{t("customerFeedback.eyebrow")}</p><h3>{t("customerFeedback.title")}</h3></div>{booking.feedback && <span>{t("customerFeedback.saved")}</span>}</header><form action={action}><input type="hidden" name="bookingId" value={booking.id} /><fieldset disabled={pending}><legend>{t("customerFeedback.rating")}</legend><div className="customer-rating-options">{[1, 2, 3, 4, 5].map((rating) => <label key={rating}><input type="radio" name="rating" value={rating} defaultChecked={(booking.feedback?.rating ?? 5) === rating} /><span>{rating} ★</span></label>)}</div><label>{t("customerFeedback.comment")}<textarea name="comment" rows={3} maxLength={1000} defaultValue={booking.feedback?.comment ?? ""} placeholder={t("customerFeedback.commentPlaceholder")} /></label></fieldset>{state.status !== "idle" && <p className={state.status === "reviewed" ? "note-success" : "note-error"}>{t(`customerFeedback.result.${state.status}` as TranslationKey)}</p>}<button disabled={pending}>{t(pending ? "customerFeedback.saving" : booking.feedback ? "customerFeedback.update" : "customerFeedback.submit")}</button></form></section>;
 }
 
+function MaintenanceToast({ notification, t }: { notification: CustomerMaintenanceNotification; t: Translate }) {
+  const [state, action, pending] = useActionState(dismissMaintenanceNotificationAction, idle);
+  if (state.status === "dismissed") return null;
+  return <aside className="customer-maintenance-toast" role="status"><div><p>{t("maintenanceToast.eyebrow")}</p><h2>{notification.title}</h2><span>{notification.message}</span><small>{notification.workshopName}</small></div><div><Link href={notification.bookingUrl}>{t("maintenanceToast.book")}</Link><form action={action}><input type="hidden" name="notificationId" value={notification.id} /><button disabled={pending} aria-label={t("maintenanceToast.dismiss")}>×</button></form></div></aside>;
+}
+
 function BookingCard({ booking, language, t }: { booking: CustomerBooking; language: Language; t: Translate }) {
   const hasProposal = Boolean(booking.proposedStart) && ["requested", "confirmed"].includes(booking.status);
   const primaryTime = booking.confirmedStart || booking.proposedStart || booking.preferredStart;
@@ -129,7 +136,7 @@ function BookingCard({ booking, language, t }: { booking: CustomerBooking; langu
   </article>;
 }
 
-export default function CustomerBookingsClient({ bookings, logoutAction }: { bookings: CustomerBooking[]; logoutAction: () => Promise<void> }) {
+export default function CustomerBookingsClient({ bookings, maintenanceNotifications, logoutAction }: { bookings: CustomerBooking[]; maintenanceNotifications: CustomerMaintenanceNotification[]; logoutAction: () => Promise<void> }) {
   const [language, setLanguage, ready] = useLanguage();
   const [filter, setFilter] = useState("all");
   const t = (key: TranslationKey) => translate(language, key);
@@ -139,6 +146,7 @@ export default function CustomerBookingsClient({ bookings, logoutAction }: { boo
     <header className="settings-topbar"><Link href="/garage">← {t("customerBookings.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
     <section className="settings-content customer-bookings-content">
       <p className="registration-kicker">{t("customerBookings.eyebrow")}</p><h1>{t("customerBookings.title")}</h1><p>{t("customerBookings.description")}</p>
+      {maintenanceNotifications.length > 0 && <div className="customer-maintenance-toasts">{maintenanceNotifications.map((notification) => <MaintenanceToast key={notification.id} notification={notification} t={t} />)}</div>}
       <div className="booking-inbox-toolbar"><strong>{visible.length} {t("customerBookings.visible")}</strong><label>{t("workshopBookings.filter")}<select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="all">{t("workshopBookings.filter.all")}</option><option value="open">{t("workshopBookings.filter.open")}</option><option value="requested">{t("workshopBookings.status.requested")}</option><option value="confirmed">{t("workshopBookings.status.confirmed")}</option><option value="awaiting_approval">{t("workshopBookings.status.awaiting_approval")}</option><option value="in_service">{t("workshopBookings.status.in_service")}</option><option value="ready_for_collection">{t("workshopBookings.status.ready_for_collection")}</option><option value="completed">{t("workshopBookings.status.completed")}</option><option value="cancelled">{t("workshopBookings.status.cancelled")}</option></select></label></div>
       <div className="customer-booking-list">{visible.map((booking) => <BookingCard key={booking.id} booking={booking} language={language} t={t} />)}{!visible.length && <div className="catalogue-empty"><h2>{t("customerBookings.emptyTitle")}</h2><p>{t("customerBookings.emptyDescription")}</p><Link className="organization-action" href="/workshops">{t("customerBookings.bookService")}</Link></div>}</div>
     </section>

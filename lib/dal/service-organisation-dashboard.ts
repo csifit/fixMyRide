@@ -62,6 +62,13 @@ export type ServiceOrganisationOperationalDashboard = {
   months: OrganisationMonthlyMetric[];
 };
 
+export type ServiceOrganisationQualityMetrics = {
+  openCases: number;
+  resolvedCases: number;
+  comebackRate: number;
+  locations: Array<{ workshopId: string; workshopName: string; openCases: number; totalCases: number }>;
+};
+
 function fail(error: { code?: string; status?: number }): never {
   throw new DataAccessError(classifyDatabaseError(error));
 }
@@ -74,4 +81,13 @@ export async function loadServiceOrganisationOperationalDashboard(providerId: st
   });
   if (error) fail(error);
   return data as ServiceOrganisationOperationalDashboard;
+}
+
+export async function loadServiceOrganisationQualityMetrics(providerId: string): Promise<ServiceOrganisationQualityMetrics> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_service_organisation_quality_metrics", {
+    requested_service_provider_id: providerId,
+  });
+  if (error) fail(error);
+  return data as ServiceOrganisationQualityMetrics;
 }
