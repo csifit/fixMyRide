@@ -3,10 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
-import { decideMyRepairEstimate, manageMyServiceBooking } from "@/lib/dal/customer-bookings";
+import { decideMyRepairEstimate, manageMyServiceBooking, submitMyServiceBookingFeedback } from "@/lib/dal/customer-bookings";
 
 export type CustomerBookingActionState = {
-  status: "idle" | "accepted" | "declined" | "cancelled" | "approved" | "estimate_declined" | "invalid" | "unauthorized" | "unavailable";
+  status: "idle" | "accepted" | "declined" | "cancelled" | "approved" | "estimate_declined" | "reviewed" | "invalid" | "unauthorized" | "unavailable";
 };
 
 const actionSchema = z.object({
@@ -32,6 +32,26 @@ const estimateDecisionSchema = z.object({
   decision: z.enum(["approve", "decline"]),
   note: z.string().trim().max(2000).transform((value) => value || null),
 });
+
+const feedbackSchema = z.object({
+  bookingId: z.uuid(),
+  rating: z.coerce.number().int().min(1).max(5),
+  comment: z.string().trim().max(1000).transform((value) => value || null),
+});
+
+export async function submitServiceFeedbackAction(
+  _state: CustomerBookingActionState,
+  formData: FormData,
+): Promise<CustomerBookingActionState> {
+  const parsed = feedbackSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await submitMyServiceBookingFeedback(parsed.data);
+    revalidatePath("/customer/bookings");
+    revalidatePath("/service-organisation");
+    return { status: "reviewed" };
+  } catch (error) { return failure(error); }
+}
 
 export async function decideRepairEstimateAction(
   _state: CustomerBookingActionState,

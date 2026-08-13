@@ -31,6 +31,7 @@ export type CustomerBooking = {
   canCancel: boolean;
   history: BookingHistoryItem[];
   estimate: RepairEstimate | null;
+  feedback: { rating: number; comment: string | null; updatedAt: string } | null;
 };
 
 export type ManageCustomerBookingInput = {
@@ -45,15 +46,22 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
   const supabase = await createClient();
-  const [bookingsResult, estimatesResult] = await Promise.all([
+  const [bookingsResult, estimatesResult, feedbackResult] = await Promise.all([
     supabase.rpc("get_my_service_booking_requests"),
     supabase.rpc("get_my_repair_estimates"),
+    supabase.rpc("get_my_service_booking_feedback"),
   ]);
   if (bookingsResult.error) fail(bookingsResult.error);
   if (estimatesResult.error) fail(estimatesResult.error);
+  if (feedbackResult.error) fail(feedbackResult.error);
   const estimates = new Map(
     ((estimatesResult.data ?? []) as Record<string, unknown>[])
       .map((row) => [row.booking_id as string, row.estimate as RepairEstimate]),
+  );
+  const feedback = new Map(
+    ((feedbackResult.data ?? []) as Record<string, unknown>[]).map((row) => [row.booking_id as string, {
+      rating: Number(row.rating), comment: row.comment as string | null, updatedAt: row.updated_at as string,
+    }]),
   );
 
   return ((bookingsResult.data ?? []) as Record<string, unknown>[]).map((row) => ({
@@ -82,7 +90,18 @@ export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
     canCancel: Boolean(row.can_cancel),
     history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
     estimate: estimates.get(row.booking_id as string) ?? null,
+    feedback: feedback.get(row.booking_id as string) ?? null,
   }));
+}
+
+export async function submitMyServiceBookingFeedback(input: { bookingId: string; rating: number; comment: string | null }) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("submit_my_service_booking_feedback", {
+    requested_booking_id: input.bookingId,
+    requested_rating: input.rating,
+    requested_comment: input.comment,
+  });
+  if (error) fail(error);
 }
 
 export async function manageMyServiceBooking(input: ManageCustomerBookingInput) {

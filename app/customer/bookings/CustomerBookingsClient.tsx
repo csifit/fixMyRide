@@ -5,7 +5,7 @@ import { useActionState, useMemo, useState } from "react";
 import { formatDateTime, locales, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { CustomerBooking } from "@/lib/dal/customer-bookings";
-import { decideRepairEstimateAction, manageCustomerBookingAction, type CustomerBookingActionState } from "./actions";
+import { decideRepairEstimateAction, manageCustomerBookingAction, submitServiceFeedbackAction, type CustomerBookingActionState } from "./actions";
 
 type Translate = (key: TranslationKey) => string;
 const idle: CustomerBookingActionState = { status: "idle" };
@@ -81,6 +81,11 @@ function CustomerActionForm({ bookingId, actionKind, t }: {
   </form>;
 }
 
+function ServiceFeedbackForm({ booking, t }: { booking: CustomerBooking; t: Translate }) {
+  const [state, action, pending] = useActionState(submitServiceFeedbackAction, idle);
+  return <section className="customer-service-feedback"><header><div><p>{t("customerFeedback.eyebrow")}</p><h3>{t("customerFeedback.title")}</h3></div>{booking.feedback && <span>{t("customerFeedback.saved")}</span>}</header><form action={action}><input type="hidden" name="bookingId" value={booking.id} /><fieldset disabled={pending}><legend>{t("customerFeedback.rating")}</legend><div className="customer-rating-options">{[1, 2, 3, 4, 5].map((rating) => <label key={rating}><input type="radio" name="rating" value={rating} defaultChecked={(booking.feedback?.rating ?? 5) === rating} /><span>{rating} ★</span></label>)}</div><label>{t("customerFeedback.comment")}<textarea name="comment" rows={3} maxLength={1000} defaultValue={booking.feedback?.comment ?? ""} placeholder={t("customerFeedback.commentPlaceholder")} /></label></fieldset>{state.status !== "idle" && <p className={state.status === "reviewed" ? "note-success" : "note-error"}>{t(`customerFeedback.result.${state.status}` as TranslationKey)}</p>}<button disabled={pending}>{t(pending ? "customerFeedback.saving" : booking.feedback ? "customerFeedback.update" : "customerFeedback.submit")}</button></form></section>;
+}
+
 function BookingCard({ booking, language, t }: { booking: CustomerBooking; language: Language; t: Translate }) {
   const hasProposal = Boolean(booking.proposedStart) && ["requested", "confirmed"].includes(booking.status);
   const primaryTime = booking.confirmedStart || booking.proposedStart || booking.preferredStart;
@@ -92,6 +97,7 @@ function BookingCard({ booking, language, t }: { booking: CustomerBooking; langu
       <em>{t(`workshopBookings.status.${booking.status}` as TranslationKey)}</em>
     </header>
     <RepairLifecycleOverview status={booking.status} t={t} />
+    {booking.status === "completed" && <ServiceFeedbackForm booking={booking} t={t} />}
     {hasProposal && <section className="customer-proposal">
       <div><p>{t("customerBookings.proposalEyebrow")}</p><h3>{t("customerBookings.proposalTitle")}</h3><DateValue value={booking.proposedStart} language={language} />{booking.proposalNote && <span>{booking.proposalNote}</span>}</div>
       <div><CustomerActionForm bookingId={booking.id} actionKind="accept_proposal" t={t} /><CustomerActionForm bookingId={booking.id} actionKind="decline_proposal" t={t} /></div>
