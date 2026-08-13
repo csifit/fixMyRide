@@ -23,7 +23,7 @@ const sections: GuideSection[] = [
     title: "Join and sign in",
     introduction: "Service organisation ownership and workshop management are deliberately separate roles.",
     steps: [
-      { title: "Accept the admin invitation", description: "The organisation owner uses the latest invitation sent by the platform administrator, sets a password, and signs in as the service organisation." },
+      { title: "Register a Service organisation account", description: "Create your account", link: { href: "/register/workshop-manager", label: "here" } },
       { title: "Use the correct workspace", description: "Organisation owners manage locations, managers, and organisation-level billing. Workshop managers operate the location assigned to them." },
       { title: "Complete organisation details", description: "Keep the organisation identity and contact details current so locations and billing remain clearly connected." },
     ],

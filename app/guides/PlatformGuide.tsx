@@ -7,7 +7,7 @@ export type GuideSection = {
   title: string;
   introduction: string;
   benefits?: { title: string; description: string }[];
-  steps?: { title: string; description: string }[];
+  steps?: { title: string; description: string; link?: { href: string; label: string } }[];
   note?: string;
 };
 
@@ -58,7 +58,7 @@ export default function PlatformGuide({
           </div>}
           {section.steps && <ol className="platform-guide-steps">
             {section.steps.map((step) => <li key={step.title}>
-              <div><strong>{step.title}</strong><p>{step.description}</p></div>
+              <div><strong>{step.title}</strong><p>{step.description}{step.link && <> <Link href={step.link.href}>{step.link.label}</Link></>}</p></div>
             </li>)}
           </ol>}
           {section.note && <p className="platform-guide-note">{section.note}</p>}
