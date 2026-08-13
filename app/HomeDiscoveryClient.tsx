@@ -234,8 +234,22 @@ export default function HomeDiscoveryClient({
     </section>
 
     <section className="provider-offer">
-      <div><p>{t("home.offer.kicker")}</p><h2>{t("home.offer.title")}</h2><span>{t("home.offer.description")}</span></div>
-      <div><strong>€35</strong><span>{t("home.offer.month")}</span><b>{t("home.offer.sms")}</b><Link href="/register/workshop-manager">{t("home.offer.join")}</Link></div>
+      <div className="provider-offer-pitch">
+        <p>{t("home.offer.kicker")}</p><h2>{t("home.offer.title")}</h2><span>{t("home.offer.description")}</span>
+        <ul className="provider-offer-highlights"><li>{t("home.offer.highlight.bookings")}</li><li>{t("home.offer.highlight.operations")}</li><li>{t("home.offer.highlight.growth")}</li></ul>
+        <details className="provider-benefits">
+          <summary><span>{t("home.offer.benefits.open")}</span><small>{t("home.offer.benefits.hint")}</small></summary>
+          <div>
+            <section><h3>{t("home.offer.benefits.organisations")}</h3><ul>
+              <li>{t("home.offer.benefit.organisationOverview")}</li><li>{t("home.offer.benefit.locationComparison")}</li><li>{t("home.offer.benefit.consolidatedBilling")}</li><li>{t("home.offer.benefit.qualityControl")}</li><li>{t("home.offer.benefit.managerControl")}</li><li>{t("home.offer.benefit.reporting")}</li>
+            </ul></section>
+            <section><h3>{t("home.offer.benefits.workshops")}</h3><ul>
+              <li>{t("home.offer.benefit.onlineBookings")}</li><li>{t("home.offer.benefit.calendar")}</li><li>{t("home.offer.benefit.repairLifecycle")}</li><li>{t("home.offer.benefit.inventory")}</li><li>{t("home.offer.benefit.serviceHistory")}</li><li>{t("home.offer.benefit.loyalty")}</li>
+            </ul></section>
+          </div>
+        </details>
+      </div>
+      <aside className="provider-offer-price"><strong>€35</strong><span>{t("home.offer.month")}</span><b>{t("home.offer.sms")}</b><Link href="/register/workshop-manager">{t("home.offer.join")}</Link><Link className="provider-offer-guide" href="/guides/service-providers">{t("home.offer.learnMore")}</Link></aside>
     </section>
 
     <footer className="home-footer" id="legal">
