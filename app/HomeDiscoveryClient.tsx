@@ -8,6 +8,7 @@ import { translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import { brand } from "@/lib/brand";
 import { distanceInKilometers } from "@/lib/geo";
+import PublicProviderMenu from "./PublicProviderMenu";
 import type { PublicWorkshop } from "@/lib/dal/public-workshops";
 import {
   standardServiceTemplates,
@@ -95,8 +96,15 @@ export default function HomeDiscoveryClient({
       <nav>
         <Link href="/workshops">{t("home.nav.findWorkshop")}</Link>
         <a href="#services">{t("home.nav.services")}</a>
-        <Link href="/garage">{t("home.nav.garage")}</Link>
-        <Link href="/service-organisation/login">{t("home.nav.providers")}</Link>
+        <Link href="/customer/login">{t("home.nav.garage")}</Link>
+        <PublicProviderMenu labels={{
+          menu: t("home.nav.providers"),
+          serviceOrganisation: t("home.nav.serviceOrganisationAccess"),
+          workshop: t("home.nav.workshopLogin"),
+          signIn: t("home.nav.signIn"),
+          register: t("home.nav.register"),
+          invitationOnly: t("home.nav.invitationOnly"),
+        }} />
       </nav>
       <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label="Language">
         <option value="en">EN</option><option value="de">DE</option>
@@ -253,10 +261,10 @@ export default function HomeDiscoveryClient({
     </section>
 
     <footer className="home-footer" id="legal">
-      <div><strong>{t("home.footer.customers")}</strong><Link href="/workshops">{t("home.nav.findWorkshop")}</Link><Link href="/garage">{t("home.nav.garage")}</Link><Link href="/guides/customers">{t("home.footer.customerGuide")}</Link><Link href="/customer/login">{t("home.footer.signIn")}</Link></div>
+      <div><strong>{t("home.footer.customers")}</strong><Link href="/workshops">{t("home.nav.findWorkshop")}</Link><Link href="/customer/login">{t("home.nav.garage")}</Link><Link href="/guides/customers">{t("home.footer.customerGuide")}</Link><Link href="/customer/login">{t("home.footer.signIn")}</Link></div>
       <div><strong>{t("home.footer.providers")}</strong><Link href="/register/workshop-manager">{t("home.footer.join")}</Link><Link href="/guides/service-providers">{t("home.footer.providerGuide")}</Link><Link href="/service-organisation/login">{t("home.footer.providerSignIn")}</Link><span>€35/{t("home.offer.month")} · {t("home.offer.sms")}</span></div>
       <div><strong>{t("home.footer.legal")}</strong><a href="#legal">{t("home.footer.terms")}</a><a href="#legal">{t("home.footer.privacy")}</a><a href="#legal">{t("home.footer.cookies")}</a></div>
-      <div><strong>{t("home.footer.contact")}</strong><a href={`mailto:${brand.supportEmail}`}>{t("home.footer.support")}</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>{t("home.footer.report")}</a></div>
+      <div><strong>{t("home.footer.contact")}</strong><Link href="/faq">{t("home.footer.faq")}</Link><a href={`mailto:${brand.supportEmail}`}>{t("home.footer.support")}</a><a href={`mailto:${brand.supportEmail}?subject=${encodeURIComponent(`${brand.name} problem report`)}`}>{t("home.footer.report")}</a></div>
       <p>© {new Date().getFullYear()} {brand.name}</p>
     </footer>
   </main>;
