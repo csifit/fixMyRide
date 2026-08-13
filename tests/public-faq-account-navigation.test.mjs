@@ -5,8 +5,9 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 
-const [faq, home, header, providerMenu, login, english, sitemap] = await Promise.all([
+const [faq, faqClient, home, header, providerMenu, login, english, sitemap] = await Promise.all([
   read("app/faq/page.tsx"),
+  read("app/faq/FaqClient.tsx"),
   read("app/HomeDiscoveryClient.tsx"),
   read("app/PublicSiteHeader.tsx"),
   read("app/PublicProviderMenu.tsx"),
@@ -16,12 +17,15 @@ const [faq, home, header, providerMenu, login, english, sitemap] = await Promise
 ]);
 
 test("the public FAQ explains provider roles and common platform questions", () => {
-  assert.match(faq, /difference between a Service Organisation and a Workshop account/);
-  assert.match(faq, /Service Organisation sends an invitation to the manager’s email address/);
-  assert.match(faq, /invitation-only/);
-  assert.match(faq, /When does billing begin/);
-  assert.match(faq, /What happens if an organisation payment fails/);
-  assert.match(faq, /mailto:\$\{brand\.supportEmail\}/);
+  const translations = JSON.parse(english);
+  assert.match(faq, /<FaqClient \/>/);
+  assert.match(faqClient, /const \[language\] = useLanguage\(\)/);
+  assert.match(faqClient, /faq\.q\$\{number\}\.question/);
+  assert.match(faqClient, /mailto:\$\{brand\.supportEmail\}/);
+  assert.match(translations["faq.q1.question"], /difference between a Service Organisation and a Workshop account/);
+  assert.match(translations["faq.q2.answer"], /Service Organisation sends an invitation to the manager’s email address/);
+  assert.match(translations["faq.q6.question"], /When does billing begin/);
+  assert.match(translations["faq.q7.question"], /What happens if an organisation payment fails/);
 });
 
 test("the footer links the FAQ from its Contact column", () => {

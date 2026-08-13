@@ -24,3 +24,10 @@ test("workshop pitch follows the project's golden-ratio responsive layout", () =
   assert.match(styles, /\.provider-benefits>div[^\{]+\{[^}]+1\.618fr/i);
   assert.match(styles, /@media \(max-width:600px\)[^\{]*\{[\s\S]*?\.provider-benefits>div[^\{]*\{[^}]*grid-template-columns:1fr/i);
 });
+
+test("workshop pitch uses readable regular white text and the footer omits price messaging", () => {
+  assert.match(styles, /\.provider-offer-highlights li \{[^}]*color:#fff;[^}]*font-size:12px;[^}]*font-weight:400;/i);
+  assert.match(styles, /\.provider-benefits summary span \{[^}]*color:#fff;[^}]*font-size:15px;[^}]*font-weight:400;/i);
+  assert.match(styles, /\.provider-benefits summary small \{[^}]*color:#fff;[^}]*font-size:11px;[^}]*font-weight:400;/i);
+  assert.doesNotMatch(home, /<span>€35\/\{t\("home\.offer\.month"\)\} · \{t\("home\.offer\.sms"\)\}<\/span>/);
+});
