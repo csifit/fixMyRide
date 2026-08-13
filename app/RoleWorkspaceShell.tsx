@@ -25,7 +25,11 @@ const navigation: Record<Role, { title: string; items: Item[] }> = {
   ] },
   service_organisation: { title: "Service organisation", items: [
     { href: "/service-organisation", label: "Overview", mark: "O" },
+    { href: "/service-organisation/requests", label: "Calendar & requests", mark: "C" },
+    { href: "/service-organisation/repairs", label: "Repair lifecycle", mark: "R" },
+    { href: "/service-organisation/quality", label: "Quality & reminders", mark: "Q" },
     { href: "/service-organisation/locations", label: "Locations", mark: "L" },
+    { href: "/service-organisation/services", label: "Service catalogue", mark: "S" },
     { href: "/service-organisation/managers", label: "Workshop managers", mark: "M" },
     { href: "/service-organisation/inventory", label: "Parts & consumables", mark: "I" },
     { href: "/service-organisation/billing", label: "Subscription & billing", mark: "$" },

@@ -22,7 +22,7 @@ function failure(error: unknown): QualityActionState {
   }
   return { status: "unavailable" };
 }
-function refresh() { revalidatePath("/workshop-manager/quality"); revalidatePath("/service-organisation"); revalidatePath("/customer/bookings"); }
+function refresh() { revalidatePath("/workshop-manager/quality"); revalidatePath("/service-organisation/quality"); revalidatePath("/service-organisation"); revalidatePath("/customer/bookings"); }
 
 export async function saveJobWarrantyAction(_state: QualityActionState, formData: FormData): Promise<QualityActionState> {
   const parsed = warrantySchema.safeParse(Object.fromEntries(formData));
@@ -66,4 +66,3 @@ export async function maintenanceOutreachAction(_state: QualityActionState, form
     refresh(); return { status: parsed.data.channel === "in_app" ? "sent" : "saved" };
   } catch (error) { return failure(error); }
 }
-

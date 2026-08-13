@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/app/WorkspaceLink";
 import { useActionState, useMemo, useState } from "react";
 import { formatDateTime, locales, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";

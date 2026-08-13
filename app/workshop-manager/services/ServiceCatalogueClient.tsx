@@ -2,7 +2,7 @@
 
 // Canonical workshop-manager catalogue UI.
 
-import Link from "next/link";
+import Link from "@/app/WorkspaceLink";
 import { useActionState, useState } from "react";
 import { translate, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";

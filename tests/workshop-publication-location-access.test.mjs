@@ -5,6 +5,7 @@ import test from "node:test";
 const root = new URL("../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const migration = await read("supabase/migrations/202608110043_workshop_publication_location_access.sql");
+const ownerAccessMigration = await read("supabase/migrations/202608130059_service_organisation_operational_access.sql");
 const home = await read("app/HomeDiscoveryClient.tsx");
 const map = await read("app/PublicWorkshopMap.tsx");
 const loader = await read("lib/google-maps-loader.ts");
@@ -27,13 +28,15 @@ test("map publication remains independent from accepting online bookings", () =>
   assert.match(migration, /create_public_service_booking_request[\s\S]+workshop\.accepts_booking_requests/);
 });
 
-test("workshop operations require an active assignment to the exact location", () => {
+test("workshop operations require either organisation ownership or an exact active assignment", () => {
   assert.match(migration, /create function private\.current_workshop_manager_id/);
   assert.match(migration, /assignment\.workshop_id = workshop\.id/);
   assert.match(migration, /assignment\.starts_on <= current_date/);
   assert.match(migration, /membership\.service_provider_id = workshop\.service_provider_id/);
   assert.match(migration, /manager\.auth_user_id = \(select auth\.uid\(\)\)/);
   assert.match(migration, /can_manage_automotive_workshop[\s\S]+current_workshop_manager_id/);
+  assert.match(ownerAccessMigration, /membership\.membership_role = 'owner'/);
+  assert.match(ownerAccessMigration, /membership\.membership_role = 'manager'[\s\S]+assignment\.id is not null/);
 });
 
 test("booking and repair mutation RPCs resolve authorization from the booking location", () => {

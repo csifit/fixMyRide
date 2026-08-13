@@ -64,6 +64,7 @@ function failure(error: unknown): ServiceCatalogueState {
 
 function refresh() {
   revalidatePath("/workshop-manager/services");
+  revalidatePath("/service-organisation/services");
   revalidatePath("/workshops");
   revalidatePath("/");
 }

@@ -90,6 +90,8 @@ export async function createManualAppointmentAction(
     await dispatchDueServiceBookingNotifications(bookingId).catch(() => undefined);
     revalidatePath("/workshop-manager/requests");
     revalidatePath("/workshop-manager/repairs");
+    revalidatePath("/service-organisation/requests");
+    revalidatePath("/service-organisation/repairs");
     return { status: "created" };
   } catch (error) {
     const state = failure(error);
@@ -110,6 +112,7 @@ export async function saveBookingScheduleAction(input: z.infer<typeof bookingSch
     await updateManagedBookingSchedule(parsed.data);
     await dispatchDueServiceBookingNotifications(parsed.data.bookingId).catch(() => undefined);
     revalidatePath("/workshop-manager/requests");
+    revalidatePath("/service-organisation/requests");
     return { status: "saved" };
   } catch (error) { return scheduleFailure(error); }
 }
@@ -122,7 +125,7 @@ export async function createScheduleResourceAction(_state: ScheduleActionState, 
   const parsed = resourceSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   try {
-    await createWorkshopResource(parsed.data); revalidatePath("/workshop-manager/requests");
+    await createWorkshopResource(parsed.data); revalidatePath("/workshop-manager/requests"); revalidatePath("/service-organisation/requests");
     return { status: "created" };
   } catch (error) { return scheduleFailure(error); }
 }
@@ -132,7 +135,7 @@ export async function setScheduleResourceActiveAction(_state: ScheduleActionStat
   const parsed = activeSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   try {
-    await setWorkshopResourceActive(parsed.data.resourceId, parsed.data.active); revalidatePath("/workshop-manager/requests");
+    await setWorkshopResourceActive(parsed.data.resourceId, parsed.data.active); revalidatePath("/workshop-manager/requests"); revalidatePath("/service-organisation/requests");
     return { status: "saved" };
   } catch (error) { return scheduleFailure(error); }
 }
@@ -142,7 +145,7 @@ export async function addScheduleResourceAbsenceAction(_state: ScheduleActionSta
   const parsed = absenceSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success || new Date(parsed.data.endsAt) <= new Date(parsed.data.startsAt)) return { status: "invalid" };
   try {
-    await addWorkshopResourceAbsence(parsed.data); revalidatePath("/workshop-manager/requests");
+    await addWorkshopResourceAbsence(parsed.data); revalidatePath("/workshop-manager/requests"); revalidatePath("/service-organisation/requests");
     return { status: "created" };
   } catch (error) { return scheduleFailure(error); }
 }
@@ -151,7 +154,7 @@ export async function removeScheduleResourceAbsenceAction(_state: ScheduleAction
   const parsed = z.object({ absenceId: z.uuid() }).safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
   try {
-    await removeWorkshopResourceAbsence(parsed.data.absenceId); revalidatePath("/workshop-manager/requests");
+    await removeWorkshopResourceAbsence(parsed.data.absenceId); revalidatePath("/workshop-manager/requests"); revalidatePath("/service-organisation/requests");
     return { status: "removed" };
   } catch (error) { return scheduleFailure(error); }
 }
@@ -174,6 +177,7 @@ export async function manageWorkshopBookingAction(
       await dispatchDueServiceBookingNotifications(bookingId).catch(() => undefined);
     }
     revalidatePath("/workshop-manager/requests");
+    revalidatePath("/service-organisation/requests");
     revalidatePath("/garage");
     const status = action === "confirm" ? "confirmed"
       : action === "propose_time" ? "proposed"

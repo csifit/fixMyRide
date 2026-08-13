@@ -54,6 +54,7 @@ export async function manageRepairAction(_state: RepairActionState, formData: Fo
     await manageRepairWorkflow(parsed.data);
     await dispatchDueServiceBookingNotifications(parsed.data.bookingId).catch(() => undefined);
     revalidatePath("/workshop-manager/repairs");
+    revalidatePath("/service-organisation/repairs");
     revalidatePath("/customer/bookings");
     revalidatePath("/garage");
     return { status: "saved" };
@@ -88,6 +89,7 @@ export async function saveVehicleServiceRecordAction(_state: ServiceRecordAction
       invoiceTotalCents: parsed.data.invoiceTotal === null ? null : Math.round(parsed.data.invoiceTotal * 100),
     });
     revalidatePath("/workshop-manager/repairs");
+    revalidatePath("/service-organisation/repairs");
     revalidatePath("/garage");
     return { status: "saved" };
   } catch (error) { return failure(error); }

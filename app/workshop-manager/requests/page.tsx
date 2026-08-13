@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { platformLogoutAction } from "@/app/authentication/actions";
-import { getWorkshopManagerAccess } from "@/lib/dal/platform-access";
+import { getServiceOrganisationAccess, getWorkshopManagerAccess } from "@/lib/dal/platform-access";
 import { loadManagedWorkshopBookings } from "@/lib/dal/workshop-bookings";
 import { loadManagedWorkshopCatalogues } from "@/lib/dal/workshop-services";
 import { loadWorkshopScheduling } from "@/lib/dal/workshop-scheduling";
@@ -13,6 +13,7 @@ export default async function WorkshopBookingRequestsPage() {
   const access = await getWorkshopManagerAccess();
   if (access.state === "unauthenticated") redirect("/workshop-manager/login");
   if (access.state !== "active") redirect("/workshop-manager");
+  if ((await getServiceOrganisationAccess()).state === "active") redirect("/service-organisation/requests");
   const [bookings, catalogues, scheduling, operations] = await Promise.all([
     loadManagedWorkshopBookings(), loadManagedWorkshopCatalogues(), loadWorkshopScheduling(), loadMyWorkshopOperations(),
   ]);
