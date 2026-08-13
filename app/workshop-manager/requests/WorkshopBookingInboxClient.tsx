@@ -6,6 +6,8 @@ import { formatDateTime, translate, type Language, type TranslationKey } from "@
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { ManagedWorkshopBooking } from "@/lib/dal/workshop-bookings";
 import type { ManagedWorkshopCatalogue } from "@/lib/dal/workshop-services";
+import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-scheduling";
+import type { WorkshopOperations } from "@/lib/dal/workshop-operations";
 import { manageWorkshopBookingAction, type WorkshopBookingActionState } from "./actions";
 import WorkshopBookingCalendar from "./WorkshopBookingCalendar";
 
@@ -79,7 +81,7 @@ function BookingCard({ booking, language, t }: { booking: ManagedWorkshopBooking
   </details>;
 }
 
-export default function WorkshopBookingInboxClient({ bookings, catalogues, logoutAction }: { bookings: ManagedWorkshopBooking[]; catalogues: ManagedWorkshopCatalogue[]; logoutAction: () => Promise<void> }) {
+export default function WorkshopBookingInboxClient({ bookings, catalogues, schedules, assignments, operations, logoutAction }: { bookings: ManagedWorkshopBooking[]; catalogues: ManagedWorkshopCatalogue[]; schedules: WorkshopSchedule[]; assignments: Record<string, BookingResource[]>; operations: WorkshopOperations[]; logoutAction: () => Promise<void> }) {
   const [language, setLanguage, ready] = useLanguage();
   const [filter, setFilter] = useState("open");
   const t = (key: TranslationKey) => translate(language, key);
@@ -89,7 +91,7 @@ export default function WorkshopBookingInboxClient({ bookings, catalogues, logou
     <header className="settings-topbar"><Link href="/workshop-manager">← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
     <section className="settings-content booking-inbox-content">
       <p className="registration-kicker">{t("workshopBookings.eyebrow")}</p><h1>{t("workshopBookings.title")}</h1><p>{t("workshopBookings.description")}</p>
-      <WorkshopBookingCalendar bookings={bookings} catalogues={catalogues} language={language} t={t} />
+      <WorkshopBookingCalendar bookings={bookings} catalogues={catalogues} schedules={schedules} assignments={assignments} operations={operations} language={language} t={t} />
       <div className="booking-inbox-toolbar"><strong>{visible.length} {t("workshopBookings.visible")}</strong><label>{t("workshopBookings.filter")}<select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="open">{t("workshopBookings.filter.open")}</option><option value="requested">{t("workshopBookings.status.requested")}</option><option value="confirmed">{t("workshopBookings.status.confirmed")}</option><option value="declined">{t("workshopBookings.status.declined")}</option><option value="cancelled">{t("workshopBookings.status.cancelled")}</option><option value="all">{t("workshopBookings.filter.all")}</option></select></label></div>
       <div className="booking-inbox-list">{visible.map((booking) => <BookingCard key={booking.id} booking={booking} language={language} t={t} />)}{!visible.length && <div className="catalogue-empty"><h2>{t("workshopBookings.emptyTitle")}</h2><p>{t("workshopBookings.emptyDescription")}</p></div>}</div>
     </section>

@@ -31,7 +31,7 @@ test("active catalogue and manual-booking contracts use canonical workshop IDs",
   assert.match(catalogueDal, /get_my_workshop_service_catalogue_v3/);
   assert.match(catalogueDal, /create_managed_workshop_service_v3/);
   assert.match(catalogueDal, /requested_workshop_id: workshopId/);
-  assert.match(bookingDal, /create_managed_service_appointment_v2/);
+  assert.match(bookingDal, /create_managed_service_appointment_v3/);
   assert.match(bookingDal, /requested_workshop_id: input\.workshopId/);
   assert.doesNotMatch(catalogueActions, /serviceProviderId/);
   assert.doesNotMatch(bookingActions, /workshopProfileId/);

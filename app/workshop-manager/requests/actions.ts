@@ -5,6 +5,7 @@ import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
 import { createManualWorkshopAppointment, manageWorkshopBooking } from "@/lib/dal/workshop-bookings";
 import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
+import { addWorkshopResourceAbsence, createWorkshopResource, removeWorkshopResourceAbsence, setWorkshopResourceActive, updateManagedBookingSchedule } from "@/lib/dal/workshop-scheduling";
 
 export type WorkshopBookingActionState = {
   status: "idle" | "confirmed" | "proposed" | "rescheduled" | "declined" | "cancelled" | "invalid" | "unauthorized" | "unavailable";
@@ -12,6 +13,10 @@ export type WorkshopBookingActionState = {
 
 export type ManualAppointmentState = {
   status: "idle" | "created" | "invalid" | "unauthorized" | "unavailable";
+};
+
+export type ScheduleActionState = {
+  status: "idle" | "saved" | "created" | "removed" | "invalid" | "conflict" | "unauthorized" | "unavailable";
 };
 
 const actionSchema = z.object({
@@ -48,6 +53,7 @@ const manualSchema = z.object({
   vehicleMake: z.string().trim().min(1).max(80),
   vehicleModel: z.string().trim().min(1).max(100),
   vehicleYear: optionalNumber(1886, 2200), mileageKm: optionalNumber(0, 5_000_000),
+  vehicleVin: z.union([z.literal(""), z.string().trim().toUpperCase().regex(/^[A-HJ-NPR-Z0-9]{17}$/)]).transform((value) => value || null),
   customerStates: z.string().trim().max(2000).transform((value) => value || null),
   locale: z.enum(["en", "de", "ro", "hu"]),
 });
@@ -56,6 +62,15 @@ function failure(error: unknown): WorkshopBookingActionState {
   if (error instanceof DataAccessError) {
     if (error.code === "unauthorized") return { status: "unauthorized" };
     if (error.code === "invalid_input" || error.code === "conflict") return { status: "invalid" };
+  }
+  return { status: "unavailable" };
+}
+
+function scheduleFailure(error: unknown): ScheduleActionState {
+  if (error instanceof DataAccessError) {
+    if (error.code === "unauthorized") return { status: "unauthorized" };
+    if (error.code === "conflict") return { status: "conflict" };
+    if (error.code === "invalid_input") return { status: "invalid" };
   }
   return { status: "unavailable" };
 }
@@ -80,6 +95,65 @@ export async function createManualAppointmentAction(
     const state = failure(error);
     return { status: state.status === "invalid" || state.status === "unauthorized" ? state.status : "unavailable" };
   }
+}
+
+const bookingScheduleSchema = z.object({
+  bookingId: z.uuid(), start: z.iso.datetime(),
+  durationMinutes: z.coerce.number().int().min(15).max(1440),
+  mechanicId: z.uuid().nullable(), facilityId: z.uuid().nullable(),
+});
+
+export async function saveBookingScheduleAction(input: z.infer<typeof bookingScheduleSchema>): Promise<ScheduleActionState> {
+  const parsed = bookingScheduleSchema.safeParse(input);
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await updateManagedBookingSchedule(parsed.data);
+    await dispatchDueServiceBookingNotifications(parsed.data.bookingId).catch(() => undefined);
+    revalidatePath("/workshop-manager/requests");
+    return { status: "saved" };
+  } catch (error) { return scheduleFailure(error); }
+}
+
+const resourceSchema = z.object({
+  workshopId: z.uuid(), kind: z.enum(["mechanic", "bay", "ramp"]),
+  name: z.string().trim().min(2).max(120),
+});
+export async function createScheduleResourceAction(_state: ScheduleActionState, formData: FormData): Promise<ScheduleActionState> {
+  const parsed = resourceSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await createWorkshopResource(parsed.data); revalidatePath("/workshop-manager/requests");
+    return { status: "created" };
+  } catch (error) { return scheduleFailure(error); }
+}
+
+const activeSchema = z.object({ resourceId: z.uuid(), active: z.enum(["true", "false"]).transform((value) => value === "true") });
+export async function setScheduleResourceActiveAction(_state: ScheduleActionState, formData: FormData): Promise<ScheduleActionState> {
+  const parsed = activeSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await setWorkshopResourceActive(parsed.data.resourceId, parsed.data.active); revalidatePath("/workshop-manager/requests");
+    return { status: "saved" };
+  } catch (error) { return scheduleFailure(error); }
+}
+
+const absenceSchema = z.object({ resourceId: z.uuid(), startsAt: z.iso.datetime(), endsAt: z.iso.datetime(), reason: z.string().trim().max(240).transform((value) => value || null) });
+export async function addScheduleResourceAbsenceAction(_state: ScheduleActionState, formData: FormData): Promise<ScheduleActionState> {
+  const parsed = absenceSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success || new Date(parsed.data.endsAt) <= new Date(parsed.data.startsAt)) return { status: "invalid" };
+  try {
+    await addWorkshopResourceAbsence(parsed.data); revalidatePath("/workshop-manager/requests");
+    return { status: "created" };
+  } catch (error) { return scheduleFailure(error); }
+}
+
+export async function removeScheduleResourceAbsenceAction(_state: ScheduleActionState, formData: FormData): Promise<ScheduleActionState> {
+  const parsed = z.object({ absenceId: z.uuid() }).safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await removeWorkshopResourceAbsence(parsed.data.absenceId); revalidatePath("/workshop-manager/requests");
+    return { status: "removed" };
+  } catch (error) { return scheduleFailure(error); }
 }
 
 export async function manageWorkshopBookingAction(

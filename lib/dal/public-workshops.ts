@@ -147,6 +147,7 @@ export async function createPublicServiceBookingRequest(input: {
   vehicleMake: string;
   vehicleModel: string;
   vehicleYear: number | null;
+  vehicleVin: string | null;
   mileageKm: number | null;
   preferredStart: string;
   alternateStart: string | null;
@@ -156,7 +157,7 @@ export async function createPublicServiceBookingRequest(input: {
   managementTokenDigest: string;
 }) {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("create_public_service_booking_request", {
+  const { data, error } = await supabase.rpc("create_public_service_booking_request_v2", {
     requested_workshop_id: input.workshopId,
     requested_service_id: input.serviceId,
     requested_customer_name: input.customerName,
@@ -166,6 +167,7 @@ export async function createPublicServiceBookingRequest(input: {
     requested_vehicle_make: input.vehicleMake,
     requested_vehicle_model: input.vehicleModel,
     requested_vehicle_year: input.vehicleYear,
+    requested_vehicle_vin: input.vehicleVin,
     requested_mileage_km: input.mileageKm,
     requested_preferred_start: input.preferredStart,
     requested_alternate_start: input.alternateStart,

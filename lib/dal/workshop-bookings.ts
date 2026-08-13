@@ -77,6 +77,7 @@ export type CreateManualWorkshopAppointmentInput = {
   vehicleMake: string;
   vehicleModel: string;
   vehicleYear: number | null;
+  vehicleVin: string | null;
   mileageKm: number | null;
   customerStates: string | null;
   locale: string;
@@ -130,7 +131,7 @@ export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBook
 
 export async function createManualWorkshopAppointment(input: CreateManualWorkshopAppointmentInput) {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("create_managed_service_appointment_v2", {
+  const { data, error } = await supabase.rpc("create_managed_service_appointment_v3", {
     requested_workshop_id: input.workshopId,
     requested_service_id: input.serviceId,
     requested_start: input.start,
@@ -143,6 +144,7 @@ export async function createManualWorkshopAppointment(input: CreateManualWorksho
     requested_vehicle_make: input.vehicleMake,
     requested_vehicle_model: input.vehicleModel,
     requested_vehicle_year: input.vehicleYear,
+    requested_vehicle_vin: input.vehicleVin,
     requested_mileage_km: input.mileageKm,
     requested_note: input.customerStates,
     requested_locale: input.locale,

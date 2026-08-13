@@ -18,7 +18,7 @@ export default function GarageClient({ vehicles, bookings }: { vehicles: GarageV
         <header><div><p>Your vehicles</p><h2>{vehicles.length} {vehicles.length === 1 ? "vehicle" : "vehicles"}</h2></div></header>
         <div className="garage-vehicle-grid">
           {vehicles.map((vehicle) => <article key={vehicle.id}>
-            <span>🚗</span><div><small>{vehicle.nickname || "Vehicle"}</small><h3>{vehicle.make} {vehicle.model}</h3><b>{vehicle.registrationNumber}</b><p>{[vehicle.productionYear, vehicle.fuelType, vehicle.currentMileageKm != null ? `${vehicle.currentMileageKm.toLocaleString()} km` : null].filter(Boolean).join(" · ")}</p></div>
+            <span>🚗</span><div><small>{vehicle.nickname || "Vehicle"}</small><h3>{vehicle.make} {vehicle.model}</h3><b>{vehicle.registrationNumber}</b><p>{[vehicle.productionYear, vehicle.fuelType, vehicle.currentMileageKm != null ? `${vehicle.currentMileageKm.toLocaleString()} km` : null].filter(Boolean).join(" · ")}</p><Link href={`/garage/${vehicle.id}`}>View service history →</Link></div>
           </article>)}
           {!vehicles.length && <div className="booking-empty compact"><h3>Add your first vehicle</h3><p>Your vehicles will appear here and can be reused for future service requests.</p></div>}
         </div>

@@ -5,10 +5,12 @@ import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
 import { manageRepairWorkflow } from "@/lib/dal/repair-workflows";
 import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
+import { saveWorkshopVehicleServiceRecord } from "@/lib/dal/vehicle-service-history";
 
 export type RepairActionState = {
   status: "idle" | "saved" | "invalid" | "unauthorized" | "unavailable";
 };
+export type ServiceRecordActionState = RepairActionState;
 
 const itemSchema = z.object({
   type: z.enum(["labor", "part", "other"]),
@@ -53,6 +55,39 @@ export async function manageRepairAction(_state: RepairActionState, formData: Fo
     await dispatchDueServiceBookingNotifications(parsed.data.bookingId).catch(() => undefined);
     revalidatePath("/workshop-manager/repairs");
     revalidatePath("/customer/bookings");
+    revalidatePath("/garage");
+    return { status: "saved" };
+  } catch (error) { return failure(error); }
+}
+
+const serviceRecordSchema = z.object({
+  bookingId: z.uuid(),
+  mileageKm: z.union([z.literal("").transform(() => null), z.coerce.number().int().min(0).max(5_000_000)]),
+  workSummary: z.string().trim().max(5000).transform((value) => value || null),
+  inspectionSummary: z.string().trim().max(5000).transform((value) => value || null),
+  invoiceNumber: z.string().trim().max(80).transform((value) => value || null),
+  invoiceIssuedOn: z.union([z.literal("").transform(() => null), z.iso.date()]),
+  invoiceTotal: z.union([z.literal("").transform(() => null), z.coerce.number().nonnegative().max(100_000_000)]),
+  invoiceCurrency: z.union([z.literal("").transform(() => null), z.enum(["EUR", "RON", "HUF"])]),
+  parts: z.string().transform((value, context) => { try { return JSON.parse(value) as unknown; } catch { context.addIssue({ code: "custom", message: "invalid_json" }); return z.NEVER; } }).pipe(z.array(z.object({
+    description: z.string().trim().min(2).max(500), partNumber: z.string().trim().max(120).nullable(),
+    quantity: z.number().positive().max(10000), warrantyExpiresOn: z.iso.date().nullable(),
+  })).max(100)),
+  recommendations: z.string().transform((value, context) => { try { return JSON.parse(value) as unknown; } catch { context.addIssue({ code: "custom", message: "invalid_json" }); return z.NEVER; } }).pipe(z.array(z.object({
+    description: z.string().trim().min(2).max(500), dueOn: z.iso.date().nullable(),
+    dueMileageKm: z.number().int().min(0).max(5_000_000).nullable(),
+  })).max(100)),
+});
+
+export async function saveVehicleServiceRecordAction(_state: ServiceRecordActionState, formData: FormData): Promise<ServiceRecordActionState> {
+  const parsed = serviceRecordSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await saveWorkshopVehicleServiceRecord({
+      ...parsed.data,
+      invoiceTotalCents: parsed.data.invoiceTotal === null ? null : Math.round(parsed.data.invoiceTotal * 100),
+    });
+    revalidatePath("/workshop-manager/repairs");
     revalidatePath("/garage");
     return { status: "saved" };
   } catch (error) { return failure(error); }

@@ -18,6 +18,7 @@ const schema = z.object({
   vehicleMake: z.string().trim().min(1).max(80),
   vehicleModel: z.string().trim().min(1).max(100),
   vehicleYear: z.string().transform((value) => value ? Number(value) : null).pipe(z.number().int().min(1886).max(2200).nullable()),
+  vehicleVin: z.string().trim().toUpperCase().refine((value) => !value || /^[A-HJ-NPR-Z0-9]{17}$/.test(value)).transform((value) => value || null),
   mileageKm: z.string().transform((value) => value ? Number(value) : null).pipe(z.number().int().min(0).max(5_000_000).nullable()),
   preferredStart: z.iso.datetime(),
   alternateStart: z.string().transform((value) => value || null).pipe(z.iso.datetime().nullable()),

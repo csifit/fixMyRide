@@ -1,0 +1,35 @@
+"use client";
+
+import { useActionState, useState } from "react";
+import type { TranslationKey } from "@/app/i18n";
+import type { ManagedRepairWorkflow } from "@/lib/dal/repair-workflows";
+import { saveVehicleServiceRecordAction, type ServiceRecordActionState } from "./actions";
+
+type Translate = (key: TranslationKey) => string;
+const idle: ServiceRecordActionState = { status: "idle" };
+
+export default function VehicleServiceRecordForm({ repair, t }: { repair: ManagedRepairWorkflow; t: Translate }) {
+  const record = repair.serviceRecord;
+  const [state, action, pending] = useActionState(saveVehicleServiceRecordAction, idle);
+  const [parts, setParts] = useState(record.parts.map((part) => ({ description: part.description, partNumber: part.partNumber ?? "", quantity: part.quantity, warrantyExpiresOn: part.warrantyExpiresOn ?? "" })));
+  const [recommendations, setRecommendations] = useState(record.recommendations.map((item) => ({ description: item.description, dueOn: item.dueOn ?? "", dueMileageKm: item.dueMileageKm?.toString() ?? "" })));
+  const partPayload = parts.filter((part) => part.description.trim()).map((part) => ({ ...part, partNumber: part.partNumber.trim() || null, quantity: Number(part.quantity), warrantyExpiresOn: part.warrantyExpiresOn || null }));
+  const recommendationPayload = recommendations.filter((item) => item.description.trim()).map((item) => ({ description: item.description, dueOn: item.dueOn || null, dueMileageKm: item.dueMileageKm ? Number(item.dueMileageKm) : null }));
+  return <details className="service-record-editor" open={repair.status === "ready_for_collection"}>
+    <summary><span><strong>{t("serviceHistory.workshopForm.title")}</strong><small>{t("serviceHistory.workshopForm.description")}</small></span><b>+</b></summary>
+    <form action={action}>
+      <input type="hidden" name="bookingId" value={repair.id} /><input type="hidden" name="parts" value={JSON.stringify(partPayload)} /><input type="hidden" name="recommendations" value={JSON.stringify(recommendationPayload)} />
+      <div className="service-record-fields">
+        <label>{t("serviceHistory.mileage")}<input name="mileageKm" type="number" min="0" max="5000000" defaultValue={record.mileageKm ?? repair.mileageKm ?? ""} /></label>
+        <label>VIN (optional)<input value={repair.vehicleVin ?? ""} readOnly /></label>
+        <label className="wide">{t("serviceHistory.workSummary")}<textarea name="workSummary" rows={4} maxLength={5000} defaultValue={record.workSummary ?? repair.workshopNote ?? ""} /></label>
+        <label className="wide">{t("serviceHistory.inspection")}<textarea name="inspectionSummary" rows={4} maxLength={5000} defaultValue={record.inspectionSummary ?? ""} placeholder={t("serviceHistory.inspectionHelp")} /></label>
+      </div>
+      <section><header><h4>{t("serviceHistory.parts")}</h4><button type="button" onClick={() => setParts((current) => [...current, { description: "", partNumber: "", quantity: 1, warrantyExpiresOn: "" }])}>+ {t("serviceHistory.addPart")}</button></header>{parts.map((part, index) => <div className="service-record-row" key={index}><input aria-label={t("serviceHistory.partDescription")} placeholder={t("serviceHistory.partDescription")} value={part.description} onChange={(event) => setParts((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, description: event.target.value } : item))} /><input aria-label={t("serviceHistory.partNumber")} placeholder={t("serviceHistory.partNumber")} value={part.partNumber} onChange={(event) => setParts((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, partNumber: event.target.value } : item))} /><input aria-label={t("repairLifecycle.quantity")} type="number" min="0.01" step="0.01" value={part.quantity} onChange={(event) => setParts((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, quantity: Number(event.target.value) } : item))} /><label>{t("serviceHistory.warrantyUntil")}<input type="date" value={part.warrantyExpiresOn} onChange={(event) => setParts((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, warrantyExpiresOn: event.target.value } : item))} /></label><button type="button" aria-label={t("repairLifecycle.removeItem")} onClick={() => setParts((current) => current.filter((_, itemIndex) => itemIndex !== index))}>×</button></div>)}</section>
+      <section><header><h4>{t("serviceHistory.recommendations")}</h4><button type="button" onClick={() => setRecommendations((current) => [...current, { description: "", dueOn: "", dueMileageKm: "" }])}>+ {t("serviceHistory.addRecommendation")}</button></header>{recommendations.map((recommendation, index) => <div className="service-record-row recommendation" key={index}><input aria-label={t("serviceHistory.recommendation")} placeholder={t("serviceHistory.recommendation")} value={recommendation.description} onChange={(event) => setRecommendations((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, description: event.target.value } : item))} /><label>{t("serviceHistory.dueOn")}<input type="date" value={recommendation.dueOn} onChange={(event) => setRecommendations((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, dueOn: event.target.value } : item))} /></label><label>{t("serviceHistory.dueMileage")}<input type="number" min="0" max="5000000" value={recommendation.dueMileageKm} onChange={(event) => setRecommendations((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, dueMileageKm: event.target.value } : item))} /></label><button type="button" aria-label={t("repairLifecycle.removeItem")} onClick={() => setRecommendations((current) => current.filter((_, itemIndex) => itemIndex !== index))}>×</button></div>)}</section>
+      <section className="service-record-invoice"><h4>{t("serviceHistory.invoice")}</h4><div><label>{t("serviceHistory.invoiceNumber")}<input name="invoiceNumber" maxLength={80} defaultValue={record.invoiceNumber ?? ""} /></label><label>{t("serviceHistory.invoiceDate")}<input name="invoiceIssuedOn" type="date" defaultValue={record.invoiceIssuedOn ?? ""} /></label><label>{t("serviceHistory.invoiceTotal")}<input name="invoiceTotal" type="number" min="0" step="0.01" defaultValue={record.invoiceTotalCents === null ? repair.estimate ? repair.estimate.totalCents / 100 : "" : record.invoiceTotalCents / 100} /></label><label>{t("repairLifecycle.currency")}<select name="invoiceCurrency" defaultValue={record.invoiceCurrency ?? repair.estimate?.currency ?? "EUR"}><option>EUR</option><option>RON</option><option>HUF</option></select></label></div></section>
+      {state.status !== "idle" && <p className={state.status === "saved" ? "note-success" : "note-error"}>{t(`repairLifecycle.result.${state.status}` as TranslationKey)}</p>}
+      <button className="organization-action" disabled={pending}>{t(pending ? "repairLifecycle.saving" : "serviceHistory.saveRecord")}</button>
+    </form>
+  </details>;
+}

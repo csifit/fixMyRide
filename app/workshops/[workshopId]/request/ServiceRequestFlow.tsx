@@ -28,7 +28,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
   const [alternateDate, setAlternateDate] = useState("");
   const [alternateTime, setAlternateTime] = useState("09:00");
   const [vehicle, setVehicle] = useState({
-    registration: "", make: "", model: "", year: "", mileage: "", note: "", mobility: "none",
+    registration: "", make: "", model: "", year: "", vin: "", mileage: "", note: "", mobility: "none",
   });
   const [step, setStep] = useState<1 | 2>(1);
   const preferredStart = useMemo(() => toIso(date, time), [date, time]);
@@ -68,6 +68,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
               <label>Make<input value={vehicle.make} onChange={(event) => setVehicle({ ...vehicle, make: event.target.value })} required maxLength={80} placeholder="Volkswagen" /></label>
               <label>Model<input value={vehicle.model} onChange={(event) => setVehicle({ ...vehicle, model: event.target.value })} required maxLength={100} placeholder="Golf" /></label>
               <label>Year<input value={vehicle.year} onChange={(event) => setVehicle({ ...vehicle, year: event.target.value })} type="number" min="1886" max="2200" inputMode="numeric" /></label>
+              <label>VIN (optional)<input value={vehicle.vin} onChange={(event) => setVehicle({ ...vehicle, vin: event.target.value.toUpperCase() })} minLength={17} maxLength={17} autoCapitalize="characters" /></label>
               <label>Mileage (km)<input value={vehicle.mileage} onChange={(event) => setVehicle({ ...vehicle, mileage: event.target.value })} type="number" min="0" max="5000000" inputMode="numeric" /></label>
               <label>Preferred date<input type="date" value={date} min={rules.earliestBookingDate} max={rules.latestBookingDate} onChange={(event) => setDate(event.target.value)} required /></label>
               <label>Preferred arrival time<input type="time" step={rules.slotIntervalMinutes * 60} value={time} onChange={(event) => setTime(event.target.value)} required /></label>
@@ -91,6 +92,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
             <input type="hidden" name="vehicleMake" value={vehicle.make} />
             <input type="hidden" name="vehicleModel" value={vehicle.model} />
             <input type="hidden" name="vehicleYear" value={vehicle.year} />
+            <input type="hidden" name="vehicleVin" value={vehicle.vin} />
             <input type="hidden" name="mileageKm" value={vehicle.mileage} />
             <input type="hidden" name="preferredStart" value={preferredStart} />
             <input type="hidden" name="alternateStart" value={alternateStart} />

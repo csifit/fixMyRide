@@ -3,6 +3,7 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
 import type { BookingHistoryItem, ManagedBookingStatus } from "./workshop-bookings";
+import { loadManagedVehicleServiceRecords, type VehicleServiceRecord } from "./vehicle-service-history";
 
 export type RepairEstimateItem = {
   type: "labor" | "part" | "other";
@@ -43,10 +44,12 @@ export type ManagedRepairWorkflow = {
   vehicleModel: string;
   vehicleYear: number | null;
   mileageKm: number | null;
+  vehicleVin: string | null;
   confirmedStart: string | null;
   customerNote: string | null;
   workshopNote: string | null;
   estimate: RepairEstimate | null;
+  serviceRecord: VehicleServiceRecord;
   history: BookingHistoryItem[];
 };
 
@@ -60,9 +63,17 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflow[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_managed_repair_workflows");
+  const [{ data, error }, records] = await Promise.all([
+    supabase.rpc("get_managed_repair_workflows"), loadManagedVehicleServiceRecords(),
+  ]);
   if (error) fail(error);
-  return ((data ?? []) as Record<string, unknown>[]).map((row) => ({
+  return ((data ?? []) as Record<string, unknown>[]).map((row) => {
+    const record = records.get(row.booking_id as string) ?? {
+      id: null, vehicleVin: null, mileageKm: null, workSummary: null,
+      inspectionSummary: null, invoiceNumber: null, invoiceIssuedOn: null,
+      invoiceTotalCents: null, invoiceCurrency: null, parts: [], recommendations: [],
+    };
+    return ({
     id: row.booking_id as string,
     workshopId: row.workshop_id as string,
     workshopName: row.workshop_name as string,
@@ -76,12 +87,14 @@ export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflo
     vehicleModel: row.vehicle_model as string,
     vehicleYear: row.vehicle_year === null ? null : Number(row.vehicle_year),
     mileageKm: row.mileage_km === null ? null : Number(row.mileage_km),
+    vehicleVin: record.vehicleVin ?? null,
     confirmedStart: row.confirmed_start as string | null,
     customerNote: row.customer_note as string | null,
     workshopNote: row.workshop_note as string | null,
     estimate: row.estimate as RepairEstimate | null,
+    serviceRecord: record,
     history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
-  }));
+  }); });
 }
 
 export async function manageRepairWorkflow(input: {
