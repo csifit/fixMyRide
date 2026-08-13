@@ -29,5 +29,7 @@ test("workshop pitch uses readable regular white text and the footer omits price
   assert.match(styles, /\.provider-offer-highlights li \{[^}]*color:#fff;[^}]*font-size:12px;[^}]*font-weight:400;/i);
   assert.match(styles, /\.provider-benefits summary span \{[^}]*color:#fff;[^}]*font-size:15px;[^}]*font-weight:400;/i);
   assert.match(styles, /\.provider-benefits summary small \{[^}]*color:#fff;[^}]*font-size:11px;[^}]*font-weight:400;/i);
+  assert.match(styles, /\.provider-benefits h3 \{[^}]*color:#fff;[^}]*font:400 21px/i);
+  assert.match(styles, /\.provider-benefits li \{[^}]*color:#fff;[^}]*font-size:12px;[^}]*font-weight:400;/i);
   assert.doesNotMatch(home, /<span>€35\/\{t\("home\.offer\.month"\)\} · \{t\("home\.offer\.sms"\)\}<\/span>/);
 });
