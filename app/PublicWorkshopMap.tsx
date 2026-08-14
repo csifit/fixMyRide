@@ -1,7 +1,6 @@
 "use client";
 
 import { importLibrary } from "@googlemaps/js-api-loader";
-import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PublicWorkshop } from "@/lib/dal/public-workshops";
 import {
@@ -11,6 +10,27 @@ import {
 } from "@/lib/google-maps-loader";
 
 const ROMANIA_CENTER = { lat: 45.9432, lng: 24.9668 };
+
+function workshopPreview(workshop: PublicWorkshop, preferredDate: string) {
+  const preview = document.createElement("article");
+  preview.className = "map-workshop-popup";
+
+  const eyebrow = document.createElement("small");
+  eyebrow.textContent = "Published workshop";
+
+  const name = document.createElement("strong");
+  name.textContent = workshop.name;
+
+  const address = document.createElement("span");
+  address.textContent = [workshop.address, workshop.city].filter(Boolean).join(", ");
+
+  const link = document.createElement("a");
+  link.href = `/workshops/${workshop.slug}?date=${encodeURIComponent(preferredDate)}`;
+  link.textContent = "View workshop";
+
+  preview.append(eyebrow, name, address, link);
+  return preview;
+}
 
 export default function PublicWorkshopMap({
   workshops,
@@ -22,15 +42,14 @@ export default function PublicWorkshopMap({
   const apiKey = googleMapsApiKey();
   const canvas = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map | null>(null);
+  const infoWindow = useRef<google.maps.InfoWindow | null>(null);
   const markers = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const locatedWorkshops = useMemo(
     () => workshops.filter((workshop) => workshop.latitude != null && workshop.longitude != null),
     [workshops],
   );
-  const selected = workshops.find((workshop) => workshop.id === selectedId) ?? null;
 
   useEffect(() => {
     if (!apiKey || !canvas.current) return;
@@ -38,7 +57,7 @@ export default function PublicWorkshopMap({
     async function initialize() {
       try {
         configureGoogleMapsLoader(apiKey);
-        const { Map } = await importLibrary("maps") as google.maps.MapsLibrary;
+        const { InfoWindow, Map } = await importLibrary("maps") as google.maps.MapsLibrary;
         await importLibrary("marker");
         if (!active || !canvas.current) return;
         map.current = new Map(canvas.current, {
@@ -49,6 +68,10 @@ export default function PublicWorkshopMap({
           mapTypeControl: false,
           fullscreenControl: true,
         });
+        infoWindow.current = new InfoWindow({
+          maxWidth: 280,
+        });
+        map.current.addListener("click", () => infoWindow.current?.close());
         setReady(true);
       } catch {
         if (active) setFailed(true);
@@ -59,12 +82,15 @@ export default function PublicWorkshopMap({
       active = false;
       markers.current.forEach((marker) => { marker.map = null; });
       markers.current = [];
+      infoWindow.current?.close();
+      infoWindow.current = null;
       map.current = null;
     };
   }, [apiKey]);
 
   useEffect(() => {
     if (!ready || !map.current) return;
+    infoWindow.current?.close();
     markers.current.forEach((marker) => { marker.map = null; });
     markers.current = [];
     const bounds = new google.maps.LatLngBounds();
@@ -81,7 +107,15 @@ export default function PublicWorkshopMap({
         title: workshop.name,
         content: pin,
       });
-      marker.addListener("click", () => setSelectedId(workshop.id));
+      marker.addListener("click", () => {
+        if (!map.current || !infoWindow.current) return;
+        infoWindow.current.setContent(workshopPreview(workshop, preferredDate));
+        infoWindow.current.open({
+          map: map.current,
+          anchor: marker,
+          shouldFocus: false,
+        });
+      });
       markers.current.push(marker);
       bounds.extend(position);
     }
@@ -94,7 +128,7 @@ export default function PublicWorkshopMap({
       map.current.setCenter(ROMANIA_CENTER);
       map.current.setZoom(6);
     }
-  }, [locatedWorkshops, ready]);
+  }, [locatedWorkshops, preferredDate, ready]);
 
   const unavailable = !apiKey || failed;
   return <section className="home-map" aria-label="Published workshop locations">
@@ -102,13 +136,6 @@ export default function PublicWorkshopMap({
     {!unavailable && !ready && <div className="map-empty">Loading workshop map…</div>}
     {unavailable && <div className="map-empty">Google Maps is unavailable. Published workshops remain listed below.</div>}
     {ready && !locatedWorkshops.length && <div className="map-empty">No workshops match these filters.</div>}
-    {selected && <article className="map-workshop-preview">
-      <button type="button" onClick={() => setSelectedId(null)} aria-label="Close workshop preview">×</button>
-      <small>Published workshop</small>
-      <strong>{selected.name}</strong>
-      <span>{[selected.address, selected.city].filter(Boolean).join(", ")}</span>
-      <Link href={`/workshops/${selected.slug}?date=${encodeURIComponent(preferredDate)}`}>View workshop</Link>
-    </article>}
     <span className="map-attribution">Published Pitster workshop locations</span>
   </section>;
 }

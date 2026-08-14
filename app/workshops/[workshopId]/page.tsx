@@ -57,9 +57,11 @@ export default async function WorkshopPage({ params, searchParams }: {
     redirect(`/workshops/${workshop.slug}${query.size ? `?${query}` : ""}`);
   }
   let ownerProviders: Array<{ id: string; displayName: string }> = [];
-  if (publicClaim && !publicClaim.serviceProviderId) {
+  let claimRegistrationRequired = false;
+  if (publicClaim && publicClaim.status !== "claimed") {
     const access = await getWorkshopManagerAccess();
-    if (access.state === "active") {
+    claimRegistrationRequired = access.state === "unauthenticated";
+    if (!publicClaim.serviceProviderId && access.state === "active") {
       ownerProviders = (await loadManagedServiceProviders(access.manager.id))
         .filter((provider) => provider.membershipRole === "owner" && provider.status === "active")
         .map(({ id, displayName }) => ({ id, displayName }));
@@ -67,7 +69,7 @@ export default async function WorkshopPage({ params, searchParams }: {
   }
   if (!workshop) {
     if (!publicClaim) notFound();
-    return <main className="booking-shell workshop-claim-page"><PublicSiteHeader /><WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} ownerProviders={ownerProviders} /></main>;
+    return <main className="booking-shell workshop-claim-page"><PublicSiteHeader /><WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} ownerProviders={ownerProviders} registrationRequired={claimRegistrationRequired} /></main>;
   }
 
   const services = await loadPublicWorkshopServices(workshop.id);
@@ -127,7 +129,7 @@ export default async function WorkshopPage({ params, searchParams }: {
       </div>
       <aside className="workshop-profile-sidebar">
         {workshop.latitude !== null && workshop.longitude !== null && <WorkshopLocationMap name={workshop.name} address={address} latitude={workshop.latitude} longitude={workshop.longitude} />}
-        {publicClaim && publicClaim.status !== "claimed" && <WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} compact ownerProviders={ownerProviders} />}
+        {publicClaim && publicClaim.status !== "claimed" && <WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} compact ownerProviders={ownerProviders} registrationRequired={claimRegistrationRequired} />}
       </aside>
     </section>
   </main>;

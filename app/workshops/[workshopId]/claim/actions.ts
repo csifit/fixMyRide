@@ -16,7 +16,7 @@ export async function beginWorkshopClaimAction(formData: FormData) {
   if (!parsed.success) redirect("/workshops");
   const access = await getWorkshopManagerAccess();
   if (access.state === "unauthenticated") {
-    redirect("/workshop-manager/login");
+    redirect("/register/workshop-manager");
   }
   if (access.state !== "active") {
     redirect(`/workshops/${parsed.data.workshopId}?claim=account_required`);

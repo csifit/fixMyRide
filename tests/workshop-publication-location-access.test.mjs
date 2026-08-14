@@ -52,6 +52,9 @@ test("public discovery renders a real Google map with filtered workshop markers"
   assert.match(map, /importLibrary\("marker"\)/);
   assert.match(map, /new google\.maps\.marker\.AdvancedMarkerElement/);
   assert.match(map, /map\.current\.fitBounds/);
+  assert.match(map, /new InfoWindow/);
+  assert.match(map, /anchor: marker/);
+  assert.doesNotMatch(map, /map-workshop-preview/);
   assert.match(map, /View workshop/);
   assert.match(loader, /NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID/);
 });
