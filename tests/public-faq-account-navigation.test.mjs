@@ -21,7 +21,7 @@ test("the public FAQ explains provider roles and common platform questions", () 
   assert.match(faq, /<FaqClient \/>/);
   assert.match(faqClient, /const \[language\] = useLanguage\(\)/);
   assert.match(faqClient, /faq\.q\$\{number\}\.question/);
-  assert.match(faqClient, /mailto:\$\{brand\.supportEmail\}/);
+  assert.match(faqClient, /href="\/contact\?type=support"/);
   assert.match(translations["faq.q1.question"], /difference between a Service Organisation and a Workshop account/);
   assert.match(translations["faq.q2.answer"], /Service Organisation sends an invitation to the manager’s email address/);
   assert.match(translations["faq.q6.question"], /When does billing begin/);
@@ -32,6 +32,9 @@ test("the footer links the FAQ from its Contact column", () => {
   assert.match(home, /<strong>\{t\("home\.footer\.contact"\)\}<\/strong><Link href="\/faq">/);
   assert.equal(JSON.parse(english)["home.footer.faq"], "Frequently asked questions");
   assert.match(sitemap, /`\$\{canonicalOrigin\}\/faq`/);
+  assert.match(home, /href="\/contact\?type=support"/);
+  assert.match(home, /href="\/contact\?type=problem"/);
+  assert.match(sitemap, /`\$\{canonicalOrigin\}\/contact`/);
 });
 
 test("public headers distinguish customer, organisation, and workshop access", () => {

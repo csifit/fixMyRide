@@ -32,7 +32,7 @@ test("public discovery exposes and uses canonical workshop slugs", () => {
   assert.match(dal, /search_public_workshops_v2/);
   assert.match(dal, /workshop\.slug === workshopReference/);
   assert.match(home, /workshops\/\$\{workshop\.slug\}/);
-  assert.match(map, /workshops\/\$\{selected\.slug\}/);
+  assert.match(map, /workshops\/\$\{workshop\.slug\}/);
 });
 
 test("legacy UUID detail and request URLs redirect to the slug canonical", () => {

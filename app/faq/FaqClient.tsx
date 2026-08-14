@@ -23,7 +23,7 @@ export default function FaqClient() {
       <aside>
         <strong>{t("faq.help.title")}</strong>
         <p>{t("faq.help.description")}</p>
-        <a href={`mailto:${brand.supportEmail}`}>{t("faq.help.action")}</a>
+        <Link href="/contact?type=support">{t("faq.help.action")}</Link>
       </aside>
       <div className="faq-list">
         {questionNumbers.map((number, index) => {
