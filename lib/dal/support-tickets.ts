@@ -3,9 +3,10 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
 
-export type SupportTicketType = "support" | "problem";
+export type SupportTicketType = "support" | "problem" | "account_closure";
 export type SupportRequesterType = "customer" | "service_organisation" | "workshop_manager" | "other";
 export type SupportTicketStatus = "open" | "in_progress" | "waiting_on_requester" | "resolved" | "closed";
+export type AccountClosureStage = "not_applicable" | "requested" | "account_suspended" | "scheduled_for_deletion" | "deletion_completed" | "cancelled";
 
 export type SupportTicket = {
   id: string;
@@ -19,6 +20,11 @@ export type SupportTicket = {
   pageUrl: string | null;
   status: SupportTicketStatus;
   internalNote: string | null;
+  closureStage: AccountClosureStage;
+  closureWaitDays: 30 | 60 | null;
+  closureScheduledAt: string | null;
+  deletionDueAt: string | null;
+  deletionCompletedAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -54,7 +60,7 @@ export async function createSupportTicket(input: {
 export async function loadAdminSupportTickets(): Promise<SupportTicket[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("support_tickets")
-    .select("id, reference, ticket_type, requester_type, requester_name, requester_email, subject, description, page_url, status, internal_note, created_at, updated_at")
+    .select("id, reference, ticket_type, requester_type, requester_name, requester_email, subject, description, page_url, status, internal_note, closure_stage, closure_wait_days, closure_scheduled_at, deletion_due_at, deletion_completed_at, created_at, updated_at")
     .order("created_at", { ascending: false })
     .limit(100);
   if (error) throw new DataAccessError(classifyDatabaseError(error));
@@ -70,6 +76,11 @@ export async function loadAdminSupportTickets(): Promise<SupportTicket[]> {
     pageUrl: row.page_url,
     status: row.status as SupportTicketStatus,
     internalNote: row.internal_note,
+    closureStage: row.closure_stage as AccountClosureStage,
+    closureWaitDays: row.closure_wait_days as 30 | 60 | null,
+    closureScheduledAt: row.closure_scheduled_at,
+    deletionDueAt: row.deletion_due_at,
+    deletionCompletedAt: row.deletion_completed_at,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }));
@@ -79,12 +90,16 @@ export async function updateAdminSupportTicket(input: {
   ticketId: string;
   status: SupportTicketStatus;
   internalNote: string | null;
+  closureStage: AccountClosureStage;
+  closureWaitDays: 30 | 60 | null;
 }) {
   const supabase = await createClient();
-  const { error } = await supabase.from("support_tickets").update({
-    status: input.status,
-    internal_note: input.internalNote,
-  }).eq("id", input.ticketId);
+  const { error } = await supabase.rpc("update_admin_support_ticket", {
+    requested_ticket_id: input.ticketId,
+    requested_status: input.status,
+    requested_internal_note: input.internalNote,
+    requested_closure_stage: input.closureStage,
+    requested_closure_wait_days: input.closureWaitDays,
+  });
   if (error) throw new DataAccessError(classifyDatabaseError(error));
 }
-

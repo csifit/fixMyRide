@@ -10,6 +10,10 @@ export default async function ContactPage({ searchParams }: {
   searchParams: Promise<{ type?: string }>;
 }) {
   const { type } = await searchParams;
-  return <ContactClient initialType={type === "problem" ? "problem" : "support"} />;
+  const initialType = type === "problem"
+    ? "problem"
+    : type === "account-closure"
+      ? "account_closure"
+      : "support";
+  return <ContactClient initialType={initialType} />;
 }
-

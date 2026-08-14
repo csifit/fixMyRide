@@ -3,8 +3,9 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
-const [migration, page, client, action, dal, admin, adminPage, styles, english] = await Promise.all([
+const [migration, closureMigration, page, client, action, dal, admin, adminPage, styles, english] = await Promise.all([
   read("supabase/migrations/202608140060_support_ticket_system.sql"),
+  read("supabase/migrations/202608140061_account_closure_ticket_workflow.sql"),
   read("app/contact/page.tsx"),
   read("app/contact/ContactClient.tsx"),
   read("app/contact/actions.ts"),
@@ -16,10 +17,10 @@ const [migration, page, client, action, dal, admin, adminPage, styles, english] 
 ]);
 
 test("public contact modes create validated database-backed tickets", () => {
-  assert.match(page, /type === "problem" \? "problem" : "support"/);
+  assert.match(page, /type === "account-closure"/);
   assert.match(client, /useActionState\(createContactTicketAction/);
   assert.match(client, /state\.reference/);
-  assert.match(action, /z\.enum\(\["support", "problem"\]\)/);
+  assert.match(action, /z\.enum\(\["support", "problem", "account_closure"\]\)/);
   assert.match(action, /companyWebsite: z\.literal\(""\)/);
   assert.match(dal, /rpc\("create_support_ticket"/);
   assert.match(migration, /create table public\.support_tickets/);
@@ -27,6 +28,19 @@ test("public contact modes create validated database-backed tickets", () => {
   assert.match(migration, /count\(\*\) >= 5/);
   assert.match(migration, /grant execute.*to anon, authenticated/s);
   assert.doesNotMatch(migration, /policy .*anon.*select/i);
+});
+
+test("account closure is a written ticket with an administrator-controlled delay", () => {
+  assert.match(client, /contact\.accountClosureNote/);
+  assert.match(client, /value="account_closure"/);
+  assert.match(closureMigration, /ticket_type in \('support', 'problem', 'account_closure'\)/);
+  assert.match(closureMigration, /closure_wait_days in \(30, 60\)/);
+  assert.match(closureMigration, /deletion_due_at/);
+  assert.match(closureMigration, /private\.is_active_superadmin\(\)/);
+  assert.match(closureMigration, /update_admin_support_ticket/);
+  assert.match(dal, /rpc\("update_admin_support_ticket"/);
+  assert.match(admin, /AccountStatusControl account=\{account\}/);
+  assert.match(admin, /scheduled_for_deletion/);
 });
 
 test("administrators receive a ticket queue with status and internal notes", () => {
@@ -48,4 +62,3 @@ test("the contact design uses regular typography and localized guidance", () => 
   assert.doesNotMatch(contactStyles, /font-weight:(?:[6-9]00|bold)/);
   assert.doesNotMatch(client, /<strong>|<b>/);
 });
-

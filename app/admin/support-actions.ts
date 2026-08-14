@@ -9,6 +9,8 @@ const schema = z.object({
   ticketId: z.uuid(),
   status: z.enum(["open", "in_progress", "waiting_on_requester", "resolved", "closed"]),
   internalNote: z.string().trim().max(3000).transform((value) => value || null),
+  closureStage: z.enum(["not_applicable", "requested", "account_suspended", "scheduled_for_deletion", "deletion_completed", "cancelled"]),
+  closureWaitDays: z.enum(["", "30", "60"]).transform((value) => value ? Number(value) as 30 | 60 : null),
 });
 
 export async function updateSupportTicketAction(formData: FormData) {
@@ -20,4 +22,3 @@ export async function updateSupportTicketAction(formData: FormData) {
   revalidatePath("/admin");
   revalidatePath("/admin/support");
 }
-

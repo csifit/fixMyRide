@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { brand } from "@/lib/brand";
+import PrivacyNoticeModal from "./PrivacyNoticeModal";
 import "./globals.css";
 
 const productionHost =
@@ -47,6 +48,7 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ "--brand-primary": brand.primaryColor } as CSSProperties}>
         {children}
+        <PrivacyNoticeModal />
       </body>
     </html>
   );

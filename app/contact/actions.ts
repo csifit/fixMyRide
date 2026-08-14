@@ -5,7 +5,7 @@ import { createSupportTicket } from "@/lib/dal/support-tickets";
 import { DataAccessError } from "@/lib/dal/errors";
 
 const schema = z.object({
-  ticketType: z.enum(["support", "problem"]),
+  ticketType: z.enum(["support", "problem", "account_closure"]),
   requesterType: z.enum(["customer", "service_organisation", "workshop_manager", "other"]),
   requesterName: z.string().trim().min(2).max(120),
   requesterEmail: z.email().max(254),
@@ -36,4 +36,3 @@ export async function createContactTicketAction(
     return { status: "unavailable" };
   }
 }
-

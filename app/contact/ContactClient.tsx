@@ -10,7 +10,7 @@ import { createContactTicketAction, type ContactTicketState } from "./actions";
 
 const initialState: ContactTicketState = { status: "idle" };
 
-export default function ContactClient({ initialType }: { initialType: "support" | "problem" }) {
+export default function ContactClient({ initialType }: { initialType: "support" | "problem" | "account_closure" }) {
   const [language] = useLanguage();
   const [state, action, pending] = useActionState(createContactTicketAction, initialState);
   const t = (key: TranslationKey) => translate(language, key);
@@ -19,7 +19,7 @@ export default function ContactClient({ initialType }: { initialType: "support" 
     <PublicSiteHeader />
     <section className="contact-hero">
       <p>{t("contact.kicker")}</p>
-      <h1>{t(initialType === "problem" ? "contact.problemTitle" : "contact.supportTitle")}</h1>
+      <h1>{t(initialType === "problem" ? "contact.problemTitle" : initialType === "account_closure" ? "contact.accountClosureTitle" : "contact.supportTitle")}</h1>
       <span>{t("contact.description")}</span>
     </section>
     <section className="contact-layout">
@@ -39,7 +39,7 @@ export default function ContactClient({ initialType }: { initialType: "support" 
           <p>{t("contact.successDescription")}</p>
           <code>{state.reference}</code>
           <p>{t("contact.referenceNote")}</p>
-          <Link href={`/contact?type=${initialType}`}>{t("contact.createAnother")}</Link>
+          <Link href={`/contact?type=${initialType === "account_closure" ? "account-closure" : initialType}`}>{t("contact.createAnother")}</Link>
         </div> : <>
           <header>
             <p>{t("contact.formKicker")}</p>
@@ -51,6 +51,7 @@ export default function ContactClient({ initialType }: { initialType: "support" 
               <label>{t("contact.ticketType")}<select name="ticketType" defaultValue={initialType}>
                 <option value="support">{t("contact.type.support")}</option>
                 <option value="problem">{t("contact.type.problem")}</option>
+                <option value="account_closure">{t("contact.type.accountClosure")}</option>
               </select></label>
               <label>{t("contact.requesterType")}<select name="requesterType" defaultValue="customer">
                 <option value="customer">{t("contact.requester.customer")}</option>
@@ -63,6 +64,7 @@ export default function ContactClient({ initialType }: { initialType: "support" 
               <label>{t("contact.name")}<input name="requesterName" minLength={2} maxLength={120} autoComplete="name" required /></label>
               <label>{t("contact.email")}<input name="requesterEmail" type="email" maxLength={254} autoComplete="email" required /></label>
             </div>
+            {initialType === "account_closure" && <p className="contact-account-closure-note">{t("contact.accountClosureNote")}</p>}
             <label>{t("contact.subject")}<input name="subject" minLength={4} maxLength={160} required /></label>
             <label>{t("contact.descriptionLabel")}<textarea name="description" minLength={20} maxLength={5000} rows={8} required placeholder={t("contact.descriptionPlaceholder")} /></label>
             <label>{t("contact.pageUrl")}<input name="pageUrl" type="url" maxLength={1000} placeholder="https://www.pitster.app/..." /></label>
@@ -76,4 +78,3 @@ export default function ContactClient({ initialType }: { initialType: "support" 
     <footer className="contact-footer"><span>© {new Date().getFullYear()} {brand.name}</span><Link href="/faq">{t("contact.readFaq")}</Link></footer>
   </main>;
 }
-
