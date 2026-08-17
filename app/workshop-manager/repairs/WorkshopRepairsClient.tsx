@@ -7,6 +7,7 @@ import { useLanguage } from "@/app/i18n/useLanguage";
 import type { ManagedRepairWorkflow, RepairWorkflowAction } from "@/lib/dal/repair-workflows";
 import { manageRepairAction, type RepairActionState } from "./actions";
 import VehicleServiceRecordForm from "./VehicleServiceRecordForm";
+import ServiceOrderControls from "./ServiceOrderControls";
 
 type Translate = (key: TranslationKey) => string;
 const idle: RepairActionState = { status: "idle" };
@@ -63,7 +64,7 @@ function RepairCard({ repair, language, t }: { repair: ManagedRepairWorkflow; la
     {repair.status === "in_service" && <SimpleAction bookingId={repair.id} kind="ready_for_collection" t={t} />}
     {repair.status === "ready_for_collection" && <SimpleAction bookingId={repair.id} kind="complete" t={t} />}
     {terminal.includes(repair.status) && <p>{t("repairLifecycle.noActions")}</p>}
-  </section><section className="booking-inbox-history"><h3>{t("workshopBookings.history")}</h3>{repair.history.map((item, index) => <article key={`${item.createdAt}-${index}`}><span><b>{t(`workshopBookings.history.${item.action}` as TranslationKey)}</b><time>{formatDateTime(language, item.createdAt)}</time></span>{item.note && <p>{item.note}</p>}</article>)}</section><VehicleServiceRecordForm repair={repair} t={t} /></div></details>;
+  </section>{["confirmed", "checked_in"].includes(repair.status) && <ServiceOrderControls repair={repair} t={t} />}<section className="booking-inbox-history"><h3>{t("workshopBookings.history")}</h3>{repair.history.map((item, index) => <article key={`${item.createdAt}-${index}`}><span><b>{t(`workshopBookings.history.${item.action}` as TranslationKey)}</b><time>{formatDateTime(language, item.createdAt)}</time></span>{item.note && <p>{item.note}</p>}</article>)}</section><VehicleServiceRecordForm repair={repair} t={t} /></div></details>;
 }
 
 export default function WorkshopRepairsClient({ repairs, logoutAction }: { repairs: ManagedRepairWorkflow[]; logoutAction: () => Promise<void> }) {

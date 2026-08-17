@@ -6,11 +6,13 @@ import { DataAccessError } from "@/lib/dal/errors";
 import { manageRepairWorkflow } from "@/lib/dal/repair-workflows";
 import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
 import { saveWorkshopVehicleServiceRecord } from "@/lib/dal/vehicle-service-history";
+import { updateManagedServiceOrderDetails } from "@/lib/dal/service-orders";
 
 export type RepairActionState = {
   status: "idle" | "saved" | "invalid" | "unauthorized" | "unavailable";
 };
 export type ServiceRecordActionState = RepairActionState;
+export type ServiceOrderActionState = RepairActionState;
 
 const itemSchema = z.object({
   type: z.enum(["labor", "part", "other"]),
@@ -91,6 +93,26 @@ export async function saveVehicleServiceRecordAction(_state: ServiceRecordAction
     revalidatePath("/workshop-manager/repairs");
     revalidatePath("/service-organisation/repairs");
     revalidatePath("/garage");
+    return { status: "saved" };
+  } catch (error) { return failure(error); }
+}
+
+const serviceOrderSchema = z.object({
+  bookingId: z.uuid(),
+  mechanicOverride: z.string().trim().max(160).transform((value) => value || null),
+  receptionCondition: z.string().trim().max(2000).transform((value) => value || null),
+});
+
+export async function updateServiceOrderAction(
+  _state: ServiceOrderActionState,
+  formData: FormData,
+): Promise<ServiceOrderActionState> {
+  const parsed = serviceOrderSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await updateManagedServiceOrderDetails(parsed.data);
+    revalidatePath("/workshop-manager/repairs");
+    revalidatePath("/service-organisation/repairs");
     return { status: "saved" };
   } catch (error) { return failure(error); }
 }

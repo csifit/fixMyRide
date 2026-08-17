@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
 import type { BookingHistoryItem, ManagedBookingStatus } from "./workshop-bookings";
 import { loadManagedVehicleServiceRecords, type VehicleServiceRecord } from "./vehicle-service-history";
+import { loadManagedServiceOrderFields } from "./service-orders";
+import type { BookingResource } from "./workshop-scheduling";
 
 export type RepairEstimateItem = {
   type: "labor" | "part" | "other";
@@ -48,6 +50,10 @@ export type ManagedRepairWorkflow = {
   confirmedStart: string | null;
   customerNote: string | null;
   workshopNote: string | null;
+  serviceOrderNumber: string | null;
+  serviceOrderMechanicOverride: string | null;
+  vehicleReceptionCondition: string | null;
+  assignedResources: BookingResource[];
   estimate: RepairEstimate | null;
   serviceRecord: VehicleServiceRecord;
   history: BookingHistoryItem[];
@@ -63,8 +69,10 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflow[]> {
   const supabase = await createClient();
-  const [{ data, error }, records] = await Promise.all([
-    supabase.rpc("get_managed_repair_workflows"), loadManagedVehicleServiceRecords(),
+  const [{ data, error }, records, serviceOrders] = await Promise.all([
+    supabase.rpc("get_managed_repair_workflows"),
+    loadManagedVehicleServiceRecords(),
+    loadManagedServiceOrderFields(),
   ]);
   if (error) fail(error);
   return ((data ?? []) as Record<string, unknown>[]).map((row) => {
@@ -72,6 +80,9 @@ export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflo
       id: null, vehicleVin: null, mileageKm: null, workSummary: null,
       inspectionSummary: null, invoiceNumber: null, invoiceIssuedOn: null,
       invoiceTotalCents: null, invoiceCurrency: null, parts: [], recommendations: [],
+    };
+    const serviceOrder = serviceOrders.get(row.booking_id as string) ?? {
+      orderNumber: null, mechanicOverride: null, receptionCondition: null, resources: [],
     };
     return ({
     id: row.booking_id as string,
@@ -91,6 +102,10 @@ export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflo
     confirmedStart: row.confirmed_start as string | null,
     customerNote: row.customer_note as string | null,
     workshopNote: row.workshop_note as string | null,
+    serviceOrderNumber: serviceOrder.orderNumber,
+    serviceOrderMechanicOverride: serviceOrder.mechanicOverride,
+    vehicleReceptionCondition: serviceOrder.receptionCondition,
+    assignedResources: serviceOrder.resources,
     estimate: row.estimate as RepairEstimate | null,
     serviceRecord: record,
     history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
