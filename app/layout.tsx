@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { brand } from "@/lib/brand";
 import PrivacyNoticeModal from "./PrivacyNoticeModal";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const productionHost =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body style={{ "--brand-primary": brand.primaryColor } as CSSProperties}>
         {children}
         <PrivacyNoticeModal />
+        <Analytics />
       </body>
     </html>
   );
