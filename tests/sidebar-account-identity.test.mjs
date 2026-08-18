@@ -22,7 +22,9 @@ test("every role workspace passes verified account identity to the sidebar", () 
 });
 
 test("shared and admin sidebars show role, username, and email", () => {
-  assert.match(shell, /<small>\{nav\.title\}<\/small>/);
+  assert.match(shell, /<small>\{t\(nav\.titleKey\)\}<\/small>/);
+  assert.match(shell, /useLanguage\(\)/);
+  assert.match(shell, /<span>\{t\(item\.key\)\}<\/span>/);
   assert.match(shell, /identity\.displayName/);
   assert.match(shell, /identity\.email/);
   assert.match(admin, /data\.administrator\.role/);

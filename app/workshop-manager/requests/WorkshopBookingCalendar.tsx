@@ -8,6 +8,7 @@ import type { ManagedWorkshopCatalogue } from "@/lib/dal/workshop-services";
 import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-scheduling";
 import { createManualAppointmentAction, saveBookingScheduleAction, type ManualAppointmentState, type ScheduleActionState } from "./actions";
 import { BookingScheduleEditor, WorkshopCapacityPanel } from "./WorkshopCapacityControls";
+import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 
 type CalendarView = "agenda" | "day" | "week" | "month";
 type Translate = (key: TranslationKey) => string;
@@ -51,7 +52,7 @@ function ManualAppointmentForm({ catalogues, language, t }: { catalogues: Manage
       <label>{t("serviceCatalogue.workshop")}<select name="workshopId" value={workshopId} onChange={(event) => setWorkshopId(event.target.value)} required>{catalogues.map((catalogue) => <option key={catalogue.workshopId} value={catalogue.workshopId}>{catalogue.workshopName}</option>)}</select></label>
       <label>{t("serviceCatalogue.name")}<select name="serviceId" key={workshopId} required>{services.map((service) => <option key={service.id} value={service.id}>{service.name}</option>)}</select></label>
       <label>{t("workshopBookings.manual.source")}<select name="source" defaultValue="manager_phone"><option value="manager_phone">{t("workshopBookings.source.manager_phone")}</option><option value="manager_walk_in">{t("workshopBookings.source.manager_walk_in")}</option><option value="manager_other">{t("workshopBookings.source.manager_other")}</option></select></label>
-      <label>{t("workshopBookings.action.time")}<input name="start" type="datetime-local" required /></label>
+      <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" name="start" required ariaLabel={t("workshopBookings.action.time")} /></label>
       <label>{t("calendar.duration")}<select name="durationMinutes" defaultValue="60">{[30, 45, 60, 90, 120, 180].map((minutes) => <option key={minutes} value={minutes}>{minutes} min</option>)}</select></label>
       <label>{t("workshopBookings.customer")}<input name="customerName" minLength={2} maxLength={160} required /></label>
       <label>{t("workshopBookings.manual.phone")}<input name="customerPhone" type="tel" maxLength={40} /></label>

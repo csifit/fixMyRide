@@ -6,6 +6,7 @@ import { formatDateTime, translate, type Language, type TranslationKey } from "@
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { ManagedQualityWorkspace, MaintenanceDueReminder, QualityJob, WarrantyCase } from "@/lib/dal/workshop-quality";
 import { createWarrantyCaseAction, maintenanceOutreachAction, resolveWarrantyCaseAction, saveJobWarrantyAction, type QualityActionState } from "./actions";
+import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 
 type T = (key: TranslationKey) => string;
 const idle: QualityActionState = { status: "idle" };
@@ -13,7 +14,7 @@ function Result({ state, t }: { state: QualityActionState; t: T }) { return stat
 
 function WarrantySettings({ job, t }: { job: QualityJob; t: T }) {
   const [state, action, pending] = useActionState(saveJobWarrantyAction, idle);
-  return <form className="quality-warranty-row" action={action}><input type="hidden" name="bookingId" value={job.id} /><span><strong>{job.vehicleRegistration} · {job.serviceName}</strong><small>{job.workshopName} · {job.customerName}</small></span><label>{t("quality.labourWarranty")}<input type="date" name="labourWarrantyExpiresOn" defaultValue={job.labourWarrantyExpiresOn ?? ""} /></label><button disabled={pending}>{t("common.save")}</button><Result state={state} t={t} /></form>;
+  return <form className="quality-warranty-row" action={action}><input type="hidden" name="bookingId" value={job.id} /><span><strong>{job.vehicleRegistration} · {job.serviceName}</strong><small>{job.workshopName} · {job.customerName}</small></span><label>{t("quality.labourWarranty")}<PlatformDateTimeInput mode="date" name="labourWarrantyExpiresOn" defaultValue={job.labourWarrantyExpiresOn ?? ""} ariaLabel={t("quality.labourWarranty")} /></label><button disabled={pending}>{t("common.save")}</button><Result state={state} t={t} /></form>;
 }
 
 function NewCase({ workspace, t }: { workspace: ManagedQualityWorkspace; t: T }) {

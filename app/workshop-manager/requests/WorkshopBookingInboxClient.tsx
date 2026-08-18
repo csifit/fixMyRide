@@ -10,6 +10,7 @@ import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-sched
 import type { WorkshopOperations } from "@/lib/dal/workshop-operations";
 import { manageWorkshopBookingAction, type WorkshopBookingActionState } from "./actions";
 import WorkshopBookingCalendar from "./WorkshopBookingCalendar";
+import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 
 type ActionKind = "confirm" | "propose_time" | "reschedule" | "decline" | "cancel";
 type Translate = (key: TranslationKey) => string;
@@ -25,7 +26,7 @@ function ActionForm({ bookingId, kind, t }: { bookingId: string; kind: ActionKin
     <input type="hidden" name="bookingId" value={bookingId} />
     <input type="hidden" name="action" value={kind} />
     <input type="hidden" name="requestedStart" value={isoStart} />
-    {needsStart && <label>{t("workshopBookings.action.time")}<input type="datetime-local" value={localStart} onChange={(event) => setLocalStart(event.target.value)} required /></label>}
+    {needsStart && <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" value={localStart} onChange={setLocalStart} required ariaLabel={t("workshopBookings.action.time")} /></label>}
     <label>{t(needsReason ? "workshopBookings.action.reason" : "workshopBookings.action.note")}<textarea name="note" rows={2} maxLength={1000} required={needsReason} /></label>
     {state.status !== "idle" && <p className={["confirmed", "proposed", "rescheduled", "declined", "cancelled"].includes(state.status) ? "note-success" : "note-error"} role="status">{t(`workshopBookings.result.${state.status}` as TranslationKey)}</p>}
     <button disabled={pending}>{t(pending ? "workshopBookings.action.saving" : `workshopBookings.action.${kind}` as TranslationKey)}</button>

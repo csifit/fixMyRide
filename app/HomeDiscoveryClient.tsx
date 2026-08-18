@@ -15,6 +15,7 @@ import {
   vehicleTypes,
   type AutomotiveVehicleType,
 } from "@/lib/automotive-service-catalogue";
+import PlatformDateTimeInput from "./PlatformDateTimeInput";
 
 type HomeVehicleType = AutomotiveVehicleType;
 type BrowsableService = { code: string; name: string };
@@ -170,7 +171,7 @@ export default function HomeDiscoveryClient({
             <GoogleAddressSearch label={t("home.search.location")} placeholder={t("home.search.locationPlaceholder")} help={t("home.search.locationHelp")} unavailable={t("home.search.locationUnavailable")} language={language} formFields={false} onSelection={setLocationSelection} onTextChange={setLocationText} />
           </div>
           <label><span>{t("home.search.date")}</span>
-            <input type="date" value={preferredDate} min={date} onChange={(event) => setPreferredDate(event.target.value)} />
+            <PlatformDateTimeInput mode="date" value={preferredDate} min={date} onChange={setPreferredDate} ariaLabel={t("home.search.date")} />
           </label>
           <div className="home-search-summary"><strong>{filtered.length}</strong><span>{t("home.search.matches")}</span></div>
           <a className="home-results-button" href="#featured-workshops">{t("home.search.show")}</a>

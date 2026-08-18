@@ -7,6 +7,7 @@ import { getWorkshopManagerAccess } from "@/lib/dal/platform-access";
 import { loadManagedServiceProviders } from "@/lib/dal/service-providers";
 import WorkshopClaimCard from "./WorkshopClaimCard";
 import WorkshopLocationMap from "./WorkshopLocationMap";
+import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 
 export const dynamic = "force-dynamic";
 
@@ -100,7 +101,7 @@ export default async function WorkshopPage({ params, searchParams }: {
           <header><p>Request an appointment</p><h2>What does your vehicle need?</h2><span>Choose a service and preferred date. The workshop confirms the final appointment.</span></header>
           <form action={`/workshops/${workshop.slug}/request`} method="get">
             <label>Service<select name="service" defaultValue={recommendedService.id} required>{orderedServices.map((service, index) => <option key={service.id} value={service.id}>{index === 0 ? "Recommended · " : ""}{service.name} · {price(service)}</option>)}</select></label>
-            <label>Preferred date<input name="date" type="date" defaultValue={date ?? ""} required /></label>
+            <label>Preferred date<PlatformDateTimeInput mode="date" name="date" defaultValue={date ?? ""} required ariaLabel="Preferred date" /></label>
             <button>Check appointment</button>
           </form>
           <div className="workshop-diagnosis-recommendation"><strong>Recommended first step: {recommendedService.name}</strong><span>{recommendedService.bookingMode === "direct" ? "This workshop has not published a separate diagnosis service yet." : `Diagnosis first: the vehicle is assessed${diagnosisPrice(recommendedService) ? ` for ${diagnosisPrice(recommendedService)}` : ""}, before you approve any further repair.`}</span></div>

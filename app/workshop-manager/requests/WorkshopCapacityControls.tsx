@@ -12,6 +12,7 @@ import {
   setScheduleResourceActiveAction,
   type ScheduleActionState,
 } from "./actions";
+import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 
 type Translate = (key: TranslationKey) => string;
 const idle: ScheduleActionState = { status: "idle" };
@@ -45,8 +46,8 @@ function AbsenceForm({ resourceId, t }: { resourceId: string; t: Translate }) {
     <input type="hidden" name="resourceId" value={resourceId} />
     <input type="hidden" name="startsAt" value={startsAt ? new Date(startsAt).toISOString() : ""} />
     <input type="hidden" name="endsAt" value={endsAt ? new Date(endsAt).toISOString() : ""} />
-    <label>{t("capacity.absenceStarts")}<input type="datetime-local" value={startsAt} onChange={(event) => setStartsAt(event.target.value)} required /></label>
-    <label>{t("capacity.absenceEnds")}<input type="datetime-local" value={endsAt} onChange={(event) => setEndsAt(event.target.value)} required /></label>
+    <label>{t("capacity.absenceStarts")}<PlatformDateTimeInput mode="datetime-local" value={startsAt} onChange={setStartsAt} required ariaLabel={t("capacity.absenceStarts")} /></label>
+    <label>{t("capacity.absenceEnds")}<PlatformDateTimeInput mode="datetime-local" value={endsAt} onChange={setEndsAt} required ariaLabel={t("capacity.absenceEnds")} /></label>
     <label>{t("capacity.absenceReason")}<input name="reason" maxLength={240} /></label>
     <button disabled={pending}>{t("capacity.addAbsence")}</button><Result state={state} t={t} />
   </form>;
@@ -81,7 +82,7 @@ export function BookingScheduleEditor({ booking, schedule, assigned, t }: { book
   const resources = schedule?.resources.filter((resource) => resource.active) ?? [];
   const save = () => startTransition(async () => setState(await saveBookingScheduleAction({ bookingId: booking.id, start: new Date(start).toISOString(), durationMinutes: duration, mechanicId: mechanicId || null, facilityId: facilityId || null })));
   return <section className="booking-schedule-editor"><h4>{t("capacity.assignment")}</h4><div>
-    <label>{t("workshopBookings.action.time")}<input type="datetime-local" value={start} onChange={(event) => setStart(event.target.value)} /></label>
+    <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" value={start} onChange={setStart} ariaLabel={t("workshopBookings.action.time")} /></label>
     <label>{t("calendar.duration")}<input type="number" min={15} max={1440} step={15} value={duration} onChange={(event) => setDuration(Number(event.target.value))} /></label>
     <label>{t("capacity.kind.mechanic")}<select value={mechanicId} onChange={(event) => setMechanicId(event.target.value)}><option value="">{t("capacity.unassigned")}</option>{resources.filter((item) => item.kind === "mechanic").map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
     <label>{t("capacity.facility")}<select value={facilityId} onChange={(event) => setFacilityId(event.target.value)}><option value="">{t("capacity.unassigned")}</option>{resources.filter((item) => item.kind !== "mechanic").map((item) => <option key={item.id} value={item.id}>{item.name} ({t(`capacity.kind.${item.kind}` as TranslationKey)})</option>)}</select></label>
