@@ -61,7 +61,7 @@ function SupportTickets({ data, language, t }: { data: AdminDashboardData; langu
 
 function Content({ section, data, language, t }: { section: AdminSection; data: AdminDashboardData; language: Language; t: T }) {
   if (section === "overview") return <Overview data={data} language={language} t={t} />;
-  if (section === "providers") return <><OrganisationAdministration providers={data.providers} invitations={data.workflow.invitations} t={t} /><ProviderAdministration providers={data.providers} workflow={data.workflow} language={language} t={t} /></>;
+  if (section === "providers") return <><OrganisationAdministration providers={data.providers} invitations={data.workflow.invitations} workshops={data.workflow.workshops} t={t} /><ProviderAdministration providers={data.providers} workflow={data.workflow} language={language} t={t} /></>;
   if (section === "workshops") return <WorkshopAdministration providers={data.providers} workflow={data.workflow} language={language} t={t} />;
   if (section === "customers") return <Table headers={[t("automotiveAdmin.customer"), t("automotiveAdmin.phone"), t("automotiveAdmin.vehicles"), t("automotiveAdmin.bookings"), t("adminWorkflow.accountStatus")]} rows={data.customers.map((row) => {
     const account = data.workflow.accounts.find((item) => item.customerId === row.id);

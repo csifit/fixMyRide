@@ -21,13 +21,14 @@ async function loadInvitation(id: string, token: string) {
     const digest = createHash("sha256").update(token).digest("hex");
     const { data, error } = await createServiceClient()
       .from("service_provider_invitations")
-      .select("id, email, invitation_kind, status, expires_at, service_providers(display_name), workshops(display_name)")
+      .select("id, email, invitation_kind, status, expires_at, promotional_trial_days, service_providers(display_name), manager_workshop:workshops!service_provider_invitations_workshop_id_fkey(display_name), claim_workshop:workshops!service_provider_invitations_claim_workshop_id_fkey(display_name)")
       .eq("id", id).eq("token_digest", digest).maybeSingle();
     if (error || !data || data.status !== "pending" || new Date(data.expires_at).getTime() <= Date.now()) return null;
     const provider = data.service_providers as unknown as { display_name: string } | null;
-    const workshop = data.workshops as unknown as { display_name: string } | null;
+    const managerWorkshop = data.manager_workshop as unknown as { display_name: string } | null;
+    const claimWorkshop = data.claim_workshop as unknown as { display_name: string } | null;
     if (!provider) return null;
-    return { id: data.id, token, email: data.email, kind: data.invitation_kind, providerName: provider.display_name, workshopName: workshop?.display_name ?? null };
+    return { id: data.id, token, email: data.email, kind: data.invitation_kind, providerName: provider.display_name, workshopName: claimWorkshop?.display_name ?? managerWorkshop?.display_name ?? null, promotionalTrialDays: data.promotional_trial_days as 60 | 90 | null };
   } catch { return null; }
 }
 

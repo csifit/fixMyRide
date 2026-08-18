@@ -9,7 +9,7 @@ import { registerInvitationAction, type InvitationRegistrationState } from "./ac
 const initial: InvitationRegistrationState = { status: "idle" };
 
 export default function InvitationRegistrationClient({ invitation }: {
-  invitation: { id: string; token: string; email: string; kind: string; providerName: string; workshopName: string | null };
+  invitation: { id: string; token: string; email: string; kind: string; providerName: string; workshopName: string | null; promotionalTrialDays: 60 | 90 | null };
 }) {
   const [language, setLanguage, ready] = useLanguage();
   const [state, action, pending] = useActionState(registerInvitationAction, initial);
@@ -22,6 +22,7 @@ export default function InvitationRegistrationClient({ invitation }: {
     <h1>{t(owner ? "invitation.ownerTitle" : "invitation.managerTitle")}</h1>
     <p>{t(owner ? "invitation.ownerDescription" : "invitation.managerDescription")}</p>
     <div className="invitation-summary"><strong>{invitation.providerName}</strong>{invitation.workshopName && <span>{invitation.workshopName}</span>}</div>
+    {owner && invitation.promotionalTrialDays && <p className="note-success">{t("invitation.trialDescription").replace("{days}", String(invitation.promotionalTrialDays))}</p>}
     <form action={action}>
       <input type="hidden" name="invitationId" value={invitation.id} /><input type="hidden" name="token" value={invitation.token} />
       <label>{t("invitation.fullName")}<input name="fullName" required minLength={2} maxLength={160} autoComplete="name" /></label>

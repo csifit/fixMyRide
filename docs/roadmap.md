@@ -148,6 +148,13 @@
   workshop-manager portal, routes accepted owners to that workspace, activates
   still-pending organisations on owner acceptance, and keeps payment out of
   location creation while retaining billing as a publication requirement.
+- Migration 064 lets an MFA-authenticated administrator bind a 60- or 90-day
+  promotional trial to an unclaimed curated workshop while inviting its Service
+  Organisation owner. Acceptance atomically assigns and claims the workshop,
+  creates the owner as its primary manager, and starts non-renewable promotional
+  coverage. Ownership remains claimed after expiry; public booking coverage then
+  requires paid Stripe coverage. Billing setup during the promotion uses the
+  recorded trial deadline as the first EUR 35 monthly charge date.
 
 Each milestone is complete only when its migration is reviewed, automated tests
 and production build pass, all four languages are present, and the hosted

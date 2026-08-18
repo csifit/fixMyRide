@@ -19,6 +19,7 @@ type InvitationEmailInput = {
   assignmentRole?: "primary_manager" | "manager";
   invitationId: string;
   replacement?: boolean;
+  promotionalTrialDays?: 60 | 90 | null;
 };
 
 export type InvitationEmailDelivery =
@@ -55,13 +56,16 @@ function emailCopy(input: InvitationEmailInput) {
     : "location manager";
 
   if (input.kind === "admin_service_organisation") {
+    const trialDetail = input.promotionalTrialDays
+      ? ` Accepting it claims ${workshopName} and starts a ${input.promotionalTrialDays}-day free trial. The standard price after the trial is €35 per workshop per month.`
+      : "";
     if (input.replacement) {
       return {
         badge: "ADMIN → SERVICE ORGANISATION · REPLACEMENT",
         subject: `Replacement admin invitation to service organisation: ${organisationName}`,
         title: "Admin invitation resent to a service organisation",
         description: `A ${brand.name} administrator reissued your organisation-owner invitation for ${organisationName}.`,
-        detail: "This replacement invalidates every earlier invitation link. Use only the new link in this email.",
+        detail: `This replacement invalidates every earlier invitation link. Use only the new link in this email.${trialDetail}`,
         action: "Accept replacement invitation",
       };
     }
@@ -70,7 +74,7 @@ function emailCopy(input: InvitationEmailInput) {
       subject: `Admin invitation to service organisation: ${organisationName}`,
       title: "Admin invitation to a service organisation",
       description: `A ${brand.name} administrator invited you to become the organisation owner for ${organisationName}.`,
-      detail: "This is an administrator-issued invitation. It is not a location-manager invitation sent by a service organisation.",
+      detail: `This is an administrator-issued invitation. It is not a location-manager invitation sent by a service organisation.${trialDetail}`,
       action: "Accept admin invitation",
     };
   }

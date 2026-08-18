@@ -94,6 +94,8 @@ const organisationSchema = z.object({
   displayName: z.string().trim().min(2).max(160),
   countryCode: z.string().trim().regex(/^[A-Za-z]{2}$/),
   email: z.email().max(254),
+  workshopId: z.uuid(),
+  promotionalTrialDays: z.coerce.number().pipe(z.union([z.literal(60), z.literal(90)])),
 });
 export async function inviteServiceOrganisationAction(
   _state: AdminWorkflowActionState, formData: FormData,
@@ -116,6 +118,8 @@ export async function inviteServiceOrganisationAction(
       expiresAt,
       organisationName: parsed.data.displayName,
       invitationId: created.invitationId,
+      workshopName: created.workshopName,
+      promotionalTrialDays: created.promotionalTrialDays,
     });
     refresh();
     return {
@@ -139,13 +143,17 @@ export async function resendServiceOrganisationInvitationAction(
       tokenDigest: secret.digest,
       expiresAt,
     });
+    const context = await getInvitationEmailContext(invitation.invitationId);
+    if (!context) return { status: "unavailable" };
     const url = invitationUrl(invitation.invitationId, secret.token);
     const email = await sendInvitationEmail({
       kind: "admin_service_organisation",
       to: invitation.email,
       invitationUrl: url,
       expiresAt,
-      organisationName: invitation.providerName,
+      organisationName: context.organisationName,
+      workshopName: context.workshopName,
+      promotionalTrialDays: context.promotionalTrialDays,
       invitationId: invitation.invitationId,
       replacement: true,
     });

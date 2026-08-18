@@ -69,6 +69,8 @@ export type AdminOrganisationWorkflow = {
     status: "pending" | "accepted" | "revoked" | "expired";
     providerName: string;
     workshopName: string | null;
+    workshopId: string | null;
+    promotionalTrialDays: 60 | 90 | null;
     expiresAt: string;
     createdAt: string;
   }>;
@@ -106,20 +108,40 @@ export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisation
     { data: unownedRows, error: unownedError },
     { data: locationRows, error: locationError },
     { data: providerRows, error: providerError },
+    { data: trialInvitationRows, error: trialInvitationError },
   ] = await Promise.all([
     supabase.rpc("get_admin_organisation_workflow"),
     supabase.rpc("get_admin_workshop_claim_states"),
     supabase.rpc("get_admin_unowned_workshops"),
     supabase.rpc("get_admin_workshop_location_details"),
     supabase.rpc("get_admin_service_provider_details"),
+    supabase.rpc("get_admin_promotional_trial_invitations"),
   ]);
   if (error || !data) fail(error ?? {});
   if (claimError) fail(claimError);
   if (unownedError) fail(unownedError);
   if (locationError) fail(locationError);
   if (providerError) fail(providerError);
+  if (trialInvitationError) fail(trialInvitationError);
   const workflow = data as unknown as AdminOrganisationWorkflow;
   workflow.providers = (providerRows ?? []) as unknown as AdminOrganisationWorkflow["providers"];
+  const trialInvitationById = new Map(
+    ((trialInvitationRows ?? []) as Array<{
+      invitation_id: string;
+      workshop_id: string;
+      workshop_name: string;
+      promotional_trial_days: 60 | 90;
+    }>).map((row) => [row.invitation_id, row]),
+  );
+  workflow.invitations = workflow.invitations.map((invitation) => {
+    const trial = trialInvitationById.get(invitation.id);
+    return {
+      ...invitation,
+      workshopId: trial?.workshop_id ?? null,
+      workshopName: trial?.workshop_name ?? invitation.workshopName,
+      promotionalTrialDays: trial?.promotional_trial_days ?? null,
+    };
+  });
   for (const row of (unownedRows ?? []) as Array<Record<string, unknown>>) {
     workflow.workshops.push({
       id: row.workshop_id as string,
@@ -177,6 +199,7 @@ export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisation
 export async function createAdminOrganisationInvitation(input: {
   legalName: string; displayName: string; countryCode: string;
   email: string; tokenDigest: string; expiresAt: string;
+  workshopId: string; promotionalTrialDays: 60 | 90;
 }) {
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("create_admin_service_organisation_invitation", {
@@ -186,9 +209,16 @@ export async function createAdminOrganisationInvitation(input: {
     requested_email: input.email,
     requested_token_digest: input.tokenDigest,
     requested_expires_at: input.expiresAt,
+    requested_workshop_id: input.workshopId,
+    requested_trial_days: input.promotionalTrialDays,
   });
   if (error || !data) fail(error ?? {});
-  return data as unknown as { serviceProviderId: string; invitationId: string };
+  return data as unknown as {
+    serviceProviderId: string;
+    invitationId: string;
+    workshopName: string;
+    promotionalTrialDays: 60 | 90;
+  };
 }
 
 export async function resendAdminOrganisationInvitation(input: {

@@ -66,13 +66,20 @@ function ResendOrganisationInvitation({ invitationId, t }: {
   </>;
 }
 
-export function OrganisationAdministration({ providers, invitations, t }: {
+export function OrganisationAdministration({ providers, invitations, workshops, t }: {
   providers: Array<{ id: string; displayName: string; status: string }>;
-  invitations: AdminOrganisationWorkflow["invitations"]; t: T;
+  invitations: AdminOrganisationWorkflow["invitations"];
+  workshops: AdminOrganisationWorkflow["workshops"]; t: T;
 }) {
   const [state, action, pending] = useActionState(inviteServiceOrganisationAction, initial);
   const pendingInvitations = invitations.filter((item) =>
     item.status === "pending" && item.kind === "organisation_owner");
+  const reservedWorkshopIds = new Set(pendingInvitations.map((item) => item.workshopId));
+  const claimableWorkshops = workshops.filter((workshop) =>
+    workshop.creationSource === "administrator"
+      && workshop.claimStatus === "unclaimed"
+      && workshop.providerId === null
+      && !reservedWorkshopIds.has(workshop.id));
   return <div className="admin-workflow-stack">
     <details className="admin-workflow-card" open><summary><span><strong>{t("adminWorkflow.inviteOrganisation")}</strong><small>{t("adminWorkflow.inviteOrganisationHelp")}</small></span></summary>
       <form className="admin-workflow-form" action={action}>
@@ -80,11 +87,13 @@ export function OrganisationAdministration({ providers, invitations, t }: {
         <label>{t("adminWorkflow.displayName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
         <label>{t("adminWorkflow.country")}<input name="countryCode" defaultValue="RO" required pattern="[A-Za-z]{2}" maxLength={2} /></label>
         <label>{t("adminWorkflow.ownerEmail")}<input name="email" type="email" required /></label>
-        <button disabled={pending}>{t("adminWorkflow.createInvitation")}</button><Result state={state} t={t} />
+        <label>{t("adminWorkflow.claimWorkshop")}<select name="workshopId" required defaultValue=""><option value="" disabled>{t("adminWorkflow.chooseClaimWorkshop")}</option>{claimableWorkshops.map((workshop) => <option key={workshop.id} value={workshop.id}>{workshop.displayName} · {workshop.city ?? "—"}</option>)}</select></label>
+        <label>{t("adminWorkflow.promotionalTrial")}<select name="promotionalTrialDays" defaultValue="60"><option value="60">{t("adminWorkflow.trial60")}</option><option value="90">{t("adminWorkflow.trial90")}</option></select></label>
+        <button disabled={pending || !claimableWorkshops.length}>{t("adminWorkflow.createInvitation")}</button><Result state={state} t={t} />
       </form>
     </details>
     <section className="admin-workflow-card"><h3>{t("adminWorkflow.pendingInvitations")}</h3>
-      <div className="admin-invitation-list">{pendingInvitations.map((item) => <article key={item.id}><span><strong>{item.email}</strong><small>{item.providerName}</small></span><b>{item.kind}</b><ResendOrganisationInvitation invitationId={item.id} t={t} /></article>)}{!pendingInvitations.length && <p>{t("adminWorkflow.noPendingInvitations")}</p>}</div>
+      <div className="admin-invitation-list">{pendingInvitations.map((item) => <article key={item.id}><span><strong>{item.email}</strong><small>{item.providerName}{item.workshopName ? ` · ${item.workshopName}` : ""}</small></span><b>{item.promotionalTrialDays ? `${item.promotionalTrialDays} ${t("adminWorkflow.days")}` : item.kind}</b><ResendOrganisationInvitation invitationId={item.id} t={t} /></article>)}{!pendingInvitations.length && <p>{t("adminWorkflow.noPendingInvitations")}</p>}</div>
     </section>
     <section className="admin-workflow-card"><h3>{t("adminWorkflow.organisationSummary")}</h3><p>{providers.length} {t("automotiveAdmin.providers")}</p></section>
   </div>;

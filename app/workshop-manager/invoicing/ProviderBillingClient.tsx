@@ -87,18 +87,20 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
         <div className="location-subscriptions-title"><div><h2>{t("providerBilling.locationsTitle")}</h2><p>{t("providerBilling.locationsDescription")}</p></div><strong>{money(language, billing.plan.monthlyPriceCents, billing.plan.currency)} / {t("providerBilling.locationPerMonth")}</strong></div>
         <div className="location-subscription-grid">{billing.locations.map((workshop) => {
           const canActivate = !workshop.legacyStripeSubscriptionId
-            && ["uncovered", "grace"].includes(workshop.coverageState)
+            && (["uncovered", "grace"].includes(workshop.coverageState)
+              || workshop.coverageState === "trial")
             && !paymentAttention;
           const isFreeUntilNextMonth = workshop.billableFrom?.slice(0, 10)
             === subscription.nextBillingAt.slice(0, 10);
           return <article className={`location-subscription-card coverage-${workshop.coverageState}`} key={workshop.workshopId}>
             <header><div><h3>{workshop.displayName}</h3><p>{workshop.city ?? billing.displayName}</p></div><b>{t(`organisationCoverage.coverage.${workshop.coverageState}` as TranslationKey)}</b></header>
-            <dl><div><dt>{t("providerBilling.status")}</dt><dd>{workshop.coverageStartedAt ? t("providerBilling.locationActive") : t("providerBilling.locationAwaitingBilling")}</dd></div><div><dt>{t("providerBilling.billableFrom")}</dt><dd>{workshop.billableFrom ? formatDateTime(language, workshop.billableFrom) : "—"}</dd></div></dl>
+            <dl><div><dt>{t("providerBilling.status")}</dt><dd>{workshop.promotionalTrialActive ? t("providerBilling.locationTrialActive") : workshop.coverageStartedAt ? t("providerBilling.locationActive") : t("providerBilling.locationAwaitingBilling")}</dd></div><div><dt>{t("providerBilling.billableFrom")}</dt><dd>{workshop.billableFrom ? formatDateTime(language, workshop.billableFrom) : workshop.promotionalTrialEndsAt ? formatDateTime(language, workshop.promotionalTrialEndsAt) : "—"}</dd></div></dl>
             {isFreeUntilNextMonth && <p className="location-grace">{t("providerBilling.freeUntilNextMonth")}</p>}
+            {workshop.promotionalTrialEndsAt && <p className="location-grace">{t(workshop.promotionalTrialActive ? "providerBilling.promotionalTrialUntil" : "providerBilling.promotionalTrialEnded")} · {formatDateTime(language, workshop.promotionalTrialEndsAt)}</p>}
             {workshop.coverageState === "grace" && workshop.coverageGraceEndsAt && <p className="location-grace">{t("providerBilling.migrationTitle")} · {formatDateTime(language, workshop.coverageGraceEndsAt)}</p>}
             {workshop.legacyStripeSubscriptionId && <p className="location-grace">{t("providerBilling.legacyLocationBilling")}</p>}
             <div className="provider-subscription-actions">
-              {stripeConfigured && canActivate && <form action={startStripeCheckoutAction}><input type="hidden" name="providerId" value={billing.providerId} /><input type="hidden" name="workshopId" value={workshop.workshopId} /><button className="organization-action">{t("providerBilling.activateLocation")}</button></form>}
+              {stripeConfigured && canActivate && <form action={startStripeCheckoutAction}><input type="hidden" name="providerId" value={billing.providerId} /><input type="hidden" name="workshopId" value={workshop.workshopId} /><button className="organization-action">{t(workshop.coverageState === "trial" ? "providerBilling.setUpBilling" : "providerBilling.activateLocation")}</button></form>}
             </div>
           </article>;
         })}</div>

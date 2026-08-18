@@ -15,7 +15,7 @@ export type ProviderBilling = {
   billingProfile: { billingEmail: string | null; billingContact: string | null; taxIdentifier: string | null; addressLine1: string | null; addressLine2: string | null; city: string | null; postalCode: string | null; countryCode: string };
   plan: { id: string; name: string; monthlyPriceCents: number; currency: string; smsIncluded: boolean };
   organisationSubscription: { status: ProviderSubscriptionStatus; stripeSubscriptionId: string | null; stripeSubscriptionItemId: string | null; billingQuantity: number; paymentMethodConfirmedAt: string | null; paymentGraceEndsAt: string | null; currentPeriodStart: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean; nextBillingAt: string; upcomingAmountCents: number };
-  locations: Array<{ workshopId: string; displayName: string; city: string | null; workshopStatus: string; subscriptionStatus: ProviderSubscriptionStatus; legacyStripeSubscriptionId: string | null; coverageStartedAt: string | null; coverageGraceEndsAt: string | null; billableFrom: string | null; coverageState: "covered" | "grace" | "attention" | "uncovered" }>;
+  locations: Array<{ workshopId: string; displayName: string; city: string | null; workshopStatus: string; subscriptionStatus: ProviderSubscriptionStatus; legacyStripeSubscriptionId: string | null; coverageStartedAt: string | null; coverageGraceEndsAt: string | null; billableFrom: string | null; promotionalTrialStartedAt: string | null; promotionalTrialEndsAt: string | null; promotionalTrialActive: boolean; coverageState: "covered" | "trial" | "grace" | "attention" | "uncovered" }>;
   invoices: Array<{ id: string; number: string | null; status: string; currency: string; amountDueCents: number; amountPaidCents: number; hostedInvoiceUrl: string | null; invoicePdfUrl: string | null; periodStart: string | null; periodEnd: string | null; dueAt: string | null; paidAt: string | null }>;
 };
 
@@ -25,10 +25,60 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadProviderBilling(providerId: string): Promise<ProviderBilling> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_my_provider_billing", { requested_provider_id: providerId });
+  const [
+    { data, error },
+    { data: trialRows, error: trialError },
+  ] = await Promise.all([
+    supabase.rpc("get_my_provider_billing", { requested_provider_id: providerId }),
+    supabase.rpc("get_my_provider_promotional_trials", { requested_provider_id: providerId }),
+  ]);
   if (error) fail(error);
+  if (trialError) fail(trialError);
   if (!data) throw new DataAccessError("unavailable");
-  return data as unknown as ProviderBilling;
+  const billing = data as unknown as ProviderBilling;
+  const trialByWorkshop = new Map(
+    ((trialRows ?? []) as Array<{
+      workshop_id: string;
+      promotional_trial_started_at: string;
+      promotional_trial_ends_at: string;
+    }>).map((row) => [row.workshop_id, row]),
+  );
+  const now = Date.now();
+  billing.locations = billing.locations.map((location) => {
+    const trial = trialByWorkshop.get(location.workshopId);
+    const trialActive = trial
+      ? new Date(trial.promotional_trial_ends_at).getTime() > now
+      : false;
+    return {
+      ...location,
+      promotionalTrialStartedAt: trial?.promotional_trial_started_at ?? null,
+      promotionalTrialEndsAt: trial?.promotional_trial_ends_at ?? null,
+      promotionalTrialActive: trialActive,
+      coverageState: trialActive && location.coverageState !== "covered"
+        ? "trial"
+        : location.coverageState,
+    };
+  });
+  const activeTrialLocations = billing.locations.filter((location) =>
+    location.promotionalTrialActive && location.promotionalTrialEndsAt,
+  );
+  if (activeTrialLocations.length) {
+    const nextTrialEnd = activeTrialLocations
+      .map((location) => location.promotionalTrialEndsAt as string)
+      .sort()[0];
+    billing.organisationSubscription.nextBillingAt = nextTrialEnd;
+    billing.organisationSubscription.upcomingAmountCents = Math.max(
+      billing.organisationSubscription.upcomingAmountCents,
+      activeTrialLocations.length * billing.plan.monthlyPriceCents,
+    );
+  }
+  billing.organisationSubscription.billingQuantity = Math.max(
+    billing.organisationSubscription.billingQuantity,
+    billing.locations.filter((location) =>
+      location.coverageState === "covered" || location.coverageState === "trial",
+    ).length,
+  );
+  return billing;
 }
 
 export async function updateProviderBillingProfile(providerId: string, profile: ProviderBilling["billingProfile"]) {

@@ -124,6 +124,11 @@ export async function startStripeCheckoutAction(formData: FormData) {
       const nextMonthStart = Math.floor(Date.UTC(
         now.getUTCFullYear(), now.getUTCMonth() + 1, 1, 0, 0, 0,
       ) / 1000);
+      const promotionalTrialEnd = location.promotionalTrialEndsAt
+        ? Math.floor(new Date(location.promotionalTrialEndsAt).getTime() / 1000)
+        : null;
+      const activePromotionalTrial = promotionalTrialEnd !== null
+        && promotionalTrialEnd > Math.floor(now.getTime() / 1000);
       const session = await stripe.checkout.sessions.create({
         mode: "subscription", customer: customerId,
         payment_method_collection: "always",
@@ -134,7 +139,14 @@ export async function startStripeCheckoutAction(formData: FormData) {
         metadata: { service_provider_id: billing.providerId, activation_workshop_id: location.workshopId },
         subscription_data: {
           metadata: { service_provider_id: billing.providerId },
-          billing_cycle_anchor: nextMonthStart,
+          ...(activePromotionalTrial
+            ? {
+                trial_end: promotionalTrialEnd,
+                trial_settings: { end_behavior: { missing_payment_method: "pause" as const } },
+              }
+            : location.promotionalTrialStartedAt
+              ? {}
+              : { billing_cycle_anchor: nextMonthStart }),
           proration_behavior: "none",
         },
         success_url: `${siteUrl}/service-organisation/billing?providerId=${billing.providerId}&workshopId=${location.workshopId}&checkout=success`,
