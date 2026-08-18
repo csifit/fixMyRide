@@ -4,7 +4,7 @@
 
 import Link from "@/app/WorkspaceLink";
 import { useActionState, useState } from "react";
-import { translate, type TranslationKey } from "@/app/i18n";
+import { locales, translate, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { ManagedWorkshopCatalogue, ManagedWorkshopService } from "@/lib/dal/workshop-services";
 import { standardServiceCategories, standardServiceTemplates, vehicleTypes, type StandardServiceTemplate } from "@/lib/automotive-service-catalogue";
@@ -60,10 +60,10 @@ function ServiceEditor({ service, t }: { service: ManagedWorkshopService; t: Tra
   </details>;
 }
 
-function WorkshopCatalogue({ catalogue, t }: { catalogue: ManagedWorkshopCatalogue; t: Translate }) {
+function WorkshopCatalogue({ catalogue, templates, t }: { catalogue: ManagedWorkshopCatalogue; templates: StandardServiceTemplate[]; t: Translate }) {
   const [state, action, pending] = useActionState(createServiceAction, initial);
   const [templateCode, setTemplateCode] = useState("");
-  const preset = standardServiceTemplates.find((service) => `${service.vehicleType}:${service.code}` === templateCode);
+  const preset = templates.find((service) => `${service.vehicleType}:${service.code}` === templateCode);
   return <section className="catalogue-workshop">
     <header><div><p>{t("serviceCatalogue.workshop")}</p><h2>{catalogue.workshopName}</h2></div><span>{catalogue.services.filter((service) => service.active).length} {t("serviceCatalogue.publishedCount")}</span></header>
     <div className="settings-accordions">
@@ -72,9 +72,9 @@ function WorkshopCatalogue({ catalogue, t }: { catalogue: ManagedWorkshopCatalog
     </div>
     <details className="settings-accordion catalogue-add">
       <summary><strong>+ {t("serviceCatalogue.addService")}</strong></summary>
-      <form className="settings-card" action={action}>
+      <form className="settings-card catalogue-add-form" action={action}>
         <input type="hidden" name="workshopId" value={catalogue.workshopId} />
-        <label>{t("serviceCatalogue.template")}<select value={templateCode} onChange={(event) => setTemplateCode(event.target.value)}><option value="">{t("serviceCatalogue.template.custom")}</option>{standardServiceTemplates.filter((service) => service.code !== "diagnosis").map((service) => <option key={`${service.vehicleType}:${service.code}`} value={`${service.vehicleType}:${service.code}`}>{service.name} · {t(`serviceCatalogue.vehicleType.${service.vehicleType}` as TranslationKey)}</option>)}</select></label>
+        <label>{t("serviceCatalogue.template")}<select value={templateCode} onChange={(event) => setTemplateCode(event.target.value)}><option value="">{t("serviceCatalogue.template.custom")}</option>{templates.map((service) => <option key={`${service.vehicleType}:${service.code}`} value={`${service.vehicleType}:${service.code}`}>{service.name} · {t(`serviceCatalogue.vehicleType.${service.vehicleType}` as TranslationKey)}</option>)}</select></label>
         <fieldset disabled={pending}><ServiceFields key={templateCode} preset={preset} t={t} /></fieldset>
         <Result state={state} t={t} /><button disabled={pending}>{t(pending ? "serviceCatalogue.adding" : "serviceCatalogue.addService")}</button>
       </form>
@@ -86,12 +86,16 @@ export default function ServiceCatalogueClient({ catalogues, logoutAction }: { c
   const [language, setLanguage, ready] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
   if (!ready) return <main className="registration-shell" aria-busy="true" />;
+  const serviceNameCollator = new Intl.Collator(locales[language], { sensitivity: "base", numeric: true });
+  const sortedServiceTemplates = standardServiceTemplates
+    .filter((service) => service.code !== "diagnosis")
+    .sort((left, right) => serviceNameCollator.compare(left.name, right.name));
   return <main className="settings-shell">
     <datalist id="service-categories">{standardServiceCategories.map((category) => <option key={category} value={category} />)}</datalist>
-    <datalist id="standard-service-options">{standardServiceTemplates.filter((service) => service.code !== "diagnosis").map((service) => <option key={`${service.vehicleType}-${service.code}`} value={service.name}>{service.category}</option>)}</datalist>
+    <datalist id="standard-service-options">{sortedServiceTemplates.map((service) => <option key={`${service.vehicleType}-${service.code}`} value={service.name}>{service.category}</option>)}</datalist>
     <header className="settings-topbar"><Link href="/workshop-manager">← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as typeof language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
     <section className="settings-content catalogue-content"><p className="registration-kicker">{t("serviceCatalogue.eyebrow")}</p><h1>{t("serviceCatalogue.title")}</h1><p>{t("serviceCatalogue.description")}</p>
-      {catalogues.map((catalogue) => <WorkshopCatalogue key={catalogue.workshopId} catalogue={catalogue} t={t} />)}
+      {catalogues.map((catalogue) => <WorkshopCatalogue key={catalogue.workshopId} catalogue={catalogue} templates={sortedServiceTemplates} t={t} />)}
       {!catalogues.length && <div className="catalogue-empty"><h2>{t("serviceCatalogue.noWorkshopTitle")}</h2><p>{t("serviceCatalogue.noWorkshopDescription")}</p><Link className="organization-action" href="/workshop-manager/workshops">{t("serviceCatalogue.manageWorkshops")}</Link></div>}
     </section>
   </main>;

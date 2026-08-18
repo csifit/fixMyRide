@@ -8,6 +8,7 @@ const migration = await read("supabase/migrations/202608060023_workshop_service_
 const actions = await read("app/workshop-manager/services/actions.ts");
 const client = await read("app/workshop-manager/services/ServiceCatalogueClient.tsx");
 const portal = await read("app/workshop-manager/WorkshopManagerDashboard.tsx");
+const styles = await read("app/globals.css");
 const english = JSON.parse(await read("app/i18n/en.json"));
 
 test("catalogue RPCs authorize active workshop managers", () => {
@@ -36,4 +37,12 @@ test("workshop managers can reach and edit the catalogue", () => {
   assert.match(client, /createServiceAction/);
   assert.match(client, /updateServiceAction/);
   assert.match(client, /useLanguage/);
+});
+
+test("the add-service form lists services alphabetically with slightly larger text", () => {
+  assert.match(client, /new Intl\.Collator\(locales\[language\]/);
+  assert.match(client, /\.sort\(\(left, right\) => serviceNameCollator\.compare\(left\.name, right\.name\)\)/);
+  assert.match(client, /className="settings-card catalogue-add-form"/);
+  assert.match(styles, /\.catalogue-add-form \{ font-size:17px; \}/);
+  assert.match(styles, /\.catalogue-add-form label \{ font-size:10px; \}/);
 });
