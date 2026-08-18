@@ -16,7 +16,7 @@ import {
   type AutomotiveVehicleType,
 } from "@/lib/automotive-service-catalogue";
 
-type HomeVehicleType = AutomotiveVehicleType | "electric_vehicle";
+type HomeVehicleType = AutomotiveVehicleType;
 type BrowsableService = { code: string; name: string };
 type HomeServiceCategory = { name: string; services: BrowsableService[] };
 

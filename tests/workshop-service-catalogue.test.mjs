@@ -13,6 +13,7 @@ const home = await read("app/HomeDiscoveryClient.tsx");
 const publicWorkshops = await read("lib/dal/public-workshops.ts");
 const workshopDirectory = await read("app/workshops/page.tsx");
 const serviceDiscoveryMigration = await read("supabase/migrations/202608180065_public_workshop_service_discovery.sql");
+const electricVehicleMigration = await read("supabase/migrations/202608180066_electric_vehicle_service_catalogue.sql");
 const english = JSON.parse(await read("app/i18n/en.json"));
 
 test("catalogue RPCs authorize active workshop managers", () => {
@@ -59,4 +60,5 @@ test("the public service browser uses the managed catalogue and recommends exact
   assert.match(publicWorkshops, /search_public_workshops_v3/);
   assert.match(serviceDiscoveryMigration, /matching_service\.active[\s\S]+matching_service\.service_code = btrim\(requested_service_code\)/i);
   assert.match(serviceDiscoveryMigration, /private\.is_workshop_discoverable\(workshop\.id\)/i);
+  assert.match(electricVehicleMigration, /add value if not exists 'electric_vehicle'/i);
 });

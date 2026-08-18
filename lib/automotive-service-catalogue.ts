@@ -1,5 +1,6 @@
 export const vehicleTypes = [
   "car_van",
+  "electric_vehicle",
   "motorcycle_scooter",
   "electric_bicycle",
   "electric_kick_scooter",
@@ -19,6 +20,8 @@ export type StandardServiceTemplate = {
 const diagnosticNames = new Set([
   "Diagnosis", "Warning light or fault-code diagnostics", "Vehicle will not start",
   "Noise, vibration, smell, smoke, or fluid leak", "I'm not sure what's wrong",
+  "Electric vehicle diagnosis", "Vehicle will not start or enter drive mode",
+  "Electrical insulation fault diagnosis", "Reduced-range diagnosis",
   "Motorcycle diagnostics", "Warning light or ECU diagnostics", "Starting problem",
   "Electrical fault finding", "Noise, vibration, smoke, leak, or running problem",
   "Complete e-bike diagnostic", "Error-code/system scan", "Electrical fault tracing",
@@ -46,9 +49,19 @@ const definitions: Record<AutomotiveVehicleType, Record<string, string[]>> = {
     "Suspension and steering": ["Suspension inspection", "Shock absorber or spring replacement", "Control arm, bush, or ball-joint replacement", "Wheel-bearing replacement", "Power-steering repair", "Steering alignment issue"],
     "Exhaust and emissions": ["Exhaust repair or replacement", "Catalytic-converter replacement", "DPF cleaning or regeneration", "EGR diagnosis or replacement", "Emissions diagnosis"],
     "Heating and air conditioning": ["Air-conditioning inspection", "Air-conditioning recharge", "Air-conditioning repair", "Heating or blower repair", "Cabin-filter replacement"],
-    "Electric and hybrid vehicles": ["EV/hybrid scheduled service", "High-voltage battery health check", "Charging-system diagnosis", "Charging-port repair", "EV cooling-system service"],
     "Bodywork and glass": ["Accident-damage estimate", "Dent or scratch repair", "Paintwork", "Bumper repair", "Windscreen or window replacement", "Rust repair"],
     "Accessories and upgrades": ["Dashcam installation", "Parking sensor or reversing-camera installation", "Tow-bar fitting", "Audio or infotainment installation", "Performance upgrade", "Other accessory installation"],
+  },
+  electric_vehicle: {
+    "Diagnostics and safety": ["Electric vehicle diagnosis", "Warning light or fault-code diagnostics", "Vehicle will not start or enter drive mode", "High-voltage system safety inspection", "Electrical insulation fault diagnosis", "Pre-purchase EV inspection", "Accident or water-damage inspection", "I'm not sure what's wrong"],
+    "Routine servicing": ["EV manufacturer-scheduled service", "EV interim service", "EV full service", "Brake-fluid change", "Cabin-filter replacement", "Windscreen washer and wiper service", "General mechanical inspection"],
+    "High-voltage battery": ["High-voltage battery health and state-of-health check", "Reduced-range diagnosis", "Battery-management-system diagnosis", "Battery cell or module diagnosis", "High-voltage battery balancing", "High-voltage battery repair", "High-voltage battery replacement", "Battery enclosure and seal inspection"],
+    "Charging system": ["AC charging fault diagnosis", "DC rapid-charging fault diagnosis", "Charging-port inspection or repair", "Charging-port replacement", "On-board charger diagnosis or replacement", "Charging cable test or replacement", "Charge-lock actuator repair", "12-volt battery test or replacement"],
+    "Thermal management and climate": ["EV cooling-system diagnosis", "High-voltage battery cooling service", "EV coolant change", "Coolant pump or valve replacement", "Heat-pump diagnosis or repair", "Air-conditioning inspection or recharge", "Cabin heating fault diagnosis"],
+    "Electric drive system": ["Electric drive-motor diagnosis or repair", "Inverter diagnosis or replacement", "Power-electronics diagnosis", "Reduction gearbox service or repair", "Drive-unit noise or vibration diagnosis", "Driveshaft or CV-joint replacement"],
+    "Brakes, steering, and suspension": ["Brake inspection", "Brake-pad replacement", "Brake-disc replacement", "Regenerative-braking diagnosis", "Suspension inspection or repair", "Steering inspection or repair", "Wheel-bearing replacement"],
+    "EV tyres and wheels": ["EV-rated tyre fitting", "Seasonal tyre change", "Puncture repair", "Wheel balancing", "Wheel alignment", "Tyre rotation", "TPMS diagnosis or sensor replacement"],
+    "Software and low-voltage electronics": ["Vehicle software and firmware update", "Infotainment or connectivity diagnosis", "Driver-assistance system diagnosis", "Camera or radar calibration", "Low-voltage wiring repair", "Lighting repair", "Key, access, or immobiliser diagnosis"],
   },
   motorcycle_scooter: {
     "Motorcycle diagnostics": ["Diagnosis", "Motorcycle diagnostics", "Warning light or ECU diagnostics", "Starting problem", "Electrical fault finding", "Noise, vibration, smoke, leak, or running problem", "I'm not sure what's wrong"],

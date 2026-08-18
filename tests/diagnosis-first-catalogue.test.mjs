@@ -12,14 +12,16 @@ const request = await read("app/workshops/[workshopId]/request/ServiceRequestFlo
 const action = await read("app/workshops/[workshopId]/request/actions.ts");
 
 test("standard catalogue covers every supplied vehicle class and representative service group", () => {
-  for (const type of ["car_van", "motorcycle_scooter", "electric_bicycle", "electric_kick_scooter"]) {
+  for (const type of ["car_van", "electric_vehicle", "motorcycle_scooter", "electric_bicycle", "electric_kick_scooter"]) {
     assert.match(templates, new RegExp(`${type}:\\s*\\{`));
   }
-  for (const service of ["Warning light or fault-code diagnostics", "Seasonal tyre change", "CVT inspection or service", "High-voltage battery health check", "Battery-management-system diagnosis"]) {
+  for (const service of ["Warning light or fault-code diagnostics", "Seasonal tyre change", "CVT inspection or service", "High-voltage battery health and state-of-health check", "Battery-management-system diagnosis"]) {
     assert.ok(templates.includes(service), service);
   }
   assert.match(manager, /standard-service-options/);
   assert.match(manager, /standardServiceTemplates/);
+  assert.doesNotMatch(templates.match(/car_van:\s*\{([\s\S]*?)\n  \},\n  electric_vehicle:/)?.[1] ?? "", /Electric and hybrid vehicles/);
+  assert.match(templates, /electric_vehicle:\s*\{[\s\S]+High-voltage battery health and state-of-health check/);
 });
 
 test("every workshop starts with an unpublished diagnosis that requires a positive fee", () => {
