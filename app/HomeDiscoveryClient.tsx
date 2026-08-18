@@ -50,7 +50,10 @@ function WorkshopGrid({ workshops, preferredDate, t, formatPrice }: {
 }) {
   return <div className="home-workshop-grid">
     {workshops.map((workshop) => <article className="home-workshop-card" key={workshop.id}>
-      <div className="home-workshop-avatar">{initials(workshop.name)}</div>
+      {workshop.logoUrl
+        // eslint-disable-next-line @next/next/no-img-element
+        ? <img className="home-workshop-logo" src={workshop.logoUrl} alt={`${workshop.name} logo`} />
+        : <div className="home-workshop-avatar">{initials(workshop.name)}</div>}
       <span className="home-verified">✓ {t("home.verified")}</span>
       <h3>{workshop.name}</h3>
       <strong>{workshop.serviceCategories.slice(0, 2).join(" · ") || t("home.generalRepairs")}</strong>

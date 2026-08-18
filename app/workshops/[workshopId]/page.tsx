@@ -129,6 +129,10 @@ export default async function WorkshopPage({ params, searchParams }: {
         </article>
       </div>
       <aside className="workshop-profile-sidebar">
+        {workshop.logoUrl && <section className="workshop-profile-logo">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={workshop.logoUrl} alt={`${workshop.name} logo`} />
+        </section>}
         {workshop.latitude !== null && workshop.longitude !== null && <WorkshopLocationMap name={workshop.name} address={address} latitude={workshop.latitude} longitude={workshop.longitude} />}
         {publicClaim && publicClaim.status !== "claimed" && <WorkshopClaimCard claim={publicClaim} notice={claimNotice ?? null} compact ownerProviders={ownerProviders} registrationRequired={claimRegistrationRequired} />}
       </aside>

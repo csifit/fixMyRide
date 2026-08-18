@@ -6,7 +6,7 @@ import GoogleAddressSearch from "@/app/GoogleAddressSearch";
 import { formatDateTime, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { WorkshopClosure, WorkshopOperations } from "@/lib/dal/workshop-operations";
-import { addWorkshopClosureAction, createWorkshopLocationAction, removeWorkshopClosureAction, updateWorkshopOperationsAction, type WorkshopOperationsActionState } from "./actions";
+import { addWorkshopClosureAction, createWorkshopLocationAction, removeWorkshopClosureAction, updateWorkshopOperationsAction, uploadWorkshopLogoAction, type WorkshopOperationsActionState } from "./actions";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 
 const idle: WorkshopOperationsActionState = { status: "idle" };
@@ -14,7 +14,7 @@ type T = (key: TranslationKey) => string;
 
 function Result({ state, t }: { state: WorkshopOperationsActionState; t: T }) {
   if (state.status === "idle") return null;
-  return <p role="status" className={["saved", "created", "location_created", "removed"].includes(state.status) ? "note-success" : "note-error"}>{t(`workshopOperations.result.${state.status}` as TranslationKey)}</p>;
+  return <p role="status" className={["saved", "logo_saved", "created", "location_created", "removed"].includes(state.status) ? "note-success" : "note-error"}>{t(`workshopOperations.result.${state.status}` as TranslationKey)}</p>;
 }
 
 type OwnedProvider = { id: string; displayName: string; countryCode: string };
@@ -67,6 +67,26 @@ function ClosureForm({ workshopId, t }: { workshopId: string; t: T }) {
   return <form className="operations-closure-form" action={action}><input type="hidden" name="workshopId" value={workshopId} /><input type="hidden" name="startsAt" value={iso(startsAt)} /><input type="hidden" name="endsAt" value={iso(endsAt)} /><label>{t("workshopOperations.closure.starts")}<PlatformDateTimeInput mode="datetime-local" value={startsAt} onChange={setStartsAt} required ariaLabel={t("workshopOperations.closure.starts")} /></label><label>{t("workshopOperations.closure.ends")}<PlatformDateTimeInput mode="datetime-local" value={endsAt} onChange={setEndsAt} required ariaLabel={t("workshopOperations.closure.ends")} /></label><label>{t("workshopOperations.closure.reason")}<input name="reason" maxLength={240} /></label><Result state={state} t={t} /><button disabled={pending}>{t(pending ? "workshopOperations.saving" : "workshopOperations.closure.add")}</button></form>;
 }
 
+function LogoUploadForm({ workshop, t }: { workshop: WorkshopOperations; t: T }) {
+  const [state, action, pending] = useActionState(uploadWorkshopLogoAction, idle);
+  if (!workshop.logoEligible) return null;
+  return <section className="workshop-logo-settings">
+    <div className="workshop-logo-preview">
+      {workshop.logoUrl
+        // eslint-disable-next-line @next/next/no-img-element
+        ? <img src={workshop.logoUrl} alt={t("workshopOperations.logo.currentAlt")} />
+        : <span aria-hidden="true">{workshop.displayName.slice(0, 1).toUpperCase()}</span>}
+    </div>
+    <form action={action}>
+      <input type="hidden" name="workshopId" value={workshop.id} />
+      <div><h3>{t("workshopOperations.logo.title")}</h3><p>{t("workshopOperations.logo.help")}</p></div>
+      <label>{t("workshopOperations.logo.file")}<input name="logo" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required /></label>
+      <Result state={state} t={t} />
+      <button disabled={pending}>{t(pending ? "workshopOperations.logo.uploading" : "workshopOperations.logo.upload")}</button>
+    </form>
+  </section>;
+}
+
 function WorkshopForm({ workshop, language, t }: { workshop: WorkshopOperations; language: Language; t: T }) {
   const [state, action, pending] = useActionState(updateWorkshopOperationsAction, idle);
   return <details className="settings-accordion operations-workshop" open><summary><span><strong>{workshop.displayName}</strong><small>{workshop.city || workshop.countryCode} · {workshop.serviceProviderName}</small></span><b>{workshop.status}</b></summary>
@@ -76,6 +96,7 @@ function WorkshopForm({ workshop, language, t }: { workshop: WorkshopOperations;
       <section><h3>{t("workshopOperations.hours")}</h3><div className="operations-hours">{workshop.operatingHours.map((hours) => <div key={hours.weekday}><strong>{t(`workshopOperations.weekday.${hours.weekday}` as TranslationKey)}</strong><label><input type="checkbox" name={`closed-${hours.weekday}`} defaultChecked={hours.closed} />{t("workshopOperations.closed")}</label><PlatformDateTimeInput mode="time" name={`opensAt-${hours.weekday}`} defaultValue={hours.opensAt?.slice(0, 5) ?? "08:00"} step={900} ariaLabel={`${t(`workshopOperations.weekday.${hours.weekday}` as TranslationKey)} ${t("workshopOperations.opens")}`} /><PlatformDateTimeInput mode="time" name={`closesAt-${hours.weekday}`} defaultValue={hours.closesAt?.slice(0, 5) ?? "17:00"} step={900} ariaLabel={`${t(`workshopOperations.weekday.${hours.weekday}` as TranslationKey)} ${t("workshopOperations.closes")}`} /></div>)}</div></section>
       <Result state={state} t={t} /><button disabled={pending}>{t(pending ? "workshopOperations.saving" : "workshopOperations.save")}</button>
     </form>
+    <LogoUploadForm workshop={workshop} t={t} />
     <section className="operations-closures"><h3>{t("workshopOperations.closures")}</h3><p>{t("workshopOperations.closuresDescription")}</p><div>{workshop.closures.map((closure) => <RemoveClosure key={closure.id} closure={closure} language={language} t={t} />)}{!workshop.closures.length && <p>{t("workshopOperations.closure.empty")}</p>}</div><ClosureForm workshopId={workshop.id} t={t} /></section>
   </details>;
 }

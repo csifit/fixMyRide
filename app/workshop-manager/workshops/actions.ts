@@ -3,9 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
-import { addMyWorkshopClosure, createMyWorkshopLocation, removeMyWorkshopClosure, updateMyWorkshopOperations } from "@/lib/dal/workshop-operations";
+import { addMyWorkshopClosure, createMyWorkshopLocation, removeMyWorkshopClosure, updateMyWorkshopOperations, uploadMyWorkshopLogo } from "@/lib/dal/workshop-operations";
 
-export type WorkshopOperationsActionState = { status: "idle" | "saved" | "created" | "location_created" | "removed" | "invalid" | "location_invalid" | "geocode_required" | "unauthorized" | "unavailable" };
+export type WorkshopOperationsActionState = { status: "idle" | "saved" | "logo_saved" | "created" | "location_created" | "removed" | "invalid" | "location_invalid" | "geocode_required" | "unauthorized" | "unavailable" };
 const nullable = (max: number) => z.string().trim().max(max).transform((value) => value || null);
 const nullableNumber = z.union([z.literal(""), z.coerce.number()]).transform((value) => value === "" ? null : value);
 const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
@@ -34,6 +34,14 @@ const createLocationSchema = z.object({
   publicPhone: nullable(40), publicEmail: z.union([z.literal(""), z.email().max(320)]).transform((value) => value || null),
 });
 const geocodedLocationFields = new Set(["countryCode", "city", "address", "latitude", "longitude"]);
+const logoSchema = z.object({
+  workshopId: z.uuid(),
+  logo: z.custom<File>((value) => value instanceof File && value.size > 0)
+    .refine((file) => file.size <= 2 * 1024 * 1024)
+    .refine((file) => ["image/jpeg", "image/png"].includes(file.type)),
+}).superRefine(({ logo }, context) => {
+  if (!/\.(jpe?g|png)$/i.test(logo.name)) context.addIssue({ code: "custom", message: "invalid_extension", path: ["logo"] });
+});
 
 function result(error: unknown): WorkshopOperationsActionState {
   if (error instanceof DataAccessError) {
@@ -43,6 +51,31 @@ function result(error: unknown): WorkshopOperationsActionState {
   return { status: "unavailable" };
 }
 function refresh() { revalidatePath("/workshop-manager/workshops"); revalidatePath("/service-organisation/locations"); revalidatePath("/workshops"); }
+
+export async function uploadWorkshopLogoAction(_state: WorkshopOperationsActionState, formData: FormData): Promise<WorkshopOperationsActionState> {
+  const parsed = logoSchema.safeParse({ workshopId: formData.get("workshopId"), logo: formData.get("logo") });
+  if (!parsed.success) return { status: "invalid" };
+  const header = new Uint8Array(await parsed.data.logo.slice(0, 8).arrayBuffer());
+  const isPng = header.length === 8 && [137, 80, 78, 71, 13, 10, 26, 10].every((byte, index) => header[index] === byte);
+  const isJpeg = header.length >= 3 && header[0] === 255 && header[1] === 216 && header[2] === 255;
+  if ((parsed.data.logo.type === "image/png" && !isPng) || (parsed.data.logo.type === "image/jpeg" && !isJpeg)) {
+    return { status: "invalid" };
+  }
+  const extension = parsed.data.logo.name.toLowerCase().endsWith(".png")
+    ? "png" as const
+    : parsed.data.logo.name.toLowerCase().endsWith(".jpeg")
+      ? "jpeg" as const
+      : "jpg" as const;
+  if ((extension === "png") !== (parsed.data.logo.type === "image/png")) return { status: "invalid" };
+  try {
+    await uploadMyWorkshopLogo({ workshopId: parsed.data.workshopId, file: parsed.data.logo, extension });
+    refresh();
+    revalidatePath("/workshops", "layout");
+    return { status: "logo_saved" };
+  } catch (error) {
+    return result(error);
+  }
+}
 
 export async function updateWorkshopOperationsAction(_state: WorkshopOperationsActionState, formData: FormData): Promise<WorkshopOperationsActionState> {
   const hours = Array.from({ length: 7 }, (_, weekday) => {

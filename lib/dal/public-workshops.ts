@@ -20,6 +20,7 @@ export type PublicWorkshop = {
   offersCourtesyCar: boolean;
   serviceCategories: string[];
   priceFromCents: number | null;
+  logoUrl: string | null;
 };
 
 export type PublicWorkshopService = {
@@ -80,6 +81,9 @@ export async function searchPublicWorkshops(search = "", serviceCode?: string): 
       ? row.service_categories as string[]
       : [],
     priceFromCents: row.price_from_cents == null ? null : Number(row.price_from_cents),
+    logoUrl: typeof row.logo_path === "string"
+      ? supabase.storage.from("workshop-logos").getPublicUrl(row.logo_path).data.publicUrl
+      : null,
   }));
 }
 
