@@ -18,7 +18,7 @@
 }
 
 .heading h2 {
-  font: 600 21px Georgia, serif;
+  font:400 21px Georgia, serif;
 }
 
 .heading p {
@@ -60,7 +60,7 @@
   background: #006e6e;
   box-shadow: 0 8px 21px #123e3540;
   color: #fff;
-  font-weight: 900;
+  font-weight:400;
   transform: rotate(-45deg);
 }
 
@@ -74,7 +74,7 @@
   border-radius: 8px;
   background: #e6f4f4;
   color: #006e6e;
-  font-size: 9px;
-  font-weight: 900;
+  font-size:10px;
+  font-weight:400;
   text-align: center;
 }

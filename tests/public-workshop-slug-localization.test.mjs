@@ -21,8 +21,8 @@ test("main-page locale changes drive translated visible copy", () => {
 });
 
 test("main and public locale switchers use compact language-code text", () => {
-  assert.match(css, /\.home-header select \{[^}]*font-size:9px/);
-  assert.match(css, /\.booking-header select \{[^}]*font-size:9px/);
+  assert.match(css, /\.home-header select \{[^}]*font-size:10px/);
+  assert.match(css, /\.booking-header select \{[^}]*font-size:10px/);
 });
 
 test("public discovery exposes and uses canonical workshop slugs", () => {
