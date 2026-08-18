@@ -9,6 +9,10 @@ const actions = await read("app/workshop-manager/services/actions.ts");
 const client = await read("app/workshop-manager/services/ServiceCatalogueClient.tsx");
 const portal = await read("app/workshop-manager/WorkshopManagerDashboard.tsx");
 const styles = await read("app/globals.css");
+const home = await read("app/HomeDiscoveryClient.tsx");
+const publicWorkshops = await read("lib/dal/public-workshops.ts");
+const workshopDirectory = await read("app/workshops/page.tsx");
+const serviceDiscoveryMigration = await read("supabase/migrations/202608180065_public_workshop_service_discovery.sql");
 const english = JSON.parse(await read("app/i18n/en.json"));
 
 test("catalogue RPCs authorize active workshop managers", () => {
@@ -45,4 +49,14 @@ test("the add-service form lists services alphabetically with slightly larger te
   assert.match(client, /className="settings-card catalogue-add-form"/);
   assert.match(styles, /\.catalogue-add-form \{ font-size:17px; \}/);
   assert.match(styles, /\.catalogue-add-form label \{ font-size:10px; \}/);
+});
+
+test("the public service browser uses the managed catalogue and recommends exact matching workshops", () => {
+  assert.match(home, /standardServiceTemplates[\s\S]+service\.code !== "diagnosis"/);
+  assert.doesNotMatch(home, /electricVehicleServiceCategories/);
+  assert.match(home, /pathname: "\/workshops", query: \{ service: service\.code \}/);
+  assert.match(workshopDirectory, /searchPublicWorkshops\("", requestedServiceCode\)/);
+  assert.match(publicWorkshops, /search_public_workshops_v3/);
+  assert.match(serviceDiscoveryMigration, /matching_service\.active[\s\S]+matching_service\.service_code = btrim\(requested_service_code\)/i);
+  assert.match(serviceDiscoveryMigration, /private\.is_workshop_discoverable\(workshop\.id\)/i);
 });

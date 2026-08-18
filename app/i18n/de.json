@@ -1100,6 +1100,8 @@
   "home.services.description": "Entdecken Sie alle Leistungen im Pitster-Katalog, geordnet nach Fahrzeugtyp und Leistungskategorie.",
   "home.services.options": "Leistungen",
   "home.services.vehicleTypes": "Fahrzeugtypen",
+  "home.services.recommendationKicker": "Empfohlene Werkstätten für",
+  "home.services.browseAnother": "Andere Leistung suchen",
   "serviceCatalogue.vehicleType.electric_vehicle": "Elektrofahrzeuge (EVs)",
   "home.offer.kicker": "Für Werkstätten",
   "home.offer.title": "Kundenanfragen empfangen und verwalten",

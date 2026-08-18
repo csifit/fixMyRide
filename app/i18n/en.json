@@ -1100,6 +1100,8 @@
   "home.services.description": "Explore every service option in the Pitster catalogue, organised by vehicle type and service category.",
   "home.services.options": "service options",
   "home.services.vehicleTypes": "Vehicle types",
+  "home.services.recommendationKicker": "Recommended workshops for",
+  "home.services.browseAnother": "Browse another service",
   "serviceCatalogue.vehicleType.electric_vehicle": "Electric vehicles (EVs)",
   "home.offer.kicker": "For workshops",
   "home.offer.title": "Receive and manage customer booking requests",

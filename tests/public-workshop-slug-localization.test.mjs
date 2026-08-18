@@ -29,7 +29,7 @@ test("public discovery exposes and uses canonical workshop slugs", () => {
   assert.match(migration, /create function public\.search_public_workshops_v2/);
   assert.match(migration, /workshop_id uuid, workshop_slug text/);
   assert.match(migration, /select workshop\.id, workshop\.slug/);
-  assert.match(dal, /search_public_workshops_v2/);
+  assert.match(dal, /search_public_workshops_v3/);
   assert.match(dal, /workshop\.slug === workshopReference/);
   assert.match(home, /workshops\/\$\{workshop\.slug\}/);
   assert.match(map, /workshops\/\$\{workshop\.slug\}/);

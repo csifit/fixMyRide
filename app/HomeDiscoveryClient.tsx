@@ -17,37 +17,24 @@ import {
 } from "@/lib/automotive-service-catalogue";
 
 type HomeVehicleType = AutomotiveVehicleType | "electric_vehicle";
-type HomeServiceCategory = { name: string; services: string[] };
+type BrowsableService = { code: string; name: string };
+type HomeServiceCategory = { name: string; services: BrowsableService[] };
 
-const electricVehicleServiceCategories: HomeServiceCategory[] = [
-  { name: "Diagnostics and safety", services: ["Electric vehicle diagnosis", "Warning light or fault-code diagnostics", "Vehicle will not start or enter drive mode", "High-voltage system safety inspection", "Electrical insulation fault diagnosis", "Pre-purchase EV inspection", "Accident or water-damage inspection", "I'm not sure what's wrong"] },
-  { name: "Routine servicing", services: ["EV manufacturer-scheduled service", "EV interim service", "EV full service", "Brake-fluid change", "Cabin-filter replacement", "Windscreen washer and wiper service", "General mechanical inspection"] },
-  { name: "High-voltage battery", services: ["High-voltage battery health and state-of-health check", "Reduced-range diagnosis", "Battery-management-system diagnosis", "Battery cell or module diagnosis", "High-voltage battery balancing", "High-voltage battery repair", "High-voltage battery replacement", "Battery enclosure and seal inspection"] },
-  { name: "Charging system", services: ["AC charging fault diagnosis", "DC rapid-charging fault diagnosis", "Charging-port inspection or repair", "Charging-port replacement", "On-board charger diagnosis or replacement", "Charging cable test or replacement", "Charge-lock actuator repair", "12-volt battery test or replacement"] },
-  { name: "Thermal management and climate", services: ["EV cooling-system diagnosis", "High-voltage battery cooling service", "EV coolant change", "Coolant pump or valve replacement", "Heat-pump diagnosis or repair", "Air-conditioning inspection or recharge", "Cabin heating fault diagnosis"] },
-  { name: "Electric drive system", services: ["Electric drive-motor diagnosis or repair", "Inverter diagnosis or replacement", "Power-electronics diagnosis", "Reduction gearbox service or repair", "Drive-unit noise or vibration diagnosis", "Driveshaft or CV-joint replacement"] },
-  { name: "Brakes, steering, and suspension", services: ["Brake inspection", "Brake-pad replacement", "Brake-disc replacement", "Regenerative-braking diagnosis", "Suspension inspection or repair", "Steering inspection or repair", "Wheel-bearing replacement"] },
-  { name: "EV tyres and wheels", services: ["EV-rated tyre fitting", "Seasonal tyre change", "Puncture repair", "Wheel balancing", "Wheel alignment", "Tyre rotation", "TPMS diagnosis or sensor replacement"] },
-  { name: "Software and low-voltage electronics", services: ["Vehicle software and firmware update", "Infotainment or connectivity diagnosis", "Driver-assistance system diagnosis", "Camera or radar calibration", "Low-voltage wiring repair", "Lighting repair", "Key, access, or immobiliser diagnosis"] },
-];
-
-const homeVehicleTypes: HomeVehicleType[] = [
-  "car_van",
-  "electric_vehicle",
-  ...vehicleTypes.filter((vehicleType) => vehicleType !== "car_van"),
-];
+const homeVehicleTypes: HomeVehicleType[] = [...vehicleTypes];
 
 function serviceCategoriesFor(vehicleType: HomeVehicleType): HomeServiceCategory[] {
-  if (vehicleType === "electric_vehicle") return electricVehicleServiceCategories;
-  const categories = new Map<string, string[]>();
+  const categories = new Map<string, BrowsableService[]>();
   standardServiceTemplates
     .filter((service) => service.vehicleType === vehicleType)
-    .filter((service) => service.category !== "Electric and hybrid vehicles")
+    .filter((service) => service.code !== "diagnosis")
     .forEach((service) => categories.set(
       service.category,
-      [...(categories.get(service.category) ?? []), service.name],
+      [...(categories.get(service.category) ?? []), { code: service.code, name: service.name }],
     ));
-  return [...categories.entries()].map(([name, services]) => ({ name, services }));
+  return [...categories.entries()].map(([name, services]) => ({
+    name,
+    services: services.sort((left, right) => left.name.localeCompare(right.name, "en", { sensitivity: "base" })),
+  }));
 }
 
 function initials(name: string) {
@@ -57,9 +44,11 @@ function initials(name: string) {
 export default function HomeDiscoveryClient({
   workshops,
   date,
+  selectedServiceCode,
 }: {
   workshops: PublicWorkshop[];
   date: string;
+  selectedServiceCode?: string;
 }) {
   const [language, setLanguage] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
@@ -72,6 +61,7 @@ export default function HomeDiscoveryClient({
   const [locationSelection, setLocationSelection] = useState<GoogleAddressSelection | null>(null);
   const [preferredDate, setPreferredDate] = useState(date);
   const [activeServiceVehicle, setActiveServiceVehicle] = useState<HomeVehicleType>("car_van");
+  const selectedService = standardServiceTemplates.find((service) => service.code === selectedServiceCode);
   const categories = useMemo(
     () => [...new Set(workshops.flatMap((workshop) => workshop.serviceCategories))].sort(),
     [workshops],
@@ -158,6 +148,10 @@ export default function HomeDiscoveryClient({
     </section>
 
     <section className="home-featured" id="featured-workshops">
+      {selectedService && <div className="home-service-recommendation" role="status">
+        <div><p>{t("home.services.recommendationKicker")}</p><h2>{selectedService.name}</h2><span>{filtered.length} {t("home.search.matches")}</span></div>
+        <Link href="/workshops#services">{t("home.services.browseAnother")}</Link>
+      </div>}
       <header>
         <div><p>{t("home.featured.kicker")}</p><h2>{t("home.featured.title")}</h2></div>
         <Link href={`/workshops?date=${preferredDate}`}>{t("home.featured.all")} →</Link>
@@ -233,7 +227,7 @@ export default function HomeDiscoveryClient({
             <div>
               {groups.map((group) => <article key={group.name}>
                 <h4>{group.name}</h4>
-                <ul>{group.services.map((service) => <li key={service}>{service}</li>)}</ul>
+                <ul>{group.services.map((service) => <li key={service.code}><Link href={{ pathname: "/workshops", query: { service: service.code } }}>{service.name}<span aria-hidden="true">→</span></Link></li>)}</ul>
               </article>)}
             </div>
           </section>;

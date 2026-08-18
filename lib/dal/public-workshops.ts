@@ -52,10 +52,11 @@ export type PublicWorkshopBookingRules = {
   closures: Array<{ startsAt: string; endsAt: string }>;
 };
 
-export async function searchPublicWorkshops(search = ""): Promise<PublicWorkshop[]> {
+export async function searchPublicWorkshops(search = "", serviceCode?: string): Promise<PublicWorkshop[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("search_public_workshops_v2", {
+  const { data, error } = await supabase.rpc("search_public_workshops_v3", {
     requested_search: search || null,
+    requested_service_code: serviceCode || null,
   });
   if (error) {
     console.error("search_public_workshops", { code: error.code });
