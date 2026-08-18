@@ -41,6 +41,30 @@ function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
 }
 
+function WorkshopGrid({ workshops, preferredDate, t, formatPrice }: {
+  workshops: PublicWorkshop[];
+  preferredDate: string;
+  t: (key: TranslationKey) => string;
+  formatPrice: (cents: number | null) => string;
+}) {
+  return <div className="home-workshop-grid">
+    {workshops.map((workshop) => <article className="home-workshop-card" key={workshop.id}>
+      <div className="home-workshop-avatar">{initials(workshop.name)}</div>
+      <span className="home-verified">✓ {t("home.verified")}</span>
+      <h3>{workshop.name}</h3>
+      <strong>{workshop.serviceCategories.slice(0, 2).join(" · ") || t("home.generalRepairs")}</strong>
+      <p>{workshop.city || workshop.countryCode}<br />{workshop.address}</p>
+      <div className="workshop-features">
+        {workshop.offersPickup && <span>✓ {t("home.vehiclePickup")}</span>}
+        {workshop.offersCourtesyCar && <span>✓ {t("home.courtesyCar")}</span>}
+      </div>
+      <b>{formatPrice(workshop.priceFromCents)}</b>
+      <Link href={`/workshops/${workshop.slug}?date=${preferredDate}`}>{t("home.viewWorkshop")}</Link>
+    </article>)}
+    {!workshops.length && <div className="booking-empty"><h3>{t("home.empty.title")}</h3><p>{t("home.empty.description")}</p></div>}
+  </div>;
+}
+
 export default function HomeDiscoveryClient({
   workshops,
   date,
@@ -79,6 +103,23 @@ export default function HomeDiscoveryClient({
       && (!category || workshop.serviceCategories.includes(category))
       && locationMatches;
   });
+
+  if (selectedService) return <main className="home-shell service-results-shell">
+    <header className="home-header service-results-header">
+      <Link href="/" className="home-logo"><span>{brand.mark}</span>{brand.name}</Link>
+      <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label="Language">
+        <option value="en">EN</option><option value="de">DE</option>
+        <option value="ro">RO</option><option value="hu">HU</option>
+      </select>
+    </header>
+    <section className="home-featured service-results-only" id="featured-workshops">
+      <div className="home-service-recommendation" role="status">
+        <div><p>{t("home.services.recommendationKicker")}</p><h2>{selectedService.name}</h2><span>{filtered.length} {t("home.search.matches")}</span></div>
+        <Link href="/#services">{t("home.services.browseAnother")}</Link>
+      </div>
+      <WorkshopGrid workshops={filtered} preferredDate={preferredDate} t={t} formatPrice={formatPrice} />
+    </section>
+  </main>;
 
   return <main className="home-shell">
     <header className="home-header">
@@ -148,30 +189,11 @@ export default function HomeDiscoveryClient({
     </section>
 
     <section className="home-featured" id="featured-workshops">
-      {selectedService && <div className="home-service-recommendation" role="status">
-        <div><p>{t("home.services.recommendationKicker")}</p><h2>{selectedService.name}</h2><span>{filtered.length} {t("home.search.matches")}</span></div>
-        <Link href="/workshops#services">{t("home.services.browseAnother")}</Link>
-      </div>}
       <header>
         <div><p>{t("home.featured.kicker")}</p><h2>{t("home.featured.title")}</h2></div>
         <Link href={`/workshops?date=${preferredDate}`}>{t("home.featured.all")} →</Link>
       </header>
-      <div className="home-workshop-grid">
-        {filtered.slice(0, 6).map((workshop) => <article className="home-workshop-card" key={workshop.id}>
-          <div className="home-workshop-avatar">{initials(workshop.name)}</div>
-          <span className="home-verified">✓ {t("home.verified")}</span>
-          <h3>{workshop.name}</h3>
-          <strong>{workshop.serviceCategories.slice(0, 2).join(" · ") || t("home.generalRepairs")}</strong>
-          <p>{workshop.city || workshop.countryCode}<br />{workshop.address}</p>
-          <div className="workshop-features">
-            {workshop.offersPickup && <span>✓ {t("home.vehiclePickup")}</span>}
-            {workshop.offersCourtesyCar && <span>✓ {t("home.courtesyCar")}</span>}
-          </div>
-          <b>{formatPrice(workshop.priceFromCents)}</b>
-          <Link href={`/workshops/${workshop.slug}?date=${preferredDate}`}>{t("home.viewWorkshop")}</Link>
-        </article>)}
-        {!filtered.length && <div className="booking-empty"><h3>{t("home.empty.title")}</h3><p>{t("home.empty.description")}</p></div>}
-      </div>
+      <WorkshopGrid workshops={filtered.slice(0, 6)} preferredDate={preferredDate} t={t} formatPrice={formatPrice} />
     </section>
 
     <section className="home-specialty-strip" id="services">
@@ -227,7 +249,7 @@ export default function HomeDiscoveryClient({
             <div>
               {groups.map((group) => <article key={group.name}>
                 <h4>{group.name}</h4>
-                <ul>{group.services.map((service) => <li key={service.code}><Link href={{ pathname: "/workshops", query: { service: service.code } }}>{service.name}<span aria-hidden="true">→</span></Link></li>)}</ul>
+                <ul>{group.services.map((service) => <li key={service.code}><Link href={{ pathname: "/workshops", query: { service: service.code } }} target="_blank" rel="noopener noreferrer">{service.name}<span aria-hidden="true">→</span></Link></li>)}</ul>
               </article>)}
             </div>
           </section>;

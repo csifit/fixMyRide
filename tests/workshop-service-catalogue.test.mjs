@@ -56,6 +56,11 @@ test("the public service browser uses the managed catalogue and recommends exact
   assert.match(home, /standardServiceTemplates[\s\S]+service\.code !== "diagnosis"/);
   assert.doesNotMatch(home, /electricVehicleServiceCategories/);
   assert.match(home, /pathname: "\/workshops", query: \{ service: service\.code \}/);
+  assert.match(home, /target="_blank" rel="noopener noreferrer"/);
+  assert.match(home, /if \(selectedService\) return[\s\S]+service-results-only/);
+  const focusedResults = home.match(/if \(selectedService\) return([\s\S]*?)return <main className="home-shell">/)?.[1] ?? "";
+  assert.doesNotMatch(focusedResults, /automotive-hero|home-map-section|home-specialty-strip/);
+  assert.match(focusedResults, /WorkshopGrid workshops=\{filtered\}/);
   assert.match(workshopDirectory, /searchPublicWorkshops\("", requestedServiceCode\)/);
   assert.match(publicWorkshops, /search_public_workshops_v3/);
   assert.match(serviceDiscoveryMigration, /matching_service\.active[\s\S]+matching_service\.service_code = btrim\(requested_service_code\)/i);
