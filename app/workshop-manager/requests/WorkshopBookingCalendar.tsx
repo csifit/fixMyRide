@@ -9,6 +9,8 @@ import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-sched
 import { createManualAppointmentAction, saveBookingScheduleAction, type ManualAppointmentState, type ScheduleActionState } from "./actions";
 import { BookingScheduleEditor, WorkshopCapacityPanel } from "./WorkshopCapacityControls";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
+import Link from "@/app/WorkspaceLink";
+import { FieldHelp, OperationalEmptyState } from "@/app/guidance/OperationalGuidance";
 
 type CalendarView = "agenda" | "day" | "week" | "month";
 type Translate = (key: TranslationKey) => string;
@@ -47,12 +49,12 @@ function ManualAppointmentForm({ catalogues, language, t }: { catalogues: Manage
   const [state, action, pending] = useActionState(createManualAppointmentAction, idle);
   const [workshopId, setWorkshopId] = useState(catalogues[0]?.workshopId ?? "");
   const services = catalogues.find((catalogue) => catalogue.workshopId === workshopId)?.services.filter((service) => service.active) ?? [];
-  return <details className="manual-appointment-panel"><summary>+ {t("workshopBookings.manual.add")}</summary><form action={action}>
+  return <details className="manual-appointment-panel" id="manual-appointment"><summary>+ {t("workshopBookings.manual.add")}</summary><form action={action}>
     <div className="manual-appointment-grid">
       <label>{t("serviceCatalogue.workshop")}<select name="workshopId" value={workshopId} onChange={(event) => setWorkshopId(event.target.value)} required>{catalogues.map((catalogue) => <option key={catalogue.workshopId} value={catalogue.workshopId}>{catalogue.workshopName}</option>)}</select></label>
       <label>{t("serviceCatalogue.name")}<select name="serviceId" key={workshopId} required>{services.map((service) => <option key={service.id} value={service.id}>{service.name}</option>)}</select></label>
       <label>{t("workshopBookings.manual.source")}<select name="source" defaultValue="manager_phone"><option value="manager_phone">{t("workshopBookings.source.manager_phone")}</option><option value="manager_walk_in">{t("workshopBookings.source.manager_walk_in")}</option><option value="manager_other">{t("workshopBookings.source.manager_other")}</option></select></label>
-      <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" name="start" required ariaLabel={t("workshopBookings.action.time")} /></label>
+      <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" name="start" required ariaLabel={t("workshopBookings.action.time")} /><FieldHelp>{t("phase3.requests.manualTimeHelp")}</FieldHelp></label>
       <label>{t("calendar.duration")}<select name="durationMinutes" defaultValue="60">{[30, 45, 60, 90, 120, 180].map((minutes) => <option key={minutes} value={minutes}>{minutes} min</option>)}</select></label>
       <label>{t("workshopBookings.customer")}<input name="customerName" minLength={2} maxLength={160} required /></label>
       <label>{t("workshopBookings.manual.phone")}<input name="customerPhone" type="tel" maxLength={40} /></label>
@@ -63,8 +65,9 @@ function ManualAppointmentForm({ catalogues, language, t }: { catalogues: Manage
       <label>{t("workshopBookings.manual.year")}<input name="vehicleYear" type="number" min="1886" max="2200" /></label>
       <label>VIN (optional)<input name="vehicleVin" minLength={17} maxLength={17} /></label>
       <label>{t("workshopBookings.mileage")}<input name="mileageKm" type="number" min="0" max="5000000" /></label>
-      <label className="manual-customer-states">{t("workshopBookings.customerStates")}<textarea name="customerStates" rows={3} maxLength={2000} placeholder={t("workshopBookings.customerStatesHelp")} /></label>
+      <label className="manual-customer-states">{t("workshopBookings.customerStates")}<textarea name="customerStates" rows={3} maxLength={2000} placeholder={t("workshopBookings.customerStatesHelp")} /><FieldHelp>{t("phase3.requests.customerStatesHelp")}</FieldHelp></label>
     </div><input type="hidden" name="locale" value={language} />
+    {!services.length && <p className="operational-form-notice">{t("phase3.requests.noServices")} <Link href="/workshop-manager/services">{t("serviceCatalogue.title")}</Link></p>}
     {state.status !== "idle" && <p className={state.status === "created" ? "note-success" : "note-error"}>{t(`workshopBookings.manual.result.${state.status}` as TranslationKey)}</p>}
     <button disabled={pending || !services.length}>{t(pending ? "workshopBookings.action.saving" : "workshopBookings.manual.create")}</button>
   </form></details>;
@@ -126,7 +129,7 @@ export default function WorkshopBookingCalendar({ bookings, catalogues, schedule
     {dragState.status !== "idle" && <p className={dragState.status === "saved" ? "note-success" : "note-error"}>{t(`capacity.result.${dragState.status}` as TranslationKey)}{dragPending ? ` ${t("repairLifecycle.saving")}` : ""}</p>}
     <ManualAppointmentForm catalogues={catalogues} language={language} t={t} />
     <div className="calendar-and-details"><div className={`calendar-surface calendar-${view}`}>
-      {view === "agenda" && <div className="calendar-agenda-list">{visible.map((booking) => <article {...dropProps(new Date(scheduledStart(booking)))} key={booking.id}><time>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric", month: "short" }).format(new Date(scheduledStart(booking)))}</time>{bookingNode(booking)}</article>)}{!visible.length && <p className="calendar-empty">{t("calendar.noAppointmentsInView")}</p>}</div>}
+      {view === "agenda" && <div className="calendar-agenda-list">{visible.map((booking) => <article {...dropProps(new Date(scheduledStart(booking)))} key={booking.id}><time>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric", month: "short" }).format(new Date(scheduledStart(booking)))}</time>{bookingNode(booking)}</article>)}{!visible.length && <OperationalEmptyState mark="C" title={t("calendar.noAppointmentsInView")} description={t("phase3.requests.calendarEmpty")} action={<a href="#manual-appointment">+ {t("workshopBookings.manual.add")}</a>} />}</div>}
       {view === "day" && <article {...dropProps(cursor)} className="calendar-day-column"><h3>{new Intl.DateTimeFormat(language, { dateStyle: "full" }).format(cursor)}</h3>{forDay(cursor)}</article>}
       {view === "week" && <div className="calendar-week-grid">{weekDays.map((day) => <article {...dropProps(day)} key={day.toISOString()}><h3>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric", month: "short" }).format(day)}</h3>{forDay(day)}</article>)}</div>}
       {view === "month" && <div className="calendar-month-grid">{monthDays.map((day) => <article {...dropProps(day)} className={day.getMonth() === cursor.getMonth() ? "" : "outside-month"} key={day.toISOString()}><h3>{new Intl.DateTimeFormat(language, { weekday: "short", day: "numeric" }).format(day)}</h3>{forDay(day, true)}</article>)}</div>}

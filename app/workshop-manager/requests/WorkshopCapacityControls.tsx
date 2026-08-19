@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState, useTransition } from "react";
+import Link from "@/app/WorkspaceLink";
 import type { Language, TranslationKey } from "@/app/i18n";
 import type { ManagedWorkshopBooking } from "@/lib/dal/workshop-bookings";
 import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-scheduling";
@@ -13,6 +14,7 @@ import {
   type ScheduleActionState,
 } from "./actions";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
+import { FieldHelp, OperationalEmptyState, OperationalIntroduction } from "@/app/guidance/OperationalGuidance";
 
 type Translate = (key: TranslationKey) => string;
 const idle: ScheduleActionState = { status: "idle" };
@@ -31,10 +33,10 @@ function Result({ state, t }: { state: ScheduleActionState; t: Translate }) {
 
 function ResourceForm({ schedule, t }: { schedule: WorkshopSchedule; t: Translate }) {
   const [state, action, pending] = useActionState(createScheduleResourceAction, idle);
-  return <form action={action} className="capacity-resource-form">
+  return <form action={action} className="capacity-resource-form" id={`resource-form-${schedule.workshopId}`}>
     <input type="hidden" name="workshopId" value={schedule.workshopId} />
-    <label>{t("capacity.resourceType")}<select name="kind"><option value="mechanic">{t("capacity.kind.mechanic")}</option><option value="bay">{t("capacity.kind.bay")}</option><option value="ramp">{t("capacity.kind.ramp")}</option></select></label>
-    <label>{t("capacity.resourceName")}<input name="name" required minLength={2} maxLength={120} /></label>
+    <label>{t("capacity.resourceType")}<select name="kind"><option value="mechanic">{t("capacity.kind.mechanic")}</option><option value="bay">{t("capacity.kind.bay")}</option><option value="ramp">{t("capacity.kind.ramp")}</option></select><FieldHelp>{t("phase3.capacity.typeHelp")}</FieldHelp></label>
+    <label>{t("capacity.resourceName")}<input name="name" required minLength={2} maxLength={120} /><FieldHelp>{t("phase3.capacity.nameHelp")}</FieldHelp></label>
     <button disabled={pending}>{t("capacity.addResource")}</button><Result state={state} t={t} />
   </form>;
 }
@@ -48,7 +50,7 @@ function AbsenceForm({ resourceId, t }: { resourceId: string; t: Translate }) {
     <input type="hidden" name="endsAt" value={endsAt ? new Date(endsAt).toISOString() : ""} />
     <label>{t("capacity.absenceStarts")}<PlatformDateTimeInput mode="datetime-local" value={startsAt} onChange={setStartsAt} required ariaLabel={t("capacity.absenceStarts")} /></label>
     <label>{t("capacity.absenceEnds")}<PlatformDateTimeInput mode="datetime-local" value={endsAt} onChange={setEndsAt} required ariaLabel={t("capacity.absenceEnds")} /></label>
-    <label>{t("capacity.absenceReason")}<input name="reason" maxLength={240} /></label>
+    <label>{t("capacity.absenceReason")}<input name="reason" maxLength={240} /><FieldHelp>{t("phase3.capacity.absenceHelp")}</FieldHelp></label>
     <button disabled={pending}>{t("capacity.addAbsence")}</button><Result state={state} t={t} />
   </form>;
 }
@@ -69,7 +71,7 @@ function AbsenceRemove({ absenceId, t }: { absenceId: string; t: Translate }) {
 }
 
 export function WorkshopCapacityPanel({ schedules, language, t }: { schedules: WorkshopSchedule[]; language: Language; t: Translate }) {
-  return <details className="capacity-panel" id="capacity"><summary><span><strong>{t("capacity.title")}</strong><small>{t("capacity.description")}</small></span><b>+</b></summary><div className="capacity-panel-body">{schedules.map((schedule) => <section key={schedule.workshopId}><header><div><h3>{schedule.workshopName}</h3><p>{t("capacity.dailyCapacity")}: {schedule.dailyCapacity}</p></div></header><ResourceForm schedule={schedule} t={t} /><div className="capacity-resource-list">{schedule.resources.map((resource) => <ResourceRow key={resource.id} resource={resource} language={language} t={t} />)}{!schedule.resources.length && <p>{t("capacity.noResources")}</p>}</div></section>)}</div></details>;
+  return <details className="capacity-panel" id="capacity"><summary><span><strong>{t("capacity.title")}</strong><small>{t("capacity.description")}</small></span><b>+</b></summary><div className="capacity-panel-body"><OperationalIntroduction title={t("operationalGuidance.howTitle")} description={t("phase3.capacity.intro")} outcomeLabel={t("operationalGuidance.whyLabel")} outcome={t("phase3.capacity.outcome")} stepsLabel={t("operationalGuidance.stepsLabel")} steps={[t("phase3.capacity.step1"), t("phase3.capacity.step2"), t("phase3.capacity.step3")]} />{schedules.map((schedule) => <section key={schedule.workshopId}><header><div><h3>{schedule.workshopName}</h3><p>{t("capacity.dailyCapacity")}: {schedule.dailyCapacity}</p></div></header><ResourceForm schedule={schedule} t={t} /><div className="capacity-resource-list">{schedule.resources.map((resource) => <ResourceRow key={resource.id} resource={resource} language={language} t={t} />)}{!schedule.resources.length && <OperationalEmptyState mark="R" title={t("capacity.noResources")} description={t("phase3.capacity.emptyDescription")} action={<a href={`#resource-form-${schedule.workshopId}`}>+ {t("capacity.addResource")}</a>} />}</div></section>)}{!schedules.length && <OperationalEmptyState mark="W" title={t("workshopOperations.emptyTitle")} description={t("workshopOperations.emptyDescription")} action={<Link href="/workshop-manager/workshops">{t("serviceCatalogue.manageWorkshops")}</Link>} />}</div></details>;
 }
 
 export function BookingScheduleEditor({ booking, schedule, assigned, t }: { booking: ManagedWorkshopBooking; schedule: WorkshopSchedule | undefined; assigned: BookingResource[]; t: Translate }) {
@@ -81,7 +83,7 @@ export function BookingScheduleEditor({ booking, schedule, assigned, t }: { book
   const [pending, startTransition] = useTransition();
   const resources = schedule?.resources.filter((resource) => resource.active) ?? [];
   const save = () => startTransition(async () => setState(await saveBookingScheduleAction({ bookingId: booking.id, start: new Date(start).toISOString(), durationMinutes: duration, mechanicId: mechanicId || null, facilityId: facilityId || null })));
-  return <section className="booking-schedule-editor"><h4>{t("capacity.assignment")}</h4><div>
+  return <section className="booking-schedule-editor"><h4>{t("capacity.assignment")}</h4><FieldHelp>{t("phase3.capacity.assignmentHelp")}</FieldHelp><div>
     <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" value={start} onChange={setStart} ariaLabel={t("workshopBookings.action.time")} /></label>
     <label>{t("calendar.duration")}<input type="number" min={15} max={1440} step={15} value={duration} onChange={(event) => setDuration(Number(event.target.value))} /></label>
     <label>{t("capacity.kind.mechanic")}<select value={mechanicId} onChange={(event) => setMechanicId(event.target.value)}><option value="">{t("capacity.unassigned")}</option>{resources.filter((item) => item.kind === "mechanic").map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>

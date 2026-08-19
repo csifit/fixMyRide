@@ -11,6 +11,7 @@ import type { WorkshopOperations } from "@/lib/dal/workshop-operations";
 import { manageWorkshopBookingAction, type WorkshopBookingActionState } from "./actions";
 import WorkshopBookingCalendar from "./WorkshopBookingCalendar";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
+import { FieldHelp, OperationalEmptyState, OperationalIntroduction } from "@/app/guidance/OperationalGuidance";
 
 type ActionKind = "confirm" | "propose_time" | "reschedule" | "decline" | "cancel";
 type Translate = (key: TranslationKey) => string;
@@ -26,8 +27,8 @@ function ActionForm({ bookingId, kind, t }: { bookingId: string; kind: ActionKin
     <input type="hidden" name="bookingId" value={bookingId} />
     <input type="hidden" name="action" value={kind} />
     <input type="hidden" name="requestedStart" value={isoStart} />
-    {needsStart && <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" value={localStart} onChange={setLocalStart} required ariaLabel={t("workshopBookings.action.time")} /></label>}
-    <label>{t(needsReason ? "workshopBookings.action.reason" : "workshopBookings.action.note")}<textarea name="note" rows={2} maxLength={1000} required={needsReason} /></label>
+    {needsStart && <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" value={localStart} onChange={setLocalStart} required ariaLabel={t("workshopBookings.action.time")} /><FieldHelp>{t("phase3.requests.actionTimeHelp")}</FieldHelp></label>}
+    <label>{t(needsReason ? "workshopBookings.action.reason" : "workshopBookings.action.note")}<textarea name="note" rows={2} maxLength={1000} required={needsReason} /><FieldHelp>{t(needsReason ? "phase3.requests.reasonHelp" : "phase3.requests.noteHelp")}</FieldHelp></label>
     {state.status !== "idle" && <p className={["confirmed", "proposed", "rescheduled", "declined", "cancelled"].includes(state.status) ? "note-success" : "note-error"} role="status">{t(`workshopBookings.result.${state.status}` as TranslationKey)}</p>}
     <button disabled={pending}>{t(pending ? "workshopBookings.action.saving" : `workshopBookings.action.${kind}` as TranslationKey)}</button>
   </form>;
@@ -92,9 +93,10 @@ export default function WorkshopBookingInboxClient({ bookings, catalogues, sched
     <header className="settings-topbar"><Link href="/workshop-manager">← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
     <section className="settings-content booking-inbox-content">
       <p className="registration-kicker">{t("workshopBookings.eyebrow")}</p><h1>{t("workshopBookings.title")}</h1><p>{t("workshopBookings.description")}</p>
+      <OperationalIntroduction title={t("operationalGuidance.howTitle")} description={t("phase3.requests.intro")} outcomeLabel={t("operationalGuidance.whyLabel")} outcome={t("phase3.requests.outcome")} stepsLabel={t("operationalGuidance.stepsLabel")} steps={[t("phase3.requests.step1"), t("phase3.requests.step2"), t("phase3.requests.step3")]} />
       <WorkshopBookingCalendar bookings={bookings} catalogues={catalogues} schedules={schedules} assignments={assignments} operations={operations} language={language} t={t} />
-      <div className="booking-inbox-toolbar"><strong>{visible.length} {t("workshopBookings.visible")}</strong><label>{t("workshopBookings.filter")}<select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="open">{t("workshopBookings.filter.open")}</option><option value="requested">{t("workshopBookings.status.requested")}</option><option value="confirmed">{t("workshopBookings.status.confirmed")}</option><option value="declined">{t("workshopBookings.status.declined")}</option><option value="cancelled">{t("workshopBookings.status.cancelled")}</option><option value="all">{t("workshopBookings.filter.all")}</option></select></label></div>
-      <div className="booking-inbox-list">{visible.map((booking) => <BookingCard key={booking.id} booking={booking} language={language} t={t} />)}{!visible.length && <div className="catalogue-empty"><h2>{t("workshopBookings.emptyTitle")}</h2><p>{t("workshopBookings.emptyDescription")}</p></div>}</div>
+      <div className="booking-inbox-toolbar"><strong>{visible.length} {t("workshopBookings.visible")}</strong><label>{t("workshopBookings.filter")}<select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="open">{t("workshopBookings.filter.open")}</option><option value="requested">{t("workshopBookings.status.requested")}</option><option value="confirmed">{t("workshopBookings.status.confirmed")}</option><option value="declined">{t("workshopBookings.status.declined")}</option><option value="cancelled">{t("workshopBookings.status.cancelled")}</option><option value="all">{t("workshopBookings.filter.all")}</option></select><FieldHelp>{t("phase3.requests.filterHelp")}</FieldHelp></label></div>
+      <div className="booking-inbox-list">{visible.map((booking) => <BookingCard key={booking.id} booking={booking} language={language} t={t} />)}{!visible.length && <OperationalEmptyState mark="C" title={t("workshopBookings.emptyTitle")} description={bookings.length ? t("phase3.requests.filteredEmpty") : t("workshopBookings.emptyDescription")} action={bookings.length ? <button type="button" onClick={() => setFilter("all")}>{t("workshopBookings.filter.all")}</button> : <a href="#manual-appointment">+ {t("workshopBookings.manual.add")}</a>} />}</div>
     </section>
   </main>;
 }
