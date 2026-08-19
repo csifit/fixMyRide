@@ -6,6 +6,9 @@ import { useEffect, useState, type ReactNode } from "react";
 import type { SidebarIdentity } from "@/lib/dal/sidebar-identity";
 import { translate, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
+import RoleGuidance from "@/app/guidance/RoleGuidance";
+import { guidanceFor } from "@/app/guidance/content";
+import type { GuidanceRole } from "@/lib/dal/guidance";
 
 type Role = "customer" | "workshop_manager" | "workshop_staff" | "service_provider" | "service_organisation";
 type Item = { href: string; key: TranslationKey; mark: string };
@@ -45,7 +48,7 @@ const navigation: Record<Role, { titleKey: TranslationKey; items: Item[] }> = {
   ] },
 };
 
-export default function RoleWorkspaceShell({ role, identity, children }: { role: Role; identity: SidebarIdentity | null; children: ReactNode }) {
+export default function RoleWorkspaceShell({ role, identity, dismissedGuides = [], children }: { role: Role; identity: SidebarIdentity | null; dismissedGuides?: string[]; children: ReactNode }) {
   const pathname = usePathname();
   const [language] = useLanguage();
   const t = (key: TranslationKey) => translate(language, key);
@@ -75,6 +78,20 @@ export default function RoleWorkspaceShell({ role, identity, children }: { role:
         return <Link key={item.href} href={item.href} className={active ? "active" : ""} title={collapsed ? t(item.key) : undefined}><b>{item.mark}</b><span>{t(item.key)}</span></Link>;
       })}</nav>
     </aside>
-    <div className="role-workspace-content">{children}</div>
+    <div className="role-workspace-content">
+      {(role === "workshop_manager" || role === "service_organisation") && <RoleGuidance
+        key={`${role}:${pathname}`}
+        role={role as GuidanceRole}
+        pathname={pathname}
+        language={language}
+        initiallyDismissed={dismissedGuides.includes(guidanceForKey(role as GuidanceRole, pathname))}
+      />}
+      {children}
+    </div>
   </div>;
+}
+
+function guidanceForKey(role: GuidanceRole, pathname: string) {
+  const guide = guidanceFor(role, pathname, "en");
+  return guide?.key ?? "";
 }
