@@ -7,6 +7,8 @@ import { useLanguage } from "@/app/i18n/useLanguage";
 import type { PublicWorkshop, PublicWorkshopBookingRules, PublicWorkshopService } from "@/lib/dal/public-workshops";
 import { requestServiceAction, type ServiceRequestState } from "./actions";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
+import { translate, type TranslationKey } from "@/app/i18n";
+import { CustomerHint, CustomerPageGuide } from "@/app/guidance/CustomerGuidance";
 
 const idle: ServiceRequestState = { status: "idle" };
 
@@ -23,6 +25,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
   initialDate: string;
 }) {
   const [language] = useLanguage();
+  const t = (key: TranslationKey) => translate(language, key);
   const [state, action, pending] = useActionState(requestServiceAction, idle);
   const [date, setDate] = useState(initialDate);
   const [time, setTime] = useState("09:00");
@@ -59,6 +62,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
         <span className={step === 1 ? "active" : "done"}><b>2</b>Vehicle and time</span><i />
         <span className={step === 2 ? "active" : ""}><b>3</b>Contact and review</span>
       </div>
+      <CustomerPageGuide title={t("phase6.request.title")} description={t("phase6.request.description")} steps={[t("phase6.request.step1"), t("phase6.request.step2"), t("phase6.request.step3")]} />
       <form action={action} className="booking-checkout-grid">
         <section className="booking-checkout-main">
           {step === 1 ? <>
@@ -71,17 +75,17 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
               <label>Year<input value={vehicle.year} onChange={(event) => setVehicle({ ...vehicle, year: event.target.value })} type="number" min="1886" max="2200" inputMode="numeric" /></label>
               <label>VIN (optional)<input value={vehicle.vin} onChange={(event) => setVehicle({ ...vehicle, vin: event.target.value.toUpperCase() })} minLength={17} maxLength={17} autoCapitalize="characters" /></label>
               <label>Mileage (km)<input value={vehicle.mileage} onChange={(event) => setVehicle({ ...vehicle, mileage: event.target.value })} type="number" min="0" max="5000000" inputMode="numeric" /></label>
-              <label>Preferred date<PlatformDateTimeInput mode="date" value={date} min={rules.earliestBookingDate} max={rules.latestBookingDate} onChange={setDate} required ariaLabel="Preferred date" /></label>
+              <label>Preferred date<PlatformDateTimeInput mode="date" value={date} min={rules.earliestBookingDate} max={rules.latestBookingDate} onChange={setDate} required ariaLabel="Preferred date" /><CustomerHint>{t("phase6.request.preferredHelp")}</CustomerHint></label>
               <label>Preferred arrival time<PlatformDateTimeInput mode="time" value={time} step={rules.slotIntervalMinutes * 60} onChange={setTime} required ariaLabel="Preferred arrival time" /></label>
-              <label>Alternative date (optional)<PlatformDateTimeInput mode="date" value={alternateDate} min={rules.earliestBookingDate} max={rules.latestBookingDate} onChange={setAlternateDate} ariaLabel="Alternative date" /></label>
+              <label>Alternative date (optional)<PlatformDateTimeInput mode="date" value={alternateDate} min={rules.earliestBookingDate} max={rules.latestBookingDate} onChange={setAlternateDate} ariaLabel="Alternative date" /><CustomerHint>{t("phase6.request.alternativeHelp")}</CustomerHint></label>
               <label>Alternative time<PlatformDateTimeInput mode="time" value={alternateTime} step={rules.slotIntervalMinutes * 60} disabled={!alternateDate} onChange={setAlternateTime} ariaLabel="Alternative time" /></label>
-              <label>What should the workshop know?<textarea value={vehicle.note} onChange={(event) => setVehicle({ ...vehicle, note: event.target.value })} maxLength={2000} placeholder="Describe the issue, warning lights, noises, or work requested." /></label>
+              <label>What should the workshop know?<textarea value={vehicle.note} onChange={(event) => setVehicle({ ...vehicle, note: event.target.value })} maxLength={2000} placeholder="Describe the issue, warning lights, noises, or work requested." /><CustomerHint>{t("phase6.request.noteHelp")}</CustomerHint></label>
               <label>While the car is in service<select value={vehicle.mobility} onChange={(event) => setVehicle({ ...vehicle, mobility: event.target.value })}><option value="none">No special requirement</option>{rules.allowsWaitOnSite && <option value="wait_on_site">Wait on site</option>}{rules.offersPickup && <option value="pickup">Vehicle pickup</option>}{rules.offersCourtesyCar && <option value="courtesy_car">Courtesy car</option>}</select></label>
               <button type="button" onClick={() => setStep(2)} disabled={!preferredStart || vehicle.registration.trim().length < 2 || !vehicle.make.trim() || !vehicle.model.trim()}>Continue</button>
             </div>
           </> : <>
             <p className="registration-kicker">Contact details</p><h1>Where should the workshop send confirmation?</h1>
-            <p>No payment is taken. The requested time only becomes an appointment after {workshop.name} confirms it.</p>
+            <p>No payment is taken. The requested time only becomes an appointment after {workshop.name} confirms it.</p><CustomerHint>{t("phase6.request.confirmationHelp")}</CustomerHint>
             <div className="booking-details-form automotive-request-form">
               <label>Your name<input name="customerName" required minLength={2} maxLength={160} autoComplete="name" /></label>
               <label>Email<input name="customerEmail" type="email" required maxLength={320} autoComplete="email" /></label>
