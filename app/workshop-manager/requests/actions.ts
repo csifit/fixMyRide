@@ -3,9 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
-import { createManualWorkshopAppointment, manageWorkshopBooking } from "@/lib/dal/workshop-bookings";
+import { createManualWorkshopAppointment, manageWorkshopBooking, markManagedBookingCommunicationsRead } from "@/lib/dal/workshop-bookings";
 import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
 import { addWorkshopResourceAbsence, createWorkshopResource, removeWorkshopResourceAbsence, setWorkshopResourceActive, updateManagedBookingSchedule } from "@/lib/dal/workshop-scheduling";
+import { dispatchDueBookingCommunications } from "@/lib/messaging/booking-communications";
+import { normalizeInternationalPhone } from "@/lib/phone";
 
 export type WorkshopBookingActionState = {
   status: "idle" | "confirmed" | "proposed" | "rescheduled" | "declined" | "cancelled" | "invalid" | "unauthorized" | "unavailable";
@@ -85,9 +87,16 @@ export async function createManualAppointmentAction(
     start: localStart ? new Date(localStart).toISOString() : "",
   });
   if (!parsed.success) return { status: "invalid" };
+  const normalizedPhone = parsed.data.customerPhone
+    ? normalizeInternationalPhone(parsed.data.customerPhone, parsed.data.locale)
+    : null;
+  if (parsed.data.customerPhone && !normalizedPhone) return { status: "invalid" };
   try {
-    const bookingId = await createManualWorkshopAppointment(parsed.data);
-    await dispatchDueServiceBookingNotifications(bookingId).catch(() => undefined);
+    const bookingId = await createManualWorkshopAppointment({ ...parsed.data, customerPhone: normalizedPhone });
+    await Promise.allSettled([
+      dispatchDueServiceBookingNotifications(bookingId),
+      dispatchDueBookingCommunications(bookingId),
+    ]);
     revalidatePath("/workshop-manager/requests");
     revalidatePath("/workshop-manager/repairs");
     revalidatePath("/service-organisation/requests");
@@ -173,6 +182,7 @@ export async function manageWorkshopBookingAction(
   try {
     const { bookingId, action, requestedStart: start, note } = parsed.data;
     await manageWorkshopBooking({ bookingId, action, start, note });
+    await dispatchDueBookingCommunications(bookingId).catch(() => undefined);
     if (action === "confirm" || action === "reschedule") {
       await dispatchDueServiceBookingNotifications(bookingId).catch(() => undefined);
     }
@@ -187,4 +197,14 @@ export async function manageWorkshopBookingAction(
   } catch (error) {
     return failure(error);
   }
+}
+
+export async function markWorkshopBookingReadAction(formData: FormData) {
+  const parsed = z.uuid().safeParse(formData.get("bookingId"));
+  if (!parsed.success) return;
+  try {
+    await markManagedBookingCommunicationsRead(parsed.data);
+    revalidatePath("/workshop-manager/requests");
+    revalidatePath("/service-organisation/requests");
+  } catch { return; }
 }

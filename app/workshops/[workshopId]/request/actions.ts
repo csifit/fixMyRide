@@ -3,9 +3,12 @@
 import { createHash, randomBytes } from "node:crypto";
 import { z } from "zod";
 import { createPublicServiceBookingRequest, getPublicWorkshop, loadPublicWorkshopServices } from "@/lib/dal/public-workshops";
+import { sendBookingAccessEmail } from "@/lib/email/booking-access";
+import { dispatchDueBookingCommunications } from "@/lib/messaging/booking-communications";
+import { normalizeInternationalPhone } from "@/lib/phone";
 
 export type ServiceRequestState = {
-  status: "idle" | "success" | "invalid" | "unavailable";
+  status: "idle" | "success" | "success_access_email_failed" | "invalid" | "unavailable";
 };
 
 const schema = z.object({
@@ -44,10 +47,24 @@ export async function requestServiceAction(
     if (!workshop || !service || (service.bookingMode !== "direct" && parsed.data.diagnosisAccepted !== "yes")) {
       return { status: "invalid" };
     }
+    const customerPhone = normalizeInternationalPhone(parsed.data.customerPhone, workshop.countryCode);
+    if (!customerPhone) return { status: "invalid" };
     const managementToken = randomBytes(32).toString("base64url");
     const managementTokenDigest = createHash("sha256").update(managementToken).digest("hex");
-    await createPublicServiceBookingRequest({ ...parsed.data, managementTokenDigest });
-    return { status: "success" };
+    const bookingId = await createPublicServiceBookingRequest({
+      ...parsed.data, customerPhone, managementTokenDigest,
+    });
+    const accessEmail = await sendBookingAccessEmail({
+      to: parsed.data.customerEmail,
+      customerName: parsed.data.customerName,
+      workshopName: workshop.name,
+      serviceName: service.name,
+      vehicleRegistration: parsed.data.vehicleRegistration.toUpperCase(),
+      token: managementToken,
+      locale: parsed.data.locale,
+    });
+    await dispatchDueBookingCommunications(bookingId).catch(() => undefined);
+    return { status: accessEmail.ok ? "success" : "success_access_email_failed" };
   } catch {
     return { status: "unavailable" };
   }

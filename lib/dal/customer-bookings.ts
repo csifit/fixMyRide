@@ -32,6 +32,8 @@ export type CustomerBooking = {
   history: BookingHistoryItem[];
   estimate: RepairEstimate | null;
   feedback: { rating: number; comment: string | null; updatedAt: string } | null;
+  unreadCommunicationCount: number;
+  latestCommunicationKind: string | null;
 };
 
 export type ManageCustomerBookingInput = {
@@ -46,14 +48,16 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
   const supabase = await createClient();
-  const [bookingsResult, estimatesResult, feedbackResult] = await Promise.all([
+  const [bookingsResult, estimatesResult, feedbackResult, communicationResult] = await Promise.all([
     supabase.rpc("get_my_service_booking_requests"),
     supabase.rpc("get_my_repair_estimates"),
     supabase.rpc("get_my_service_booking_feedback"),
+    supabase.rpc("get_my_booking_communication_counts"),
   ]);
   if (bookingsResult.error) fail(bookingsResult.error);
   if (estimatesResult.error) fail(estimatesResult.error);
   if (feedbackResult.error) fail(feedbackResult.error);
+  if (communicationResult.error) fail(communicationResult.error);
   const estimates = new Map(
     ((estimatesResult.data ?? []) as Record<string, unknown>[])
       .map((row) => [row.booking_id as string, row.estimate as RepairEstimate]),
@@ -61,6 +65,11 @@ export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
   const feedback = new Map(
     ((feedbackResult.data ?? []) as Record<string, unknown>[]).map((row) => [row.booking_id as string, {
       rating: Number(row.rating), comment: row.comment as string | null, updatedAt: row.updated_at as string,
+    }]),
+  );
+  const communication = new Map(
+    ((communicationResult.data ?? []) as Record<string, unknown>[]).map((row) => [row.booking_id as string, {
+      count: Number(row.unread_count), kind: row.latest_event_kind as string | null,
     }]),
   );
 
@@ -91,6 +100,8 @@ export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
     history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
     estimate: estimates.get(row.booking_id as string) ?? null,
     feedback: feedback.get(row.booking_id as string) ?? null,
+    unreadCommunicationCount: communication.get(row.booking_id as string)?.count ?? 0,
+    latestCommunicationKind: communication.get(row.booking_id as string)?.kind ?? null,
   }));
 }
 
@@ -124,6 +135,14 @@ export async function decideMyRepairEstimate(input: {
     requested_estimate_id: input.estimateId,
     requested_decision: input.decision,
     requested_note: input.note,
+  });
+  if (error) fail(error);
+}
+
+export async function markMyBookingCommunicationsRead(bookingId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("mark_my_booking_communications_read", {
+    requested_booking_id: bookingId,
   });
   if (error) fail(error);
 }

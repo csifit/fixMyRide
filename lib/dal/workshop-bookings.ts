@@ -55,6 +55,8 @@ export type ManagedWorkshopBooking = {
   durationMinutes: number;
   createdAt: string;
   history: BookingHistoryItem[];
+  unreadCommunicationCount: number;
+  latestCommunicationKind: string | null;
 };
 
 export type ManageWorkshopBookingInput = {
@@ -89,14 +91,23 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBooking[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_managed_service_booking_requests_v2", {
-    requested_status: null,
-  });
+  const [{ data, error }, communicationResult] = await Promise.all([
+    supabase.rpc("get_managed_service_booking_requests_v2", { requested_status: null }),
+    supabase.rpc("get_managed_booking_communication_counts"),
+  ]);
   if (error) fail(error);
+  if (communicationResult.error) fail(communicationResult.error);
+
+  const communication = new Map(
+    ((communicationResult.data ?? []) as Record<string, unknown>[]).map((row) => [row.booking_id as string, {
+      count: Number(row.unread_count), kind: row.latest_event_kind as string | null,
+    }]),
+  );
 
   const rows = (data ?? []) as unknown[];
   return rows.map((value: unknown) => {
     const row = value as Record<string, unknown>;
+    const communicationState = communication.get(row.booking_id as string);
     return {
       id: row.booking_id as string,
       workshopId: row.workshop_id as string,
@@ -125,6 +136,8 @@ export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBook
       durationMinutes: Number(row.duration_minutes),
       createdAt: row.created_at as string,
       history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
+      unreadCommunicationCount: communicationState?.count ?? 0,
+      latestCommunicationKind: communicationState?.kind ?? null,
     };
   });
 }
@@ -160,6 +173,14 @@ export async function manageWorkshopBooking(input: ManageWorkshopBookingInput) {
     requested_action: input.action,
     requested_start: input.start,
     requested_note: input.note,
+  });
+  if (error) fail(error);
+}
+
+export async function markManagedBookingCommunicationsRead(bookingId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("mark_managed_booking_communications_read", {
+    requested_booking_id: bookingId,
   });
   if (error) fail(error);
 }

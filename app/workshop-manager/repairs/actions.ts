@@ -7,6 +7,7 @@ import { manageRepairWorkflow } from "@/lib/dal/repair-workflows";
 import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
 import { saveWorkshopVehicleServiceRecord } from "@/lib/dal/vehicle-service-history";
 import { updateManagedServiceOrderDetails } from "@/lib/dal/service-orders";
+import { dispatchDueBookingCommunications } from "@/lib/messaging/booking-communications";
 
 export type RepairActionState = {
   status: "idle" | "saved" | "invalid" | "unauthorized" | "unavailable";
@@ -54,7 +55,10 @@ export async function manageRepairAction(_state: RepairActionState, formData: Fo
   if (!parsed.success) return { status: "invalid" };
   try {
     await manageRepairWorkflow(parsed.data);
-    await dispatchDueServiceBookingNotifications(parsed.data.bookingId).catch(() => undefined);
+    await Promise.allSettled([
+      dispatchDueServiceBookingNotifications(parsed.data.bookingId),
+      dispatchDueBookingCommunications(parsed.data.bookingId),
+    ]);
     revalidatePath("/workshop-manager/repairs");
     revalidatePath("/service-organisation/repairs");
     revalidatePath("/customer/bookings");

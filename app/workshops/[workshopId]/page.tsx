@@ -112,7 +112,7 @@ export default async function WorkshopPage({ params, searchParams }: {
           <div className="workshop-amenities">
             {workshop.offersPickup && <span>✓ Vehicle pickup available</span>}
             {workshop.offersCourtesyCar && <span>✓ Courtesy car available</span>}
-            {bookingAvailable && <span>✓ Email and SMS booking updates</span>}
+            {bookingAvailable && <span>✓ Secure email access and booking notifications</span>}
           </div>
           <section className="workshop-offered-services">
             <header><h3>Services offered</h3><span>{services.length} published</span></header>

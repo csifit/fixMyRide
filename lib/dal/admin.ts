@@ -18,21 +18,25 @@ export type AdminDashboardData = {
   customers: Array<{ id: string; fullName: string; phone: string | null; vehicleCount: number; bookingCount: number; createdAt: string }>;
   managers: Array<{ id: string; displayName: string; status: Status; providerNames: string[]; createdAt: string }>;
   sms: Array<{ kind: string; pending: number; sent: number; failed: number }>;
+  communications: { pending: number; retryable: number; exhausted: number; sent: number };
   supportTickets: SupportTicket[];
   workflow: AdminOrganisationWorkflow;
 };
 
 export async function loadAdminDashboard(administrator: AdministratorContext): Promise<AdminDashboardData> {
   const supabase = await createClient();
-  const [{ data, error }, workflow, supportTickets] = await Promise.all([
+  const [{ data, error }, workflow, supportTickets, communicationResult] = await Promise.all([
     supabase.rpc("get_automotive_admin_snapshot"),
     loadAdminOrganisationWorkflow(),
     loadAdminSupportTickets(),
+    supabase.rpc("get_admin_booking_communication_summary"),
   ]);
   if (error || !data || typeof data !== "object") {
     throw new DataAccessError(error?.code === "42501" ? "unauthorized" : "unavailable");
   }
-  const snapshot = data as unknown as Omit<AdminDashboardData, "administrator" | "workflow" | "supportTickets">;
+  if (communicationResult.error || !communicationResult.data) throw new DataAccessError("unavailable");
+  const snapshot = data as unknown as Omit<AdminDashboardData, "administrator" | "workflow" | "supportTickets" | "communications">;
+  const communications = communicationResult.data as unknown as AdminDashboardData["communications"];
   const activeProviderIds = new Set(workflow.providers.map((provider) => provider.id));
   const providers = snapshot.providers.filter((provider) => activeProviderIds.has(provider.id));
   return {
@@ -41,10 +45,12 @@ export async function loadAdminDashboard(administrator: AdministratorContext): P
     counts: {
       ...snapshot.counts,
       providers: providers.length,
+      smsAttention: snapshot.counts.smsAttention + communications.retryable + communications.exhausted,
       openTickets: supportTickets.filter((ticket) => !["resolved", "closed"].includes(ticket.status)).length,
     },
     administrator: { displayName: administrator.displayName, email: administrator.email, role: administrator.role },
     supportTickets,
+    communications,
     workflow,
   };
 }

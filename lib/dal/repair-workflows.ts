@@ -71,14 +71,18 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflow[]> {
   const supabase = await createClient();
-  const [{ data, error }, records, serviceOrders, invoicingPreferences] = await Promise.all([
+  const [{ data, error }, records, serviceOrders, invoicingPreferences, internalNotesResult] = await Promise.all([
     supabase.rpc("get_managed_repair_workflows"),
     loadManagedVehicleServiceRecords(),
     loadManagedServiceOrderFields(),
     loadCustomerInvoicingPreferences(),
+    supabase.rpc("get_managed_booking_internal_notes"),
   ]);
   if (error) fail(error);
+  if (internalNotesResult.error) fail(internalNotesResult.error);
   const invoicingByWorkshop = new Map(invoicingPreferences.map((item) => [item.workshopId, item.effectiveEnabled]));
+  const internalNotes = new Map(((internalNotesResult.data ?? []) as Record<string, unknown>[])
+    .map((row) => [row.booking_id as string, row.internal_note as string | null]));
   return ((data ?? []) as Record<string, unknown>[]).map((row) => {
     const record = records.get(row.booking_id as string) ?? {
       id: null, vehicleVin: null, mileageKm: null, workSummary: null,
@@ -105,7 +109,7 @@ export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflo
     vehicleVin: record.vehicleVin ?? null,
     confirmedStart: row.confirmed_start as string | null,
     customerNote: row.customer_note as string | null,
-    workshopNote: row.workshop_note as string | null,
+    workshopNote: internalNotes.get(row.booking_id as string) ?? null,
     serviceOrderNumber: serviceOrder.orderNumber,
     serviceOrderMechanicOverride: serviceOrder.mechanicOverride,
     vehicleReceptionCondition: serviceOrder.receptionCondition,

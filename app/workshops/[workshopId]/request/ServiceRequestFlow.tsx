@@ -43,12 +43,13 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
   const diagnosisFee = service.diagnosisFeeCents !== null && service.diagnosisCurrency
     ? new Intl.NumberFormat(language, { style: "currency", currency: service.diagnosisCurrency }).format(service.diagnosisFeeCents / 100)
     : null;
-  if (state.status === "success") return <main className="booking-shell">
+  if (["success", "success_access_email_failed"].includes(state.status)) return <main className="booking-shell">
     <PublicSiteHeader />
     <section className="booking-complete">
       <span className="booking-complete-mark">✓</span><p className="registration-kicker">Request sent</p>
       <h1>Your service request is waiting for confirmation</h1>
-      <p>{workshop.name} will review the requested time and vehicle details. Confirmation and future updates can be sent by email and SMS.</p>
+      <p>{t("phase7.request.sentDescription")}</p>
+      {state.status === "success_access_email_failed" && <p className="appointment-error">{t("phase7.request.accessEmailFailed")}</p>}
       <article><strong>{service.name}</strong><span>{workshop.name}</span><b>{new Intl.DateTimeFormat(language, { dateStyle: "full", timeStyle: "short" }).format(new Date(preferredStart))}</b><small>This is a request, not a confirmed appointment yet.</small></article>
       <div><Link className="booking-primary" href="/garage">Go to My Garage</Link><Link href="/workshops">Find another workshop</Link></div>
     </section>
@@ -89,7 +90,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
             <div className="booking-details-form automotive-request-form">
               <label>Your name<input name="customerName" required minLength={2} maxLength={160} autoComplete="name" /></label>
               <label>Email<input name="customerEmail" type="email" required maxLength={320} autoComplete="email" /></label>
-              <label>Mobile number<input name="customerPhone" required minLength={7} maxLength={40} autoComplete="tel" /></label>
+              <label>Mobile number<input name="customerPhone" required minLength={7} maxLength={40} autoComplete="tel" placeholder="+40 7..." /><CustomerHint>{t("phase7.request.phoneHelp")}</CustomerHint></label>
             </div>
             <input type="hidden" name="workshopId" value={workshop.id} />
             <input type="hidden" name="serviceId" value={service.id} />

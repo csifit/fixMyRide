@@ -22,7 +22,7 @@ function SimpleAction({ bookingId, kind, t, danger = false }: { bookingId: strin
   const [state, action, pending] = useActionState(manageRepairAction, idle);
   return <form className={`booking-action-form ${danger ? "danger" : ""}`} action={action}>
     <input type="hidden" name="bookingId" value={bookingId} /><input type="hidden" name="action" value={kind} /><input type="hidden" name="diagnosis" value="" /><input type="hidden" name="currency" value="EUR" /><input type="hidden" name="items" value="[]" />
-    <label>{t("repairLifecycle.note")}<textarea name="note" rows={2} maxLength={2000} /></label>
+    <label>{t("phase7.messaging.internalNote")}<textarea name="note" rows={2} maxLength={2000} /><FieldHelp>{t("phase7.messaging.internalNoteHelp")}</FieldHelp></label>
     {state.status !== "idle" && <p className={state.status === "saved" ? "note-success" : "note-error"}>{t(`repairLifecycle.result.${state.status}` as TranslationKey)}</p>}
     <button disabled={pending}>{t(pending ? "repairLifecycle.saving" : `repairLifecycle.action.${kind}` as TranslationKey)}</button>
   </form>;

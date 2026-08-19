@@ -8,7 +8,7 @@ import type { ManagedWorkshopBooking } from "@/lib/dal/workshop-bookings";
 import type { ManagedWorkshopCatalogue } from "@/lib/dal/workshop-services";
 import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-scheduling";
 import type { WorkshopOperations } from "@/lib/dal/workshop-operations";
-import { manageWorkshopBookingAction, type WorkshopBookingActionState } from "./actions";
+import { manageWorkshopBookingAction, markWorkshopBookingReadAction, type WorkshopBookingActionState } from "./actions";
 import WorkshopBookingCalendar from "./WorkshopBookingCalendar";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 import { FieldHelp, OperationalEmptyState, OperationalIntroduction } from "@/app/guidance/OperationalGuidance";
@@ -28,7 +28,7 @@ function ActionForm({ bookingId, kind, t }: { bookingId: string; kind: ActionKin
     <input type="hidden" name="action" value={kind} />
     <input type="hidden" name="requestedStart" value={isoStart} />
     {needsStart && <label>{t("workshopBookings.action.time")}<PlatformDateTimeInput mode="datetime-local" value={localStart} onChange={setLocalStart} required ariaLabel={t("workshopBookings.action.time")} /><FieldHelp>{t("phase3.requests.actionTimeHelp")}</FieldHelp></label>}
-    <label>{t(needsReason ? "workshopBookings.action.reason" : "workshopBookings.action.note")}<textarea name="note" rows={2} maxLength={1000} required={needsReason} /><FieldHelp>{t(needsReason ? "phase3.requests.reasonHelp" : "phase3.requests.noteHelp")}</FieldHelp></label>
+    <label>{t(needsReason ? "workshopBookings.action.reason" : "phase7.messaging.customerMessage")}<textarea name="note" rows={2} maxLength={1000} required={needsReason} /><FieldHelp>{t(needsReason ? "phase3.requests.reasonHelp" : "phase7.messaging.customerVisibleHelp")}</FieldHelp></label>
     {state.status !== "idle" && <p className={["confirmed", "proposed", "rescheduled", "declined", "cancelled"].includes(state.status) ? "note-success" : "note-error"} role="status">{t(`workshopBookings.result.${state.status}` as TranslationKey)}</p>}
     <button disabled={pending}>{t(pending ? "workshopBookings.action.saving" : `workshopBookings.action.${kind}` as TranslationKey)}</button>
   </form>;
@@ -45,6 +45,7 @@ function BookingCard({ booking, language, t }: { booking: ManagedWorkshopBooking
     <summary>
       <span><b>{booking.vehicleRegistration}</b><strong>{booking.vehicleMake} {booking.vehicleModel}</strong><small>{booking.serviceName} · {booking.workshopName}</small></span>
       <span><small>{t("workshopBookings.preferred")}</small><DateValue value={booking.preferredStart} language={language} /></span>
+      {booking.unreadCommunicationCount > 0 && <span className="booking-unread-badge">{booking.unreadCommunicationCount} {t("phase7.messaging.newUpdates")}</span>}
       <em>{t(`workshopBookings.status.${booking.status}` as TranslationKey)}</em>
     </summary>
     <div className="booking-inbox-detail">
@@ -76,7 +77,7 @@ function BookingCard({ booking, language, t }: { booking: ManagedWorkshopBooking
         {!requested && !confirmed && <p>{t("workshopBookings.noActions")}</p>}
       </section>
       <section className="booking-inbox-history">
-        <h3>{t("workshopBookings.history")}</h3>
+        <h3>{t("workshopBookings.history")}</h3>{booking.unreadCommunicationCount > 0 && <form action={markWorkshopBookingReadAction}><input type="hidden" name="bookingId" value={booking.id} /><button className="booking-mark-read">{t("phase7.messaging.markRead")}</button></form>}
         {booking.history.map((item, index) => <article key={`${item.createdAt}-${index}`}><span><b>{t(`workshopBookings.history.${item.action}` as TranslationKey)}</b><time>{formatDateTime(language, item.createdAt)}</time></span>{item.note && <p>{item.note}</p>}</article>)}
       </section>
     </div>

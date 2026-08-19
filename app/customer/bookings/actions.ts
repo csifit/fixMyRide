@@ -4,7 +4,9 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
 import { dismissMyCustomerMaintenanceNotification } from "@/lib/dal/customer-maintenance";
-import { decideMyRepairEstimate, manageMyServiceBooking, submitMyServiceBookingFeedback } from "@/lib/dal/customer-bookings";
+import { decideMyRepairEstimate, manageMyServiceBooking, markMyBookingCommunicationsRead, submitMyServiceBookingFeedback } from "@/lib/dal/customer-bookings";
+import { dispatchDueBookingCommunications } from "@/lib/messaging/booking-communications";
+import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
 
 export type CustomerBookingActionState = {
   status: "idle" | "accepted" | "declined" | "cancelled" | "approved" | "estimate_declined" | "reviewed" | "dismissed" | "invalid" | "unauthorized" | "unavailable";
@@ -62,6 +64,8 @@ export async function decideRepairEstimateAction(
   if (!parsed.success) return { status: "invalid" };
   try {
     await decideMyRepairEstimate(parsed.data);
+    const bookingId = formData.get("bookingId");
+    if (typeof bookingId === "string") await dispatchDueBookingCommunications(bookingId).catch(() => undefined);
     revalidatePath("/customer/bookings");
     revalidatePath("/workshop-manager/repairs");
     return { status: parsed.data.decision === "approve" ? "approved" : "estimate_declined" };
@@ -76,6 +80,10 @@ export async function manageCustomerBookingAction(
   if (!parsed.success) return { status: "invalid" };
   try {
     await manageMyServiceBooking(parsed.data);
+    await Promise.allSettled([
+      dispatchDueBookingCommunications(parsed.data.bookingId),
+      dispatchDueServiceBookingNotifications(parsed.data.bookingId),
+    ]);
     revalidatePath("/customer/bookings");
     revalidatePath("/garage");
     revalidatePath("/workshop-manager/requests");
@@ -102,4 +110,13 @@ export async function dismissMaintenanceNotificationAction(
     revalidatePath("/customer/bookings");
     return { status: "dismissed" };
   } catch (error) { return failure(error); }
+}
+
+export async function markCustomerBookingReadAction(formData: FormData) {
+  const parsed = z.uuid().safeParse(formData.get("bookingId"));
+  if (!parsed.success) return;
+  try {
+    await markMyBookingCommunicationsRead(parsed.data);
+    revalidatePath("/customer/bookings");
+  } catch { return; }
 }

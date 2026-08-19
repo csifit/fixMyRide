@@ -6,7 +6,7 @@ import { formatDateTime, locales, translate, type Language, type TranslationKey 
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { CustomerBooking } from "@/lib/dal/customer-bookings";
 import type { CustomerMaintenanceNotification } from "@/lib/dal/customer-maintenance";
-import { decideRepairEstimateAction, dismissMaintenanceNotificationAction, manageCustomerBookingAction, submitServiceFeedbackAction, type CustomerBookingActionState } from "./actions";
+import { decideRepairEstimateAction, dismissMaintenanceNotificationAction, manageCustomerBookingAction, markCustomerBookingReadAction, submitServiceFeedbackAction, type CustomerBookingActionState } from "./actions";
 import { CustomerDecisionGuide, CustomerHint, CustomerPageGuide } from "@/app/guidance/CustomerGuidance";
 
 type Translate = (key: TranslationKey) => string;
@@ -44,10 +44,10 @@ function RepairLifecycleOverview({ status, t }: { status: CustomerBooking["statu
   </section>;
 }
 
-function EstimateDecisionForm({ estimateId, decision, t }: { estimateId: string; decision: "approve" | "decline"; t: Translate }) {
+function EstimateDecisionForm({ bookingId, estimateId, decision, t }: { bookingId: string; estimateId: string; decision: "approve" | "decline"; t: Translate }) {
   const [state, action, pending] = useActionState(decideRepairEstimateAction, idle);
   return <form className={`customer-booking-action ${decision === "decline" ? "danger" : ""}`} action={action}>
-    <input type="hidden" name="estimateId" value={estimateId} /><input type="hidden" name="decision" value={decision} />
+    <input type="hidden" name="bookingId" value={bookingId} /><input type="hidden" name="estimateId" value={estimateId} /><input type="hidden" name="decision" value={decision} />
     <label>{t("repairLifecycle.note")}<textarea name="note" rows={2} maxLength={2000} /><CustomerHint>{t("phase6.approvals.noteHelp")}</CustomerHint></label>
     {state.status !== "idle" && <p className={["approved", "estimate_declined"].includes(state.status) ? "note-success" : "note-error"}>{t(`repairLifecycle.customerResult.${state.status}` as TranslationKey)}</p>}
     <button disabled={pending}>{t(pending ? "repairLifecycle.saving" : `repairLifecycle.customerAction.${decision}` as TranslationKey)}</button>
@@ -57,7 +57,7 @@ function EstimateDecisionForm({ estimateId, decision, t }: { estimateId: string;
 function CustomerEstimate({ booking, language, t }: { booking: CustomerBooking; language: Language; t: Translate }) {
   const estimate = booking.estimate;
   if (!estimate) return null;
-  return <section className="customer-repair-estimate"><header><div><p>{t("repairLifecycle.estimate")} #{estimate.version}</p><h3>{money(language, estimate.totalCents, estimate.currency)}</h3></div><em>{t(`repairLifecycle.estimateStatus.${estimate.status}` as TranslationKey)}</em></header><p><b>{t("repairLifecycle.diagnosis")}</b>{estimate.diagnosisSummary}</p><table><tbody>{estimate.items.map((item, index) => <tr key={index}><td>{t(`repairLifecycle.type.${item.type}` as TranslationKey)}</td><th>{item.description}</th><td>{item.quantity} × {money(language, item.unitPriceCents, estimate.currency)}</td><td>{money(language, item.lineTotalCents, estimate.currency)}</td></tr>)}</tbody><tfoot><tr><th colSpan={3}>{t("repairLifecycle.total")}</th><td>{money(language, estimate.totalCents, estimate.currency)}</td></tr></tfoot></table>{estimate.customerNote && <p>{estimate.customerNote}</p>}{estimate.status === "awaiting_customer" && <><CustomerDecisionGuide title={t("phase6.approvals.title")} description={t("phase6.approvals.description")} choices={[{ label: t("repairLifecycle.customerAction.approve"), description: t("phase6.approvals.approve") }, { label: t("repairLifecycle.customerAction.decline"), description: t("phase6.approvals.decline") }]} /><div className="customer-estimate-actions"><EstimateDecisionForm estimateId={estimate.id} decision="approve" t={t} /><EstimateDecisionForm estimateId={estimate.id} decision="decline" t={t} /></div></>}{estimate.status === "approved" && booking.status === "awaiting_approval" && <p className="note-success">{t("repairLifecycle.approvedWaiting")}</p>}</section>;
+  return <section className="customer-repair-estimate"><header><div><p>{t("repairLifecycle.estimate")} #{estimate.version}</p><h3>{money(language, estimate.totalCents, estimate.currency)}</h3></div><em>{t(`repairLifecycle.estimateStatus.${estimate.status}` as TranslationKey)}</em></header><p><b>{t("repairLifecycle.diagnosis")}</b>{estimate.diagnosisSummary}</p><table><tbody>{estimate.items.map((item, index) => <tr key={index}><td>{t(`repairLifecycle.type.${item.type}` as TranslationKey)}</td><th>{item.description}</th><td>{item.quantity} × {money(language, item.unitPriceCents, estimate.currency)}</td><td>{money(language, item.lineTotalCents, estimate.currency)}</td></tr>)}</tbody><tfoot><tr><th colSpan={3}>{t("repairLifecycle.total")}</th><td>{money(language, estimate.totalCents, estimate.currency)}</td></tr></tfoot></table>{estimate.customerNote && <p>{estimate.customerNote}</p>}{estimate.status === "awaiting_customer" && <><CustomerDecisionGuide title={t("phase6.approvals.title")} description={t("phase6.approvals.description")} choices={[{ label: t("repairLifecycle.customerAction.approve"), description: t("phase6.approvals.approve") }, { label: t("repairLifecycle.customerAction.decline"), description: t("phase6.approvals.decline") }]} /><div className="customer-estimate-actions"><EstimateDecisionForm bookingId={booking.id} estimateId={estimate.id} decision="approve" t={t} /><EstimateDecisionForm bookingId={booking.id} estimateId={estimate.id} decision="decline" t={t} /></div></>}{estimate.status === "approved" && booking.status === "awaiting_approval" && <p className="note-success">{t("repairLifecycle.approvedWaiting")}</p>}</section>;
 }
 
 function CustomerActionForm({ bookingId, actionKind, t }: {
@@ -102,6 +102,7 @@ function BookingCard({ booking, language, t }: { booking: CustomerBooking; langu
     <header>
       <div><p>{booking.serviceCategory}</p><h2>{booking.serviceName}</h2><span>{booking.workshopName}</span></div>
       <div><small>{booking.confirmedStart ? t("customerBookings.confirmedTime") : booking.proposedStart ? t("customerBookings.proposedTime") : t("customerBookings.requestedTime")}</small><DateValue value={primaryTime} language={language} /></div>
+      {booking.unreadCommunicationCount > 0 && <span className="booking-unread-badge">{booking.unreadCommunicationCount} {t("phase7.messaging.newUpdates")}</span>}
       <em>{t(`workshopBookings.status.${booking.status}` as TranslationKey)}</em>
     </header>
     <RepairLifecycleOverview status={booking.status} t={t} />
@@ -132,7 +133,7 @@ function BookingCard({ booking, language, t }: { booking: CustomerBooking; langu
       </aside>
     </div>
     <details className="customer-booking-history"><summary>{t("customerBookings.history")}</summary>
-      <div>{booking.history.map((item, index) => <article key={`${item.createdAt}-${index}`}><span><b>{t(`workshopBookings.history.${item.action}` as TranslationKey)}</b><time>{formatDateTime(language, item.createdAt)}</time></span>{item.note && <p>{item.note}</p>}</article>)}</div>
+      {booking.unreadCommunicationCount > 0 && <form action={markCustomerBookingReadAction}><input type="hidden" name="bookingId" value={booking.id} /><button className="booking-mark-read">{t("phase7.messaging.markRead")}</button></form>}<div>{booking.history.map((item, index) => <article key={`${item.createdAt}-${index}`}><span><b>{t(`workshopBookings.history.${item.action}` as TranslationKey)}</b><time>{formatDateTime(language, item.createdAt)}</time></span>{item.note && <p>{item.note}</p>}</article>)}</div>
     </details>
     {booking.canCancel && <details className="customer-cancel"><summary>{t("customerBookings.cancelTitle")}</summary><p>{t("customerBookings.cancelDescription")}</p><CustomerActionForm bookingId={booking.id} actionKind="cancel" t={t} /></details>}
   </article>;
