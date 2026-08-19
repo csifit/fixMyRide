@@ -3,7 +3,11 @@ import { platformLogoutAction } from "@/app/authentication/actions";
 import { getWorkshopManagerAccess } from "@/lib/dal/platform-access";
 import { loadManagedServiceProviders } from "@/lib/dal/service-providers";
 import { loadMyWorkshopInventory } from "@/lib/dal/workshop-inventory";
+import { loadMyWorkshopOperations } from "@/lib/dal/workshop-operations";
 import { loadManagedQualityWorkspace } from "@/lib/dal/workshop-quality";
+import { loadWorkshopScheduling } from "@/lib/dal/workshop-scheduling";
+import { loadManagedWorkshopCatalogues } from "@/lib/dal/workshop-services";
+import { buildProviderOnboarding } from "@/lib/provider-onboarding";
 import WorkshopManagerDashboard from "./WorkshopManagerDashboard";
 
 export const dynamic = "force-dynamic";
@@ -16,9 +20,10 @@ export default async function WorkshopManagerPage() {
   if (providers.some((provider) => provider.membershipRole === "owner")) {
     redirect("/service-organisation");
   }
-  const [inventories, qualityWorkspace] = await Promise.all([
-    loadMyWorkshopInventory(), loadManagedQualityWorkspace(),
+  const [inventories, qualityWorkspace, operations, catalogues, scheduling] = await Promise.all([
+    loadMyWorkshopInventory(), loadManagedQualityWorkspace(), loadMyWorkshopOperations(), loadManagedWorkshopCatalogues(), loadWorkshopScheduling(),
   ]);
   const lowStockCount = inventories.flatMap((inventory) => inventory.items).filter((item) => item.quantity === 0 || (item.minimumQuantity > 0 && item.quantity <= item.minimumQuantity)).length;
-  return <WorkshopManagerDashboard displayName={access.manager.displayName} providers={providers} lowStockCount={lowStockCount} dueReminderCount={qualityWorkspace.dueReminders.length} openQualityCaseCount={qualityWorkspace.cases.filter((item) => item.status === "open").length} logoutAction={platformLogoutAction} />;
+  const onboarding = buildProviderOnboarding({ operations, catalogues, schedules: scheduling.schedules, inventories });
+  return <WorkshopManagerDashboard displayName={access.manager.displayName} providers={providers} onboarding={onboarding} lowStockCount={lowStockCount} dueReminderCount={qualityWorkspace.dueReminders.length} openQualityCaseCount={qualityWorkspace.cases.filter((item) => item.status === "open").length} logoutAction={platformLogoutAction} />;
 }

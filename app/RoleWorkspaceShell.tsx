@@ -21,6 +21,7 @@ const navigation: Record<Role, { titleKey: TranslationKey; items: Item[] }> = {
   ] },
   workshop_manager: { titleKey: "roleSidebar.workshopManager", items: [
     { href: "/workshop-manager", key: "roleSidebar.nav.overview", mark: "O" },
+    { href: "/workshop-manager#getting-started", key: "roleSidebar.nav.gettingStarted", mark: "G" },
     { href: "/workshop-manager/requests", key: "roleSidebar.nav.calendarRequests", mark: "C" },
     { href: "/workshop-manager/repairs", key: "roleSidebar.nav.repairLifecycle", mark: "R" },
     { href: "/workshop-manager/quality", key: "roleSidebar.nav.qualityReminders", mark: "Q" },
@@ -30,6 +31,7 @@ const navigation: Record<Role, { titleKey: TranslationKey; items: Item[] }> = {
   ] },
   service_organisation: { titleKey: "roleSidebar.serviceOrganisation", items: [
     { href: "/service-organisation", key: "roleSidebar.nav.overview", mark: "O" },
+    { href: "/service-organisation#getting-started", key: "roleSidebar.nav.gettingStarted", mark: "G" },
     { href: "/service-organisation/requests", key: "roleSidebar.nav.calendarRequests", mark: "C" },
     { href: "/service-organisation/repairs", key: "roleSidebar.nav.repairLifecycle", mark: "R" },
     { href: "/service-organisation/quality", key: "roleSidebar.nav.qualityReminders", mark: "Q" },
@@ -54,6 +56,7 @@ export default function RoleWorkspaceShell({ role, identity, dismissedGuides = [
   const t = (key: TranslationKey) => translate(language, key);
   const storageKey = `pitster.sidebar.${role}`;
   const [collapsed, setCollapsed] = useState(false);
+  const [hash, setHash] = useState("");
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       const saved = localStorage.getItem(storageKey);
@@ -61,6 +64,12 @@ export default function RoleWorkspaceShell({ role, identity, dismissedGuides = [
     });
     return () => window.cancelAnimationFrame(frame);
   }, [storageKey]);
+  useEffect(() => {
+    const updateHash = () => setHash(window.location.hash);
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, [pathname]);
   if (pathname.includes("/login")) return children;
   const nav = navigation[role];
   const toggle = () => setCollapsed((current) => {
@@ -74,7 +83,10 @@ export default function RoleWorkspaceShell({ role, identity, dismissedGuides = [
       <small>{t(nav.titleKey)}</small>
       {identity && <div className="role-sidebar-identity"><strong title={identity.displayName}>{identity.displayName}</strong><span title={identity.email}>{identity.email}</span></div>}
       <nav aria-label={`${t(nav.titleKey)} ${t("roleSidebar.navigation")}`}>{nav.items.map((item) => {
-        const active = pathname === item.href || (item.href !== `/${role.replace("_", "-")}` && pathname.startsWith(`${item.href}/`));
+        const [itemPath, itemHash = ""] = item.href.split("#");
+        const active = itemHash
+          ? pathname === itemPath && hash === `#${itemHash}`
+          : (pathname === itemPath && !hash) || (itemPath !== `/${role.replace("_", "-")}` && pathname.startsWith(`${itemPath}/`));
         return <Link key={item.href} href={item.href} className={active ? "active" : ""} title={collapsed ? t(item.key) : undefined}><b>{item.mark}</b><span>{t(item.key)}</span></Link>;
       })}</nav>
     </aside>
