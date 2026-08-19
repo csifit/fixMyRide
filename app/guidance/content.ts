@@ -25,7 +25,7 @@ export const guidanceUi: Record<Language, {
   hu: { eyebrow: "Az oldalról", open: "Útmutató megnyitása", dismiss: "Bevezető elrejtése", why: "Miért fontos", steps: "Javasolt lépések", close: "Útmutató bezárása", help: "Súgó és útmutató", tooltip: "Miért fontos ez az oldal" },
 };
 
-type CopyId = "managerOverview" | "organisationOverview" | "requests" | "repairs" | "quality" | "profile" | "services" | "inventory" | "locations" | "managers" | "billing";
+type CopyId = "managerOverview" | "organisationOverview" | "requests" | "repairs" | "quality" | "profile" | "services" | "inventory" | "locations" | "managers" | "billing" | "customerInvoicing";
 
 const copy: Record<Language, Record<CopyId, GuidanceCopy>> = {
   en: {
@@ -40,6 +40,7 @@ const copy: Record<Language, Record<CopyId, GuidanceCopy>> = {
     locations: { title: "Workshop locations", purpose: "Add, claim and configure the physical locations operated by your service organisation.", why: "Every location needs accurate public information, an assigned manager and active coverage before it can operate effectively.", steps: ["Confirm the address and public profile.", "Assign the responsible workshop manager.", "Complete services, capacity and billing coverage."], action: "Review locations" },
     managers: { title: "Workshop managers", purpose: "Invite managers and control which location each person is responsible for.", why: "Clear location assignments protect workshop data and ensure operational tasks reach the correct manager.", steps: ["Invite the manager using their work email.", "Assign the correct workshop location.", "Remove access promptly when responsibilities change."], action: "Manage access" },
     billing: { title: "Subscription and billing", purpose: "Review organisation coverage, subscription status, invoices and upcoming workshop charges.", why: "Billing coverage determines which locations have continued access to the organisation’s operational tools.", steps: ["Confirm company and invoicing information.", "Review coverage for every active location.", "Resolve payment or subscription warnings before access is affected."], action: "Review billing" },
+    customerInvoicing: { title: "Customer invoicing preference", purpose: "Choose whether Pitster records customer invoice details or your workshop keeps invoicing entirely in local software.", why: "A clear setting avoids duplicate invoice entry without removing estimates, repair records or service history.", steps: ["Choose the organisation default.", "Override only locations that work differently.", "Continue recording repair and service details regardless of the invoice setting."], action: "Review customer invoicing" },
   },
   de: {
     managerOverview: { title: "Ihre Werkstattübersicht", purpose: "Hier sehen Sie Werkstattzugriff, betriebliche Hinweise und Bereiche, die noch Aufmerksamkeit benötigen.", why: "Vollständige Werkstattdaten und realistische Einstellungen verbessern die Auffindbarkeit und vermeiden Buchungsprobleme.", steps: ["Öffentliches Werkstattprofil vervollständigen.", "Anfragbare Leistungen veröffentlichen.", "Kapazität, Ressourcen und wichtigen Bestand konfigurieren."], action: "Werkstatteinstellungen öffnen" },
@@ -53,6 +54,7 @@ const copy: Record<Language, Record<CopyId, GuidanceCopy>> = {
     locations: { title: "Werkstattstandorte", purpose: "Fügen Sie Standorte hinzu, beanspruchen und konfigurieren Sie sie.", why: "Jeder Standort benötigt korrekte Angaben, einen Manager und aktive Abdeckung.", steps: ["Adresse und öffentliches Profil prüfen.", "Verantwortlichen Manager zuweisen.", "Leistungen, Kapazität und Abdeckung abschließen."], action: "Standorte prüfen" },
     managers: { title: "Werkstattmanager", purpose: "Laden Sie Manager ein und steuern Sie deren Standortverantwortung.", why: "Klare Zuweisungen schützen Daten und leiten Aufgaben an die richtige Person.", steps: ["Manager mit Arbeits-E-Mail einladen.", "Richtigen Standort zuweisen.", "Zugriff bei Änderungen zeitnah entfernen."], action: "Zugriff verwalten" },
     billing: { title: "Abonnement und Abrechnung", purpose: "Prüfen Sie Abdeckung, Abonnementstatus, Rechnungen und kommende Kosten.", why: "Die Abdeckung bestimmt den fortlaufenden Zugriff aktiver Standorte.", steps: ["Unternehmens- und Rechnungsdaten bestätigen.", "Abdeckung jedes Standorts prüfen.", "Zahlungswarnungen rechtzeitig beheben."], action: "Abrechnung prüfen" },
+    customerInvoicing: { title: "Kundenrechnungen", purpose: "Legen Sie fest, ob Pitster Rechnungsdaten für Kunden erfasst oder die Werkstatt ausschließlich lokale Software nutzt.", why: "Eine klare Einstellung verhindert doppelte Eingaben, ohne Angebote, Reparaturdaten oder Servicehistorie zu entfernen.", steps: ["Organisationsstandard wählen.", "Nur abweichende Standorte überschreiben.", "Reparatur- und Servicedaten unabhängig davon weiter erfassen."], action: "Kundenrechnungen prüfen" },
   },
   ro: {
     managerOverview: { title: "Prezentarea atelierului", purpose: "Vezi accesul, alertele operaționale și zonele care necesită atenție.", why: "Informațiile complete și setările realiste cresc vizibilitatea și previn problemele de programare.", steps: ["Completează profilul public al atelierului.", "Publică serviciile care pot fi solicitate.", "Configurează capacitatea, resursele și stocul esențial."], action: "Deschide setările atelierului" },
@@ -66,6 +68,7 @@ const copy: Record<Language, Record<CopyId, GuidanceCopy>> = {
     locations: { title: "Locațiile atelierelor", purpose: "Adaugă, revendică și configurează locațiile organizației.", why: "Fiecare locație are nevoie de informații corecte, manager și acoperire activă.", steps: ["Confirmă adresa și profilul public.", "Alocă managerul responsabil.", "Finalizează serviciile, capacitatea și acoperirea."], action: "Verifică locațiile" },
     managers: { title: "Managerii atelierelor", purpose: "Invită manageri și controlează locația de care răspunde fiecare.", why: "Alocările clare protejează datele și trimit sarcinile către persoana potrivită.", steps: ["Invită managerul cu adresa de serviciu.", "Alocă locația corectă.", "Elimină accesul când responsabilitățile se schimbă."], action: "Gestionează accesul" },
     billing: { title: "Abonament și facturare", purpose: "Verifică acoperirea, abonamentul, facturile și costurile viitoare.", why: "Acoperirea determină accesul continuu al locațiilor la instrumentele operaționale.", steps: ["Confirmă datele companiei și facturării.", "Verifică acoperirea fiecărei locații.", "Rezolvă alertele de plată înainte de afectarea accesului."], action: "Verifică facturarea" },
+    customerInvoicing: { title: "Facturarea clienților", purpose: "Alege dacă Pitster înregistrează detaliile facturilor pentru clienți sau atelierul folosește exclusiv software-ul local.", why: "O setare clară evită introducerea dublă fără a elimina ofertele, reparațiile sau istoricul de service.", steps: ["Alege valoarea implicită a organizației.", "Suprascrie doar locațiile care lucrează diferit.", "Continuă să înregistrezi reparațiile și istoricul indiferent de setare."], action: "Verifică facturarea clienților" },
   },
   hu: {
     managerOverview: { title: "A műhely áttekintése", purpose: "Itt láthatók a hozzáférések, működési figyelmeztetések és a még elvégzendő beállítások.", why: "A teljes műhelyadatok és reális beállítások javítják a láthatóságot és megelőzik a foglalási gondokat.", steps: ["Egészítse ki a nyilvános műhelyprofilt.", "Tegye közzé a kérhető szolgáltatásokat.", "Állítsa be a kapacitást, erőforrásokat és alapvető készletet."], action: "Műhelybeállítások megnyitása" },
@@ -79,6 +82,7 @@ const copy: Record<Language, Record<CopyId, GuidanceCopy>> = {
     locations: { title: "Műhelyhelyszínek", purpose: "Adja hozzá, igényelje és állítsa be a szervezet helyszíneit.", why: "Minden helyszínhez pontos adat, felelős vezető és aktív fedezet szükséges.", steps: ["Ellenőrizze a címet és nyilvános profilt.", "Rendelje hozzá a felelős vezetőt.", "Fejezze be a szolgáltatás-, kapacitás- és fedezetbeállítást."], action: "Helyszínek áttekintése" },
     managers: { title: "Műhelyvezetők", purpose: "Hívjon meg vezetőket és szabályozza a helyszíni felelősségüket.", why: "Az egyértelmű hozzárendelés védi az adatokat és a megfelelő emberhez irányítja a feladatokat.", steps: ["Munkahelyi e-maillel hívja meg a vezetőt.", "Rendelje hozzá a megfelelő helyszínt.", "Változáskor időben szüntesse meg a hozzáférést."], action: "Hozzáférés kezelése" },
     billing: { title: "Előfizetés és számlázás", purpose: "Tekintse át a fedezetet, előfizetést, számlákat és várható díjakat.", why: "A fedezet határozza meg az aktív helyszínek folyamatos hozzáférését.", steps: ["Ellenőrizze a cég- és számlázási adatokat.", "Tekintse át minden helyszín fedezetét.", "Oldja meg a fizetési jelzéseket a hozzáférés érintése előtt."], action: "Számlázás áttekintése" },
+    customerInvoicing: { title: "Ügyfélszámlázási beállítás", purpose: "Döntse el, hogy a Pitster rögzítse-e az ügyfélszámla adatait, vagy a műhely csak helyi szoftvert használjon.", why: "Az egyértelmű beállítás elkerüli a kettős adatrögzítést az ajánlatok, javítási adatok és szervizelőzmények megtartásával.", steps: ["Válassza ki a szervezeti alapértéket.", "Csak az eltérően működő helyszíneket írja felül.", "A javítási és szervizadatokat ettől függetlenül továbbra is rögzítse."], action: "Ügyfélszámlázás áttekintése" },
   },
 };
 
@@ -91,7 +95,7 @@ const routes: Record<GuidanceRole, Array<{ path: string; key: string; copyId: Co
     { path: "/workshop-manager/services", key: "manager_services", copyId: "services", href: "/workshop-manager/services" },
     { path: "/workshop-manager/inventory", key: "manager_inventory", copyId: "inventory", href: "/workshop-manager/inventory" },
     { path: "/workshop-manager/organisation", key: "manager_organisation", copyId: "locations", href: "/workshop-manager/organisation" },
-    { path: "/workshop-manager/invoicing", key: "manager_invoicing", copyId: "billing", href: "/workshop-manager/invoicing" },
+    { path: "/workshop-manager/invoicing", key: "manager_invoicing", copyId: "customerInvoicing", href: "/workshop-manager/invoicing" },
     { path: "/workshop-manager", key: "manager_overview", copyId: "managerOverview", href: "/workshop-manager/workshops" },
   ],
   service_organisation: [
@@ -103,6 +107,7 @@ const routes: Record<GuidanceRole, Array<{ path: string; key: string; copyId: Co
     { path: "/service-organisation/managers", key: "organisation_managers", copyId: "managers", href: "/service-organisation/managers" },
     { path: "/service-organisation/inventory", key: "organisation_inventory", copyId: "inventory", href: "/service-organisation/inventory" },
     { path: "/service-organisation/billing", key: "organisation_billing", copyId: "billing", href: "/service-organisation/billing" },
+    { path: "/service-organisation/settings", key: "organisation_settings", copyId: "customerInvoicing", href: "/service-organisation/settings" },
     { path: "/service-organisation", key: "organisation_overview", copyId: "organisationOverview", href: "/service-organisation/locations" },
   ],
 };

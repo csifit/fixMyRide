@@ -16,6 +16,7 @@ import {
   revokeOrganisationManagerInvitationAction,
   type OrganisationInvitationState,
 } from "./actions";
+import { FieldHelp, OperationalEmptyState, OperationalIntroduction } from "@/app/guidance/OperationalGuidance";
 
 const idle: OrganisationInvitationState = { status: "idle" };
 const money = (language: Language, cents: number, currency: string) =>
@@ -84,6 +85,14 @@ export default function OrganisationCoverageClient({ coverage, providers, logout
         <div><h1>{t("organisationCoverage.title")}</h1><p>{t("organisationCoverage.description")}</p></div>
         {providers.length > 1 && <label>{t("organisationCoverage.organisation")}<select value={coverage.providerId} onChange={(event) => location.assign(`${portalBasePath}${portalBasePath === "/service-organisation" ? "/managers" : "/organisation"}?providerId=${event.target.value}`)}>{providers.map((provider) => <option key={provider.id} value={provider.id}>{provider.displayName}</option>)}</select></label>}
       </div>
+      <OperationalIntroduction
+        title={t("operationalGuidance.howTitle")}
+        description={t("phase5.managers.intro")}
+        outcomeLabel={t("operationalGuidance.whyLabel")}
+        outcome={t("phase5.managers.outcome")}
+        stepsLabel={t("operationalGuidance.stepsLabel")}
+        steps={[t("phase5.managers.step1"), t("phase5.managers.step2"), t("phase5.managers.step3")]}
+      />
       <section className="coverage-metrics">
         <article><strong>{coverage.locationCount}</strong><span>{t("organisationCoverage.locations")}</span></article>
         <article><strong>{coverage.coveredLocationCount}</strong><span>{t("organisationCoverage.covered")}</span></article>
@@ -100,7 +109,7 @@ export default function OrganisationCoverageClient({ coverage, providers, logout
             <div><dt>{t("organisationCoverage.primaryManager")}</dt><dd>{workshop.primaryManagerName ?? t("organisationCoverage.managerMissing")}{workshop.primaryManagerEmail && <small>{workshop.primaryManagerEmail}</small>}</dd></div>
           </dl>
         </article>)}
-        {!coverage.locations.length && <p className="organization-card">{t("organisationCoverage.noLocations")}</p>}
+        {!coverage.locations.length && <OperationalEmptyState mark="L" title={t("organisationCoverage.noLocations")} description={t("phase5.managers.locationsEmpty")} action={<Link href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/locations" : "/workshops"}`}>{t("phase5.managers.openLocations")}</Link>} />}
       </section>
 
       <div className="coverage-workflow-grid">
@@ -109,8 +118,8 @@ export default function OrganisationCoverageClient({ coverage, providers, logout
           <p>{t("organisationCoverage.inviteDescription")}</p>
           <form className="coverage-invite-form" action={invitationAction}>
             <label>{t("organisationCoverage.location")}<select name="workshopId" required>{coverage.locations.map((workshop) => <option key={workshop.id} value={workshop.id}>{workshop.displayName}</option>)}</select></label>
-            <label>{t("organisationCoverage.managerEmail")}<input name="email" type="email" required /></label>
-            <label>{t("organisationCoverage.role")}<select name="assignmentRole"><option value="primary_manager">{t("organisationCoverage.primaryManager")}</option><option value="manager">{t("organisationCoverage.supportingManager")}</option></select></label>
+            <label>{t("organisationCoverage.managerEmail")}<input name="email" type="email" required /><FieldHelp>{t("phase5.managers.emailHelp")}</FieldHelp></label>
+            <label>{t("organisationCoverage.role")}<select name="assignmentRole"><option value="primary_manager">{t("organisationCoverage.primaryManager")}</option><option value="manager">{t("organisationCoverage.supportingManager")}</option></select><FieldHelp>{t("phase5.managers.roleHelp")}</FieldHelp></label>
             <button disabled={pending || !coverage.locations.length}>{t("organisationCoverage.createInvitation")}</button>
             <InvitationResult state={state} t={t} />
           </form>
@@ -120,7 +129,7 @@ export default function OrganisationCoverageClient({ coverage, providers, logout
           <p>{t("organisationCoverage.pendingDescription")}</p>
           <div className="coverage-invitations">
             {pendingInvitations.map((invitation) => <article key={invitation.id}><span><strong>{invitation.email}</strong><small>{invitation.workshopName} · {formatDateTime(language, invitation.expiresAt)}</small></span><RevokeInvitation invitationId={invitation.id} t={t} /></article>)}
-            {!pendingInvitations.length && <p>{t("organisationCoverage.noPending")}</p>}
+            {!pendingInvitations.length && <OperationalEmptyState mark="M" title={t("organisationCoverage.noPending")} description={t("phase5.managers.pendingEmpty")} />}
           </div>
         </section>
       </div>

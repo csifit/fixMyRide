@@ -83,7 +83,13 @@ const serviceRecordSchema = z.object({
 });
 
 export async function saveVehicleServiceRecordAction(_state: ServiceRecordActionState, formData: FormData): Promise<ServiceRecordActionState> {
-  const parsed = serviceRecordSchema.safeParse(Object.fromEntries(formData));
+  const parsed = serviceRecordSchema.safeParse({
+    ...Object.fromEntries(formData),
+    invoiceNumber: formData.get("invoiceNumber") ?? "",
+    invoiceIssuedOn: formData.get("invoiceIssuedOn") ?? "",
+    invoiceTotal: formData.get("invoiceTotal") ?? "",
+    invoiceCurrency: formData.get("invoiceCurrency") ?? "",
+  });
   if (!parsed.success) return { status: "invalid" };
   try {
     await saveWorkshopVehicleServiceRecord({

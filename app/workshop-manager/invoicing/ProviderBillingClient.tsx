@@ -17,6 +17,7 @@ import {
   updateProviderBillingProfileAction,
   type ProviderBillingActionState,
 } from "./actions";
+import { FieldHelp, OperationalEmptyState, OperationalIntroduction } from "@/app/guidance/OperationalGuidance";
 
 const idle: ProviderBillingActionState = { status: "idle" };
 const money = (language: Language, cents: number, currency: string) =>
@@ -63,6 +64,18 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
         <div><h1>{t("providerBilling.title")}</h1><p>{t("providerBilling.description")}</p></div>
         {providers.length > 1 && <label>{t("providerBilling.provider")}<select value={billing.providerId} onChange={(event) => location.assign(`${portalBasePath}${portalBasePath === "/service-organisation" ? "/billing" : "/invoicing"}?providerId=${event.target.value}`)}>{providers.map((provider) => <option key={provider.id} value={provider.id}>{provider.displayName}</option>)}</select></label>}
       </div>
+      <OperationalIntroduction
+        title={t("operationalGuidance.howTitle")}
+        description={t("phase5.billing.intro")}
+        outcomeLabel={t("operationalGuidance.whyLabel")}
+        outcome={t("phase5.billing.outcome")}
+        stepsLabel={t("operationalGuidance.stepsLabel")}
+        steps={[t("phase5.billing.step1"), t("phase5.billing.step2"), t("phase5.billing.step3")]}
+      />
+      <section className="billing-customer-invoicing-note">
+        <div><h2>{t("customerInvoicing.separateTitle")}</h2><p>{t("customerInvoicing.separateDescription")}</p></div>
+        <Link href="/service-organisation/settings">{t("customerInvoicing.openSettings")}</Link>
+      </section>
       {notice === "success" && <p className="note-success">{t("providerBilling.checkoutSuccess")}</p>}
       {notice === "cancelled" && <p className="note-error">{t("providerBilling.checkoutCancelled")}</p>}
       {error && <p className="note-error">{t("providerBilling.error")}</p>}
@@ -104,7 +117,7 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
             </div>
           </article>;
         })}</div>
-        {!billing.locations.length && <p className="catalogue-empty">{t("providerBilling.noLocations")}</p>}
+        {!billing.locations.length && <OperationalEmptyState mark="L" title={t("providerBilling.noLocations")} description={t("phase5.billing.locationsEmpty")} action={<Link href="/service-organisation/locations">{t("phase5.billing.openLocations")}</Link>} />}
         {!stripeConfigured && <p className="note-error">{t("providerBilling.notConfigured")}</p>}
         {stripeConfigured && hasCustomer && <form action={openStripePortalAction} className="billing-portal-form"><input type="hidden" name="providerId" value={billing.providerId} /><button>{t("providerBilling.portal")}</button></form>}
       </section>
@@ -113,9 +126,9 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
         <summary><span><strong>{t("providerBilling.profileTitle")}</strong><small>{t("providerBilling.profileDescription")}</small></span></summary>
         <form className="provider-billing-profile" action={profileAction}>
           <input type="hidden" name="providerId" value={billing.providerId} />
-          <label>{t("providerBilling.billingEmail")}<input name="billingEmail" type="email" defaultValue={billing.billingProfile.billingEmail ?? ""} required={completingClaimDetails} /></label>
+          <label>{t("providerBilling.billingEmail")}<input name="billingEmail" type="email" defaultValue={billing.billingProfile.billingEmail ?? ""} required={completingClaimDetails} /><FieldHelp>{t("phase5.billing.emailHelp")}</FieldHelp></label>
           <label>{t("providerBilling.billingContact")}<input name="billingContact" defaultValue={billing.billingProfile.billingContact ?? ""} required={completingClaimDetails} /></label>
-          <label>{t("providerBilling.taxIdentifier")}<input name="taxIdentifier" defaultValue={billing.billingProfile.taxIdentifier ?? ""} required={completingClaimDetails} /></label>
+          <label>{t("providerBilling.taxIdentifier")}<input name="taxIdentifier" defaultValue={billing.billingProfile.taxIdentifier ?? ""} required={completingClaimDetails} /><FieldHelp>{t("phase5.billing.taxHelp")}</FieldHelp></label>
           <label>{t("providerBilling.addressLine1")}<input name="addressLine1" defaultValue={billing.billingProfile.addressLine1 ?? ""} required={completingClaimDetails} /></label>
           <label>{t("providerBilling.addressLine2")}<input name="addressLine2" defaultValue={billing.billingProfile.addressLine2 ?? ""} /></label>
           <label>{t("providerBilling.city")}<input name="city" defaultValue={billing.billingProfile.city ?? ""} required={completingClaimDetails} /></label>
@@ -128,7 +141,7 @@ export default function ProviderBillingClient({ billing, providers, stripeConfig
 
       <section className="provider-invoices">
         <h2>{t("providerBilling.invoices")}</h2>
-        {billing.invoices.length ? <div className="billing-table-wrap"><table><thead><tr><th>{t("providerBilling.invoice")}</th><th>{t("providerBilling.period")}</th><th>{t("providerBilling.status")}</th><th>{t("providerBilling.amount")}</th><th>{t("providerBilling.documents")}</th></tr></thead><tbody>{billing.invoices.map((invoice) => <tr key={invoice.id}><td>{invoice.number ?? "—"}</td><td>{invoice.periodStart ? formatDateTime(language, invoice.periodStart) : "—"}</td><td>{invoice.status}</td><td>{money(language, invoice.amountDueCents, invoice.currency)}</td><td>{invoice.hostedInvoiceUrl && <a href={invoice.hostedInvoiceUrl} target="_blank" rel="noreferrer">{t("providerBilling.view")}</a>}{invoice.invoicePdfUrl && <a href={invoice.invoicePdfUrl} target="_blank" rel="noreferrer">PDF</a>}</td></tr>)}</tbody></table></div> : <p className="catalogue-empty">{t("providerBilling.noInvoices")}</p>}
+        {billing.invoices.length ? <div className="billing-table-wrap"><table><thead><tr><th>{t("providerBilling.invoice")}</th><th>{t("providerBilling.period")}</th><th>{t("providerBilling.status")}</th><th>{t("providerBilling.amount")}</th><th>{t("providerBilling.documents")}</th></tr></thead><tbody>{billing.invoices.map((invoice) => <tr key={invoice.id}><td>{invoice.number ?? "—"}</td><td>{invoice.periodStart ? formatDateTime(language, invoice.periodStart) : "—"}</td><td>{invoice.status}</td><td>{money(language, invoice.amountDueCents, invoice.currency)}</td><td>{invoice.hostedInvoiceUrl && <a href={invoice.hostedInvoiceUrl} target="_blank" rel="noreferrer">{t("providerBilling.view")}</a>}{invoice.invoicePdfUrl && <a href={invoice.invoicePdfUrl} target="_blank" rel="noreferrer">PDF</a>}</td></tr>)}</tbody></table></div> : <OperationalEmptyState mark="€" title={t("providerBilling.noInvoices")} description={t("phase5.billing.invoicesEmpty")} />}
       </section>
     </section>
   </main>;

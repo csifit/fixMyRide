@@ -6,6 +6,7 @@ import type { BookingHistoryItem, ManagedBookingStatus } from "./workshop-bookin
 import { loadManagedVehicleServiceRecords, type VehicleServiceRecord } from "./vehicle-service-history";
 import { loadManagedServiceOrderFields } from "./service-orders";
 import type { BookingResource } from "./workshop-scheduling";
+import { loadCustomerInvoicingPreferences } from "./customer-invoicing";
 
 export type RepairEstimateItem = {
   type: "labor" | "part" | "other";
@@ -56,6 +57,7 @@ export type ManagedRepairWorkflow = {
   assignedResources: BookingResource[];
   estimate: RepairEstimate | null;
   serviceRecord: VehicleServiceRecord;
+  customerInvoicingEnabled: boolean;
   history: BookingHistoryItem[];
 };
 
@@ -69,12 +71,14 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflow[]> {
   const supabase = await createClient();
-  const [{ data, error }, records, serviceOrders] = await Promise.all([
+  const [{ data, error }, records, serviceOrders, invoicingPreferences] = await Promise.all([
     supabase.rpc("get_managed_repair_workflows"),
     loadManagedVehicleServiceRecords(),
     loadManagedServiceOrderFields(),
+    loadCustomerInvoicingPreferences(),
   ]);
   if (error) fail(error);
+  const invoicingByWorkshop = new Map(invoicingPreferences.map((item) => [item.workshopId, item.effectiveEnabled]));
   return ((data ?? []) as Record<string, unknown>[]).map((row) => {
     const record = records.get(row.booking_id as string) ?? {
       id: null, vehicleVin: null, mileageKm: null, workSummary: null,
@@ -108,6 +112,7 @@ export async function loadManagedRepairWorkflows(): Promise<ManagedRepairWorkflo
     assignedResources: serviceOrder.resources,
     estimate: row.estimate as RepairEstimate | null,
     serviceRecord: record,
+    customerInvoicingEnabled: invoicingByWorkshop.get(row.workshop_id as string) ?? true,
     history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
   }); });
 }
