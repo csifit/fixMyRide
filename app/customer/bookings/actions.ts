@@ -7,10 +7,12 @@ import { dismissMyCustomerMaintenanceNotification } from "@/lib/dal/customer-mai
 import { decideMyRepairEstimate, manageMyServiceBooking, markMyBookingCommunicationsRead, submitMyServiceBookingFeedback } from "@/lib/dal/customer-bookings";
 import { dispatchDueBookingCommunications } from "@/lib/messaging/booking-communications";
 import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
+import { setMyBookingWhatsAppPreference } from "@/lib/dal/whatsapp";
 
 export type CustomerBookingActionState = {
   status: "idle" | "accepted" | "declined" | "cancelled" | "approved" | "estimate_declined" | "reviewed" | "dismissed" | "invalid" | "unauthorized" | "unavailable";
 };
+export type WhatsAppPreferenceState = { status: "idle" | "saved" | "invalid" | "unauthorized" | "unavailable" };
 
 const actionSchema = z.object({
   bookingId: z.uuid(),
@@ -119,4 +121,22 @@ export async function markCustomerBookingReadAction(formData: FormData) {
     await markMyBookingCommunicationsRead(parsed.data);
     revalidatePath("/customer/bookings");
   } catch { return; }
+}
+
+export async function setCustomerWhatsAppPreferenceAction(
+  _state: WhatsAppPreferenceState,
+  formData: FormData,
+): Promise<WhatsAppPreferenceState> {
+  const parsed = z.object({
+    bookingId: z.uuid(), enabled: z.enum(["true", "false"]).transform((value) => value === "true"),
+  }).safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await setMyBookingWhatsAppPreference(parsed.data.bookingId, parsed.data.enabled);
+    revalidatePath("/customer/bookings");
+    return { status: "saved" };
+  } catch (error) {
+    const state = failure(error);
+    return { status: state.status === "unauthorized" ? "unauthorized" : state.status === "invalid" ? "invalid" : "unavailable" };
+  }
 }

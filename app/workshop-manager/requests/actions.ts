@@ -8,6 +8,7 @@ import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-bookin
 import { addWorkshopResourceAbsence, createWorkshopResource, removeWorkshopResourceAbsence, setWorkshopResourceActive, updateManagedBookingSchedule } from "@/lib/dal/workshop-scheduling";
 import { dispatchDueBookingCommunications } from "@/lib/messaging/booking-communications";
 import { normalizeInternationalPhone } from "@/lib/phone";
+import { queueManagedWhatsAppReply } from "@/lib/dal/whatsapp";
 
 export type WorkshopBookingActionState = {
   status: "idle" | "confirmed" | "proposed" | "rescheduled" | "declined" | "cancelled" | "invalid" | "unauthorized" | "unavailable";
@@ -20,6 +21,7 @@ export type ManualAppointmentState = {
 export type ScheduleActionState = {
   status: "idle" | "saved" | "created" | "removed" | "invalid" | "conflict" | "unauthorized" | "unavailable";
 };
+export type WhatsAppReplyState = { status: "idle" | "sent" | "invalid" | "unauthorized" | "unavailable" };
 
 const actionSchema = z.object({
   bookingId: z.uuid(),
@@ -207,4 +209,25 @@ export async function markWorkshopBookingReadAction(formData: FormData) {
     revalidatePath("/workshop-manager/requests");
     revalidatePath("/service-organisation/requests");
   } catch { return; }
+}
+
+export async function sendWorkshopWhatsAppReplyAction(
+  _state: WhatsAppReplyState,
+  formData: FormData,
+): Promise<WhatsAppReplyState> {
+  const parsed = z.object({
+    bookingId: z.uuid(), message: z.string().trim().min(1).max(4096),
+  }).safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    const bookingId = await queueManagedWhatsAppReply(parsed.data.bookingId, parsed.data.message);
+    await dispatchDueBookingCommunications(bookingId).catch(() => undefined);
+    revalidatePath("/workshop-manager/requests");
+    revalidatePath("/service-organisation/requests");
+    revalidatePath("/customer/bookings");
+    return { status: "sent" };
+  } catch (error) {
+    const state = failure(error);
+    return { status: state.status === "unauthorized" ? "unauthorized" : state.status === "invalid" ? "invalid" : "unavailable" };
+  }
 }

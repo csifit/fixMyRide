@@ -8,7 +8,7 @@ import type { ManagedWorkshopBooking } from "@/lib/dal/workshop-bookings";
 import type { ManagedWorkshopCatalogue } from "@/lib/dal/workshop-services";
 import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-scheduling";
 import type { WorkshopOperations } from "@/lib/dal/workshop-operations";
-import { manageWorkshopBookingAction, markWorkshopBookingReadAction, type WorkshopBookingActionState } from "./actions";
+import { manageWorkshopBookingAction, markWorkshopBookingReadAction, sendWorkshopWhatsAppReplyAction, type WhatsAppReplyState, type WorkshopBookingActionState } from "./actions";
 import WorkshopBookingCalendar from "./WorkshopBookingCalendar";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 import { FieldHelp, OperationalEmptyState, OperationalIntroduction } from "@/app/guidance/OperationalGuidance";
@@ -16,6 +16,7 @@ import { FieldHelp, OperationalEmptyState, OperationalIntroduction } from "@/app
 type ActionKind = "confirm" | "propose_time" | "reschedule" | "decline" | "cancel";
 type Translate = (key: TranslationKey) => string;
 const idle: WorkshopBookingActionState = { status: "idle" };
+const whatsappIdle: WhatsAppReplyState = { status: "idle" };
 
 function ActionForm({ bookingId, kind, t }: { bookingId: string; kind: ActionKind; t: Translate }) {
   const [state, action, pending] = useActionState(manageWorkshopBookingAction, idle);
@@ -36,6 +37,18 @@ function ActionForm({ bookingId, kind, t }: { bookingId: string; kind: ActionKin
 
 function DateValue({ value, language }: { value: string | null; language: Language }) {
   return value ? <time dateTime={value}>{formatDateTime(language, value)}</time> : <span>—</span>;
+}
+
+function WorkshopWhatsAppPanel({ booking, language, t }: { booking: ManagedWorkshopBooking; language: Language; t: Translate }) {
+  const [state, action, pending] = useActionState(sendWorkshopWhatsAppReplyAction, whatsappIdle);
+  const replyOpen = booking.whatsapp.optedIn && booking.whatsapp.replyWindowOpen;
+  return <section className="booking-whatsapp-panel workshop-whatsapp-panel">
+    <header><div><p>{t("phase8.thread.eyebrow")}</p><h3>{t("phase8.thread.title")}</h3></div><span className={replyOpen ? "active" : "inactive"}>{t(replyOpen ? "phase8.window.open" : "phase8.window.closed")}</span></header>
+    {!booking.whatsapp.optedIn && <p>{t("phase8.workshop.noConsent")}</p>}
+    {booking.whatsapp.optedIn && !replyOpen && <p>{t("phase8.workshop.closedHelp")}</p>}
+    {booking.whatsapp.messages.length > 0 && <div className="booking-whatsapp-thread">{booking.whatsapp.messages.map((message, index) => <article className={message.direction} key={`${message.occurredAt}-${index}`}><p>{message.body}</p><small>{formatDateTime(language, message.occurredAt)}{message.providerStatus ? ` · ${t(`phase8.delivery.${message.providerStatus}` as TranslationKey)}` : ""}</small></article>)}</div>}
+    {replyOpen && <form action={action}><input type="hidden" name="bookingId" value={booking.id} /><label>{t("phase8.workshop.replyLabel")}<textarea name="message" minLength={1} maxLength={4096} rows={3} required /><FieldHelp>{t("phase8.workshop.replyHelp")}</FieldHelp></label>{state.status !== "idle" && <p role="status">{t(`phase8.reply.${state.status}` as TranslationKey)}</p>}<button disabled={pending}>{t(pending ? "phase8.reply.sending" : "phase8.reply.send")}</button></form>}
+  </section>;
 }
 
 function BookingCard({ booking, language, t }: { booking: ManagedWorkshopBooking; language: Language; t: Translate }) {
@@ -76,6 +89,7 @@ function BookingCard({ booking, language, t }: { booking: ManagedWorkshopBooking
         {confirmed && <><ActionForm bookingId={booking.id} kind="reschedule" t={t} /><ActionForm bookingId={booking.id} kind="propose_time" t={t} /><ActionForm bookingId={booking.id} kind="cancel" t={t} /></>}
         {!requested && !confirmed && <p>{t("workshopBookings.noActions")}</p>}
       </section>
+      <WorkshopWhatsAppPanel booking={booking} language={language} t={t} />
       <section className="booking-inbox-history">
         <h3>{t("workshopBookings.history")}</h3>{booking.unreadCommunicationCount > 0 && <form action={markWorkshopBookingReadAction}><input type="hidden" name="bookingId" value={booking.id} /><button className="booking-mark-read">{t("phase7.messaging.markRead")}</button></form>}
         {booking.history.map((item, index) => <article key={`${item.createdAt}-${index}`}><span><b>{t(`workshopBookings.history.${item.action}` as TranslationKey)}</b><time>{formatDateTime(language, item.createdAt)}</time></span>{item.note && <p>{item.note}</p>}</article>)}

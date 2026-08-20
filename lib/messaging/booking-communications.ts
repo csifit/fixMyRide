@@ -5,13 +5,16 @@ import { escapeEmailHtml, sendTransactionalEmail } from "@/lib/email/transaction
 import { sendSmsLinkMessage } from "@/lib/sms/smslink";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getSiteUrl } from "@/lib/site-url";
+import { sendWhatsAppSessionText, sendWhatsAppTemplate } from "@/lib/whatsapp/cloud-api";
 import { bookingCommunicationCopy, type BookingCommunicationMessageInput } from "./booking-communication-message";
 
 type CommunicationRow = BookingCommunicationMessageInput & {
   delivery_id: string;
   booking_id: string;
-  channel: "email" | "sms";
+  channel: "email" | "sms" | "whatsapp";
   destination: string;
+  message_mode: "template" | "session_text" | null;
+  message_body: string | null;
 };
 
 export async function dispatchDueBookingCommunications(bookingId?: string) {
@@ -32,7 +35,22 @@ export async function dispatchDueBookingCommunications(bookingId?: string) {
       : `${siteUrl}/customer/bookings`;
     const result = row.channel === "sms"
       ? await sendSmsLinkMessage(row.destination, content.sms)
-      : await sendTransactionalEmail({
+      : row.channel === "whatsapp"
+        ? row.message_mode === "session_text" && row.message_body
+          ? await sendWhatsAppSessionText({ to: row.destination, body: row.message_body })
+          : await sendWhatsAppTemplate({
+              to: row.destination,
+              locale: row.locale,
+              parameters: [
+                row.customer_name,
+                row.workshop_name,
+                row.service_name,
+                row.vehicle_registration,
+                content.body,
+                destinationUrl,
+              ],
+            })
+        : await sendTransactionalEmail({
           to: row.destination,
           subject: content.subject,
           text: `${content.body}\n\nOpen Pitster: ${destinationUrl}`,

@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
 import type { BookingHistoryItem, ManagedBookingStatus } from "./workshop-bookings";
 import type { RepairEstimate } from "./repair-workflows";
+import { loadMyBookingWhatsAppStates, type BookingWhatsAppState } from "./whatsapp";
 
 export type CustomerBooking = {
   id: string;
@@ -34,6 +35,7 @@ export type CustomerBooking = {
   feedback: { rating: number; comment: string | null; updatedAt: string } | null;
   unreadCommunicationCount: number;
   latestCommunicationKind: string | null;
+  whatsapp: BookingWhatsAppState;
 };
 
 export type ManageCustomerBookingInput = {
@@ -48,11 +50,12 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
   const supabase = await createClient();
-  const [bookingsResult, estimatesResult, feedbackResult, communicationResult] = await Promise.all([
+  const [bookingsResult, estimatesResult, feedbackResult, communicationResult, whatsappStates] = await Promise.all([
     supabase.rpc("get_my_service_booking_requests"),
     supabase.rpc("get_my_repair_estimates"),
     supabase.rpc("get_my_service_booking_feedback"),
     supabase.rpc("get_my_booking_communication_counts"),
+    loadMyBookingWhatsAppStates(),
   ]);
   if (bookingsResult.error) fail(bookingsResult.error);
   if (estimatesResult.error) fail(estimatesResult.error);
@@ -102,6 +105,9 @@ export async function loadMyServiceBookings(): Promise<CustomerBooking[]> {
     feedback: feedback.get(row.booking_id as string) ?? null,
     unreadCommunicationCount: communication.get(row.booking_id as string)?.count ?? 0,
     latestCommunicationKind: communication.get(row.booking_id as string)?.kind ?? null,
+    whatsapp: whatsappStates.get(row.booking_id as string) ?? {
+      optedIn: false, lastInboundAt: null, replyWindowEndsAt: null, replyWindowOpen: false, messages: [],
+    },
   }));
 }
 

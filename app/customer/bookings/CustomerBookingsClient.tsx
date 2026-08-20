@@ -6,11 +6,12 @@ import { formatDateTime, locales, translate, type Language, type TranslationKey 
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { CustomerBooking } from "@/lib/dal/customer-bookings";
 import type { CustomerMaintenanceNotification } from "@/lib/dal/customer-maintenance";
-import { decideRepairEstimateAction, dismissMaintenanceNotificationAction, manageCustomerBookingAction, markCustomerBookingReadAction, submitServiceFeedbackAction, type CustomerBookingActionState } from "./actions";
+import { decideRepairEstimateAction, dismissMaintenanceNotificationAction, manageCustomerBookingAction, markCustomerBookingReadAction, setCustomerWhatsAppPreferenceAction, submitServiceFeedbackAction, type CustomerBookingActionState, type WhatsAppPreferenceState } from "./actions";
 import { CustomerDecisionGuide, CustomerHint, CustomerPageGuide } from "@/app/guidance/CustomerGuidance";
 
 type Translate = (key: TranslationKey) => string;
 const idle: CustomerBookingActionState = { status: "idle" };
+const whatsappIdle: WhatsAppPreferenceState = { status: "idle" };
 
 function DateValue({ value, language }: { value: string | null; language: Language }) {
   return value ? <time dateTime={value}>{formatDateTime(language, value)}</time> : <span>—</span>;
@@ -94,6 +95,19 @@ function MaintenanceToast({ notification, t }: { notification: CustomerMaintenan
   return <aside className="customer-maintenance-toast" role="status"><div><p>{t("maintenanceToast.eyebrow")}</p><h2>{notification.title}</h2><span>{notification.message}</span><small>{notification.workshopName}</small></div><div><Link href={notification.bookingUrl}>{t("maintenanceToast.book")}</Link><form action={action}><input type="hidden" name="notificationId" value={notification.id} /><button disabled={pending} aria-label={t("maintenanceToast.dismiss")}>×</button></form></div></aside>;
 }
 
+function CustomerWhatsAppPanel({ booking, language, t }: { booking: CustomerBooking; language: Language; t: Translate }) {
+  const [state, action, pending] = useActionState(setCustomerWhatsAppPreferenceAction, whatsappIdle);
+  const businessNumber = process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_NUMBER?.replace(/\D/g, "") || "";
+  return <section className="booking-whatsapp-panel customer-whatsapp-panel">
+    <header><div><p>{t("phase8.thread.eyebrow")}</p><h3>{t("phase8.thread.title")}</h3></div><span className={booking.whatsapp.optedIn ? "active" : "inactive"}>{t(booking.whatsapp.optedIn ? "phase8.status.active" : "phase8.status.inactive")}</span></header>
+    <p>{t(booking.whatsapp.optedIn ? "phase8.customer.activeHelp" : "phase8.customer.inactiveHelp")}</p>
+    {booking.whatsapp.messages.length > 0 && <div className="booking-whatsapp-thread">{booking.whatsapp.messages.map((message, index) => <article className={message.direction} key={`${message.occurredAt}-${index}`}><p>{message.body}</p><small>{formatDateTime(language, message.occurredAt)}{message.providerStatus ? ` · ${t(`phase8.delivery.${message.providerStatus}` as TranslationKey)}` : ""}</small></article>)}</div>}
+    <form action={action}><input type="hidden" name="bookingId" value={booking.id} /><input type="hidden" name="enabled" value={booking.whatsapp.optedIn ? "false" : "true"} />{state.status !== "idle" && <p role="status">{t(`phase8.preference.${state.status}` as TranslationKey)}</p>}<button disabled={pending}>{t(booking.whatsapp.optedIn ? "phase8.preference.disable" : "phase8.preference.enable")}</button></form>
+    {booking.whatsapp.optedIn && businessNumber && <a href={`https://wa.me/${businessNumber}?text=${encodeURIComponent(`Pitster booking ${booking.id}`)}`} target="_blank" rel="noreferrer">{t("phase8.customer.openWhatsApp")}</a>}
+    <small>{t("phase8.optOut.help")}</small>
+  </section>;
+}
+
 function BookingCard({ booking, language, t }: { booking: CustomerBooking; language: Language; t: Translate }) {
   const hasProposal = Boolean(booking.proposedStart) && ["requested", "confirmed"].includes(booking.status);
   const primaryTime = booking.confirmedStart || booking.proposedStart || booking.preferredStart;
@@ -113,6 +127,7 @@ function BookingCard({ booking, language, t }: { booking: CustomerBooking; langu
       <div><CustomerActionForm bookingId={booking.id} actionKind="accept_proposal" t={t} /><CustomerActionForm bookingId={booking.id} actionKind="decline_proposal" t={t} /></div>
     </section>}
     <CustomerEstimate booking={booking} language={language} t={t} />
+    <CustomerWhatsAppPanel booking={booking} language={language} t={t} />
     <div className="customer-booking-detail">
       <section>
         <h3>{t("customerBookings.bookingDetails")}</h3>

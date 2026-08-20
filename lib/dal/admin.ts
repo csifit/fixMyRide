@@ -19,23 +19,26 @@ export type AdminDashboardData = {
   managers: Array<{ id: string; displayName: string; status: Status; providerNames: string[]; createdAt: string }>;
   sms: Array<{ kind: string; pending: number; sent: number; failed: number }>;
   communications: { pending: number; retryable: number; exhausted: number; sent: number };
+  whatsapp: { optedInBookings: number; inboundMessages: number; accepted: number; delivered: number; read: number; failed: number };
   supportTickets: SupportTicket[];
   workflow: AdminOrganisationWorkflow;
 };
 
 export async function loadAdminDashboard(administrator: AdministratorContext): Promise<AdminDashboardData> {
   const supabase = await createClient();
-  const [{ data, error }, workflow, supportTickets, communicationResult] = await Promise.all([
+  const [{ data, error }, workflow, supportTickets, communicationResult, whatsappResult] = await Promise.all([
     supabase.rpc("get_automotive_admin_snapshot"),
     loadAdminOrganisationWorkflow(),
     loadAdminSupportTickets(),
     supabase.rpc("get_admin_booking_communication_summary"),
+    supabase.rpc("get_admin_whatsapp_summary"),
   ]);
   if (error || !data || typeof data !== "object") {
     throw new DataAccessError(error?.code === "42501" ? "unauthorized" : "unavailable");
   }
   if (communicationResult.error || !communicationResult.data) throw new DataAccessError("unavailable");
-  const snapshot = data as unknown as Omit<AdminDashboardData, "administrator" | "workflow" | "supportTickets" | "communications">;
+  if (whatsappResult.error || !whatsappResult.data) throw new DataAccessError("unavailable");
+  const snapshot = data as unknown as Omit<AdminDashboardData, "administrator" | "workflow" | "supportTickets" | "communications" | "whatsapp">;
   const communications = communicationResult.data as unknown as AdminDashboardData["communications"];
   const activeProviderIds = new Set(workflow.providers.map((provider) => provider.id));
   const providers = snapshot.providers.filter((provider) => activeProviderIds.has(provider.id));
@@ -51,6 +54,7 @@ export async function loadAdminDashboard(administrator: AdministratorContext): P
     administrator: { displayName: administrator.displayName, email: administrator.email, role: administrator.role },
     supportTickets,
     communications,
+    whatsapp: whatsappResult.data as unknown as AdminDashboardData["whatsapp"],
     workflow,
   };
 }

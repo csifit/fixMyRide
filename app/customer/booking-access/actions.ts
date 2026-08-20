@@ -7,6 +7,7 @@ import { decideGuestEstimate, manageGuestBooking } from "@/lib/dal/booking-acces
 import { DataAccessError } from "@/lib/dal/errors";
 import { dispatchDueBookingCommunications } from "@/lib/messaging/booking-communications";
 import { dispatchDueServiceBookingNotifications } from "@/lib/sms/service-booking-notifications";
+import { setGuestBookingWhatsAppPreference } from "@/lib/dal/whatsapp";
 
 export type GuestBookingActionState = { status: "idle" | "saved" | "invalid" | "expired" | "unavailable" };
 
@@ -63,6 +64,21 @@ export async function decideGuestEstimateAction(
     await dispatchDueBookingCommunications(bookingId).catch(() => undefined);
     revalidatePath("/customer/booking-access");
     revalidatePath("/workshop-manager/repairs");
+    return { status: "saved" };
+  } catch (error) { return failure(error); }
+}
+
+export async function setGuestWhatsAppPreferenceAction(
+  _state: GuestBookingActionState,
+  formData: FormData,
+): Promise<GuestBookingActionState> {
+  const parsed = z.enum(["true", "false"]).safeParse(formData.get("enabled"));
+  const digest = await readBookingAccessDigest();
+  if (!parsed.success) return { status: "invalid" };
+  if (!digest) return { status: "expired" };
+  try {
+    await setGuestBookingWhatsAppPreference(digest, parsed.data === "true");
+    revalidatePath("/customer/booking-access");
     return { status: "saved" };
   } catch (error) { return failure(error); }
 }

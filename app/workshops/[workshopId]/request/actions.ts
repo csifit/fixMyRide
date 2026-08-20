@@ -29,6 +29,7 @@ const schema = z.object({
   mobilityRequirement: z.enum(["none", "pickup", "courtesy_car", "wait_on_site"]),
   locale: z.enum(["en", "de", "ro", "hu"]),
   privacyAccepted: z.literal("yes"),
+  whatsappOptIn: z.literal("yes").optional().transform((value) => value === "yes"),
   diagnosisAccepted: z.string().optional(),
 });
 

@@ -2,6 +2,7 @@ import "server-only";
 
 import { createClient } from "@/lib/supabase/server";
 import { classifyDatabaseError, DataAccessError } from "./errors";
+import { loadManagedBookingWhatsAppStates, type BookingWhatsAppState } from "./whatsapp";
 
 export type ManagedBookingStatus =
   | "requested"
@@ -57,6 +58,7 @@ export type ManagedWorkshopBooking = {
   history: BookingHistoryItem[];
   unreadCommunicationCount: number;
   latestCommunicationKind: string | null;
+  whatsapp: BookingWhatsAppState;
 };
 
 export type ManageWorkshopBookingInput = {
@@ -91,9 +93,10 @@ function fail(error: { code?: string; status?: number }): never {
 
 export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBooking[]> {
   const supabase = await createClient();
-  const [{ data, error }, communicationResult] = await Promise.all([
+  const [{ data, error }, communicationResult, whatsappStates] = await Promise.all([
     supabase.rpc("get_managed_service_booking_requests_v2", { requested_status: null }),
     supabase.rpc("get_managed_booking_communication_counts"),
+    loadManagedBookingWhatsAppStates(),
   ]);
   if (error) fail(error);
   if (communicationResult.error) fail(communicationResult.error);
@@ -138,6 +141,9 @@ export async function loadManagedWorkshopBookings(): Promise<ManagedWorkshopBook
       history: Array.isArray(row.history) ? row.history as BookingHistoryItem[] : [],
       unreadCommunicationCount: communicationState?.count ?? 0,
       latestCommunicationKind: communicationState?.kind ?? null,
+      whatsapp: whatsappStates.get(row.booking_id as string) ?? {
+        optedIn: false, lastInboundAt: null, replyWindowEndsAt: null, replyWindowOpen: false, messages: [],
+      },
     };
   });
 }

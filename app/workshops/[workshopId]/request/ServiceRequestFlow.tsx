@@ -107,6 +107,7 @@ export default function ServiceRequestFlow({ workshop, service, rules, initialDa
             <input type="hidden" name="locale" value={language} />
             {service.bookingMode !== "direct" && <label className="booking-consent"><input type="checkbox" name="diagnosisAccepted" value="yes" required /><span>I understand that the initial diagnosis fee of {diagnosisFee ?? "the displayed amount"} remains payable if I decline further repair work.</span></label>}
             <label className="booking-consent"><input type="checkbox" name="privacyAccepted" value="yes" required /><span>I agree that the workshop may use these details to assess and manage this booking request.</span></label>
+            <label className="booking-consent whatsapp-consent"><input type="checkbox" name="whatsappOptIn" value="yes" /><span>{t("phase8.optIn.label")}</span><CustomerHint>{t("phase8.optIn.help")}</CustomerHint></label>
             {state.status !== "idle" && <p className="appointment-error">{state.status === "invalid" ? "Please check all details and try again." : "The request could not be saved. Please try again shortly."}</p>}
             <div className="service-request-actions"><button type="button" className="booking-secondary" onClick={() => setStep(1)}>Back</button><button disabled={pending}>{pending ? "Sending request…" : "Send booking request"}</button></div>
           </>}

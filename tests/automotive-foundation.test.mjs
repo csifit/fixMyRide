@@ -43,12 +43,12 @@ test("the customer journey stays request-to-book until workshop confirmation", (
   assert.match(requestFlow, /alternateStart/i);
 });
 
-test("provider price is EUR 35 monthly with SMS included and no usage surcharge", () => {
+test("provider price is EUR 35 monthly with WhatsApp notifications and SMS fallback included", () => {
   assert.match(migration, /monthly_price_cents[\s\S]+?3500/i);
   assert.match(migration, /'EUR', true/i);
   assert.match(migration, /values \(date_trunc\('month', current_date\)::date, 3500, 0\)/i);
   assert.match(home, /€35/i);
-  assert.equal(english["home.offer.sms"], "SMS included");
+  assert.equal(english["home.offer.sms"], "WhatsApp included");
   assert.match(home, /home\.offer\.sms/);
 });
 

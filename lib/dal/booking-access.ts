@@ -2,6 +2,7 @@ import "server-only";
 
 import { createServiceClient } from "@/lib/supabase/service";
 import { DataAccessError } from "./errors";
+import { loadGuestBookingWhatsAppState, type BookingWhatsAppState } from "./whatsapp";
 
 export type GuestBookingAccess = {
   id: string;
@@ -37,14 +38,16 @@ export type GuestBookingAccess = {
     decisionNote: string | null;
     items: Array<{ type: string; description: string; quantity: number; unitPriceCents: number; lineTotalCents: number }>;
   };
+  whatsapp: BookingWhatsAppState;
 };
 
 export async function loadGuestBookingAccess(digest: string) {
-  const { data, error } = await createServiceClient().rpc("get_booking_access_session", {
-    requested_token_digest: digest,
-  });
+  const [{ data, error }, whatsapp] = await Promise.all([
+    createServiceClient().rpc("get_booking_access_session", { requested_token_digest: digest }),
+    loadGuestBookingWhatsAppState(digest),
+  ]);
   if (error) throw new DataAccessError(error.code === "42501" ? "unauthorized" : "unavailable");
-  return data && typeof data === "object" ? data as GuestBookingAccess : null;
+  return data && typeof data === "object" ? { ...(data as Omit<GuestBookingAccess, "whatsapp">), whatsapp } : null;
 }
 
 export async function manageGuestBooking(input: {

@@ -160,9 +160,10 @@ export async function createPublicServiceBookingRequest(input: {
   mobilityRequirement: "none" | "pickup" | "courtesy_car" | "wait_on_site";
   locale: "en" | "de" | "ro" | "hu";
   managementTokenDigest: string;
+  whatsappOptIn: boolean;
 }) {
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("create_public_service_booking_request_v2", {
+  const { data, error } = await supabase.rpc("create_public_service_booking_request_v3", {
     requested_workshop_id: input.workshopId,
     requested_service_id: input.serviceId,
     requested_customer_name: input.customerName,
@@ -180,6 +181,7 @@ export async function createPublicServiceBookingRequest(input: {
     requested_mobility_requirement: input.mobilityRequirement,
     requested_locale: input.locale,
     requested_management_token_digest: input.managementTokenDigest,
+    requested_whatsapp_opt_in: input.whatsappOptIn,
   });
   if (error) {
     console.error("create_public_service_booking_request", { code: error.code });
