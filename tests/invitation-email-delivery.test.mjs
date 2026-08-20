@@ -7,6 +7,7 @@ const read = (path) => readFile(new URL(path, root), "utf8");
 const email = await read("lib/email/invitation-emails.ts");
 const adminActions = await read("app/admin/workflow-actions.ts");
 const ownerActions = await read("app/workshop-manager/organisation/actions.ts");
+const ownerInvitationDelivery = await read("lib/location-manager-invitations.ts");
 const adminForms = await read("app/admin/AdminWorkflowForms.tsx");
 const ownerClient = await read("app/workshop-manager/organisation/OrganisationCoverageClient.tsx");
 
@@ -45,9 +46,10 @@ test("email copy distinguishes administrator and service-organisation invitation
 test("every invitation creation action attempts delivery and preserves a fallback link", () => {
   assert.match(adminActions, /kind: "admin_service_organisation"/);
   assert.match(adminActions, /kind: "admin_location_manager"/);
-  assert.match(ownerActions, /kind: "service_organisation_location_manager"/);
+  assert.match(ownerInvitationDelivery, /kind: "service_organisation_location_manager"/);
   assert.match(adminActions, /emailDelivery/);
   assert.match(ownerActions, /emailDelivery/);
+  assert.match(ownerActions, /createAndDeliverLocationManagerInvitation/);
   assert.match(adminForms, /state\.emailDelivery === "sent"/);
   assert.match(adminForms, /state\.emailDiagnostic/);
   assert.match(ownerClient, /state\.emailDelivery === "sent"/);

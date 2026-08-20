@@ -15,7 +15,16 @@ type T = (key: TranslationKey) => string;
 
 function Result({ state, t }: { state: WorkshopOperationsActionState; t: T }) {
   if (state.status === "idle") return null;
-  return <p role="status" className={["saved", "logo_saved", "created", "location_created", "removed"].includes(state.status) ? "note-success" : "note-error"}>{t(`workshopOperations.result.${state.status}` as TranslationKey)}</p>;
+  const successful = ["saved", "logo_saved", "created", "location_created", "removed"].includes(state.status)
+    || (state.status === "location_created_invited" && state.emailDelivery === "sent");
+  return <div role="status" className={successful ? "note-success" : "note-error"}>
+    <span>{t(`workshopOperations.result.${state.status}` as TranslationKey)}</span>
+    {state.emailDelivery && <strong>{t(`organisationCoverage.invitationEmail.${state.emailDelivery}` as TranslationKey)}</strong>}
+    {state.invitationUrl && <>
+      <input value={state.invitationUrl} readOnly aria-label={t("organisationCoverage.invitationLink")} />
+      <small>{t(state.emailDelivery === "sent" ? "organisationCoverage.backupLinkHelp" : "organisationCoverage.copyLinkHelp")}</small>
+    </>}
+  </div>;
 }
 
 type OwnedProvider = { id: string; displayName: string; countryCode: string };
@@ -45,12 +54,12 @@ function CreateLocationForm({ providers, language, t, portalBasePath }: { provid
     <form className="settings-card create-location-form" action={action}>
       {providers.length > 1 ? <label>{t("workshopOperations.organisation")}<select name="serviceProviderId" value={provider.id} onChange={(event) => { setProviderId(event.target.value); setLocationReady(false); }}>{providers.map((item) => <option key={item.id} value={item.id}>{item.displayName}</option>)}</select></label> : <input type="hidden" name="serviceProviderId" value={provider.id} />}
       <label>{t("workshopOperations.displayName")}<input name="displayName" required minLength={2} maxLength={160} /></label>
-      <div className="settings-two"><label>{t("workshopOperations.phone")}<input name="publicPhone" maxLength={40} /></label><label>{t("workshopOperations.email")}<input name="publicEmail" type="email" maxLength={320} /></label></div>
+      <div className="settings-two"><label>{t("workshopOperations.phone")}<input name="publicPhone" maxLength={40} /></label><label>{t("workshopOperations.email")}<input name="publicEmail" type="email" maxLength={320} /><FieldHelp>{t("workshopOperations.publicEmailManagerInviteHelp")}</FieldHelp></label></div>
       <GoogleAddressSearch key={provider.id} label={t("workshopOperations.address")} placeholder={t("home.addressSearchPlaceholder")} help={t("workshopOperations.addressSearchHelp")} unavailable={t("workshopOperations.addressSearchUnavailable")} language={language} initialCountryCode={provider.countryCode} disabled={pending} allowManualPin manualPinLabels={locationPinLabels(t)} onSelection={(selection) => setLocationReady(Boolean(selection?.city && selection.latitude !== null && selection.longitude !== null))} />
       <p className="coverage-note">{t("workshopOperations.newLocationCoverageHelp")}</p>
       <Result state={state} t={t} />
       <button disabled={pending || !locationReady}>{t(pending ? "workshopOperations.creatingLocation" : "workshopOperations.createLocation")}</button>
-      {state.status === "location_created" && <div className="create-location-next"><Link href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/managers" : "/organisation"}`}>{t("workshopOperations.assignPrimaryManager")}</Link><Link href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/billing" : "/invoicing"}`}>{t("workshopOperations.activateCoverage")}</Link></div>}
+      {["location_created", "location_created_invited", "location_created_invitation_failed"].includes(state.status) && <div className="create-location-next"><Link href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/managers" : "/organisation"}`}>{t("workshopOperations.assignPrimaryManager")}</Link><Link href={`${portalBasePath}${portalBasePath === "/service-organisation" ? "/billing" : "/invoicing"}`}>{t("workshopOperations.activateCoverage")}</Link></div>}
     </form>
   </details>;
 }

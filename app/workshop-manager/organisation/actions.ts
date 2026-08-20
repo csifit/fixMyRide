@@ -1,19 +1,11 @@
 "use server";
 
-import { createHash, randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import {
-  createOrganisationManagerInvitation,
-  revokeOrganisationManagerInvitation,
-} from "@/lib/dal/organisation-coverage";
+import { revokeOrganisationManagerInvitation } from "@/lib/dal/organisation-coverage";
 import { DataAccessError } from "@/lib/dal/errors";
-import { getInvitationEmailContext } from "@/lib/dal/invitation-email-context";
-import {
-  sendInvitationEmail,
-  type InvitationEmailDelivery,
-} from "@/lib/email/invitation-emails";
-import { getSiteUrl } from "@/lib/site-url";
+import type { InvitationEmailDelivery } from "@/lib/email/invitation-emails";
+import { createAndDeliverLocationManagerInvitation } from "@/lib/location-manager-invitations";
 
 export type OrganisationInvitationState = {
   status: "idle" | "saved" | "revoked" | "invalid" | "duplicate" | "unauthorized" | "unavailable";
@@ -44,40 +36,15 @@ export async function inviteOrganisationManagerAction(
 ): Promise<OrganisationInvitationState> {
   const parsed = invitationSchema.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return { status: "invalid" };
-  const token = randomBytes(32).toString("base64url");
-  const tokenDigest = createHash("sha256").update(token).digest("hex");
-  const expiresAt = new Date(Date.now() + 7 * 86_400_000).toISOString();
   try {
-    const invitationId = await createOrganisationManagerInvitation({
-      ...parsed.data,
-      tokenDigest,
-      expiresAt,
-    });
-    const url = new URL("/register/invitation", getSiteUrl());
-    url.searchParams.set("id", invitationId);
-    url.searchParams.set("token", token);
-    let emailDelivery: InvitationEmailDelivery = "failed";
-    try {
-      const context = await getInvitationEmailContext(invitationId);
-      if (context) {
-        const email = await sendInvitationEmail({
-          kind: "service_organisation_location_manager",
-          to: context.email,
-          invitationUrl: url.toString(),
-          expiresAt,
-          organisationName: context.organisationName,
-          workshopName: context.workshopName,
-          assignmentRole: context.assignmentRole ?? parsed.data.assignmentRole,
-          invitationId,
-        });
-        emailDelivery = email.delivery;
-      }
-    } catch {
-      emailDelivery = "failed";
-    }
+    const invitation = await createAndDeliverLocationManagerInvitation(parsed.data);
     revalidatePath("/workshop-manager/organisation");
     revalidatePath("/service-organisation/managers");
-    return { status: "saved", invitationUrl: url.toString(), emailDelivery };
+    return {
+      status: "saved",
+      invitationUrl: invitation.invitationUrl,
+      emailDelivery: invitation.emailDelivery,
+    };
   } catch (error) {
     return failure(error);
   }

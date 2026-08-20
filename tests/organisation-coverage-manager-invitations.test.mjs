@@ -6,6 +6,7 @@ const root = new URL("../", import.meta.url);
 const read = (path) => readFile(new URL(path, root), "utf8");
 const migration = await read("supabase/migrations/202608100041_organisation_coverage_manager_invitations.sql");
 const actions = await read("app/workshop-manager/organisation/actions.ts");
+const invitationDelivery = await read("lib/location-manager-invitations.ts");
 const page = await read("app/workshop-manager/organisation/page.tsx");
 const client = await read("app/workshop-manager/organisation/OrganisationCoverageClient.tsx");
 const navigation = await read("app/RoleWorkspaceShell.tsx");
@@ -33,8 +34,8 @@ test("dashboard exposes per-location coverage and the EUR 35 cost projection wit
 });
 
 test("owner invitations are hashed, expiring, location scoped, and revocable", () => {
-  assert.match(actions, /randomBytes\(32\).*base64url/s);
-  assert.match(actions, /createHash\("sha256"\)/);
+  assert.match(invitationDelivery, /randomBytes\(32\).*base64url/s);
+  assert.match(invitationDelivery, /createHash\("sha256"\)/);
   assert.match(migration, /requested_token_digest !~ '\^\[a-f0-9\]\{64\}\$'/);
   assert.match(migration, /requested_expires_at > now\(\) \+ interval '30 days'/);
   assert.match(migration, /select workshop\.service_provider_id into provider_id/);

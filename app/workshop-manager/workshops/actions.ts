@@ -4,8 +4,17 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { DataAccessError } from "@/lib/dal/errors";
 import { addMyWorkshopClosure, createMyWorkshopLocation, removeMyWorkshopClosure, updateMyWorkshopOperations, uploadMyWorkshopLogo } from "@/lib/dal/workshop-operations";
+import type { InvitationEmailDelivery } from "@/lib/email/invitation-emails";
+import { createAndDeliverLocationManagerInvitation } from "@/lib/location-manager-invitations";
 
-export type WorkshopOperationsActionState = { status: "idle" | "saved" | "logo_saved" | "created" | "location_created" | "removed" | "invalid" | "location_invalid" | "geocode_required" | "unauthorized" | "unavailable" };
+export type WorkshopOperationsActionState = {
+  status: "idle" | "saved" | "logo_saved" | "created" | "location_created"
+    | "location_created_invited" | "location_created_invitation_failed"
+    | "removed" | "invalid" | "location_invalid" | "geocode_required"
+    | "unauthorized" | "unavailable";
+  invitationUrl?: string;
+  emailDelivery?: InvitationEmailDelivery;
+};
 const nullable = (max: number) => z.string().trim().max(max).transform((value) => value || null);
 const nullableNumber = z.union([z.literal(""), z.coerce.number()]).transform((value) => value === "" ? null : value);
 const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/);
@@ -114,13 +123,27 @@ export async function createWorkshopLocationAction(_state: WorkshopOperationsAct
     return { status: needsGeocoding ? "geocode_required" : "location_invalid" };
   }
   try {
-    await createMyWorkshopLocation(parsed.data);
+    const workshopId = await createMyWorkshopLocation(parsed.data);
     refresh();
     revalidatePath("/workshop-manager/organisation");
     revalidatePath("/workshop-manager/invoicing");
     revalidatePath("/service-organisation/managers");
     revalidatePath("/service-organisation/billing");
-    return { status: "location_created" };
+    if (!parsed.data.publicEmail) return { status: "location_created" };
+    try {
+      const invitation = await createAndDeliverLocationManagerInvitation({
+        workshopId,
+        email: parsed.data.publicEmail,
+        assignmentRole: "primary_manager",
+      });
+      return {
+        status: "location_created_invited",
+        invitationUrl: invitation.invitationUrl,
+        emailDelivery: invitation.emailDelivery,
+      };
+    } catch {
+      return { status: "location_created_invitation_failed" };
+    }
   } catch (error) {
     const failure = result(error);
     return failure.status === "invalid" ? { status: "location_invalid" } : failure;
