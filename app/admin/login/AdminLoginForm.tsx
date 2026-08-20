@@ -80,6 +80,9 @@ export default function AdminLoginForm({
                 minLength={8}
               />
             </label>
+            <Link className="auth-forgot-link" href="/forgot-password?portal=admin">
+              {t("passwordRecovery.forgotLink")}
+            </Link>
             {errorKey && (
               <p className="auth-error" role="alert">
                 {t(errorKey)}

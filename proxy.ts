@@ -15,5 +15,7 @@ export const config = {
     "/customer/:path*",
     "/auth/:path*",
     "/register/set-password",
+    "/forgot-password",
+    "/reset-password",
   ],
 };
