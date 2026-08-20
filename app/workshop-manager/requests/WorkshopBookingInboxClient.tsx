@@ -2,6 +2,7 @@
 
 import Link from "@/app/WorkspaceLink";
 import { useActionState, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { formatDateTime, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import type { ManagedWorkshopBooking } from "@/lib/dal/workshop-bookings";
@@ -98,20 +99,34 @@ function BookingCard({ booking, language, t }: { booking: ManagedWorkshopBooking
   </details>;
 }
 
-export default function WorkshopBookingInboxClient({ bookings, catalogues, schedules, assignments, operations, logoutAction }: { bookings: ManagedWorkshopBooking[]; catalogues: ManagedWorkshopCatalogue[]; schedules: WorkshopSchedule[]; assignments: Record<string, BookingResource[]>; operations: WorkshopOperations[]; logoutAction: () => Promise<void> }) {
+type CalendarLocationSelection = {
+  required: boolean;
+  basePath: "/service-organisation/requests" | "/workshop-manager/requests";
+  selectedWorkshopId: string | null;
+  locations: Array<{ id: string; name: string; city: string | null }>;
+};
+
+export default function WorkshopBookingInboxClient({ bookings, catalogues, schedules, assignments, operations, locationSelection, logoutAction }: { bookings: ManagedWorkshopBooking[]; catalogues: ManagedWorkshopCatalogue[]; schedules: WorkshopSchedule[]; assignments: Record<string, BookingResource[]>; operations: WorkshopOperations[]; locationSelection?: CalendarLocationSelection; logoutAction: () => Promise<void> }) {
+  const router = useRouter();
   const [language, setLanguage, ready] = useLanguage();
   const [filter, setFilter] = useState("open");
   const t = (key: TranslationKey) => translate(language, key);
   const visible = useMemo(() => bookings.filter((booking) => filter === "all" || (filter === "open" ? ["requested", "confirmed"].includes(booking.status) : booking.status === filter)), [bookings, filter]);
+  const selectedLocation = locationSelection?.locations.find((item) => item.id === locationSelection.selectedWorkshopId) ?? null;
+  const canShowCalendar = !locationSelection?.required || Boolean(selectedLocation);
+  const calendarLocationName = selectedLocation?.name ?? schedules[0]?.workshopName ?? operations[0]?.displayName ?? t("capacity.locationUnknown");
   if (!ready) return <main className="registration-shell" aria-busy="true" />;
   return <main className="settings-shell booking-inbox-shell">
-    <header className="settings-topbar"><Link href="/workshop-manager">← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
+    <header className="settings-topbar"><Link href={locationSelection?.basePath.startsWith("/service-organisation") ? "/service-organisation" : "/workshop-manager"}>← {t("workspace.back")}</Link><strong>pitster</strong><select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t("a11y.languageSelector")}><option value="en">EN</option><option value="de">DE</option><option value="ro">RO</option><option value="hu">HU</option></select><form action={logoutAction}><button>{t("auth.logout")}</button></form></header>
     <section className="settings-content booking-inbox-content">
       <p className="registration-kicker">{t("workshopBookings.eyebrow")}</p><h1>{t("workshopBookings.title")}</h1><p>{t("workshopBookings.description")}</p>
       <OperationalIntroduction title={t("operationalGuidance.howTitle")} description={t("phase3.requests.intro")} outcomeLabel={t("operationalGuidance.whyLabel")} outcome={t("phase3.requests.outcome")} stepsLabel={t("operationalGuidance.stepsLabel")} steps={[t("phase3.requests.step1"), t("phase3.requests.step2"), t("phase3.requests.step3")]} />
-      <WorkshopBookingCalendar bookings={bookings} catalogues={catalogues} schedules={schedules} assignments={assignments} operations={operations} language={language} t={t} />
+      {locationSelection && <section className="calendar-location-selector"><label>{t("capacity.selectCalendarLocation")}<select value={locationSelection.selectedWorkshopId ?? ""} onChange={(event) => router.push(event.target.value ? `${locationSelection.basePath}?workshopId=${event.target.value}` : locationSelection.basePath)}><option value="">{t("capacity.selectLocationPrompt")}</option>{locationSelection.locations.map((location) => <option value={location.id} key={location.id}>{location.name}{location.city ? ` · ${location.city}` : ""}</option>)}</select></label>{selectedLocation && <p>{t("capacity.calendarFor")}: <span>{selectedLocation.name}</span></p>}</section>}
+      {canShowCalendar ? <>
+      <WorkshopBookingCalendar bookings={bookings} catalogues={catalogues} schedules={schedules} assignments={assignments} operations={operations} locationName={calendarLocationName} language={language} t={t} />
       <div className="booking-inbox-toolbar"><strong>{visible.length} {t("workshopBookings.visible")}</strong><label>{t("workshopBookings.filter")}<select value={filter} onChange={(event) => setFilter(event.target.value)}><option value="open">{t("workshopBookings.filter.open")}</option><option value="requested">{t("workshopBookings.status.requested")}</option><option value="confirmed">{t("workshopBookings.status.confirmed")}</option><option value="declined">{t("workshopBookings.status.declined")}</option><option value="cancelled">{t("workshopBookings.status.cancelled")}</option><option value="all">{t("workshopBookings.filter.all")}</option></select><FieldHelp>{t("phase3.requests.filterHelp")}</FieldHelp></label></div>
       <div className="booking-inbox-list">{visible.map((booking) => <BookingCard key={booking.id} booking={booking} language={language} t={t} />)}{!visible.length && <OperationalEmptyState mark="C" title={t("workshopBookings.emptyTitle")} description={bookings.length ? t("phase3.requests.filteredEmpty") : t("workshopBookings.emptyDescription")} action={bookings.length ? <button type="button" onClick={() => setFilter("all")}>{t("workshopBookings.filter.all")}</button> : <a href="#manual-appointment">+ {t("workshopBookings.manual.add")}</a>} />}</div>
+      </> : <OperationalEmptyState mark="L" title={t("capacity.selectLocationPrompt")} description={t("capacity.selectCalendarLocationHelp")} />}
     </section>
   </main>;
 }

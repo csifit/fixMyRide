@@ -9,7 +9,9 @@ import WorkshopBookingInboxClient from "./WorkshopBookingInboxClient";
 
 export const dynamic = "force-dynamic";
 
-export default async function WorkshopBookingRequestsPage() {
+export default async function WorkshopBookingRequestsPage({ searchParams }: {
+  searchParams: Promise<{ workshopId?: string }>;
+}) {
   const access = await getWorkshopManagerAccess();
   if (access.state === "unauthenticated") redirect("/workshop-manager/login");
   if (access.state !== "active") redirect("/workshop-manager");
@@ -17,5 +19,28 @@ export default async function WorkshopBookingRequestsPage() {
   const [bookings, catalogues, scheduling, operations] = await Promise.all([
     loadManagedWorkshopBookings(), loadManagedWorkshopCatalogues(), loadWorkshopScheduling(), loadMyWorkshopOperations(),
   ]);
-  return <WorkshopBookingInboxClient bookings={bookings} catalogues={catalogues} schedules={scheduling.schedules} assignments={Object.fromEntries(scheduling.assignments)} operations={operations} logoutAction={platformLogoutAction} />;
+  const { workshopId } = await searchParams;
+  const selected = operations.find((location) => location.id === workshopId) ?? operations[0] ?? null;
+  const selectedBookingIds = new Set(bookings
+    .filter((booking) => booking.workshopId === selected?.id)
+    .map((booking) => booking.id));
+  return <WorkshopBookingInboxClient
+    bookings={selected ? bookings.filter((booking) => booking.workshopId === selected.id) : []}
+    catalogues={selected ? catalogues.filter((catalogue) => catalogue.workshopId === selected.id) : []}
+    schedules={selected ? scheduling.schedules.filter((schedule) => schedule.workshopId === selected.id) : []}
+    assignments={Object.fromEntries([...scheduling.assignments]
+      .filter(([bookingId]) => selectedBookingIds.has(bookingId)))}
+    operations={selected ? operations.filter((operation) => operation.id === selected.id) : []}
+    locationSelection={{
+      required: false,
+      basePath: "/workshop-manager/requests",
+      selectedWorkshopId: selected?.id ?? null,
+      locations: operations.map((location) => ({
+        id: location.id,
+        name: location.displayName,
+        city: location.city,
+      })),
+    }}
+    logoutAction={platformLogoutAction}
+  />;
 }

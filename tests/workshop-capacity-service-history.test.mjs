@@ -4,8 +4,9 @@ import test from "node:test";
 
 const read = (path) => readFile(path, "utf8");
 const migration = await read("supabase/migrations/202608130055_workshop_capacity_vehicle_service_history.sql");
+const dedicatedMigration = await read("supabase/migrations/202608210072_dedicated_workshop_capacity_resources.sql");
 const calendar = await read("app/workshop-manager/requests/WorkshopBookingCalendar.tsx");
-const capacity = await read("app/workshop-manager/requests/WorkshopCapacityControls.tsx");
+const capacity = await read("app/workshop-manager/capacity/CapacityResourcesClient.tsx");
 const history = await read("app/garage/[vehicleId]/VehicleServiceHistoryClient.tsx");
 const pdf = await read("lib/pdf/vehicle-service-history.ts");
 const publicBooking = await read("app/workshops/[workshopId]/request/ServiceRequestFlow.tsx");
@@ -20,15 +21,17 @@ test("calendar resources are location scoped, RPC managed, and overlap protected
   assert.match(migration, /raise exception 'The selected resource is already occupied'/);
 });
 
-test("calendar extends all views with capacity, assignments, warnings, and drag rescheduling", () => {
+test("calendar keeps scheduling warnings and drag rescheduling while resource setup is dedicated", () => {
   for (const view of ["agenda", "day", "week", "month"]) assert.match(calendar, new RegExp(`"${view}"`));
   assert.match(calendar, /draggable=\{booking\.status === "confirmed"\}/);
   assert.match(calendar, /text\/pitster-booking/);
   assert.match(calendar, /capacity\.warning\.daily/);
   assert.match(calendar, /capacity\.warning\.closure/);
-  assert.match(capacity, /kind === "mechanic"/);
-  assert.match(capacity, /item\.kind !== "mechanic"/);
-  assert.match(capacity, /addScheduleResourceAbsenceAction/);
+  assert.doesNotMatch(calendar, /<WorkshopCapacityPanel/);
+  assert.match(calendar, /locationName/);
+  assert.match(capacity, /application\/x-pitster-personnel/);
+  assert.match(capacity, /addCapacityAbsenceAction/);
+  assert.match(dedicatedMigration, /resource_category in \('personnel', 'workstation'\)/);
 });
 
 test("VIN stays optional and completed bookings anchor portable service history", () => {

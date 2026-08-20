@@ -70,9 +70,9 @@ const ruleSettings: Record<ProviderRecommendationRule, { priority: ProviderRecom
 
 function recommendationHref(role: ProviderRecommendationRole, rule: ProviderRecommendationRule) {
   const root = role === "service_organisation" ? "/service-organisation" : "/workshop-manager";
-  if (rule === "add_location" || rule === "profile" || rule === "capacity") return `${root}/${role === "service_organisation" ? "locations" : "workshops"}`;
+  if (rule === "add_location" || rule === "profile") return `${root}/${role === "service_organisation" ? "locations" : "workshops"}`;
+  if (rule === "capacity" || rule === "resources") return `${root}/capacity`;
   if (rule === "services") return `${root}/services`;
-  if (rule === "resources") return `${root}/requests#capacity`;
   if (rule === "inventory_setup" || rule === "low_stock") return `${root}/inventory`;
   if (rule === "manager") return `${root}/managers`;
   if (rule === "coverage") return `${root}/billing`;

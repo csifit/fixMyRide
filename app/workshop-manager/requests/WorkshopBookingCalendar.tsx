@@ -7,7 +7,7 @@ import type { WorkshopOperations } from "@/lib/dal/workshop-operations";
 import type { ManagedWorkshopCatalogue } from "@/lib/dal/workshop-services";
 import type { BookingResource, WorkshopSchedule } from "@/lib/dal/workshop-scheduling";
 import { createManualAppointmentAction, saveBookingScheduleAction, type ManualAppointmentState, type ScheduleActionState } from "./actions";
-import { BookingScheduleEditor, WorkshopCapacityPanel } from "./WorkshopCapacityControls";
+import { BookingScheduleEditor } from "./WorkshopCapacityControls";
 import PlatformDateTimeInput from "@/app/PlatformDateTimeInput";
 import Link from "@/app/WorkspaceLink";
 import { FieldHelp, OperationalEmptyState } from "@/app/guidance/OperationalGuidance";
@@ -73,10 +73,10 @@ function ManualAppointmentForm({ catalogues, language, t }: { catalogues: Manage
   </form></details>;
 }
 
-export default function WorkshopBookingCalendar({ bookings, catalogues, schedules, assignments, operations, language, t }: {
+export default function WorkshopBookingCalendar({ bookings, catalogues, schedules, assignments, operations, locationName, language, t }: {
   bookings: ManagedWorkshopBooking[]; catalogues: ManagedWorkshopCatalogue[];
   schedules: WorkshopSchedule[]; assignments: Record<string, BookingResource[]>;
-  operations: WorkshopOperations[]; language: Language; t: Translate;
+  operations: WorkshopOperations[]; locationName: string; language: Language; t: Translate;
 }) {
   const [view, setView] = useState<CalendarView>("agenda");
   const [cursor, setCursor] = useState(() => startOfDay(new Date()));
@@ -123,9 +123,8 @@ export default function WorkshopBookingCalendar({ bookings, catalogues, schedule
   const forDay = (day: Date, compact = false) => { const items = ordered.filter((booking) => dateKey(new Date(scheduledStart(booking))) === dateKey(day)); const shown = compact ? items.slice(0, 3) : items; return <>{shown.map((booking) => bookingNode(booking, compact))}{compact && items.length > shown.length && <small className="calendar-more">+{items.length - shown.length} {t("calendar.more")}</small>}{!items.length && !compact && <small className="calendar-empty">{t("calendar.emptyDay")}</small>}</>; };
 
   return <section className="appointment-calendar workshop-calendar">
-    <header className="calendar-toolbar"><div><h2>{t("workshopBookings.calendar.title")}</h2><strong>{periodLabel}</strong></div><div className="calendar-navigation"><button type="button" onClick={() => move(-1)} aria-label={t("calendar.previous")}>‹</button><button type="button" onClick={() => setCursor(startOfDay(new Date()))}>{t("calendar.today")}</button><button type="button" onClick={() => move(1)} aria-label={t("calendar.next")}>›</button></div><div className="calendar-view-switcher" aria-label={t("calendar.viewLabel")}>{(["agenda", "day", "week", "month"] as CalendarView[]).map((choice) => <button type="button" key={choice} className={view === choice ? "active" : ""} aria-pressed={view === choice} onClick={() => setView(choice)}>{t(`calendar.view.${choice}` as TranslationKey)}</button>)}</div></header>
+    <header className="calendar-toolbar"><div><p className="calendar-location-context">{t("capacity.calendarFor")}: <span>{locationName}</span></p><h2>{t("workshopBookings.calendar.title")}</h2><strong>{periodLabel}</strong></div><div className="calendar-navigation"><button type="button" onClick={() => move(-1)} aria-label={t("calendar.previous")}>‹</button><button type="button" onClick={() => setCursor(startOfDay(new Date()))}>{t("calendar.today")}</button><button type="button" onClick={() => move(1)} aria-label={t("calendar.next")}>›</button></div><div className="calendar-view-switcher" aria-label={t("calendar.viewLabel")}>{(["agenda", "day", "week", "month"] as CalendarView[]).map((choice) => <button type="button" key={choice} className={view === choice ? "active" : ""} aria-pressed={view === choice} onClick={() => setView(choice)}>{t(`calendar.view.${choice}` as TranslationKey)}</button>)}</div></header>
     <div className="calendar-status-legend">{["requested", "proposed", "confirmed", "rescheduled", "checked_in", "diagnosing", "in_service", "ready_for_collection", "completed", "declined", "cancelled", "no_show"].map((status) => <span className={`status-${status}`} key={status}>{t(statusKey(status))}</span>)}</div>
-    <WorkshopCapacityPanel schedules={schedules} language={language} t={t} />
     {dragState.status !== "idle" && <p className={dragState.status === "saved" ? "note-success" : "note-error"}>{t(`capacity.result.${dragState.status}` as TranslationKey)}{dragPending ? ` ${t("repairLifecycle.saving")}` : ""}</p>}
     <ManualAppointmentForm catalogues={catalogues} language={language} t={t} />
     <div className="calendar-and-details"><div className={`calendar-surface calendar-${view}`}>

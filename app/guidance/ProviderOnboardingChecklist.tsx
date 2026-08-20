@@ -10,9 +10,9 @@ const stepOrder: ProviderOnboardingStepId[] = ["profile", "services", "capacity"
 
 function stepHref(role: Role, step: ProviderOnboardingStepId) {
   const root = role === "service_organisation" ? "/service-organisation" : "/workshop-manager";
-  if (step === "profile" || step === "capacity") return `${root}/${role === "service_organisation" ? "locations" : "workshops"}`;
+  if (step === "profile") return `${root}/${role === "service_organisation" ? "locations" : "workshops"}`;
+  if (step === "capacity" || step === "resources") return `${root}/capacity`;
   if (step === "services") return `${root}/services`;
-  if (step === "resources") return `${root}/requests#capacity`;
   if (step === "inventory") return `${root}/inventory`;
   if (step === "manager") return `${root}/managers`;
   return `${root}/billing`;

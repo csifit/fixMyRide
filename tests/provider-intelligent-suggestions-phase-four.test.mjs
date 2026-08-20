@@ -47,7 +47,7 @@ test("every rule provides the direct role-specific action destination", () => {
   const organisation = buildProviderRecommendations({ role: "service_organisation", onboarding: { completed: 1, total: 7, percent: 14, locations: [location] } });
   assert.equal(organisation.find((item) => item.rule === "coverage").href, "/service-organisation/billing");
   assert.equal(organisation.find((item) => item.rule === "manager").href, "/service-organisation/managers");
-  assert.equal(organisation.find((item) => item.rule === "resources").href, "/service-organisation/requests#capacity");
+  assert.equal(organisation.find((item) => item.rule === "resources").href, "/service-organisation/capacity");
 
   const managerLocation = { ...location, total: 5, steps: location.steps.slice(0, 5) };
   const manager = buildProviderRecommendations({ role: "workshop_manager", onboarding: { completed: 1, total: 5, percent: 20, locations: [managerLocation] } });

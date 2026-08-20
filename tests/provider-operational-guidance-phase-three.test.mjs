@@ -6,7 +6,7 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 const guidance = await read("app/guidance/OperationalGuidance.tsx");
 const catalogue = await read("app/workshop-manager/services/ServiceCatalogueClient.tsx");
 const profile = await read("app/workshop-manager/workshops/WorkshopOperationsClient.tsx");
-const capacity = await read("app/workshop-manager/requests/WorkshopCapacityControls.tsx");
+const capacity = await read("app/workshop-manager/capacity/CapacityResourcesClient.tsx");
 const requests = await read("app/workshop-manager/requests/WorkshopBookingInboxClient.tsx");
 const calendar = await read("app/workshop-manager/requests/WorkshopBookingCalendar.tsx");
 const inventory = await read("app/inventory/WorkshopInventoryClient.tsx");
@@ -45,7 +45,8 @@ test("zero-data and filtered states provide a relevant next action", () => {
   for (const source of [catalogue, profile, capacity, requests, calendar, inventory]) assert.match(source, /<OperationalEmptyState/);
   assert.match(catalogue, /#add-service-/);
   assert.match(profile, /#create-location/);
-  assert.match(capacity, /#resource-form-/);
+  assert.match(capacity, /capacity\.noPersonnel/);
+  assert.match(capacity, /capacity\.noWorkstations/);
   assert.match(calendar, /#manual-appointment/);
   assert.match(inventory, /setStockFilter\("all"\)/);
 });

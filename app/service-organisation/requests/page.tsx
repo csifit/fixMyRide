@@ -9,7 +9,9 @@ import { loadManagedWorkshopCatalogues } from "@/lib/dal/workshop-services";
 
 export const dynamic = "force-dynamic";
 
-export default async function ServiceOrganisationRequestsPage() {
+export default async function ServiceOrganisationRequestsPage({ searchParams }: {
+  searchParams: Promise<{ workshopId?: string }>;
+}) {
   const access = await getServiceOrganisationAccess();
   if (access.state === "unauthenticated") redirect("/service-organisation/login");
   if (access.state !== "active") redirect("/workshop-manager");
@@ -17,7 +19,28 @@ export default async function ServiceOrganisationRequestsPage() {
     loadManagedWorkshopBookings(), loadManagedWorkshopCatalogues(),
     loadWorkshopScheduling(), loadMyWorkshopOperations(),
   ]);
-  return <WorkshopBookingInboxClient bookings={bookings} catalogues={catalogues}
-    schedules={scheduling.schedules} assignments={Object.fromEntries(scheduling.assignments)}
-    operations={operations} logoutAction={platformLogoutAction} />;
+  const { workshopId } = await searchParams;
+  const selected = operations.find((location) => location.id === workshopId) ?? null;
+  const selectedBookingIds = new Set(bookings
+    .filter((booking) => booking.workshopId === selected?.id)
+    .map((booking) => booking.id));
+  return <WorkshopBookingInboxClient
+    bookings={selected ? bookings.filter((booking) => booking.workshopId === selected.id) : []}
+    catalogues={selected ? catalogues.filter((catalogue) => catalogue.workshopId === selected.id) : []}
+    schedules={selected ? scheduling.schedules.filter((schedule) => schedule.workshopId === selected.id) : []}
+    assignments={Object.fromEntries([...scheduling.assignments]
+      .filter(([bookingId]) => selectedBookingIds.has(bookingId)))}
+    operations={selected ? operations.filter((operation) => operation.id === selected.id) : []}
+    locationSelection={{
+      required: true,
+      basePath: "/service-organisation/requests",
+      selectedWorkshopId: selected?.id ?? null,
+      locations: operations.map((location) => ({
+        id: location.id,
+        name: location.displayName,
+        city: location.city,
+      })),
+    }}
+    logoutAction={platformLogoutAction}
+  />;
 }
