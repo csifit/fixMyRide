@@ -284,8 +284,8 @@ function EmailBlockRow({ entry, t }: {
   entry: AdminOrganisationWorkflow["emailBlocks"][number]; t: T;
 }) {
   const [state, action, pending] = useActionState(setEmailBlockStatusAction, initial);
-  return <article className="admin-email-block-row">
-    <div><strong>{entry.email}</strong><small>{entry.reason}</small></div>
+  return <details className="admin-email-block-row">
+    <summary><strong>{entry.email}</strong><span>{entry.reason}</span><b className={`admin-status ${entry.blocked ? "blocked" : "active"}`}>{t(entry.blocked ? "adminEmailBlocklist.blocked" : "adminEmailBlocklist.allowed")}</b><i aria-hidden="true">⌄</i></summary>
     <form action={action}>
       <input type="hidden" name="email" value={entry.email} />
       <label>{t("adminEmailBlocklist.statusLabel")}<select name="blocked" defaultValue={String(entry.blocked)}><option value="true">{t("adminEmailBlocklist.blocked")}</option><option value="false">{t("adminEmailBlocklist.allowed")}</option></select></label>
@@ -293,7 +293,7 @@ function EmailBlockRow({ entry, t }: {
       <button disabled={pending}>{t("adminEmailBlocklist.update")}</button>
       <Result state={state} t={t} />
     </form>
-  </article>;
+  </details>;
 }
 
 export function EmailBlocklistAdministration({ entries, t }: {

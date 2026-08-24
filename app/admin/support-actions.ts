@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getAdminAccess } from "@/lib/dal/admin-auth";
-import { updateAdminSupportTicket } from "@/lib/dal/support-tickets";
+import { DataAccessError } from "@/lib/dal/errors";
+import { markAdminSupportTicketSpam, updateAdminSupportTicket } from "@/lib/dal/support-tickets";
 
 const schema = z.object({
   ticketId: z.uuid(),
@@ -21,4 +22,34 @@ export async function updateSupportTicketAction(formData: FormData) {
   await updateAdminSupportTicket(parsed.data);
   revalidatePath("/admin");
   revalidatePath("/admin/support");
+}
+
+export type SpamTicketActionState = {
+  status: "idle" | "blocked" | "registered_account" | "invalid" | "unauthorized" | "unavailable";
+};
+
+const spamSchema = z.object({ ticketId: z.uuid() });
+
+export async function markSupportTicketSpamAction(
+  _state: SpamTicketActionState,
+  formData: FormData,
+): Promise<SpamTicketActionState> {
+  const parsed = spamSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  const access = await getAdminAccess();
+  if (access.state !== "authorized") return { status: "unauthorized" };
+  try {
+    await markAdminSupportTicketSpam(parsed.data.ticketId);
+    revalidatePath("/admin");
+    revalidatePath("/admin/support");
+    revalidatePath("/admin/security");
+    return { status: "blocked" };
+  } catch (error) {
+    if (error instanceof DataAccessError) {
+      if (error.code === "conflict") return { status: "registered_account" };
+      if (error.code === "unauthorized") return { status: "unauthorized" };
+      if (error.code === "invalid_input" || error.code === "not_found") return { status: "invalid" };
+    }
+    return { status: "unavailable" };
+  }
 }

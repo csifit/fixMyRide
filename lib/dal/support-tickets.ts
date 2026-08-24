@@ -19,6 +19,8 @@ export type SupportTicket = {
   description: string;
   pageUrl: string | null;
   status: SupportTicketStatus;
+  isSpam: boolean;
+  spamMarkedAt: string | null;
   internalNote: string | null;
   closureStage: AccountClosureStage;
   closureWaitDays: 30 | 60 | null;
@@ -60,7 +62,7 @@ export async function createSupportTicket(input: {
 export async function loadAdminSupportTickets(): Promise<SupportTicket[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("support_tickets")
-    .select("id, reference, ticket_type, requester_type, requester_name, requester_email, subject, description, page_url, status, internal_note, closure_stage, closure_wait_days, closure_scheduled_at, deletion_due_at, deletion_completed_at, created_at, updated_at")
+    .select("id, reference, ticket_type, requester_type, requester_name, requester_email, subject, description, page_url, status, is_spam, spam_marked_at, internal_note, closure_stage, closure_wait_days, closure_scheduled_at, deletion_due_at, deletion_completed_at, created_at, updated_at")
     .order("created_at", { ascending: false })
     .limit(100);
   if (error) throw new DataAccessError(classifyDatabaseError(error));
@@ -75,6 +77,8 @@ export async function loadAdminSupportTickets(): Promise<SupportTicket[]> {
     description: row.description,
     pageUrl: row.page_url,
     status: row.status as SupportTicketStatus,
+    isSpam: row.is_spam,
+    spamMarkedAt: row.spam_marked_at,
     internalNote: row.internal_note,
     closureStage: row.closure_stage as AccountClosureStage,
     closureWaitDays: row.closure_wait_days as 30 | 60 | null,
@@ -102,4 +106,16 @@ export async function updateAdminSupportTicket(input: {
     requested_closure_wait_days: input.closureWaitDays,
   });
   if (error) throw new DataAccessError(classifyDatabaseError(error));
+}
+
+export async function markAdminSupportTicketSpam(ticketId: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc(
+    "mark_support_ticket_spam_and_block_email",
+    { requested_ticket_id: ticketId },
+  );
+  if (error || typeof data !== "string") {
+    throw new DataAccessError(classifyDatabaseError(error ?? {}));
+  }
+  return data;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import { useActionState, useEffect, useState, type ReactNode } from "react";
 import { formatDateTime, translate, type Language, type TranslationKey } from "@/app/i18n";
 import { useLanguage } from "@/app/i18n/useLanguage";
 import PendingSubmitButton from "@/app/PendingSubmitButton";
@@ -9,7 +9,7 @@ import { brand } from "@/lib/brand";
 import type { AdminDashboardData, AdminSection } from "@/lib/dal/admin";
 import { adminLogoutAction } from "./actions";
 import { AccountStatusControl, EmailBlocklistAdministration, OrganisationAdministration, ProviderAdministration, WorkshopAdministration } from "./AdminWorkflowForms";
-import { updateSupportTicketAction } from "./support-actions";
+import { markSupportTicketSpamAction, updateSupportTicketAction, type SpamTicketActionState } from "./support-actions";
 
 type T = (key: TranslationKey) => string;
 const sections: Array<{ id: AdminSection; href: string; key: TranslationKey; count?: keyof AdminDashboardData["counts"] }> = [
@@ -38,6 +38,18 @@ function Overview({ data, language, t }: { data: AdminDashboardData; language: L
   return <><div className="admin-metrics">{metrics.map(([value, key]) => <article key={key}><strong>{value}</strong><span>{t(key)}</span></article>)}</div><h2>{t("automotiveAdmin.recentProviders")}</h2><Table headers={[t("automotiveAdmin.provider"), t("common.status"), t("automotiveAdmin.workshops"), t("automotiveAdmin.created")]} rows={data.providers.slice(0, 8).map((provider) => [provider.displayName, <Status key={provider.id} value={provider.status} t={t} />, provider.workshopCount, formatDateTime(language, provider.createdAt)])} empty={t("automotiveAdmin.empty")} /></>;
 }
 
+const initialSpamTicketState: SpamTicketActionState = { status: "idle" };
+function SpamTicketControl({ ticketId, t }: { ticketId: string; t: T }) {
+  const [state, action, pending] = useActionState(markSupportTicketSpamAction, initialSpamTicketState);
+  return <form className="admin-support-spam-action" action={action}>
+    <input type="hidden" name="ticketId" value={ticketId} />
+    <button type="submit" disabled={pending} onClick={(event) => {
+      if (!window.confirm(t("adminSupport.spamConfirm"))) event.preventDefault();
+    }}>{t(pending ? "adminSupport.spamWorking" : "adminSupport.markSpam")}</button>
+    {state.status !== "idle" && <p className={state.status === "blocked" ? "note-success" : "note-error"} role="status">{t(`adminSupport.spamResult.${state.status}` as TranslationKey)}</p>}
+  </form>;
+}
+
 function SupportTickets({ data, language, t }: { data: AdminDashboardData; language: Language; t: T }) {
   return <section className="admin-support-queue">
     <header><h2>{t("adminSupport.title")}</h2><p>{t("adminSupport.description")}</p></header>
@@ -50,7 +62,7 @@ function SupportTickets({ data, language, t }: { data: AdminDashboardData; langu
           <span className="admin-support-subject" title={ticket.subject}>{ticket.subject}</span>
           <span className="admin-support-requester" title={ticket.requesterEmail}><strong>{ticket.requesterName}</strong><small>{ticket.requesterEmail}</small></span>
           <time dateTime={ticket.createdAt}>{formatDateTime(language, ticket.createdAt)}</time>
-          <b className={`admin-status ${ticket.status}`}>{t(`adminSupport.status.${ticket.status}` as TranslationKey)}</b>
+          <b className={`admin-status ${ticket.isSpam ? "spam" : ticket.status}`}>{t(ticket.isSpam ? "adminSupport.spam" : `adminSupport.status.${ticket.status}` as TranslationKey)}</b>
           <i aria-hidden="true">⌄</i>
         </summary>
         <div className="admin-support-ticket-details">
@@ -61,7 +73,8 @@ function SupportTickets({ data, language, t }: { data: AdminDashboardData; langu
             <header><div><p>{t("adminSupport.closureTitle")}</p><span>{t(`adminSupport.closureStage.${ticket.closureStage}` as TranslationKey)}</span></div>{ticket.deletionDueAt && <time>{t("adminSupport.deletionDue")}: {formatDateTime(language, ticket.deletionDueAt)}</time>}</header>
             {account ? <div><p>{t("adminSupport.matchingAccount")}</p><AccountStatusControl account={account} t={t} /></div> : <p>{t("adminSupport.noMatchingAccount")}</p>}
           </section>}
-          <form action={updateSupportTicketAction}><input type="hidden" name="ticketId" value={ticket.id} /><label>{t("adminSupport.statusLabel")}<select name="status" defaultValue={ticket.status}><option value="open">{t("adminSupport.status.open")}</option><option value="in_progress">{t("adminSupport.status.in_progress")}</option><option value="waiting_on_requester">{t("adminSupport.status.waiting_on_requester")}</option><option value="resolved">{t("adminSupport.status.resolved")}</option><option value="closed">{t("adminSupport.status.closed")}</option></select></label>{isAccountClosure ? <><label>{t("adminSupport.closureStageLabel")}<select name="closureStage" defaultValue={ticket.closureStage}><option value="requested">{t("adminSupport.closureStage.requested")}</option><option value="account_suspended">{t("adminSupport.closureStage.account_suspended")}</option><option value="scheduled_for_deletion">{t("adminSupport.closureStage.scheduled_for_deletion")}</option><option value="deletion_completed">{t("adminSupport.closureStage.deletion_completed")}</option><option value="cancelled">{t("adminSupport.closureStage.cancelled")}</option></select></label><label>{t("adminSupport.closureWait")}<select name="closureWaitDays" defaultValue={ticket.closureWaitDays?.toString() ?? ""}><option value="">—</option><option value="30">{t("adminSupport.wait30")}</option><option value="60">{t("adminSupport.wait60")}</option></select></label></> : <><input type="hidden" name="closureStage" value="not_applicable" /><input type="hidden" name="closureWaitDays" value="" /></>}<label>{t("adminSupport.internalNote")}<textarea name="internalNote" defaultValue={ticket.internalNote ?? ""} maxLength={3000} rows={3} /></label><button>{t("adminSupport.save")}</button></form>
+          {ticket.isSpam ? <p className="admin-support-spam-notice">{t("adminSupport.spamBlocked")}</p> : <SpamTicketControl ticketId={ticket.id} t={t} />}
+          {!ticket.isSpam && <form className="admin-support-update-form" action={updateSupportTicketAction}><input type="hidden" name="ticketId" value={ticket.id} /><label>{t("adminSupport.statusLabel")}<select name="status" defaultValue={ticket.status}><option value="open">{t("adminSupport.status.open")}</option><option value="in_progress">{t("adminSupport.status.in_progress")}</option><option value="waiting_on_requester">{t("adminSupport.status.waiting_on_requester")}</option><option value="resolved">{t("adminSupport.status.resolved")}</option><option value="closed">{t("adminSupport.status.closed")}</option></select></label>{isAccountClosure ? <><label>{t("adminSupport.closureStageLabel")}<select name="closureStage" defaultValue={ticket.closureStage}><option value="requested">{t("adminSupport.closureStage.requested")}</option><option value="account_suspended">{t("adminSupport.closureStage.account_suspended")}</option><option value="scheduled_for_deletion">{t("adminSupport.closureStage.scheduled_for_deletion")}</option><option value="deletion_completed">{t("adminSupport.closureStage.deletion_completed")}</option><option value="cancelled">{t("adminSupport.closureStage.cancelled")}</option></select></label><label>{t("adminSupport.closureWait")}<select name="closureWaitDays" defaultValue={ticket.closureWaitDays?.toString() ?? ""}><option value="">—</option><option value="30">{t("adminSupport.wait30")}</option><option value="60">{t("adminSupport.wait60")}</option></select></label></> : <><input type="hidden" name="closureStage" value="not_applicable" /><input type="hidden" name="closureWaitDays" value="" /></>}<label>{t("adminSupport.internalNote")}<textarea name="internalNote" defaultValue={ticket.internalNote ?? ""} maxLength={3000} rows={3} /></label><button>{t("adminSupport.save")}</button></form>}
         </div>
       </details>})}</div>
     {!data.supportTickets.length && <p>{t("adminSupport.empty")}</p>}
