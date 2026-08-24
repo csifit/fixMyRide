@@ -48,6 +48,14 @@ test("administrators receive a ticket queue with status and internal notes", () 
   assert.match(admin, /id: "support", href: "\/admin\/support"/);
   assert.match(admin, /updateSupportTicketAction/);
   assert.match(admin, /adminSupport\.internalNote/);
+  assert.match(admin, /<details className="admin-support-ticket"/);
+  assert.match(admin, /<summary>/);
+  assert.match(admin, /className="admin-support-ticket-details"/);
+  assert.match(admin, /admin-support-reference/);
+  assert.match(admin, /admin-support-subject/);
+  assert.match(admin, /admin-support-requester/);
+  assert.match(styles, /\.admin-support-ticket>summary \{ display:grid;/);
+  assert.match(styles, /\.admin-support-ticket\[open\]>summary/);
   assert.match(dal, /loadAdminSupportTickets/);
   assert.match(migration, /support_tickets_superadmin_read/);
   assert.match(migration, /support_tickets_superadmin_update/);

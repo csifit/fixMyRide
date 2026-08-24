@@ -60,6 +60,10 @@ test("the admin Security page manages manual emails separately from registered a
   assert.match(forms, /option value="false"/);
   assert.match(dashboard, /entries=\{data\.workflow\.emailBlocks\}/);
   assert.match(dashboard, /adminEmailBlocklist\.registeredAccounts/);
+  assert.ok(
+    dashboard.indexOf('adminEmailBlocklist.registeredAccounts')
+      < dashboard.indexOf("<EmailBlocklistAdministration"),
+  );
 });
 
 test("email blocklist guidance is translated and readable", () => {
