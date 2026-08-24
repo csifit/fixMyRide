@@ -62,6 +62,13 @@ export type AdminOrganisationWorkflow = {
     customerId: string | null;
     managerId: string | null;
   }>;
+  emailBlocks: Array<{
+    email: string;
+    blocked: boolean;
+    reason: string;
+    createdAt: string;
+    updatedAt: string;
+  }>;
   invitations: Array<{
     id: string;
     email: string;
@@ -109,6 +116,7 @@ export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisation
     { data: locationRows, error: locationError },
     { data: providerRows, error: providerError },
     { data: trialInvitationRows, error: trialInvitationError },
+    { data: emailBlockRows, error: emailBlockError },
   ] = await Promise.all([
     supabase.rpc("get_admin_organisation_workflow"),
     supabase.rpc("get_admin_workshop_claim_states"),
@@ -116,6 +124,7 @@ export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisation
     supabase.rpc("get_admin_workshop_location_details"),
     supabase.rpc("get_admin_service_provider_details"),
     supabase.rpc("get_admin_promotional_trial_invitations"),
+    supabase.rpc("get_admin_email_blocklist"),
   ]);
   if (error || !data) fail(error ?? {});
   if (claimError) fail(claimError);
@@ -123,7 +132,21 @@ export async function loadAdminOrganisationWorkflow(): Promise<AdminOrganisation
   if (locationError) fail(locationError);
   if (providerError) fail(providerError);
   if (trialInvitationError) fail(trialInvitationError);
+  if (emailBlockError) fail(emailBlockError);
   const workflow = data as unknown as AdminOrganisationWorkflow;
+  workflow.emailBlocks = ((emailBlockRows ?? []) as Array<{
+    email: string;
+    blocked: boolean;
+    reason: string;
+    created_at: string;
+    updated_at: string;
+  }>).map((row) => ({
+    email: row.email,
+    blocked: row.blocked,
+    reason: row.reason,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }));
   workflow.providers = (providerRows ?? []) as unknown as AdminOrganisationWorkflow["providers"];
   const trialInvitationById = new Map(
     ((trialInvitationRows ?? []) as Array<{
@@ -387,6 +410,18 @@ export async function setAdminPlatformAccountStatus(input: {
   const { error } = await supabase.rpc("set_admin_platform_account_status", {
     requested_auth_user_id: input.authUserId,
     requested_status: input.status,
+    requested_reason: input.reason,
+  });
+  if (error) fail(error);
+}
+
+export async function setAdminEmailBlockStatus(input: {
+  email: string; blocked: boolean; reason: string;
+}) {
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("set_admin_email_block_status", {
+    requested_email: input.email,
+    requested_blocked: input.blocked,
     requested_reason: input.reason,
   });
   if (error) fail(error);

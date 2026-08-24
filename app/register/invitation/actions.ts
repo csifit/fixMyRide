@@ -3,6 +3,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { isPlatformEmailBlocked } from "@/lib/dal/email-blocklist";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 
@@ -37,6 +38,7 @@ export async function registerInvitationAction(
     if (!invitation || invitation.status !== "pending"
       || invitation.email !== parsed.data.email.toLowerCase()
       || new Date(invitation.expires_at).getTime() <= Date.now()) return { status: "invalid" };
+    if (await isPlatformEmailBlocked(invitation.email)) return { status: "invalid" };
 
     const supabase = await createClient();
     const { error: creationError } = await service.auth.admin.createUser({

@@ -13,6 +13,7 @@ import {
   resendAdminOrganisationInvitation,
   setAdminServiceProviderStatus,
   setAdminPlatformAccountStatus,
+  setAdminEmailBlockStatus,
   updateAdminServiceProvider,
   updateAdminWorkshopLocation,
 } from "@/lib/dal/admin-organisations";
@@ -385,4 +386,23 @@ export async function updatePlatformAccountStatusAction(
   if (!parsed.success) return { status: "invalid" };
   try { await setAdminPlatformAccountStatus(parsed.data); refresh(); return { status: "saved" }; }
   catch (error) { return result(error); }
+}
+
+const emailBlockSchema = z.object({
+  email: z.email().max(254),
+  blocked: z.enum(["true", "false"]).transform((value) => value === "true"),
+  reason: z.string().trim().min(2).max(500),
+});
+export async function setEmailBlockStatusAction(
+  _state: AdminWorkflowActionState, formData: FormData,
+): Promise<AdminWorkflowActionState> {
+  const parsed = emailBlockSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { status: "invalid" };
+  try {
+    await setAdminEmailBlockStatus(parsed.data);
+    refresh();
+    return { status: "saved" };
+  } catch (error) {
+    return result(error);
+  }
 }

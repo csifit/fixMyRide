@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { isPlatformEmailBlocked } from "@/lib/dal/email-blocklist";
 import { createClient } from "@/lib/supabase/server";
 import { getSiteUrl } from "@/lib/site-url";
 import { recoveryPortals } from "@/app/authentication/recovery";
@@ -20,6 +21,13 @@ export async function requestPasswordResetAction(
 ): Promise<ForgotPasswordState> {
   const input = requestSchema.safeParse(Object.fromEntries(formData));
   if (!input.success) return { status: "invalid" };
+
+  try {
+    // Match the normal success response so the blocklist cannot be enumerated.
+    if (await isPlatformEmailBlocked(input.data.email)) return { status: "sent" };
+  } catch {
+    return { status: "unavailable" };
+  }
 
   let supabase;
   try {

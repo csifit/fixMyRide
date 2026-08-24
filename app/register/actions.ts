@@ -2,6 +2,7 @@
 
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
+import { isPlatformEmailBlocked } from "@/lib/dal/email-blocklist";
 import { createClient } from "@/lib/supabase/server";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -46,6 +47,12 @@ export async function registerAction(
     serviceProviderCountry: formData.get("serviceProviderCountry"),
   });
   if (!input.success) return { status: "invalid" };
+
+  try {
+    if (await isPlatformEmailBlocked(input.data.email)) return { status: "invalid" };
+  } catch {
+    return { status: "unavailable" };
+  }
 
   let supabase;
   try {

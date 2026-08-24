@@ -14,6 +14,7 @@ import {
   inviteLocationManagerAction,
   inviteServiceOrganisationAction,
   resendServiceOrganisationInvitationAction,
+  setEmailBlockStatusAction,
   setServiceProviderStatusAction,
   updateServiceProviderOrganisationAction,
   updateWorkshopLocationAction,
@@ -277,4 +278,41 @@ export function AccountStatusControl({ account, t }: {
     <select name="status" defaultValue={account.status}><option value="active">{t("adminWorkflow.status.active")}</option><option value="deactivated">{t("adminWorkflow.status.deactivated")}</option><option value="blocked">{t("adminWorkflow.status.blocked")}</option></select>
     <input name="reason" required minLength={2} maxLength={500} placeholder={t("adminWorkflow.reason")} /><button disabled={pending}>{t("adminWorkflow.updateAccount")}</button><Result state={state} t={t} />
   </form>;
+}
+
+function EmailBlockRow({ entry, t }: {
+  entry: AdminOrganisationWorkflow["emailBlocks"][number]; t: T;
+}) {
+  const [state, action, pending] = useActionState(setEmailBlockStatusAction, initial);
+  return <article className="admin-email-block-row">
+    <div><strong>{entry.email}</strong><small>{entry.reason}</small></div>
+    <form action={action}>
+      <input type="hidden" name="email" value={entry.email} />
+      <label>{t("adminEmailBlocklist.statusLabel")}<select name="blocked" defaultValue={String(entry.blocked)}><option value="true">{t("adminEmailBlocklist.blocked")}</option><option value="false">{t("adminEmailBlocklist.allowed")}</option></select></label>
+      <label>{t("adminWorkflow.reason")}<input name="reason" required minLength={2} maxLength={500} /></label>
+      <button disabled={pending}>{t("adminEmailBlocklist.update")}</button>
+      <Result state={state} t={t} />
+    </form>
+  </article>;
+}
+
+export function EmailBlocklistAdministration({ entries, t }: {
+  entries: AdminOrganisationWorkflow["emailBlocks"]; t: T;
+}) {
+  const [state, action, pending] = useActionState(setEmailBlockStatusAction, initial);
+  return <section className="admin-email-blocklist">
+    <header><h2>{t("adminEmailBlocklist.title")}</h2><p>{t("adminEmailBlocklist.description")}</p></header>
+    <form className="admin-email-block-create" action={action}>
+      <label>{t("adminEmailBlocklist.email")}<input name="email" type="email" required maxLength={254} autoComplete="off" /></label>
+      <label>{t("adminEmailBlocklist.statusLabel")}<select name="blocked" defaultValue="true"><option value="true">{t("adminEmailBlocklist.blocked")}</option><option value="false">{t("adminEmailBlocklist.allowed")}</option></select></label>
+      <label>{t("adminWorkflow.reason")}<input name="reason" required minLength={2} maxLength={500} /></label>
+      <button disabled={pending}>{t("adminEmailBlocklist.add")}</button>
+      <Result state={state} t={t} />
+    </form>
+    <p className="admin-email-block-help">{t("adminEmailBlocklist.help")}</p>
+    <div className="admin-email-block-rows">
+      {entries.map((entry) => <EmailBlockRow key={entry.email} entry={entry} t={t} />)}
+      {!entries.length && <p>{t("adminEmailBlocklist.empty")}</p>}
+    </div>
+  </section>;
 }
