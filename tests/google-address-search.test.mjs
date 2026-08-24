@@ -68,3 +68,12 @@ test("owner location validation guidance has translation parity", () => {
     for (const key of keys) assert.equal(typeof catalogs[language][key], "string", `${language}: ${key}`);
   }
 });
+
+test("a selected Google suggestion survives canonical address differences on submit", () => {
+  assert.match(addressSearch, /let acceptedAutocompleteValue = ""/);
+  assert.match(addressSearch, /typedAddress === acceptedAutocompleteValue/);
+  assert.match(addressSearch, /hasCompleteLocation\(valueRef\.current\)/);
+  assert.match(addressSearch, /autocomplete\.value = address/);
+  assert.match(addressSearch, /acceptedAutocompleteValue = address/);
+  assert.match(addressSearch, /addEventListener\("input", \(\) => \{[\s\S]*acceptedAutocompleteValue = ""/);
+});

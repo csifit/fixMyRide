@@ -183,9 +183,13 @@ export default function GoogleAddressSearch({
     let active = true;
     let autocomplete: google.maps.places.PlaceAutocompleteElement | null = null;
     let containingForm: HTMLFormElement | null = null;
+    let acceptedAutocompleteValue = "";
     const syncTypedAddress = () => {
       const typedAddress = autocomplete?.value.trim() ?? "";
       if (!typedAddress || typedAddress === valueRef.current.address) return;
+      if (acceptedAutocompleteValue
+        && typedAddress === acceptedAutocompleteValue
+        && hasCompleteLocation(valueRef.current)) return;
       commit({
         ...valueRef.current,
         address: typedAddress,
@@ -217,6 +221,7 @@ export default function GoogleAddressSearch({
         autocomplete.className = "google-address-element";
         autocomplete.addEventListener("input", () => {
           if (!autocomplete) return;
+          acceptedAutocompleteValue = "";
           commit({
             address: autocomplete.value,
             city: "",
@@ -236,6 +241,8 @@ export default function GoogleAddressSearch({
             "locality", "postal_town", "administrative_area_level_2", "administrative_area_level_1",
           ]);
           const countryCode = componentValue(addressComponents, ["country"], true).toUpperCase();
+          if (autocomplete) autocomplete.value = address;
+          acceptedAutocompleteValue = address;
           commit({
             address,
             city,
