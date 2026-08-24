@@ -61,6 +61,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    {
+      url: `${canonicalOrigin}/custom-workshop-software`,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     ...["terms", "privacy", "cookies"].map((path) => ({
       url: `${canonicalOrigin}/${path}`,
       changeFrequency: "monthly" as const,
