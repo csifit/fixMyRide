@@ -30,6 +30,7 @@ const navigation: Record<Role, { titleKey: TranslationKey; items: Item[] }> = {
     { href: "/workshop-manager/services", key: "roleSidebar.nav.serviceCatalogue", mark: "S" },
     { href: "/workshop-manager/inventory", key: "roleSidebar.nav.partsConsumables", mark: "I" },
     { href: "/workshop-manager/invoicing", key: "roleSidebar.nav.customerInvoicing", mark: "€" },
+    { href: "/workshop-manager/security", key: "roleSidebar.nav.security", mark: "2" },
   ] },
   service_organisation: { titleKey: "roleSidebar.serviceOrganisation", items: [
     { href: "/service-organisation", key: "roleSidebar.nav.overview", mark: "O" },
@@ -44,6 +45,7 @@ const navigation: Record<Role, { titleKey: TranslationKey; items: Item[] }> = {
     { href: "/service-organisation/inventory", key: "roleSidebar.nav.partsConsumables", mark: "I" },
     { href: "/service-organisation/billing", key: "roleSidebar.nav.subscriptionBilling", mark: "$" },
     { href: "/service-organisation/settings", key: "roleSidebar.nav.organisationSettings", mark: "⚙" },
+    { href: "/service-organisation/security", key: "roleSidebar.nav.security", mark: "2" },
   ] },
   workshop_staff: { titleKey: "roleSidebar.workshopStaff", items: [
     { href: "/workshop-staff", key: "roleSidebar.nav.operations", mark: "O" },
@@ -95,7 +97,8 @@ export default function RoleWorkspaceShell({ role, identity, dismissedGuides = [
       })}</nav>
     </aside>
     <div className="role-workspace-content">
-      {(role === "workshop_manager" || role === "service_organisation") && <RoleGuidance
+      {(role === "workshop_manager" || role === "service_organisation")
+        && !pathname.endsWith("/security/mfa") && <RoleGuidance
         key={`${role}:${pathname}`}
         role={role as GuidanceRole}
         pathname={pathname}

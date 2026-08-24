@@ -29,7 +29,38 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  await supabase.auth.getClaims();
+  const { data: claimsData } = await supabase.auth.getClaims();
+  const pathname = request.nextUrl.pathname;
+  const providerRoot = pathname === "/workshop-manager"
+      || pathname.startsWith("/workshop-manager/")
+    ? "/workshop-manager"
+    : pathname === "/service-organisation"
+      || pathname.startsWith("/service-organisation/")
+      ? "/service-organisation"
+      : null;
+  const isProviderMfaChallenge = providerRoot
+    ? pathname === `${providerRoot}/security/mfa`
+    : false;
+  const isProviderLogin = providerRoot
+    ? pathname === `${providerRoot}/login`
+    : false;
+
+  if (providerRoot && claimsData?.claims?.sub
+    && !isProviderMfaChallenge && !isProviderLogin) {
+    const { data: assurance, error } =
+      await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (!error && assurance.nextLevel === "aal2"
+      && assurance.currentLevel !== "aal2") {
+      const challenge = request.nextUrl.clone();
+      challenge.pathname = `${providerRoot}/security/mfa`;
+      challenge.search = "";
+      challenge.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
+      const redirect = NextResponse.redirect(challenge);
+      response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+      redirect.headers.set("Cache-Control", "private, no-store");
+      return redirect;
+    }
+  }
   response.headers.set("Cache-Control", "private, no-store");
   return response;
 }
