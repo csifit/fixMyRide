@@ -20,7 +20,6 @@ export default function LegalDocumentClient({ documentType }: { documentType: Le
         <section className="legal-source-card"><h2>{document.sourcesTitle}</h2><div>{document.sources.map((source) => <a href={source.href} target="_blank" rel="noreferrer" key={source.href}>{source.label}</a>)}</div></section>
       </div>
     </section>
-    <footer className="legal-footer"><span>© {new Date().getFullYear()} {brand.name}</span><nav><Link href="/terms">{document.footerTerms}</Link><Link href="/privacy">{document.footerPrivacy}</Link><Link href="/cookies">{document.footerCookies}</Link></nav></footer>
+    <footer className="legal-footer"><span>{brand.legalCopyright}</span><nav><Link href="/terms">{document.footerTerms}</Link><Link href="/privacy">{document.footerPrivacy}</Link><Link href="/cookies">{document.footerCookies}</Link></nav></footer>
   </main>;
 }
-

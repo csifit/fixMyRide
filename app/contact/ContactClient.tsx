@@ -75,6 +75,6 @@ export default function ContactClient({ initialType }: { initialType: "support" 
         </>}
       </section>
     </section>
-    <footer className="contact-footer"><span>© {new Date().getFullYear()} {brand.name}</span><Link href="/faq">{t("contact.readFaq")}</Link></footer>
+    <footer className="contact-footer"><span>{brand.legalCopyright}</span><Link href="/faq">{t("contact.readFaq")}</Link></footer>
   </main>;
 }

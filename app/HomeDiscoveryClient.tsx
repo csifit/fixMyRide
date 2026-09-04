@@ -285,7 +285,7 @@ export default function HomeDiscoveryClient({
       <div><strong>{t("home.footer.providers")}</strong><Link href="/register/workshop-manager">{t("home.footer.join")}</Link><Link href="/guides/service-providers">{t("home.footer.providerGuide")}</Link><Link href="/custom-workshop-software">{t("home.footer.customSoftware")}</Link><Link href="/service-organisation/login">{t("home.footer.providerSignIn")}</Link></div>
       <div><strong>{t("home.footer.legal")}</strong><Link href="/terms">{t("home.footer.terms")}</Link><Link href="/privacy">{t("home.footer.privacy")}</Link><Link href="/cookies">{t("home.footer.cookies")}</Link></div>
       <div><strong>{t("home.footer.contact")}</strong><Link href="/faq">{t("home.footer.faq")}</Link><Link href="/contact?type=support">{t("home.footer.support")}</Link><Link href="/contact?type=problem">{t("home.footer.report")}</Link></div>
-      <p>© {new Date().getFullYear()} {brand.name}</p>
+      <p>{brand.legalCopyright}</p>
     </footer>
   </main>;
 }

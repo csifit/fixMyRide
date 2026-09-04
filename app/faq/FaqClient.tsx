@@ -35,6 +35,6 @@ export default function FaqClient() {
         })}
       </div>
     </section>
-    <footer className="faq-footer"><span>© {new Date().getFullYear()} {brand.name}</span><Link href="/">{t("faq.back")}</Link></footer>
+    <footer className="faq-footer"><span>{brand.legalCopyright}</span><Link href="/">{t("faq.back")}</Link></footer>
   </main>;
 }

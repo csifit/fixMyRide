@@ -67,7 +67,7 @@ export default function PlatformGuide({
     </div>
 
     <footer className="platform-guide-footer">
-      <span>© {new Date().getFullYear()} {brand.name}</span>
+      <span>{brand.legalCopyright}</span>
       <Link href="/">Back to the home page</Link>
     </footer>
   </main>;

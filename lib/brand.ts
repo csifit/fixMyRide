@@ -3,6 +3,7 @@ const configuredColor = process.env.NEXT_PUBLIC_BRAND_PRIMARY_COLOR;
 export const brand = {
   id: process.env.NEXT_PUBLIC_BRAND_ID?.trim() || "pitster",
   name: process.env.NEXT_PUBLIC_BRAND_NAME?.trim() || "pitster",
+  legalCopyright: "© Cozumel SRL, All rights reserved.",
   mark: process.env.NEXT_PUBLIC_BRAND_MARK?.trim() || "+",
   primaryColor:
     configuredColor && /^#[0-9a-f]{6}$/i.test(configuredColor)

@@ -282,7 +282,7 @@ export default function CustomWorkshopSoftwareClient() {
     </section>
 
     <footer className="custom-software-footer">
-      <span>© {new Date().getFullYear()} {brand.name}</span>
+      <span>{brand.legalCopyright}</span>
       <Link href="/">{content.backHome}</Link>
     </footer>
   </main>;
